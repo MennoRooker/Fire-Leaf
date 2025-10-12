@@ -1,0 +1,4 @@
+RUN 1:
+Dark and Dragon are now physical, Ghost is special
+
+
