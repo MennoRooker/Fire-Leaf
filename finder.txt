@@ -9,3 +9,9 @@ src/data/trainers.h
 
 - Trainer parties:
 src/data/trainer_parties.h
+
+- Learnsets
+src/data/pokemon/level_up_learnsets.h
+
+- Pokémon attributes
+src/data/pokemon/species_info.h
