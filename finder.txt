@@ -1,0 +1,11 @@
+- Physical/Special split:
+include/battle.h
+
+- Move attributes:
+src/data/battle_moves.h
+
+- Trainers
+src/data/trainers.h
+
+- Trainer parties:
+src/data/trainer_parties.h

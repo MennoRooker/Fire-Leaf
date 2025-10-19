@@ -1,0 +1,179 @@
+MOVE CHANGES
+
+Dark and Dragon type moves are now all physical
+Ghost type moves are all special
+
+- Mega Pucnh
+85% -> 95%
+
+- Cut
+NORMAL -> STEEL
+95% -> 100%
+High crit rate
+
+- Fly
+70 -> 90
+95% -> 100%
+
+- Slam
+75% -> 90%
+
+- Double Kick
+30 -> 40
+
+- Mega Kick
+75% -> 85%
+
+- Jump Kick
+70 -> 90
+
+- Tackle
+35 -> 45
+95% -> 100%
+
+- Thrash
+90 -> 120
+20PP -> 10PP
+
+- Poison Sting
+15 -> 25
+
+- Twineedle
+25 -> 40
+
+- Pin Missile
+14 -> 25
+85% -> 95%
+
+- Hydro Pump
+80% -> 85%
+
+- Blizzard
+70% -> 75%
+
+- Strength
+NORMAL -> ROCK
+
+- Absorb
+20 -> 25
+
+- Mega Drain
+40 -> 50
+
+- Growth
+Raises both atk and spatk
+
+- Petal Dance
+70 -> 120
+
+- Thunder
+70% -> 75%
+
+- Dig
+60 -> 80
+
+- Lick
+20 -> 30
+
+- Waterfall
+Now has a 20% chance to flinch
+
+- Clamp
+75% -> 85%
+
+- High Jump Kick
+85 -> 110
+
+- Glare
+75% -> 95%
+
+- Dream Eater
+100 -> 120
+15PP -> 10PP
+
+- Poison Gas
+55% -> 70%
+40PP -> 20PP
+
+- Leech Life
+20 -> 80
+15PP -> 10PP
+
+- Flash
+70% -> 100%
+
+- Fury Swipes
+80% -> 95%
+
+- Bonemerang
+90% -> 100%
+
+- Outrage
+90 -> 120
+
+- Giga Drain
+60 -> 75
+
+- Mega Horn
+85% -> 90%
+
+- Iron Tail
+75% -> 85%
+
+- Metal Claw
+50 -> 55
+95% -> 100%
+
+- Rock Smash
+20 -> 60
+
+- Will-o-Wisp
+75% -> 85%
+
+- Knock Off
+20 -> 65
+
+- Dive
+60 -> 80
+
+- Posion Fang
+50 -> 65
+
+- Meteor Mash
+85% -> 90%
+
+- Astonish
+30 -> 45
+
+- Rock Tomb
+80% -> 90%
+
+- Sand Tomb
+70% -> 80%
+
+- Bullet Seed
+10 -> 25
+
+- Icicle Spear
+10 -> 25
+
+- Bounce
+85% -> 95%
+
+- Poison Tail
+50 -> 65
+
+- Covet
+40 -> 50
+
+- Leaf Blade
+70 -> 90
+
+- Dragon Dance
+20PP -> 10PP
+
+- Rock Blast
+80% -> 90%
+
+- Water Pulse
+60 -> 80
