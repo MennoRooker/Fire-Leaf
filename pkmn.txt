@@ -1,3 +1,115 @@
 POKÉMON CHANGES
 
+- BUTTERFREE
+def:	50 -> 60
+spatk:	80 -> 100
+spd:	70 -> 92
 
+- BEEDRILL
+atk:	80 -> 100
+def:	40 -> 55
+spd:	75 -> 95
+
+- ARBOK
+atk:	85 -> 105
+POISON -> POISON/DARK
+
+- ONIX
+atk:	45 -> 85
+
+- FERALIGATR
+WATER -> WATER/DARK
+
+- LEDIAN
+atk:	35 -> 85
+
+- ARIADOS
+spd:	40 -> 105
+
+- POLITOED
+Damp -> Drizzle
+
+- STEELIX
+atk:	85 -> 100
+
+- HOUNDOOM
+spd:	95 -> 105
+
+- BLAZIKEN
+Blaze -> Blaze/Speed Boost
+
+- POOCHYENA
+spd:	35 -> 55
+
+- MIGHTYENA
+atk:	90 -> 100
+spd:	70 -> 90
+
+- BEAUTIFLY
+spatk:	90 -> 95
+spdef:	50 -> 60
+spd:	65 -> 85
+
+- DUSTOX
+atk:	50 -> 75
+spatk:	50 -> 75
+
+- SHIFTRY
+spd:	80 -> 115
+
+- NINJASK
+Speed Boost -> Hyper Cutter
+
+- WHISCASH
+atk:	78 -> 88
+
+- LUVDISC
+spatk:	40 -> 90
+
+- SHARPEDO
+spd:	95 -> 115
+
+- FLYGON
+atk:	100 -> 110
+
+- CAMERUPT
+hp:	70 -> 100
+
+- WALREIN
+atk:	80 -> 110
+
+- LUNATONE
+def:	65 -> 85
+
+- SOLROCK
+spdef:	65 -> 85
+
+- TROPIUS
+hp:	99 -> 109
+spatk:	72 -> 92
+
+- EXPLOUD
+atk:	91 -> 108
+
+- ABSOL
+spd:	75 -> 98
+
+- SEVIPER
+def:	60 -> 90
+spatk:	100 -> 80
+spdef:	60 -> 80
+
+- LAIRON
+hp:	60 -> 70
+
+- AGGRON
+hp:	70 -> 100
+
+- CRADILY
+spatk:	81 -> 91
+
+- ARMALDO
+spd:	45 -> 55
+
+- RAYQUAZA
+spd:	95 -> 115

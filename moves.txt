@@ -62,6 +62,7 @@ NORMAL -> ROCK
 
 - Growth
 Raises both atk and spatk
+40PP -> 10PP
 
 - Petal Dance
 70 -> 120
