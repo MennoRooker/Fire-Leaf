@@ -4,3 +4,4 @@ Dark and Dragon are now physical, Ghost is special
 RUN 2:
 moves.txt
 pkmn.txt
+learnsets.txt
