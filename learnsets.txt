@@ -17,6 +17,9 @@ LEARNSET CHANGES
 - BLASTOISE
 34, Aurora Beam
 
+- BUTTERFREE
+51, Quiver Dance
+
 - ARBOK
 32, Crunch
 
@@ -25,6 +28,18 @@ LEARNSET CHANGES
 
 - GOLBAT
 25, Leech Life
+
+- VENOMOTH
+47, Quiver Dance
+
+- BELLOSSOM
+39, Quiver Dance
+
+- BEAUTIFLY
+45, Quiver Dance
+
+- DUSTOX
+45, Quiver Dance
 
 - NINCADA
 22, Leech Life
