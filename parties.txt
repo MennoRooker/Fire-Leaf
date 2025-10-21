@@ -1,0 +1,71 @@
+TRAINER PARTIES
+
+
+OAK'S LAB:
+- Rival (Squirtle)
+	Squirtle (lvl 5)
+- Rival (Bulbasaur)
+	Bulbasaur (lvl 5)
+- Rival (Charmander)
+	Charmander (lvl 5)
+
+
+VIRIDIAN FOREST:
+- Bug Catcher Rick
+	Spinarak (lvl 6)
+	Caterpie (lvl 6)
+
+- Bug Catcher Doug
+	Weedle (lvl 7)
+	Kakuna (lvl 7)
+	Metapod (lvl 7)
+
+- Bug Caatcher Anthony
+	Wurmple (lvl 8)
+	Silcoon (lvl 8)
+
+- Bug Catcher Charlie
+	Ledyba (lvl 7)
+	Cascoon (lvl 7)
+	Volbeat (lvl 7)
+
+- Bug Catcher Sammy
+	Illumise (lvl 9)
+
+
+ROUTE 2 (south):
+
+- AddNewTrainer
+
+
+VIRIDIAN/PEWTER GATE:
+
+- !Bugsy
+(Bugsy stops the player from moving on and sends you
+to route 22 for an item)
+
+
+ROUTE 22:
+
+- !BlockPlayerFromRival
+(NPC blocks route 22)
+
+- Rival (Squirtle)
+        Pidgey (lvl 9, iv 50)
+	{Gust, Tackle, Sand-Attack} 
+        Squirtle (lvl 10, iv 50)
+	{Bubble, Tackle, Tail Whip}
+- Rival (Bulbasaur)
+	Pidgey (lvl 9, iv 50)
+        {Tackle, Sand-Attack} 
+        Bulbasaur (lvl 10, iv 50)
+	{Vine Whip, Tackle, Growl, Leech Seed}
+- Rival (Charmander)
+	Pidgey (lvl 9, iv 50)
+        {Tackle, Sand-Attack} 
+        Charmander (lvl 10, iv 50)
+
+
+ROUTE 3:
+
+- Youngster 

@@ -5,3 +5,21 @@ RUN 2:
 moves.txt
 pkmn.txt
 learnsets.txt
+
+RUN 3:
+pkmn.txt
+
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+
+RUN X:
+Add custom animations (Quiver Dance...)

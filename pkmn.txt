@@ -1,9 +1,17 @@
 POKÉMON CHANGES
 
+- METAPOD
+atk:	20 -> 40
+spdef:	25 -> 35
+
 - BUTTERFREE
 def:	50 -> 60
 spatk:	80 -> 100
 spd:	70 -> 92
+
+- KAKUNA
+atk:	25 -> 45
+spdef:	25 -> 30
 
 - BEEDRILL
 atk:	80 -> 100
@@ -15,7 +23,7 @@ atk:	85 -> 105
 POISON -> POISON/DARK
 
 - ONIX
-atk:	45 -> 85
+atk:	45 -> 75
 
 - FERALIGATR
 WATER -> WATER/DARK

@@ -328,11 +328,11 @@ const struct SpeciesInfo gSpeciesInfo[] =
     [SPECIES_METAPOD] =
     {
         .baseHP = 50,
-        .baseAttack = 20,
+        .baseAttack = 40,
         .baseDefense = 55,
         .baseSpeed = 30,
         .baseSpAttack = 25,
-        .baseSpDefense = 25,
+        .baseSpDefense = 35,
         .types = {TYPE_BUG, TYPE_BUG},
         .catchRate = 120,
         .expYield = 72,
@@ -415,11 +415,11 @@ const struct SpeciesInfo gSpeciesInfo[] =
     [SPECIES_KAKUNA] =
     {
         .baseHP = 45,
-        .baseAttack = 25,
+        .baseAttack = 45,
         .baseDefense = 50,
         .baseSpeed = 35,
         .baseSpAttack = 25,
-        .baseSpDefense = 25,
+        .baseSpDefense = 30,
         .types = {TYPE_BUG, TYPE_POISON},
         .catchRate = 120,
         .expYield = 71,
@@ -2764,7 +2764,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
     [SPECIES_ONIX] =
     {
         .baseHP = 35,
-        .baseAttack = 85,
+        .baseAttack = 75,
         .baseDefense = 160,
         .baseSpeed = 70,
         .baseSpAttack = 30,
