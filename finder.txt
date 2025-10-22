@@ -15,3 +15,6 @@ src/data/pokemon/level_up_learnsets.h
 
 - Pokémon attributes
 src/data/pokemon/species_info.h
+
+- Trainer Party logic (IVs, EVs, movesets...)
+src/battle_main.c (1535)

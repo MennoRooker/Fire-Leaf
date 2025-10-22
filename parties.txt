@@ -10,6 +10,16 @@ OAK'S LAB:
 	Charmander (lvl 5)
 
 
+ROUTE 1:
+
+- AddNewTrainer
+
+
+ROUTE 2 (south):
+
+- AddNewTrainer
+
+
 VIRIDIAN FOREST:
 - Bug Catcher Rick
 	Spinarak (lvl 6)
@@ -31,24 +41,13 @@ VIRIDIAN FOREST:
 
 - Bug Catcher Sammy
 	Illumise (lvl 9)
-
-
-ROUTE 2 (south):
-
-- AddNewTrainer
-
-
-VIRIDIAN/PEWTER GATE:
-
-- !Bugsy
-(Bugsy stops the player from moving on and sends you
-to route 22 for an item)
-
+	
 
 ROUTE 22:
 
 - !BlockPlayerFromRival
-(NPC blocks route 22)
+(NPC blocks route 22, must go to Viridian/Pewter gate first
+to speak with Bugsy)
 
 - Rival (Squirtle)
         Pidgey (lvl 9, iv 50)
@@ -64,8 +63,32 @@ ROUTE 22:
 	Pidgey (lvl 9, iv 50)
         {Tackle, Sand-Attack} 
         Charmander (lvl 10, iv 50)
+!Rival
+(Rival says "You're looking for an item? I have it, fight me
+for it. After battle the rival says he dropped it in the
+grass somewhere.)
 
+VIRIDIAN/PEWTER GATE:
 
+- !Bugsy
+(Bugsy stops the player from moving on and sends you
+to route 22 for an item. After retrieving the item the player
+gets a reward from Bugsy. The player does not fight Bugsy (yet).)
+
+PEWTER CITY GYM:
+
+- Camper Liam
+	Geodude (lvl 10)
+	{Tackle, Defense Curl}
+	Sandslash (lvl 11)
+	{Scratch, Defense Curl, Sand-Attack}
+	
+- Leader Brock
+	Geodude (lvl 12)
+	{Tackle, Defense Curl}
+	Onix (lvl 12)
+	{Rock Tomb, Tackle, Bind}
+	
 ROUTE 3:
 
 - Youngster 

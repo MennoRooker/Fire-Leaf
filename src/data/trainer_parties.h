@@ -215,9 +215,6 @@ static const struct TrainerMonNoItemDefaultMoves sParty_BugCatcherSammy[] = {
 // Add trainer
 
 
-// ======================================= Pewter Gate ======================================= //
-// Bugsy
-
 
 // ======================================= Route 22 ======================================= //
 static const struct TrainerMonNoItemCustomMoves sParty_RivalRoute22EarlySquirtle[] = {
@@ -265,6 +262,7 @@ static const struct TrainerMonNoItemCustomMoves sParty_RivalRoute22EarlyCharmand
     },
 };
 
+
 // ======================================= Pewter City Gym ======================================= //
 static const struct TrainerMonNoItemCustomMoves sParty_CamperLiam[] = {
     {
@@ -292,7 +290,7 @@ static const struct TrainerMonNoItemCustomMoves sParty_LeaderBrock[] = {
         .iv = 0,
         .lvl = 14,
         .species = SPECIES_ONIX,
-        .moves = {MOVE_TACKLE, MOVE_BIND, MOVE_ROCK_TOMB, MOVE_NONE},
+        .moves = {MOVE_ROCK_TOMB, MOVE_TACKLE, MOVE_BIND, MOVE_NONE},
     },
 };
 
