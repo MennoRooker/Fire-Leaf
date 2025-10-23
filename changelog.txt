@@ -8,7 +8,7 @@ learnsets.txt
 
 RUN 3:
 pkmn.txt
-
+encounters.txt
 .
 .
 .

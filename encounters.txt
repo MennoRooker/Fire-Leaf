@@ -1,17 +1,8 @@
-TRAINER PARTIES
-
-OAK'S LAB:
-- Rival (Squirtle)
-	Squirtle (lvl 5)
-- Rival (Bulbasaur)
-	Bulbasaur (lvl 5)
-- Rival (Charmander)
-	Charmander (lvl 5)
-
+WILD ENCOUNTERS
 
 ROUTE 1:
 
-- AddNewTrainer
+
 
 
 ROUTE 2 (south):

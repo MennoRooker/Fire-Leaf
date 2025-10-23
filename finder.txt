@@ -18,3 +18,7 @@ src/data/pokemon/species_info.h
 
 - Trainer Party logic (IVs, EVs, movesets...)
 src/battle_main.c (1535)
+
+- Wild encounters
+src/data/wild_encounters.json
+{ .rate/255, mons.multiple_mons_of_the_same_name_increases_encounter_rate }
