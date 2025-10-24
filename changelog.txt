@@ -9,8 +9,10 @@ learnsets.txt
 RUN 3:
 pkmn.txt
 encounters.txt
-.
-.
+
+RUN 4:
+changed global exp curve from /7 to /6 (~17% increase)
+
 .
 .
 .

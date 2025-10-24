@@ -1,61 +1,46 @@
 WILD ENCOUNTERS
 
-================================== ROUTE 1 ==================================
+================================= ROUTE 1 =================================
 
 GRASS:
   + Poochyena (30%)
   + Mankey (15%)
   + Zigzagoon (1%)
 
-=============================== VIRIDIAN CITY ===============================
+============================== VIRIDIAN CITY ==============================
 
 OLD ROD:
   + Barboach/Remoraid (70%)
   + Tentacool (30%)
   
-================================== ROUTE 2 ==================================
+================================= ROUTE 2 =================================
 
-+ Poochyna (30%)
-+ Oddish/Bellsprout (5%)
-+ Venonat (5%)
+GRASS:
+  + Poochyna (30%)
+  + Oddish/Bellsprout (5%)
+  + Venonat (5%)
 
+============================= VIRIDIAN FOREST =============================
 
-============================== VIRIDIAN FOREST ==============================
-
-+ Seedot (10%)
-+ Surskit (10%)
+GRASS:
+  + Seedot (10%)
+  + Surskit (10%)
 	
 
-ROUTE 22:
+================================ ROUTE 22 ================================
 
 - !BlockPlayerFromRival
 (NPC blocks route 22, must go to Viridian/Pewter gate first
 to speak with Bugsy)
 
-+ ...
+GRASS:
+  + Sentret (30%)
+  + Hoothoot (30%)
+  + Zigzagoon (5%)
+  + Ponyta (5%)
 
 
-VIRIDIAN/PEWTER GATE:
+================================= ROUTE 3 =================================
 
-- !Bugsy
-(Bugsy stops the player from moving on and sends you
-to route 22 for an item. After retrieving the item the player
-gets a reward from Bugsy. The player does not fight Bugsy (yet).)
+GRASS:
 
-PEWTER CITY GYM:
-
-- Camper Liam
-	Geodude (lvl 10)
-	{Tackle, Defense Curl}
-	Sandslash (lvl 11)
-	{Scratch, Defense Curl, Sand-Attack}
-	
-- Leader Brock
-	Geodude (lvl 12)
-	{Tackle, Defense Curl}
-	Onix (lvl 12)
-	{Rock Tomb, Tackle, Bind}
-	
-ROUTE 3:
-
-- Youngster 
