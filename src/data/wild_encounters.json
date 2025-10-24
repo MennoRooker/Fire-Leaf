@@ -77,484 +77,139 @@
       ],
       "encounters": [
         {
-          "map": "MAP_SEVEN_ISLAND_TANOBY_RUINS_MONEAN_CHAMBER",
-          "base_label": "sSevenIslandTanobyRuinsMoneanChamber_FireRed",
+          "map": "MAP_ROUTE1",
+          "base_label": "sRoute1_FireRed",
           "land_mons": {
-            "encounter_rate": 7,
+            "encounter_rate": 21,
             "mons": [
               {
-                "min_level": 25,
-                "max_level": 25,
-                "species": "SPECIES_UNOWN"
+                "min_level": 3,
+                "max_level": 3,
+                "species": "SPECIES_POOCHYENA"
               },
               {
-                "min_level": 25,
-                "max_level": 25,
-                "species": "SPECIES_UNOWN"
+                "min_level": 3,
+                "max_level": 3,
+                "species": "SPECIES_RATTATA"
               },
               {
-                "min_level": 25,
-                "max_level": 25,
-                "species": "SPECIES_UNOWN"
+                "min_level": 3,
+                "max_level": 3,
+                "species": "SPECIES_POOCHYENA"
               },
               {
-                "min_level": 25,
-                "max_level": 25,
-                "species": "SPECIES_UNOWN"
+                "min_level": 3,
+                "max_level": 3,
+                "species": "SPECIES_RATTATA"
               },
               {
-                "min_level": 25,
-                "max_level": 25,
-                "species": "SPECIES_UNOWN"
+                "min_level": 2,
+                "max_level": 2,
+                "species": "SPECIES_PIDGEY"
               },
               {
-                "min_level": 25,
-                "max_level": 25,
-                "species": "SPECIES_UNOWN"
+                "min_level": 2,
+                "max_level": 2,
+                "species": "SPECIES_MANKEY"
               },
               {
-                "min_level": 25,
-                "max_level": 25,
-                "species": "SPECIES_UNOWN"
+                "min_level": 3,
+                "max_level": 3,
+                "species": "SPECIES_PIDGEY"
               },
               {
-                "min_level": 25,
-                "max_level": 25,
-                "species": "SPECIES_UNOWN"
+                "min_level": 3,
+                "max_level": 3,
+                "species": "SPECIES_MANKEY"
               },
               {
-                "min_level": 25,
-                "max_level": 25,
-                "species": "SPECIES_UNOWN"
+                "min_level": 4,
+                "max_level": 4,
+                "species": "SPECIES_PIDGEY"
               },
               {
-                "min_level": 25,
-                "max_level": 25,
-                "species": "SPECIES_UNOWN"
+                "min_level": 4,
+                "max_level": 4,
+                "species": "SPECIES_RATTATA"
               },
               {
-                "min_level": 25,
-                "max_level": 25,
-                "species": "SPECIES_UNOWN"
+                "min_level": 5,
+                "max_level": 5,
+                "species": "SPECIES_PIDGEY"
               },
               {
-                "min_level": 25,
-                "max_level": 25,
-                "species": "SPECIES_UNOWN"
+                "min_level": 4,
+                "max_level": 4,
+                "species": "SPECIES_ZIGZAGOON"
               }
             ]
           }
         },
         {
-          "map": "MAP_SEVEN_ISLAND_TANOBY_RUINS_LIPTOO_CHAMBER",
-          "base_label": "sSevenIslandTanobyRuinsLiptooChamber_FireRed",
+          "map": "MAP_ROUTE2",
+          "base_label": "sRoute2_FireRed",
           "land_mons": {
-            "encounter_rate": 7,
+            "encounter_rate": 21,
             "mons": [
               {
-                "min_level": 25,
-                "max_level": 25,
-                "species": "SPECIES_UNOWN"
+                "min_level": 3,
+                "max_level": 3,
+                "species": "SPECIES_POOCHYENA"
               },
               {
-                "min_level": 25,
-                "max_level": 25,
-                "species": "SPECIES_UNOWN"
+                "min_level": 3,
+                "max_level": 3,
+                "species": "SPECIES_RATTATA"
               },
               {
-                "min_level": 25,
-                "max_level": 25,
-                "species": "SPECIES_UNOWN"
+                "min_level": 4,
+                "max_level": 4,
+                "species": "SPECIES_POOCHYENA"
               },
               {
-                "min_level": 25,
-                "max_level": 25,
-                "species": "SPECIES_UNOWN"
+                "min_level": 4,
+                "max_level": 4,
+                "species": "SPECIES_PIDGEY"
               },
               {
-                "min_level": 25,
-                "max_level": 25,
-                "species": "SPECIES_UNOWN"
+                "min_level": 2,
+                "max_level": 2,
+                "species": "SPECIES_RATTATA"
               },
               {
-                "min_level": 25,
-                "max_level": 25,
-                "species": "SPECIES_UNOWN"
+                "min_level": 2,
+                "max_level": 2,
+                "species": "SPECIES_PIDGEY"
               },
               {
-                "min_level": 25,
-                "max_level": 25,
-                "species": "SPECIES_UNOWN"
+                "min_level": 5,
+                "max_level": 5,
+                "species": "SPECIES_RATTATA"
               },
               {
-                "min_level": 25,
-                "max_level": 25,
-                "species": "SPECIES_UNOWN"
+                "min_level": 5,
+                "max_level": 5,
+                "species": "SPECIES_PIDGEY"
               },
               {
-                "min_level": 25,
-                "max_level": 25,
-                "species": "SPECIES_UNOWN"
+                "min_level": 4,
+                "max_level": 4,
+                "species": "SPECIES_ODDISH"
               },
               {
-                "min_level": 25,
-                "max_level": 25,
-                "species": "SPECIES_UNOWN"
+                "min_level": 4,
+                "max_level": 4,
+                "species": "SPECIES_VENONAT"
               },
               {
-                "min_level": 25,
-                "max_level": 25,
-                "species": "SPECIES_UNOWN"
+                "min_level": 5,
+                "max_level": 5,
+                "species": "SPECIES_ODDISH"
               },
               {
-                "min_level": 25,
-                "max_level": 25,
-                "species": "SPECIES_UNOWN"
-              }
-            ]
-          }
-        },
-        {
-          "map": "MAP_SEVEN_ISLAND_TANOBY_RUINS_WEEPTH_CHAMBER",
-          "base_label": "sSevenIslandTanobyRuinsWeepthChamber_FireRed",
-          "land_mons": {
-            "encounter_rate": 7,
-            "mons": [
-              {
-                "min_level": 25,
-                "max_level": 25,
-                "species": "SPECIES_UNOWN"
-              },
-              {
-                "min_level": 25,
-                "max_level": 25,
-                "species": "SPECIES_UNOWN"
-              },
-              {
-                "min_level": 25,
-                "max_level": 25,
-                "species": "SPECIES_UNOWN"
-              },
-              {
-                "min_level": 25,
-                "max_level": 25,
-                "species": "SPECIES_UNOWN"
-              },
-              {
-                "min_level": 25,
-                "max_level": 25,
-                "species": "SPECIES_UNOWN"
-              },
-              {
-                "min_level": 25,
-                "max_level": 25,
-                "species": "SPECIES_UNOWN"
-              },
-              {
-                "min_level": 25,
-                "max_level": 25,
-                "species": "SPECIES_UNOWN"
-              },
-              {
-                "min_level": 25,
-                "max_level": 25,
-                "species": "SPECIES_UNOWN"
-              },
-              {
-                "min_level": 25,
-                "max_level": 25,
-                "species": "SPECIES_UNOWN"
-              },
-              {
-                "min_level": 25,
-                "max_level": 25,
-                "species": "SPECIES_UNOWN"
-              },
-              {
-                "min_level": 25,
-                "max_level": 25,
-                "species": "SPECIES_UNOWN"
-              },
-              {
-                "min_level": 25,
-                "max_level": 25,
-                "species": "SPECIES_UNOWN"
-              }
-            ]
-          }
-        },
-        {
-          "map": "MAP_SEVEN_ISLAND_TANOBY_RUINS_DILFORD_CHAMBER",
-          "base_label": "sSevenIslandTanobyRuinsDilfordChamber_FireRed",
-          "land_mons": {
-            "encounter_rate": 7,
-            "mons": [
-              {
-                "min_level": 25,
-                "max_level": 25,
-                "species": "SPECIES_UNOWN"
-              },
-              {
-                "min_level": 25,
-                "max_level": 25,
-                "species": "SPECIES_UNOWN"
-              },
-              {
-                "min_level": 25,
-                "max_level": 25,
-                "species": "SPECIES_UNOWN"
-              },
-              {
-                "min_level": 25,
-                "max_level": 25,
-                "species": "SPECIES_UNOWN"
-              },
-              {
-                "min_level": 25,
-                "max_level": 25,
-                "species": "SPECIES_UNOWN"
-              },
-              {
-                "min_level": 25,
-                "max_level": 25,
-                "species": "SPECIES_UNOWN"
-              },
-              {
-                "min_level": 25,
-                "max_level": 25,
-                "species": "SPECIES_UNOWN"
-              },
-              {
-                "min_level": 25,
-                "max_level": 25,
-                "species": "SPECIES_UNOWN"
-              },
-              {
-                "min_level": 25,
-                "max_level": 25,
-                "species": "SPECIES_UNOWN"
-              },
-              {
-                "min_level": 25,
-                "max_level": 25,
-                "species": "SPECIES_UNOWN"
-              },
-              {
-                "min_level": 25,
-                "max_level": 25,
-                "species": "SPECIES_UNOWN"
-              },
-              {
-                "min_level": 25,
-                "max_level": 25,
-                "species": "SPECIES_UNOWN"
-              }
-            ]
-          }
-        },
-        {
-          "map": "MAP_SEVEN_ISLAND_TANOBY_RUINS_SCUFIB_CHAMBER",
-          "base_label": "sSevenIslandTanobyRuinsScufibChamber_FireRed",
-          "land_mons": {
-            "encounter_rate": 7,
-            "mons": [
-              {
-                "min_level": 25,
-                "max_level": 25,
-                "species": "SPECIES_UNOWN"
-              },
-              {
-                "min_level": 25,
-                "max_level": 25,
-                "species": "SPECIES_UNOWN"
-              },
-              {
-                "min_level": 25,
-                "max_level": 25,
-                "species": "SPECIES_UNOWN"
-              },
-              {
-                "min_level": 25,
-                "max_level": 25,
-                "species": "SPECIES_UNOWN"
-              },
-              {
-                "min_level": 25,
-                "max_level": 25,
-                "species": "SPECIES_UNOWN"
-              },
-              {
-                "min_level": 25,
-                "max_level": 25,
-                "species": "SPECIES_UNOWN"
-              },
-              {
-                "min_level": 25,
-                "max_level": 25,
-                "species": "SPECIES_UNOWN"
-              },
-              {
-                "min_level": 25,
-                "max_level": 25,
-                "species": "SPECIES_UNOWN"
-              },
-              {
-                "min_level": 25,
-                "max_level": 25,
-                "species": "SPECIES_UNOWN"
-              },
-              {
-                "min_level": 25,
-                "max_level": 25,
-                "species": "SPECIES_UNOWN"
-              },
-              {
-                "min_level": 25,
-                "max_level": 25,
-                "species": "SPECIES_UNOWN"
-              },
-              {
-                "min_level": 25,
-                "max_level": 25,
-                "species": "SPECIES_UNOWN"
-              }
-            ]
-          }
-        },
-        {
-          "map": "MAP_SEVEN_ISLAND_TANOBY_RUINS_RIXY_CHAMBER",
-          "base_label": "sSevenIslandTanobyRuinsRixyChamber_FireRed",
-          "land_mons": {
-            "encounter_rate": 7,
-            "mons": [
-              {
-                "min_level": 25,
-                "max_level": 25,
-                "species": "SPECIES_UNOWN"
-              },
-              {
-                "min_level": 25,
-                "max_level": 25,
-                "species": "SPECIES_UNOWN"
-              },
-              {
-                "min_level": 25,
-                "max_level": 25,
-                "species": "SPECIES_UNOWN"
-              },
-              {
-                "min_level": 25,
-                "max_level": 25,
-                "species": "SPECIES_UNOWN"
-              },
-              {
-                "min_level": 25,
-                "max_level": 25,
-                "species": "SPECIES_UNOWN"
-              },
-              {
-                "min_level": 25,
-                "max_level": 25,
-                "species": "SPECIES_UNOWN"
-              },
-              {
-                "min_level": 25,
-                "max_level": 25,
-                "species": "SPECIES_UNOWN"
-              },
-              {
-                "min_level": 25,
-                "max_level": 25,
-                "species": "SPECIES_UNOWN"
-              },
-              {
-                "min_level": 25,
-                "max_level": 25,
-                "species": "SPECIES_UNOWN"
-              },
-              {
-                "min_level": 25,
-                "max_level": 25,
-                "species": "SPECIES_UNOWN"
-              },
-              {
-                "min_level": 25,
-                "max_level": 25,
-                "species": "SPECIES_UNOWN"
-              },
-              {
-                "min_level": 25,
-                "max_level": 25,
-                "species": "SPECIES_UNOWN"
-              }
-            ]
-          }
-        },
-        {
-          "map": "MAP_SEVEN_ISLAND_TANOBY_RUINS_VIAPOIS_CHAMBER",
-          "base_label": "sSevenIslandTanobyRuinsViapoisChamber_FireRed",
-          "land_mons": {
-            "encounter_rate": 7,
-            "mons": [
-              {
-                "min_level": 25,
-                "max_level": 25,
-                "species": "SPECIES_UNOWN"
-              },
-              {
-                "min_level": 25,
-                "max_level": 25,
-                "species": "SPECIES_UNOWN"
-              },
-              {
-                "min_level": 25,
-                "max_level": 25,
-                "species": "SPECIES_UNOWN"
-              },
-              {
-                "min_level": 25,
-                "max_level": 25,
-                "species": "SPECIES_UNOWN"
-              },
-              {
-                "min_level": 25,
-                "max_level": 25,
-                "species": "SPECIES_UNOWN"
-              },
-              {
-                "min_level": 25,
-                "max_level": 25,
-                "species": "SPECIES_UNOWN"
-              },
-              {
-                "min_level": 25,
-                "max_level": 25,
-                "species": "SPECIES_UNOWN"
-              },
-              {
-                "min_level": 25,
-                "max_level": 25,
-                "species": "SPECIES_UNOWN"
-              },
-              {
-                "min_level": 25,
-                "max_level": 25,
-                "species": "SPECIES_UNOWN"
-              },
-              {
-                "min_level": 25,
-                "max_level": 25,
-                "species": "SPECIES_UNOWN"
-              },
-              {
-                "min_level": 25,
-                "max_level": 25,
-                "species": "SPECIES_UNOWN"
-              },
-              {
-                "min_level": 25,
-                "max_level": 25,
-                "species": "SPECIES_UNOWN"
+                "min_level": 5,
+                "max_level": 5,
+                "species": "SPECIES_VENONAT"
               }
             ]
           }
@@ -8255,144 +7910,6 @@
           }
         },
         {
-          "map": "MAP_ROUTE1",
-          "base_label": "sRoute1_FireRed",
-          "land_mons": {
-            "encounter_rate": 21,
-            "mons": [
-              {
-                "min_level": 3,
-                "max_level": 3,
-                "species": "SPECIES_POOCHYENA"
-              },
-              {
-                "min_level": 3,
-                "max_level": 3,
-                "species": "SPECIES_RATTATA"
-              },
-              {
-                "min_level": 3,
-                "max_level": 3,
-                "species": "SPECIES_POOCHYENA"
-              },
-              {
-                "min_level": 3,
-                "max_level": 3,
-                "species": "SPECIES_RATTATA"
-              },
-              {
-                "min_level": 2,
-                "max_level": 2,
-                "species": "SPECIES_PIDGEY"
-              },
-              {
-                "min_level": 2,
-                "max_level": 2,
-                "species": "SPECIES_MANKEY"
-              },
-              {
-                "min_level": 3,
-                "max_level": 3,
-                "species": "SPECIES_PIDGEY"
-              },
-              {
-                "min_level": 3,
-                "max_level": 3,
-                "species": "SPECIES_MANKEY"
-              },
-              {
-                "min_level": 4,
-                "max_level": 4,
-                "species": "SPECIES_PIDGEY"
-              },
-              {
-                "min_level": 4,
-                "max_level": 4,
-                "species": "SPECIES_RATTATA"
-              },
-              {
-                "min_level": 5,
-                "max_level": 5,
-                "species": "SPECIES_PIDGEY"
-              },
-              {
-                "min_level": 4,
-                "max_level": 4,
-                "species": "SPECIES_ZIGZAGOON"
-              }
-            ]
-          }
-        },
-        {
-          "map": "MAP_ROUTE2",
-          "base_label": "sRoute2_FireRed",
-          "land_mons": {
-            "encounter_rate": 21,
-            "mons": [
-              {
-                "min_level": 3,
-                "max_level": 3,
-                "species": "SPECIES_RATTATA"
-              },
-              {
-                "min_level": 3,
-                "max_level": 3,
-                "species": "SPECIES_PIDGEY"
-              },
-              {
-                "min_level": 4,
-                "max_level": 4,
-                "species": "SPECIES_RATTATA"
-              },
-              {
-                "min_level": 4,
-                "max_level": 4,
-                "species": "SPECIES_PIDGEY"
-              },
-              {
-                "min_level": 2,
-                "max_level": 2,
-                "species": "SPECIES_RATTATA"
-              },
-              {
-                "min_level": 2,
-                "max_level": 2,
-                "species": "SPECIES_PIDGEY"
-              },
-              {
-                "min_level": 5,
-                "max_level": 5,
-                "species": "SPECIES_RATTATA"
-              },
-              {
-                "min_level": 5,
-                "max_level": 5,
-                "species": "SPECIES_PIDGEY"
-              },
-              {
-                "min_level": 4,
-                "max_level": 4,
-                "species": "SPECIES_CATERPIE"
-              },
-              {
-                "min_level": 4,
-                "max_level": 4,
-                "species": "SPECIES_WEEDLE"
-              },
-              {
-                "min_level": 5,
-                "max_level": 5,
-                "species": "SPECIES_CATERPIE"
-              },
-              {
-                "min_level": 5,
-                "max_level": 5,
-                "species": "SPECIES_WEEDLE"
-              }
-            ]
-          }
-        },
-        {
           "map": "MAP_ROUTE3",
           "base_label": "sRoute3_FireRed",
           "land_mons": {
@@ -12621,8 +12138,9 @@
         },
         {
           "map": "MAP_SEVEN_ISLAND_TANOBY_RUINS_MONEAN_CHAMBER",
-          "base_label": "sSevenIslandTanobyRuinsMoneanChamber_LeafGreen",
+          "base_label": "sSevenIslandTanobyRuinsMoneanChamber_FireRed",
           "land_mons": {
+            "encounter_rate": 7,
             "mons": [
               {
                 "min_level": 25,
@@ -12684,14 +12202,14 @@
                 "max_level": 25,
                 "species": "SPECIES_UNOWN"
               }
-            ],
-            "encounter_rate": 7
+            ]
           }
         },
         {
           "map": "MAP_SEVEN_ISLAND_TANOBY_RUINS_LIPTOO_CHAMBER",
-          "base_label": "sSevenIslandTanobyRuinsLiptooChamber_LeafGreen",
+          "base_label": "sSevenIslandTanobyRuinsLiptooChamber_FireRed",
           "land_mons": {
+            "encounter_rate": 7,
             "mons": [
               {
                 "min_level": 25,
@@ -12753,14 +12271,14 @@
                 "max_level": 25,
                 "species": "SPECIES_UNOWN"
               }
-            ],
-            "encounter_rate": 7
+            ]
           }
         },
         {
           "map": "MAP_SEVEN_ISLAND_TANOBY_RUINS_WEEPTH_CHAMBER",
-          "base_label": "sSevenIslandTanobyRuinsWeepthChamber_LeafGreen",
+          "base_label": "sSevenIslandTanobyRuinsWeepthChamber_FireRed",
           "land_mons": {
+            "encounter_rate": 7,
             "mons": [
               {
                 "min_level": 25,
@@ -12822,14 +12340,14 @@
                 "max_level": 25,
                 "species": "SPECIES_UNOWN"
               }
-            ],
-            "encounter_rate": 7
+            ]
           }
         },
         {
           "map": "MAP_SEVEN_ISLAND_TANOBY_RUINS_DILFORD_CHAMBER",
-          "base_label": "sSevenIslandTanobyRuinsDilfordChamber_LeafGreen",
+          "base_label": "sSevenIslandTanobyRuinsDilfordChamber_FireRed",
           "land_mons": {
+            "encounter_rate": 7,
             "mons": [
               {
                 "min_level": 25,
@@ -12891,14 +12409,14 @@
                 "max_level": 25,
                 "species": "SPECIES_UNOWN"
               }
-            ],
-            "encounter_rate": 7
+            ]
           }
         },
         {
           "map": "MAP_SEVEN_ISLAND_TANOBY_RUINS_SCUFIB_CHAMBER",
-          "base_label": "sSevenIslandTanobyRuinsScufibChamber_LeafGreen",
+          "base_label": "sSevenIslandTanobyRuinsScufibChamber_FireRed",
           "land_mons": {
+            "encounter_rate": 7,
             "mons": [
               {
                 "min_level": 25,
@@ -12960,14 +12478,14 @@
                 "max_level": 25,
                 "species": "SPECIES_UNOWN"
               }
-            ],
-            "encounter_rate": 7
+            ]
           }
         },
         {
           "map": "MAP_SEVEN_ISLAND_TANOBY_RUINS_RIXY_CHAMBER",
-          "base_label": "sSevenIslandTanobyRuinsRixyChamber_LeafGreen",
+          "base_label": "sSevenIslandTanobyRuinsRixyChamber_FireRed",
           "land_mons": {
+            "encounter_rate": 7,
             "mons": [
               {
                 "min_level": 25,
@@ -13029,14 +12547,14 @@
                 "max_level": 25,
                 "species": "SPECIES_UNOWN"
               }
-            ],
-            "encounter_rate": 7
+            ]
           }
         },
         {
           "map": "MAP_SEVEN_ISLAND_TANOBY_RUINS_VIAPOIS_CHAMBER",
-          "base_label": "sSevenIslandTanobyRuinsViapoisChamber_LeafGreen",
+          "base_label": "sSevenIslandTanobyRuinsViapoisChamber_FireRed",
           "land_mons": {
+            "encounter_rate": 7,
             "mons": [
               {
                 "min_level": 25,
@@ -13098,8 +12616,563 @@
                 "max_level": 25,
                 "species": "SPECIES_UNOWN"
               }
+            ]
+          }
+        },
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        {
+          "map": "MAP_ROUTE1",
+          "base_label": "sRoute1_LeafGreen",
+          "land_mons": {
+            "mons": [
+              {
+                "min_level": 3,
+                "max_level": 3,
+                "species": "SPECIES_POOCHYENA"
+              },
+              {
+                "min_level": 3,
+                "max_level": 3,
+                "species": "SPECIES_RATTATA"
+              },
+              {
+                "min_level": 3,
+                "max_level": 3,
+                "species": "SPECIES_POOCHYENA"
+              },
+              {
+                "min_level": 3,
+                "max_level": 3,
+                "species": "SPECIES_RATTATA"
+              },
+              {
+                "min_level": 2,
+                "max_level": 2,
+                "species": "SPECIES_PIDGEY"
+              },
+              {
+                "min_level": 2,
+                "max_level": 2,
+                "species": "SPECIES_MANKEY"
+              },
+              {
+                "min_level": 3,
+                "max_level": 3,
+                "species": "SPECIES_PIDGEY"
+              },
+              {
+                "min_level": 3,
+                "max_level": 3,
+                "species": "SPECIES_MANKEY"
+              },
+              {
+                "min_level": 4,
+                "max_level": 4,
+                "species": "SPECIES_PIDGEY"
+              },
+              {
+                "min_level": 4,
+                "max_level": 4,
+                "species": "SPECIES_RATTATA"
+              },
+              {
+                "min_level": 5,
+                "max_level": 5,
+                "species": "SPECIES_PIDGEY"
+              },
+              {
+                "min_level": 4,
+                "max_level": 4,
+                "species": "SPECIES_ZIGZAGOON"
+              }
             ],
-            "encounter_rate": 7
+            "encounter_rate": 21
+          }
+        },
+        {
+          "map": "MAP_ROUTE2",
+          "base_label": "sRoute2_LeafGreen",
+          "land_mons": {
+            "mons": [
+              {
+                "min_level": 3,
+                "max_level": 3,
+                "species": "SPECIES_POOCHYENA"
+              },
+              {
+                "min_level": 3,
+                "max_level": 3,
+                "species": "SPECIES_RATTATA"
+              },
+              {
+                "min_level": 4,
+                "max_level": 4,
+                "species": "SPECIES_POOCHYENA"
+              },
+              {
+                "min_level": 4,
+                "max_level": 4,
+                "species": "SPECIES_PIDGEY"
+              },
+              {
+                "min_level": 2,
+                "max_level": 2,
+                "species": "SPECIES_RATTATA"
+              },
+              {
+                "min_level": 2,
+                "max_level": 2,
+                "species": "SPECIES_PIDGEY"
+              },
+              {
+                "min_level": 5,
+                "max_level": 5,
+                "species": "SPECIES_RATTATA"
+              },
+              {
+                "min_level": 5,
+                "max_level": 5,
+                "species": "SPECIES_PIDGEY"
+              },
+              {
+                "min_level": 4,
+                "max_level": 4,
+                "species": "SPECIES_BELLSPROUT"
+              },
+              {
+                "min_level": 4,
+                "max_level": 4,
+                "species": "SPECIES_VENONAT"
+              },
+              {
+                "min_level": 5,
+                "max_level": 5,
+                "species": "SPECIES_BELLSPROUT"
+              },
+              {
+                "min_level": 5,
+                "max_level": 5,
+                "species": "SPECIES_VENONAT"
+              }
+            ],
+            "encounter_rate": 21
           }
         },
         {
@@ -20798,144 +20871,6 @@
           }
         },
         {
-          "map": "MAP_ROUTE1",
-          "base_label": "sRoute1_LeafGreen",
-          "land_mons": {
-            "mons": [
-              {
-                "min_level": 3,
-                "max_level": 3,
-                "species": "SPECIES_POOCHYENA"
-              },
-              {
-                "min_level": 3,
-                "max_level": 3,
-                "species": "SPECIES_RATTATA"
-              },
-              {
-                "min_level": 3,
-                "max_level": 3,
-                "species": "SPECIES_POOCHYENA"
-              },
-              {
-                "min_level": 3,
-                "max_level": 3,
-                "species": "SPECIES_RATTATA"
-              },
-              {
-                "min_level": 2,
-                "max_level": 2,
-                "species": "SPECIES_PIDGEY"
-              },
-              {
-                "min_level": 2,
-                "max_level": 2,
-                "species": "SPECIES_MANKEY"
-              },
-              {
-                "min_level": 3,
-                "max_level": 3,
-                "species": "SPECIES_PIDGEY"
-              },
-              {
-                "min_level": 3,
-                "max_level": 3,
-                "species": "SPECIES_MANKEY"
-              },
-              {
-                "min_level": 4,
-                "max_level": 4,
-                "species": "SPECIES_PIDGEY"
-              },
-              {
-                "min_level": 4,
-                "max_level": 4,
-                "species": "SPECIES_RATTATA"
-              },
-              {
-                "min_level": 5,
-                "max_level": 5,
-                "species": "SPECIES_PIDGEY"
-              },
-              {
-                "min_level": 4,
-                "max_level": 4,
-                "species": "SPECIES_ZIGZAGOON"
-              }
-            ],
-            "encounter_rate": 21
-          }
-        },
-        {
-          "map": "MAP_ROUTE2",
-          "base_label": "sRoute2_LeafGreen",
-          "land_mons": {
-            "mons": [
-              {
-                "min_level": 3,
-                "max_level": 3,
-                "species": "SPECIES_RATTATA"
-              },
-              {
-                "min_level": 3,
-                "max_level": 3,
-                "species": "SPECIES_PIDGEY"
-              },
-              {
-                "min_level": 4,
-                "max_level": 4,
-                "species": "SPECIES_RATTATA"
-              },
-              {
-                "min_level": 4,
-                "max_level": 4,
-                "species": "SPECIES_PIDGEY"
-              },
-              {
-                "min_level": 2,
-                "max_level": 2,
-                "species": "SPECIES_RATTATA"
-              },
-              {
-                "min_level": 2,
-                "max_level": 2,
-                "species": "SPECIES_PIDGEY"
-              },
-              {
-                "min_level": 5,
-                "max_level": 5,
-                "species": "SPECIES_RATTATA"
-              },
-              {
-                "min_level": 5,
-                "max_level": 5,
-                "species": "SPECIES_PIDGEY"
-              },
-              {
-                "min_level": 4,
-                "max_level": 4,
-                "species": "SPECIES_CATERPIE"
-              },
-              {
-                "min_level": 4,
-                "max_level": 4,
-                "species": "SPECIES_WEEDLE"
-              },
-              {
-                "min_level": 5,
-                "max_level": 5,
-                "species": "SPECIES_CATERPIE"
-              },
-              {
-                "min_level": 5,
-                "max_level": 5,
-                "species": "SPECIES_WEEDLE"
-              }
-            ],
-            "encounter_rate": 21
-          }
-        },
-        {
           "map": "MAP_ROUTE3",
           "base_label": "sRoute3_LeafGreen",
           "land_mons": {
@@ -25157,6 +25092,489 @@
                 "min_level": 26,
                 "max_level": 26,
                 "species": "SPECIES_SMEARGLE"
+              }
+            ],
+            "encounter_rate": 7
+          }
+        },
+        {
+          "map": "MAP_SEVEN_ISLAND_TANOBY_RUINS_MONEAN_CHAMBER",
+          "base_label": "sSevenIslandTanobyRuinsMoneanChamber_LeafGreen",
+          "land_mons": {
+            "mons": [
+              {
+                "min_level": 25,
+                "max_level": 25,
+                "species": "SPECIES_UNOWN"
+              },
+              {
+                "min_level": 25,
+                "max_level": 25,
+                "species": "SPECIES_UNOWN"
+              },
+              {
+                "min_level": 25,
+                "max_level": 25,
+                "species": "SPECIES_UNOWN"
+              },
+              {
+                "min_level": 25,
+                "max_level": 25,
+                "species": "SPECIES_UNOWN"
+              },
+              {
+                "min_level": 25,
+                "max_level": 25,
+                "species": "SPECIES_UNOWN"
+              },
+              {
+                "min_level": 25,
+                "max_level": 25,
+                "species": "SPECIES_UNOWN"
+              },
+              {
+                "min_level": 25,
+                "max_level": 25,
+                "species": "SPECIES_UNOWN"
+              },
+              {
+                "min_level": 25,
+                "max_level": 25,
+                "species": "SPECIES_UNOWN"
+              },
+              {
+                "min_level": 25,
+                "max_level": 25,
+                "species": "SPECIES_UNOWN"
+              },
+              {
+                "min_level": 25,
+                "max_level": 25,
+                "species": "SPECIES_UNOWN"
+              },
+              {
+                "min_level": 25,
+                "max_level": 25,
+                "species": "SPECIES_UNOWN"
+              },
+              {
+                "min_level": 25,
+                "max_level": 25,
+                "species": "SPECIES_UNOWN"
+              }
+            ],
+            "encounter_rate": 7
+          }
+        },
+        {
+          "map": "MAP_SEVEN_ISLAND_TANOBY_RUINS_LIPTOO_CHAMBER",
+          "base_label": "sSevenIslandTanobyRuinsLiptooChamber_LeafGreen",
+          "land_mons": {
+            "mons": [
+              {
+                "min_level": 25,
+                "max_level": 25,
+                "species": "SPECIES_UNOWN"
+              },
+              {
+                "min_level": 25,
+                "max_level": 25,
+                "species": "SPECIES_UNOWN"
+              },
+              {
+                "min_level": 25,
+                "max_level": 25,
+                "species": "SPECIES_UNOWN"
+              },
+              {
+                "min_level": 25,
+                "max_level": 25,
+                "species": "SPECIES_UNOWN"
+              },
+              {
+                "min_level": 25,
+                "max_level": 25,
+                "species": "SPECIES_UNOWN"
+              },
+              {
+                "min_level": 25,
+                "max_level": 25,
+                "species": "SPECIES_UNOWN"
+              },
+              {
+                "min_level": 25,
+                "max_level": 25,
+                "species": "SPECIES_UNOWN"
+              },
+              {
+                "min_level": 25,
+                "max_level": 25,
+                "species": "SPECIES_UNOWN"
+              },
+              {
+                "min_level": 25,
+                "max_level": 25,
+                "species": "SPECIES_UNOWN"
+              },
+              {
+                "min_level": 25,
+                "max_level": 25,
+                "species": "SPECIES_UNOWN"
+              },
+              {
+                "min_level": 25,
+                "max_level": 25,
+                "species": "SPECIES_UNOWN"
+              },
+              {
+                "min_level": 25,
+                "max_level": 25,
+                "species": "SPECIES_UNOWN"
+              }
+            ],
+            "encounter_rate": 7
+          }
+        },
+        {
+          "map": "MAP_SEVEN_ISLAND_TANOBY_RUINS_WEEPTH_CHAMBER",
+          "base_label": "sSevenIslandTanobyRuinsWeepthChamber_LeafGreen",
+          "land_mons": {
+            "mons": [
+              {
+                "min_level": 25,
+                "max_level": 25,
+                "species": "SPECIES_UNOWN"
+              },
+              {
+                "min_level": 25,
+                "max_level": 25,
+                "species": "SPECIES_UNOWN"
+              },
+              {
+                "min_level": 25,
+                "max_level": 25,
+                "species": "SPECIES_UNOWN"
+              },
+              {
+                "min_level": 25,
+                "max_level": 25,
+                "species": "SPECIES_UNOWN"
+              },
+              {
+                "min_level": 25,
+                "max_level": 25,
+                "species": "SPECIES_UNOWN"
+              },
+              {
+                "min_level": 25,
+                "max_level": 25,
+                "species": "SPECIES_UNOWN"
+              },
+              {
+                "min_level": 25,
+                "max_level": 25,
+                "species": "SPECIES_UNOWN"
+              },
+              {
+                "min_level": 25,
+                "max_level": 25,
+                "species": "SPECIES_UNOWN"
+              },
+              {
+                "min_level": 25,
+                "max_level": 25,
+                "species": "SPECIES_UNOWN"
+              },
+              {
+                "min_level": 25,
+                "max_level": 25,
+                "species": "SPECIES_UNOWN"
+              },
+              {
+                "min_level": 25,
+                "max_level": 25,
+                "species": "SPECIES_UNOWN"
+              },
+              {
+                "min_level": 25,
+                "max_level": 25,
+                "species": "SPECIES_UNOWN"
+              }
+            ],
+            "encounter_rate": 7
+          }
+        },
+        {
+          "map": "MAP_SEVEN_ISLAND_TANOBY_RUINS_DILFORD_CHAMBER",
+          "base_label": "sSevenIslandTanobyRuinsDilfordChamber_LeafGreen",
+          "land_mons": {
+            "mons": [
+              {
+                "min_level": 25,
+                "max_level": 25,
+                "species": "SPECIES_UNOWN"
+              },
+              {
+                "min_level": 25,
+                "max_level": 25,
+                "species": "SPECIES_UNOWN"
+              },
+              {
+                "min_level": 25,
+                "max_level": 25,
+                "species": "SPECIES_UNOWN"
+              },
+              {
+                "min_level": 25,
+                "max_level": 25,
+                "species": "SPECIES_UNOWN"
+              },
+              {
+                "min_level": 25,
+                "max_level": 25,
+                "species": "SPECIES_UNOWN"
+              },
+              {
+                "min_level": 25,
+                "max_level": 25,
+                "species": "SPECIES_UNOWN"
+              },
+              {
+                "min_level": 25,
+                "max_level": 25,
+                "species": "SPECIES_UNOWN"
+              },
+              {
+                "min_level": 25,
+                "max_level": 25,
+                "species": "SPECIES_UNOWN"
+              },
+              {
+                "min_level": 25,
+                "max_level": 25,
+                "species": "SPECIES_UNOWN"
+              },
+              {
+                "min_level": 25,
+                "max_level": 25,
+                "species": "SPECIES_UNOWN"
+              },
+              {
+                "min_level": 25,
+                "max_level": 25,
+                "species": "SPECIES_UNOWN"
+              },
+              {
+                "min_level": 25,
+                "max_level": 25,
+                "species": "SPECIES_UNOWN"
+              }
+            ],
+            "encounter_rate": 7
+          }
+        },
+        {
+          "map": "MAP_SEVEN_ISLAND_TANOBY_RUINS_SCUFIB_CHAMBER",
+          "base_label": "sSevenIslandTanobyRuinsScufibChamber_LeafGreen",
+          "land_mons": {
+            "mons": [
+              {
+                "min_level": 25,
+                "max_level": 25,
+                "species": "SPECIES_UNOWN"
+              },
+              {
+                "min_level": 25,
+                "max_level": 25,
+                "species": "SPECIES_UNOWN"
+              },
+              {
+                "min_level": 25,
+                "max_level": 25,
+                "species": "SPECIES_UNOWN"
+              },
+              {
+                "min_level": 25,
+                "max_level": 25,
+                "species": "SPECIES_UNOWN"
+              },
+              {
+                "min_level": 25,
+                "max_level": 25,
+                "species": "SPECIES_UNOWN"
+              },
+              {
+                "min_level": 25,
+                "max_level": 25,
+                "species": "SPECIES_UNOWN"
+              },
+              {
+                "min_level": 25,
+                "max_level": 25,
+                "species": "SPECIES_UNOWN"
+              },
+              {
+                "min_level": 25,
+                "max_level": 25,
+                "species": "SPECIES_UNOWN"
+              },
+              {
+                "min_level": 25,
+                "max_level": 25,
+                "species": "SPECIES_UNOWN"
+              },
+              {
+                "min_level": 25,
+                "max_level": 25,
+                "species": "SPECIES_UNOWN"
+              },
+              {
+                "min_level": 25,
+                "max_level": 25,
+                "species": "SPECIES_UNOWN"
+              },
+              {
+                "min_level": 25,
+                "max_level": 25,
+                "species": "SPECIES_UNOWN"
+              }
+            ],
+            "encounter_rate": 7
+          }
+        },
+        {
+          "map": "MAP_SEVEN_ISLAND_TANOBY_RUINS_RIXY_CHAMBER",
+          "base_label": "sSevenIslandTanobyRuinsRixyChamber_LeafGreen",
+          "land_mons": {
+            "mons": [
+              {
+                "min_level": 25,
+                "max_level": 25,
+                "species": "SPECIES_UNOWN"
+              },
+              {
+                "min_level": 25,
+                "max_level": 25,
+                "species": "SPECIES_UNOWN"
+              },
+              {
+                "min_level": 25,
+                "max_level": 25,
+                "species": "SPECIES_UNOWN"
+              },
+              {
+                "min_level": 25,
+                "max_level": 25,
+                "species": "SPECIES_UNOWN"
+              },
+              {
+                "min_level": 25,
+                "max_level": 25,
+                "species": "SPECIES_UNOWN"
+              },
+              {
+                "min_level": 25,
+                "max_level": 25,
+                "species": "SPECIES_UNOWN"
+              },
+              {
+                "min_level": 25,
+                "max_level": 25,
+                "species": "SPECIES_UNOWN"
+              },
+              {
+                "min_level": 25,
+                "max_level": 25,
+                "species": "SPECIES_UNOWN"
+              },
+              {
+                "min_level": 25,
+                "max_level": 25,
+                "species": "SPECIES_UNOWN"
+              },
+              {
+                "min_level": 25,
+                "max_level": 25,
+                "species": "SPECIES_UNOWN"
+              },
+              {
+                "min_level": 25,
+                "max_level": 25,
+                "species": "SPECIES_UNOWN"
+              },
+              {
+                "min_level": 25,
+                "max_level": 25,
+                "species": "SPECIES_UNOWN"
+              }
+            ],
+            "encounter_rate": 7
+          }
+        },
+        {
+          "map": "MAP_SEVEN_ISLAND_TANOBY_RUINS_VIAPOIS_CHAMBER",
+          "base_label": "sSevenIslandTanobyRuinsViapoisChamber_LeafGreen",
+          "land_mons": {
+            "mons": [
+              {
+                "min_level": 25,
+                "max_level": 25,
+                "species": "SPECIES_UNOWN"
+              },
+              {
+                "min_level": 25,
+                "max_level": 25,
+                "species": "SPECIES_UNOWN"
+              },
+              {
+                "min_level": 25,
+                "max_level": 25,
+                "species": "SPECIES_UNOWN"
+              },
+              {
+                "min_level": 25,
+                "max_level": 25,
+                "species": "SPECIES_UNOWN"
+              },
+              {
+                "min_level": 25,
+                "max_level": 25,
+                "species": "SPECIES_UNOWN"
+              },
+              {
+                "min_level": 25,
+                "max_level": 25,
+                "species": "SPECIES_UNOWN"
+              },
+              {
+                "min_level": 25,
+                "max_level": 25,
+                "species": "SPECIES_UNOWN"
+              },
+              {
+                "min_level": 25,
+                "max_level": 25,
+                "species": "SPECIES_UNOWN"
+              },
+              {
+                "min_level": 25,
+                "max_level": 25,
+                "species": "SPECIES_UNOWN"
+              },
+              {
+                "min_level": 25,
+                "max_level": 25,
+                "species": "SPECIES_UNOWN"
+              },
+              {
+                "min_level": 25,
+                "max_level": 25,
+                "species": "SPECIES_UNOWN"
+              },
+              {
+                "min_level": 25,
+                "max_level": 25,
+                "species": "SPECIES_UNOWN"
               }
             ],
             "encounter_rate": 7
