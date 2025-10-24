@@ -218,7 +218,7 @@ clean-assets:
 	find $(DATA_ASM_SUBDIR)/maps \( -iname 'connections.inc' -o -iname 'events.inc' -o -iname 'header.inc' \) -exec rm {} +
 
 tidy:
-	$(RM) $(ALL_BUILDS:%=poke%{.gba,.elf,.map})
+	$(RM) $(ALL_BUILDS:%=poke%{.gba,.elf,.map,.sav})
 	$(RM) -r $(BUILD_DIR)
 
 # "friendly" target names for convenience sake

@@ -1,20 +1,29 @@
 WILD ENCOUNTERS
 
-ROUTE 1:
+================================== ROUTE 1 ==================================
 
-+ Poochyena
-+ Mankey
-+ Zigzagoon
+GRASS:
+  + Poochyena (30%)
+  + Mankey (15%)
+  + Zigzagoon (1%)
+
+=============================== VIRIDIAN CITY ===============================
+
+OLD ROD:
+  + Barboach/Remoraid (70%)
+  + Tentacool (30%)
+  
+================================== ROUTE 2 ==================================
+
++ Poochyna (30%)
++ Oddish/Bellsprout (5%)
++ Venonat (5%)
 
 
-ROUTE 2 (south):
+============================== VIRIDIAN FOREST ==============================
 
-+ ...
-
-
-VIRIDIAN FOREST:
-
-+ ...
++ Seedot (10%)
++ Surskit (10%)
 	
 
 ROUTE 22:

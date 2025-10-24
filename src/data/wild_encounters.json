@@ -242,13 +242,13 @@
               },
               {
                 "min_level": 3,
-                "max_level": 3,
-                "species": "SPECIES_CATERPIE"
+                "max_level": 4,
+                "species": "SPECIES_SEEDOT"
               },
               {
                 "min_level": 3,
-                "max_level": 3,
-                "species": "SPECIES_WEEDLE"
+                "max_level": 4,
+                "species": "SPECIES_SURSKIT"
               },
               {
                 "min_level": 5,
@@ -13202,13 +13202,13 @@
               },
               {
                 "min_level": 3,
-                "max_level": 3,
-                "species": "SPECIES_CATERPIE"
+                "max_level": 4,
+                "species": "SPECIES_SEEDOT"
               },
               {
                 "min_level": 3,
-                "max_level": 3,
-                "species": "SPECIES_WEEDLE"
+                "max_level": 4,
+                "species": "SPECIES_SURSKIT"
               },
               {
                 "min_level": 5,

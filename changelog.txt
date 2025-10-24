@@ -23,3 +23,5 @@ encounters.txt
 
 RUN X:
 Add custom animations (Quiver Dance...)
+Add events in overworld through porymap
+Johto sprites
