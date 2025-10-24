@@ -8263,7 +8263,7 @@
               {
                 "min_level": 3,
                 "max_level": 3,
-                "species": "SPECIES_PIDGEY"
+                "species": "SPECIES_POOCHYENA"
               },
               {
                 "min_level": 3,
@@ -8273,7 +8273,7 @@
               {
                 "min_level": 3,
                 "max_level": 3,
-                "species": "SPECIES_PIDGEY"
+                "species": "SPECIES_POOCHYENA"
               },
               {
                 "min_level": 3,
@@ -8288,7 +8288,7 @@
               {
                 "min_level": 2,
                 "max_level": 2,
-                "species": "SPECIES_RATTATA"
+                "species": "SPECIES_MANKEY"
               },
               {
                 "min_level": 3,
@@ -8298,7 +8298,7 @@
               {
                 "min_level": 3,
                 "max_level": 3,
-                "species": "SPECIES_RATTATA"
+                "species": "SPECIES_MANKEY"
               },
               {
                 "min_level": 4,
@@ -8318,7 +8318,7 @@
               {
                 "min_level": 4,
                 "max_level": 4,
-                "species": "SPECIES_RATTATA"
+                "species": "SPECIES_ZIGZAGOON"
               }
             ]
           }
@@ -20805,7 +20805,7 @@
               {
                 "min_level": 3,
                 "max_level": 3,
-                "species": "SPECIES_PIDGEY"
+                "species": "SPECIES_POOCHYENA"
               },
               {
                 "min_level": 3,
@@ -20815,7 +20815,7 @@
               {
                 "min_level": 3,
                 "max_level": 3,
-                "species": "SPECIES_PIDGEY"
+                "species": "SPECIES_POOCHYENA"
               },
               {
                 "min_level": 3,
@@ -20830,7 +20830,7 @@
               {
                 "min_level": 2,
                 "max_level": 2,
-                "species": "SPECIES_RATTATA"
+                "species": "SPECIES_MANKEY"
               },
               {
                 "min_level": 3,
@@ -20840,7 +20840,7 @@
               {
                 "min_level": 3,
                 "max_level": 3,
-                "species": "SPECIES_RATTATA"
+                "species": "SPECIES_MANKEY"
               },
               {
                 "min_level": 4,
@@ -20860,7 +20860,7 @@
               {
                 "min_level": 4,
                 "max_level": 4,
-                "species": "SPECIES_RATTATA"
+                "species": "SPECIES_ZIGZAGOON"
               }
             ],
             "encounter_rate": 21

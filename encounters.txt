@@ -2,35 +2,19 @@ WILD ENCOUNTERS
 
 ROUTE 1:
 
-
++ Poochyena
++ Mankey
++ Zigzagoon
 
 
 ROUTE 2 (south):
 
-- AddNewTrainer
++ ...
 
 
 VIRIDIAN FOREST:
-- Bug Catcher Rick
-	Spinarak (lvl 6)
-	Caterpie (lvl 6)
 
-- Bug Catcher Doug
-	Weedle (lvl 7)
-	Kakuna (lvl 7)
-	Metapod (lvl 7)
-
-- Bug Catcher Anthony
-	Wurmple (lvl 8)
-	Silcoon (lvl 8)
-
-- Bug Catcher Charlie
-	Ledyba (lvl 7)
-	Cascoon (lvl 7)
-	Volbeat (lvl 7)
-
-- Bug Catcher Sammy
-	Illumise (lvl 9)
++ ...
 	
 
 ROUTE 22:
@@ -39,24 +23,8 @@ ROUTE 22:
 (NPC blocks route 22, must go to Viridian/Pewter gate first
 to speak with Bugsy)
 
-- Rival (Squirtle)
-        Pidgey (lvl 9, iv 50)
-	{Gust, Tackle, Sand-Attack} 
-        Squirtle (lvl 10, iv 50)
-	{Bubble, Tackle, Tail Whip}
-- Rival (Bulbasaur)
-	Pidgey (lvl 9, iv 50)
-        {Tackle, Sand-Attack} 
-        Bulbasaur (lvl 10, iv 50)
-	{Vine Whip, Tackle, Growl, Leech Seed}
-- Rival (Charmander)
-	Pidgey (lvl 9, iv 50)
-        {Tackle, Sand-Attack} 
-        Charmander (lvl 10, iv 50)
-!Rival
-(Rival says "You're looking for an item? I have it, fight me
-for it. After battle the rival says he dropped it in the
-grass somewhere.)
++ ...
+
 
 VIRIDIAN/PEWTER GATE:
 
