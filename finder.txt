@@ -22,3 +22,9 @@ src/battle_main.c (1535)
 - Wild encounters
 src/data/wild_encounters.json
 { .rate/255, mons.multiple_mons_of_the_same_name_increases_encounter_rate }
+
+- Overworld sprites
+graphics/object_events/pics/people/[.png]
+
+- Battle sprites
+graphics/trainers/front_pics/[.png]
