@@ -1,5 +1,8 @@
 POKÉMON CHANGES
 
+- VENUSAUR (LINE)
+Overgrow -> Overgrow/Thick Fat
+
 - METAPOD
 atk:	20 -> 40
 spdef:	25 -> 35
@@ -40,10 +43,30 @@ Damp -> Drizzle
 - STEELIX
 atk:	85 -> 100
 
+- MAGCARGO
+hp:	50 -> 60
+atk:	50 -> 76
+
+- CORSOLA
+hp:	55 -> 65
+def:	85 -> 95
+spdef:	85 -> 95
+
+- OCTILLERY
+spd:	45 -> 55
+
+- DELIBIRD
+spatk:	65 -> 75
+spd:	75 -> 95
+
+- MANTINE
+hp:	65 -> 85
+spatk	80 -> 95
+
 - HOUNDOOM
 spd:	95 -> 105
 
-- BLAZIKEN
+- BLAZIKEN (LINE)
 Blaze -> Blaze/Speed Boost
 
 - POOCHYENA

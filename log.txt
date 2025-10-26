@@ -79,6 +79,31 @@ repo. The fan game Fire Gold has these assets as well.
 I think it's smart to see if I can add an NPC on route 22 
 before I add my own sprites.
 
+In porymap I noticed that I had not changed the Viridian
+City fishing encounters yet. Appatently any changes I save in
+porymap will be as finite as changes made manually in the 
+project folder. I changed the fishing encounters and started
+editing some species info as well. Many of the bad gen 2 mons
+are now buffed. I wanted to give Thick Fat to Venusaur, but I
+think I also need to buff Overgrow, Blaze and Torrent if I 
+want to make those viable alternatives. I changed the logic
+of Overgrow, Blaze, Torrent and Swarm in pokemon.c to acti-
+vate at 50% HP instead of 30%. I now want to think of abili-
+ties for all the other starters so that each has a second 
+ability slot that is used. I think for the 9 starter lines:
+
+VEN: Thick Fat
+BLA: Shell Armor
+CHA: Drought
+MEG: Chlorophyll
+FRA: Strong Jaw*
+TYP: Flash Fire
+SCE: Lightning Rod(?)
+SWA: Swift Swim
+BLA: Speed Boost
+
+*I would need to implement Strong Jaw myself first
+
 .
 .
 .
