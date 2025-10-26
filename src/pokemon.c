@@ -2460,7 +2460,7 @@ s32 CalculateBaseDamage(struct BattlePokemon *attacker, struct BattlePokemon *de
         }
     }
 
-    // Apply boosts from hold items
+    // Apply boosts from hold items and abilities
     if (attackerHoldEffect == HOLD_EFFECT_CHOICE_BAND)
         attack = (150 * attack) / 100;
     if (attackerHoldEffect == HOLD_EFFECT_SOUL_DEW && !(gBattleTypeFlags & (BATTLE_TYPE_BATTLE_TOWER)) && (attacker->species == SPECIES_LATIAS || attacker->species == SPECIES_LATIOS))
@@ -2551,7 +2551,7 @@ s32 CalculateBaseDamage(struct BattlePokemon *attacker, struct BattlePokemon *de
 
         // Moves hitting both targets do half damage in double battles
         if ((gBattleTypeFlags & BATTLE_TYPE_DOUBLE) && gBattleMoves[move].target == MOVE_TARGET_BOTH && CountAliveMonsInBattle(BATTLE_ALIVE_DEF_SIDE) == 2)
-            damage /= 2;
+            damage = 3 * (damage / 4);
 
         // Moves always do at least 1 damage.
         if (damage == 0)
@@ -2600,15 +2600,15 @@ s32 CalculateBaseDamage(struct BattlePokemon *attacker, struct BattlePokemon *de
                 damage /= 2;
         }
 
-        // Moves hitting both targets do half damage in double battles
+        // Moves hitting both targets do 75% damage in double battles
         if ((gBattleTypeFlags & BATTLE_TYPE_DOUBLE) && gBattleMoves[move].target == MOVE_TARGET_BOTH && CountAliveMonsInBattle(BATTLE_ALIVE_DEF_SIDE) == 2)
-            damage /= 2;
+            damage = 3 * (damage / 4);
 
         // Are effects of weather negated with cloud nine or air lock
         if (WEATHER_HAS_EFFECT2)
         {
             // Rain weakens Fire, boosts Water
-            if (gBattleWeather & B_WEATHER_RAIN_TEMPORARY)
+            if (gBattleWeather & B_WEATHER_RAIN)
             {
                 switch (type)
                 {
@@ -2638,6 +2638,16 @@ s32 CalculateBaseDamage(struct BattlePokemon *attacker, struct BattlePokemon *de
                     break;
                 }
             }
+
+            // if (gBattleWeather & B_WEATHER_SANDSTORM)
+            // {
+            //     if ()
+            // }
+
+            // if (gBattleWeather & B_WEATHER_HAIL)
+            // {
+            //     if ()
+            // }
         }
 
         // Flash fire triggered

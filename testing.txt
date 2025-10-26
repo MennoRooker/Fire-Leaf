@@ -1,0 +1,7 @@
+THINGS TO TEST
+
+- Need to make sure that the mons I add to routes are actually
+there in-game.
+- Drought and Drizzle work as intended (5 turns)
+- Overgrow, Blaze and Torrent boost from 50% HP
+- 

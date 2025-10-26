@@ -94,16 +94,48 @@ ability slot that is used. I think for the 9 starter lines:
 
 VEN: Thick Fat
 BLA: Shell Armor
-CHA: Drought
+CHA: Drought (or *Solar Power)
 MEG: Chlorophyll
-FRA: Strong Jaw*
+FRA: *Strong Jaw
 TYP: Flash Fire
 SCE: Lightning Rod(?)
 SWA: Swift Swim
 BLA: Speed Boost
 
-*I would need to implement Strong Jaw myself first
+*I would need to implement this myself first
 
+The weather logic in pokemon.c makes no sense. Apparently 
+fire/water effects in rain are only applied to temporary
+rain, whereas fire/water effects in sun are applied to
+all sun conditions. I found the abilities logic in 
+battle_util.c. I might change drizzle to be only temporary
+and drought to be temporary as well. And sandstorm of course.
+
+I changed the weather rain to the B_WEATHER_RAIN flag, but I
+had to remove the bit-shift of the downpour effect first
+in battle.h.
+
+Apparently damage for physical and special moves are 
+seperated BEFORE things like spread-damage are defined
+so I need to change these things twice.
+
+I noticed that double-battle moves deal only 50% damage
+when both targets are hit, I changed it to 75%.
+
+I made Leaf Green and the options for Oak's grandson
+were RED, ASH etc. and not GARY. Was this always the
+case in Leaf Green? I just started Fire Red and it had
+GARY I think.
+
+I tested Drought on Charmander and the sun didn't fade 
+after 5 turns. Something is wrong, but I don't know what.
+I also used ember and I DO think the damage was boosted, 
+but it is not cocnlusive.
+
+According to ChatGPT my logic was wrong in battle_util.c,
+so the weather never stops. I made the statement negative
+and added the gWishFutureKnock.weatherDuration = 5; state-
+ment. 
 .
 .
 .
