@@ -25,6 +25,11 @@ src/data/wild_encounters.json
 
 - Overworld sprites
 graphics/object_events/pics/people/[.png]
+OBJ_EVENT_GFX_
 
 - Battle sprites
 graphics/trainers/front_pics/[.png]
+
+- Johto Gym leader assets
+Overworld: graphics/object_events/people/[.png]
+Front: graphics/trainers/front_pics/johto

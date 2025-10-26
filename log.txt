@@ -1,0 +1,109 @@
+A global overview of changes can be found in changelog.txt
+
+The first thing I changed in the code was to change Dark
+and Dragon type moves to physical moves and Ghost to be
+special. There are 2 lines of code (include/battle.h[475])
+that I changed to implement this change. This was an easy,
+non-invasive step in order to test the workings of decomps.
+
+I changed a lot of moves to be more viable and less 
+annoying to use. Expecially the HMs, though I intend to
+remove the need for them altogether down the road.
+
+I changed all (or most) species to have a 50/50 gender
+ratio. Breeding needs to be balanced regardless of species.
+
+I changed around some of the pokemon stats and some types
+and abilities to make certain pokémon more viable/enjoyable.
+No over-the-top changes, just making some of the useless
+ones usable.
+
+I changed some of the learnsets to reflect the move changes
+and to make more pokémon viable.
+
+I added the move Quiver Dance into the game, I needed to
+find the necessary files to change. First, define the move
+in moves.h (include/constants/moves.h), make sure increase 
+MOVES_COUNT by 1. Since Quiver Dance has a unique effect of 
+increasing 3 seperate stats I needed to define a new move 
+effect as well in battle_move_effects.h. The new effect 
+called EFFECT_QUIVER_DANCE is defined there, but the logic
+is written in battle_scripts_1.s (data). The order in which 
+battle effects are written matters! If .4byte of Quiver Dance
+is defined at the end of of the struct, the method needs to 
+be at the end of the script.
+
+I also changed the effect of growth to be both atk and
+spatk boosting. I added a new effect for AttackSpAtkUp
+that can be re-used if I want to add the move Work-Up
+later down the line. Once everything is defined you can 
+just add the moves to the learnsets of Pokémon. I still
+need to add custom animations for Growth and Quiver Dance.
+
+I added pokémon variety in the first few routes and I changed
+some of the parties of trainers in the first area: Viridian
+Forest. The trainer_parties.h file had some trainers distri-
+buted randomly throughout the file. I relocated the first
+few routes in order of encountering the trainers and I intend
+to keep this pattern up. 
+
+IVs were calculeted using INPUT * 31 / 255 so the INPUT would
+range from 0 to 255, which is ridiculous. I changed the logic
+in battle_main.c to accept values from 0 to 31. 
+
+The wild_encounters.json file generates the wild pokémon, 
+but its structure also had some weird orderinig. I relo-
+cated the first routes to be at the top like for the 
+trainer parties, but the encounter_rate element is above
+the mons array in the firered section while it is below
+the array in the leafgreen section. I added a huge blank
+space between the game sections. I intend to keep version
+exclusives unless trading becomes an ordeal once the cart-
+ridges are actually flashed. The encounter rates per slot
+are defined at the top of the json file, I might want to
+refactor this sometime but I'll leave it for now.
+
+In src/battle_script_commands.c I changes line 3166 to 
+increase the global exp rate by ~17% by lowering the 
+divisor from /7 to /6 to accelerate the exp gain from
+all pokémon and decrease grinding slightly. I also 
+intend to make the lucky egg item more accessible.
+
+I tried to get some assets for Bugsy and other Johto
+gym leaders, but they're not exactly in the format I need.
+Apparently I have to somehow get the exact sprites from
+the .png files I found. I added bugsy.png as an overworld
+sprite in the object_events directory and I got the front 
+pics of all Johto gym leaders from the Team-Aquas-Assets
+repo. The fan game Fire Gold has these assets as well.
+I think it's smart to see if I can add an NPC on route 22 
+before I add my own sprites.
+
+.
+.
+.
+
+!CURRENTLY all changes are either small, global changes
+or just pertaining to the first region of the game. The first
+cartridge I flash will be a demo of these early game changes
+before I move on to the larger scale changes.
+
+TO DO:
+- Add NPC to block route 22
+- Add Bugsy
+- Custom move animations
+- Add item to route 22
+- Instant Running Shoes
+- Instant National Dex
+- Get Old Rod from Bugsy
+
+Online resources/tutorials:
+https://github.com/pret/pokeemerald/wiki/Tutorials
+https://discordapp.com/invite/cJxDDVP
+
+(The aide in Pewter City that gives you the running shoes 
+after you beat Brock will give you the Exp. Share instead.
+He will say something like: "My colleague wanted to give 
+you this after catching 50 different species, but I told
+him that's ridiculous!". The Exp. Share aide from the
+base game will give you some other item instead.)
