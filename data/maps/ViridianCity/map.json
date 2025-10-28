@@ -167,7 +167,7 @@
       "x": 4,
       "y": 16,
       "elevation": 0,
-      "movement_type": "MOVEMENT_TYPE_NONE",
+      "movement_type": "MOVEMENT_TYPE_FACE_DOWN",
       "movement_range_x": 0,
       "movement_range_y": 0,
       "trainer_type": "TRAINER_TYPE_NONE",
@@ -257,7 +257,7 @@
       "elevation": 0,
       "var": "VAR_TEMP_0",
       "var_value": "0",
-      "script": "ViridianCity_EventScript_Route22BlockedTop"
+      "script": "ViridianCity_EventScript_BlockRoute22"
     },
     {
       "type": "trigger",
@@ -266,7 +266,7 @@
       "elevation": 0,
       "var": "VAR_TEMP_0",
       "var_value": "0",
-      "script": "ViridianCity_EventScript_Route22BlockedMid"
+      "script": "ViridianCity_EventScript_BlockRoute22"
     },
     {
       "type": "trigger",
@@ -275,7 +275,7 @@
       "elevation": 0,
       "var": "VAR_TEMP_0",
       "var_value": "0",
-      "script": "ViridianCity_EventScript_Route22BlockedBottom"
+      "script": "ViridianCity_EventScript_BlockRoute22"
     }
   ],
   "bg_events": [

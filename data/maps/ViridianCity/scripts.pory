@@ -239,26 +239,14 @@ ViridianCity_EventScript_DoTutorialBattle::
 
 `
 
-script ViridianCity_EventScript_Route22Blocked {
+script ViridianCity_EventScript_BlockRoute22 {
     lockall
     msgbox("Route 22 is blocked")
+	applymovement(OBJ_EVENT_ID_PLAYER, MovePlayerRight)
+	waitmovement(0)
     releaseall
 }
 
-script ViridianCity_EventScript_Route22BlockedTop {
-    lockall
-	msgbox("Route 22 is blocked (top)")
-	releaseall
-}
-
-script ViridianCity_EventScript_Route22BlockedMid {
-    lockall
-	msgbox("Route 22 is blocked (mid)")
-	releaseall
-}
-
-script ViridianCity_EventScript_Route22BlockedBottom {
-    lockall
-	msgbox("Route 22 is blocked (bottom)")
-	releaseall
+movement MovePlayerRight {
+	walk_right
 }

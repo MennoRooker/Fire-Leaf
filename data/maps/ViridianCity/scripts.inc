@@ -475,58 +475,26 @@ ViridianCity_EventScript_DoTutorialBattle::
 # 238 "data/maps/ViridianCity/scripts.pory"
 	return
 
-ViridianCity_EventScript_Route22Blocked::
+ViridianCity_EventScript_BlockRoute22::
 # 243 "data/maps/ViridianCity/scripts.pory"
 	lockall
 # 244 "data/maps/ViridianCity/scripts.pory"
-	msgbox ViridianCity_EventScript_Route22Blocked_Text_0
+	msgbox ViridianCity_EventScript_BlockRoute22_Text_0
 # 245 "data/maps/ViridianCity/scripts.pory"
+	applymovement OBJ_EVENT_ID_PLAYER, MovePlayerRight
+# 246 "data/maps/ViridianCity/scripts.pory"
+	waitmovement 0
+# 247 "data/maps/ViridianCity/scripts.pory"
 	releaseall
 	return
 
 
-ViridianCity_EventScript_Route22BlockedTop::
-# 249 "data/maps/ViridianCity/scripts.pory"
-	lockall
 # 250 "data/maps/ViridianCity/scripts.pory"
-	msgbox ViridianCity_EventScript_Route22BlockedTop_Text_0
+MovePlayerRight:
 # 251 "data/maps/ViridianCity/scripts.pory"
-	releaseall
-	return
+	walk_right
+	step_end
 
-
-ViridianCity_EventScript_Route22BlockedMid::
-# 255 "data/maps/ViridianCity/scripts.pory"
-	lockall
-# 256 "data/maps/ViridianCity/scripts.pory"
-	msgbox ViridianCity_EventScript_Route22BlockedMid_Text_0
-# 257 "data/maps/ViridianCity/scripts.pory"
-	releaseall
-	return
-
-
-ViridianCity_EventScript_Route22BlockedBottom::
-# 261 "data/maps/ViridianCity/scripts.pory"
-	lockall
-# 262 "data/maps/ViridianCity/scripts.pory"
-	msgbox ViridianCity_EventScript_Route22BlockedBottom_Text_0
-# 263 "data/maps/ViridianCity/scripts.pory"
-	releaseall
-	return
-
-
-ViridianCity_EventScript_Route22Blocked_Text_0:
+ViridianCity_EventScript_BlockRoute22_Text_0:
 # 244 "data/maps/ViridianCity/scripts.pory"
 	.string "Route 22 is blocked$"
-
-ViridianCity_EventScript_Route22BlockedTop_Text_0:
-# 250 "data/maps/ViridianCity/scripts.pory"
-	.string "Route 22 is blocked (top)$"
-
-ViridianCity_EventScript_Route22BlockedMid_Text_0:
-# 256 "data/maps/ViridianCity/scripts.pory"
-	.string "Route 22 is blocked (mid)$"
-
-ViridianCity_EventScript_Route22BlockedBottom_Text_0:
-# 262 "data/maps/ViridianCity/scripts.pory"
-	.string "Route 22 is blocked (bottom)$"
