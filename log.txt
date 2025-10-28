@@ -175,6 +175,38 @@ Since there's 3 I can just give him 8 on the first and
 and he loses them in his gym, which is beyond retarded. I'll
 just have to add difficulty some other way.
 
+I installed the poryscript essentials into my tools folder
+in both pokefirered and pokeemerald. I'm following the tu-
+torial on the Team Aqua's Hideout YT page on porymap and
+poryscript. I made changes to the Makefile, apparently the
+tutorial is 3 years old so my additions differ slightly 
+from the ones in the tutorial. I can make use of the pory-
+script playground if I want but I'll see if I can get the 
+route 22 NPC to do what I want using just the tutorial.
+
+I want to have Drought on Charizard, but not on Charmeleon
+or Charmander, so I'll probably giove them Flame Body. I 
+want Houndoom to have Flash Fire/Solar Power, but I need to
+make SP first. I obviously made Dark physical which nefrs it
+a bit, but it gets Shadow Ball and Solarbeam so it should 
+still be a net buff overall. Plus, I upped its spd and def.
+
+For the 50 mons reward I want to probably give the player the
+Eviolite, but I'd have to add the entire item first along 
+with sprites and all. I also think it would be fine if 
+the National Dex was only available after the League like
+in vanilla, but I still want the option to catch gen 2 & 3 
+mons and have evos like Crobat and Steelix before the E4. 
+I'll have to ask around how that'll work.
+
+Maybe add Sheer Force(?)
+
+Spent 3 hours trying to get that fuckass syntax highlighting
+right in poyscripts. NOTE: Do not remove the ` from the raw`
+line at the top of the script!
+
+
+
 .
 .
 .
@@ -194,6 +226,9 @@ TO DO:
 - Get Old Rod from Bugsy
 - Weather defense boosts
 - Gen 6 types (no fairy)
+- Linearization of the gyms and routes
+- Reusable TMs
+- Reusable berries (if held)
 
 Online resources/tutorials:
 https://github.com/pret/pokeemerald/wiki/Tutorials

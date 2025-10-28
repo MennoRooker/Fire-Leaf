@@ -64,6 +64,7 @@ hp:	65 -> 85
 spatk	80 -> 95
 
 - HOUNDOOM
+def:	50 -> 58
 spd:	95 -> 105
 
 - BLAZIKEN (LINE)
