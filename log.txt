@@ -135,7 +135,46 @@ but it is not cocnlusive.
 According to ChatGPT my logic was wrong in battle_util.c,
 so the weather never stops. I made the statement negative
 and added the gWishFutureKnock.weatherDuration = 5; state-
-ment. 
+ment.
+
+My logic was fine I just needed to add the FutureKnock flag.
+Drought and Drizzle work as intended, need to test Sand
+Stream and test spdef boost in Brock fight probably once
+I've implemented it.
+
+I got the idea to give the gym leaders increasing IVs. 3 * L,
+wwhere L is the leader in order from first to eighth. So Gio-
+vanni will have 3 * 8 = 24 and I'll give the E4 28 so that I 
+leave space for the Champion to have max IVs. In the rival
+battles before the League I'll give the rival 5 * R, where R
+is the iteration of rival battles (not counting the first).
+
+I also noticed that the rival still has the first stages 
+at Cerulean, despite being lvl 18, so I changed them to
+their second stages. I'll update the movesets and lvls 
+later.
+
+...actually I noticed the Abra has Teleport as its only
+move so I changed it to Confusion. 
+
+In the S.S. Anne the rival has default moves, I might have
+to change the struct to a CustomMoves one.
+
+Since the lvls don't scale as normal I may need to change
+some of the rival battles. The S.S. Anne fight is only a
+few lvls above the Cerulean fight.
+
+Saw default moveset for Silph fight as well.
+
+Apparently all E4 members are already at 30 IVs so I'll 
+leave them there. I'll add IVs for each Giovanni fight. 
+Since there's 3 I can just give him 8 on the first and
+16 on the second.
+
+...apparently he has 30 IVs in each stat in the first fights
+and he loses them in his gym, which is beyond retarded. I'll
+just have to add difficulty some other way.
+
 .
 .
 .
@@ -153,10 +192,15 @@ TO DO:
 - Instant Running Shoes
 - Instant National Dex
 - Get Old Rod from Bugsy
+- Weather defense boosts
+- Gen 6 types (no fairy)
 
 Online resources/tutorials:
 https://github.com/pret/pokeemerald/wiki/Tutorials
 https://discordapp.com/invite/cJxDDVP
+https://github.com/huderlem/poryscript
+https://www.youtube.com/playlist?list=PLLNv9Lq6kDmT2zNM_gz3IkUUzjT4KaC-G
+https://www.youtube.com/playlist?list=PLLNv9Lq6kDmQllAMToZJDjc7WZqqO6xvD
 
 (The aide in Pewter City that gives you the running shoes 
 after you beat Brock will give you the Exp. Share instead.
