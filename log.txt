@@ -205,7 +205,12 @@ Spent 3 hours trying to get that fuckass syntax highlighting
 right in poyscripts. NOTE: Do not remove the ` from the raw`
 line at the top of the script!
 
-
+I finally got poryscript to work. The mapscripts syntax is
+confusing, but my mapscripts for Route 2 Viridian Forest 
+North Gate is an example of working code. I finally have the 
+logic needed to implement the Bugsy encounter in the gate.
+Now I just need to think of something for Bugsy to say and
+a reason for why route 22 was closed.
 
 .
 .

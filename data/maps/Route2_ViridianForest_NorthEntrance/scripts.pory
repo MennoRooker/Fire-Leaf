@@ -1,0 +1,24 @@
+mapscripts Route2_ViridianForest_NorthEntrance_MapScripts {
+    MAP_SCRIPT_ON_LOAD: Route2_ViridianForest_NorthEntrance_OnLoad
+}
+
+script Route2_ViridianForest_NorthEntrance_OnLoad {
+    setvar(VAR_REACHED_VIRIDIAN_FOREST_NORTH_GATE, 1)
+    setflag(FLAG_ROUTE22_POLICEMAN_GONE)
+}
+
+
+raw`
+Route2_ViridianForest_NorthEntrance_EventScript_Youngster::
+	msgbox Route2_ViridianForest_NorthEntrance_Text_ManyMonsOnlyInForests, MSGBOX_NPC
+	end
+
+Route2_ViridianForest_NorthEntrance_EventScript_OldMan::
+	msgbox Route2_ViridianForest_NorthEntrance_Text_CanCutSkinnyTrees, MSGBOX_NPC
+	end
+
+Route2_ViridianForest_NorthEntrance_EventScript_CooltrainerF::
+	msgbox Route2_ViridianForest_NorthEntrance_Text_CanCancelEvolution, MSGBOX_NPC
+	end
+
+`
