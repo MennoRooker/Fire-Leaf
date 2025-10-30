@@ -226,9 +226,62 @@ poisoning poison types and burning fire types etc. So
 there has to be a way I can easily implement IS_TYPE 
 variables of Rock and Ice.
 
-.
-.
-.
+I'll put the type-based logic on hold while I try to figure
+out the sprites, because I want Bugsy animated properly
+in the demo. It seems the picture tables in the folder
+src/data/object_events/object_events_pic_tables.h have the
+following format:
+
+static const struct SpriteFrameImage sPicTable_Bugsy[] = {
+    overworld_frame(gObjectEventPic_Bugsy, 4, 6, 0),
+    overworld_frame(gObjectEventPic_Bugsy, 4, 6, 1),
+    .
+    .
+    .
+    .
+};
+
+where the gObjectEventPic_Bugsy needs to be defined in
+src/data/object_events/object_events_graphics.h and the 
+numbers indicate pixels along x, pixels along y and order
+of picture in array respectively. Since my Bugsy is in a
+4x4 grid instead of Wx1, I'll need to figure out how to 
+get the correct frames in the correct order of the table.
+
+According to ChatGPT the indexing of the function
+overworld_frame simply continues on the next row, so I
+have Bugsy's table set at the bottom of the pic_tables.
+Since Bugsy's frames are at a height of 6 pixels instead 
+of 4 and 4 wide instead of 2 I'll have to see if scaling
+works. Now I'll add a label for the pic and pallete as
+is shown in the tutorial. I'll use u32 for the pic just to
+be sure.
+
+If not for the tutorial on how to add new events to the
+overworld this would be impossible so keep the steps as
+they are over there.
+
+I have Bugsy in 32x48 format, but there are no oam structs
+that support this. I added a struct to base_oam.h, but I 
+will keep it commented out for now and just use the existing 
+32x32 structs to see what that will look like. I also don't 
+want a super tall Bugsy so even if I need the full image I'll
+have to compress him down a bit first.
+
+I added all the necessities so I'll compile and wee what it
+looks like when I add Bugsy to a map.
+
+I added the sprite to porymap and all I see in a green box 
+with the letter N...
+
+I'll ask around in the discord later if anybody can help.
+
+
+
+
+
+
+
 
 !CURRENTLY all changes are either small, global changes
 or just pertaining to the first region of the game. The first
@@ -236,7 +289,7 @@ cartridge I flash will be a demo of these early game changes
 before I move on to the larger scale changes.
 
 TO DO:
-- Add NPC to block route 22
+x Add NPC to block route 22
 - Add Bugsy
 - Custom move animations
 - Add item to route 22
