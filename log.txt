@@ -80,7 +80,7 @@ I think it's smart to see if I can add an NPC on route 22
 before I add my own sprites.
 
 In porymap I noticed that I had not changed the Viridian
-City fishing encounters yet. Appatently any changes I save in
+City fishing encounters yet. Apparently any changes I save in
 porymap will be as finite as changes made manually in the 
 project folder. I changed the fishing encounters and started
 editing some species info as well. Many of the bad gen 2 mons
@@ -94,7 +94,7 @@ ability slot that is used. I think for the 9 starter lines:
 
 VEN: Thick Fat
 BLA: Shell Armor
-CHA: Drought (or *Solar Power)
+CHA: *Solar Power
 MEG: Chlorophyll
 FRA: *Strong Jaw
 TYP: Flash Fire
@@ -211,6 +211,20 @@ North Gate is an example of working code. I finally have the
 logic needed to implement the Bugsy encounter in the gate.
 Now I just need to think of something for Bugsy to say and
 a reason for why route 22 was closed.
+
+I changed Psyduck and Golduck to water/psychic. I saw 
+Arbok there as poison/dark and I thought about giving
+it a custom ability where any jaw type move has a chance 
+to poison, making its crunches and bites etc even more
+powerful. I'll have to make an object of JAW_MOVES for
+Strong Jaw anyway so why not.
+
+I was working on implementing spdef and def boosts in 
+sandstorm and hail for Rock and Ice types and I figured
+there has to already me immunity logic for things like 
+poisoning poison types and burning fire types etc. So
+there has to be a way I can easily implement IS_TYPE 
+variables of Rock and Ice.
 
 .
 .
