@@ -1753,14 +1753,27 @@ static const struct SpriteFrameImage sPicTable_Mom[] = {
     overworld_frame(gObjectEventPic_Mom, 2, 4, 2),
 };
 
+// Old pic table for Bugsy from 4x4 spritesheet
+// static const struct SpriteFrameImage sPicTable_Bugsy[] = {
+//     overworld_frame(gObjectEventPic_Bugsy, 4, 6, 0),  // down idle
+//     overworld_frame(gObjectEventPic_Bugsy, 4, 6, 12), // up idle
+//     overworld_frame(gObjectEventPic_Bugsy, 4, 6, 4),  // left idle
+//     overworld_frame(gObjectEventPic_Bugsy, 4, 6, 3),  // down walk1
+//     overworld_frame(gObjectEventPic_Bugsy, 4, 6, 1),  // down walk2
+//     overworld_frame(gObjectEventPic_Bugsy, 4, 6, 13), // up walk1
+//     overworld_frame(gObjectEventPic_Bugsy, 4, 6, 15), // up walk2
+//     overworld_frame(gObjectEventPic_Bugsy, 4, 6, 5),  // left walk1
+//     overworld_frame(gObjectEventPic_Bugsy, 4, 6, 7),  // left walk2
+// };
+
 static const struct SpriteFrameImage sPicTable_Bugsy[] = {
-    overworld_frame(gObjectEventPic_Bugsy, 4, 6, 0),  // down idle
-    overworld_frame(gObjectEventPic_Bugsy, 4, 6, 12), // up idle
-    overworld_frame(gObjectEventPic_Bugsy, 4, 6, 4),  // left idle
-    overworld_frame(gObjectEventPic_Bugsy, 4, 6, 3),  // down walk1
-    overworld_frame(gObjectEventPic_Bugsy, 4, 6, 1),  // down walk2
-    overworld_frame(gObjectEventPic_Bugsy, 4, 6, 13), // up walk1
-    overworld_frame(gObjectEventPic_Bugsy, 4, 6, 15), // up walk2
-    overworld_frame(gObjectEventPic_Bugsy, 4, 6, 5),  // left walk1
-    overworld_frame(gObjectEventPic_Bugsy, 4, 6, 7),  // left walk2
+    overworld_frame(gObjectEventPic_Bugsy, 2, 4, 0),  // down idle
+    overworld_frame(gObjectEventPic_Bugsy, 2, 4, 1),  // up idle
+    overworld_frame(gObjectEventPic_Bugsy, 2, 4, 2),  // left idle
+    overworld_frame(gObjectEventPic_Bugsy, 2, 4, 3),  // down walk1
+    overworld_frame(gObjectEventPic_Bugsy, 2, 4, 4),  // down walk2
+    overworld_frame(gObjectEventPic_Bugsy, 2, 4, 5),  // up walk1
+    overworld_frame(gObjectEventPic_Bugsy, 2, 4, 6),  // up walk2
+    overworld_frame(gObjectEventPic_Bugsy, 2, 4, 7),  // left walk1
+    overworld_frame(gObjectEventPic_Bugsy, 2, 4, 8),  // left walk2
 };

@@ -398,4 +398,4 @@ $(OBJEVENTGFXDIR)/pokemon/wigglytuff.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -mwidth 2 -mheight 2
 
 $(OBJEVENTGFXDIR)/people/bugsy.4bpp: %.4bpp: %.png
-	$(GFX) $< $@ -mwidth 4 -mheight 6
+	$(GFX) $< $@ -mwidth 2 -mheight 4

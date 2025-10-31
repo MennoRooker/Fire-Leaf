@@ -281,10 +281,32 @@ and I'm waiting for a response. In the meantime I'll try to
 implement "extremely effective" and "very ineffective" messa-
 ges during battle for 4x and 0.25x damage based on typing.
 
+Finally able to add Bugsy as a custom sprite! He's only a
+head and he's huge, but that has to do with the oam tables 
+I think. I'll figure out a way to shrink him and get his 
+entire body in the game.
 
+I need to actually downscale the png source somehow. 
 
+BUGSY SPRITE FINALLY IMPLEMENTED!
 
+Making it the same format as all other sprites is the 
+easiest thing to do but it takes some steps. In GIMP:
 
+1. Image -> Canvas Size (rescale tiles)
+2. Rectangle select [R]
+3. Copy image to new file
+4. CTRL+SHIFT+V
+5. Image -> Canvas Size (144x32)
+6. Move Tool [M]
+7. Back to source image
+8. Repeat steps 2-3
+9. Edit -> Paste As -> New Layer
+10.Image -> Mode -> Indexed (16 colors)
+11.Export As -> .png
+
+With this you can keep all the pic tables and oam tables
+as they were.
 
 !CURRENTLY all changes are either small, global changes
 or just pertaining to the first region of the game. The first
@@ -293,7 +315,7 @@ before I move on to the larger scale changes.
 
 TO DO:
 x Add NPC to block route 22
-- Add Bugsy
+x Add Bugsy
 - Custom move animations
 - Add item to route 22
 - Instant Running Shoes
