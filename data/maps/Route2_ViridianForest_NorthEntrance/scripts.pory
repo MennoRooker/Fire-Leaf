@@ -7,6 +7,37 @@ script Route2_ViridianForest_NorthEntrance_OnLoad {
     setflag(FLAG_ROUTE22_POLICEMAN_GONE)
 }
 
+script Route2_ViridianForest_NorthEntrance_EventScript_Bugsy {
+    lockall
+    // Play the exclamation sound
+    playse(SE_PIN)
+    // Show exclamation mark above Bugsy
+    applymovement(LOCALID_BUGSY, Common_Movement_ExclamationMark)
+    waitmovement(0)
+    // Optional: small delay after exclamation
+    applymovement(LOCALID_BUGSY, Common_Movement_Delay48)
+    waitmovement(0)
+    // Have Bugsy walk toward the player
+    applymovement(LOCALID_BUGSY, Route2_ViridianForest_NorthEntrance_Movement_BugsyApproach)
+    waitmovement(0)
+    // Now Bugsy talks
+    msgbox(Route2_ViridianForest_NorthEntrance_Text_BugsyGreeting, MSGBOX_DEFAULT)
+    closemessage
+	applymovement(OBJ_EVENT_ID_PLAYER, MovePlayerDown)
+    releaseall
+}
+
+// Define Bugsy's walking movement (customize based on his position)
+movement Route2_ViridianForest_NorthEntrance_Movement_BugsyApproach {
+    walk_down
+    walk_down
+    walk_down
+}
+
+movement MovePlayerDown {
+	walk_down	
+}
+
 
 raw`
 Route2_ViridianForest_NorthEntrance_EventScript_Youngster::

@@ -18,3 +18,7 @@ Route2_ViridianForest_NorthEntrance_Text_CanCancelEvolution::
     .string "It's a technique for raising\n"
     .string "POKéMON the way they are.$"
 
+Route2_ViridianForest_NorthEntrance_Text_BugsyGreeting::
+    .string "Hey, you're a trainer right?\p"
+    .string "Have you seen my item?$"
+

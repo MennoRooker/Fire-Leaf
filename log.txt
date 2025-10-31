@@ -308,6 +308,19 @@ easiest thing to do but it takes some steps. In GIMP:
 With this you can keep all the pic tables and oam tables
 as they were.
 
+Now I need to update the poryscript of the VirDor North
+Entrance so that Bugsy actually interacts with the player.
+I also need Bugsy to block Pewter city and force the player
+to run into their rival ar Route 22. The policeman should 
+force the player to face north as well.
+
+
+
+
+
+
+
+
 !CURRENTLY all changes are either small, global changes
 or just pertaining to the first region of the game. The first
 cartridge I flash will be a demo of these early game changes

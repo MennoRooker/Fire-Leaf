@@ -241,7 +241,12 @@ ViridianCity_EventScript_DoTutorialBattle::
 
 script ViridianCity_EventScript_BlockRoute22 {
     lockall
-    msgbox("Route 22 is blocked")
+	applymovement(OBJ_EVENT_ID_PLAYER, FacePlayerUp)
+    msgbox("Sorry kid, ROUTE 22 is blocked.\p"
+           "Some punk tried to sneak past the\n"
+           "guards to VICTORY ROAD.\p"
+           "I'm here to catch him when he tries\n"
+           "to sneak back.")
 	applymovement(OBJ_EVENT_ID_PLAYER, MovePlayerRight)
 	waitmovement(0)
     releaseall
@@ -249,4 +254,8 @@ script ViridianCity_EventScript_BlockRoute22 {
 
 movement MovePlayerRight {
 	walk_right
+}
+
+movement FacePlayerUp {
+	face_up
 }

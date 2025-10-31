@@ -1,25 +1,31 @@
 Route22_Text_EarlyRivalIntro::
-	.string "{RIVAL}: Hey! {PLAYER}!\p"
+	.string "{RIVAL}: I finally shook that policeman.\n"
+	.string "What an idiot.\p"
+	.string "Oh, hey! {PLAYER}!\p"
 	.string "You're off to the POKéMON LEAGUE?\n"
 	.string "Forget about it!\p"
 	.string "You probably don't have any\n"
 	.string "BADGES, do you?\p"
 	.string "The guard won't let you through\n"
 	.string "without them.\p"
-	.string "By the way, did your POKéMON get\n"
-	.string "any stronger?$"
+	.string "What's that? You're looking for\n"
+	.string "Bugsy's item?\p"
+	.string "I found that thing in Viridian Forest.\n"
+	.string "It was right there for the taking.\p"
+	.string "If you want it, you're gonna have\n"
+	.string "to battle me for it.$"
 
 Route22_Text_EarlyRivalDefeat::
-	.string "Awww!\n"
+	.string "Hmph!\n"
 	.string "You just lucked out!$"
 
 Route22_Text_EarlyRivalPostBattle::
-	.string "I heard the POKéMON LEAGUE is\n"
-	.string "crawling with tough TRAINERS.\p"
-	.string "I have to figure out how to get\n"
-	.string "past them.\p"
-	.string "You should quit dawdling and get a\n"
-	.string "move on!$"
+	.string "Oh yeah, you wanted that item,\n"
+	.string "didn't you?\p"
+	.string "It's useless anyway, you can only\n"
+	.string "useless POKéMON with it.\p"
+	.string "I threw it in the grass somewhere.\n"
+	.string "Good luck finding it. HA!$"
 
 @ Translated in RB as "{RIVAL}: What? Why do I have 2 POKéMON? You should catch some more too!"
 Route22_Text_RivalShouldCatchSomeMons::
