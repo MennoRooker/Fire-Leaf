@@ -33,3 +33,12 @@ graphics/trainers/front_pics/[.png]
 - Johto Gym leader assets
 Overworld: graphics/object_events/people/[.png]
 Front: graphics/trainers/front_pics/johto
+
+- Type matchups and multipliers
+src/battle_main.c (312) && include/battle_main.h
+
+- Damage calc
+src/battle_script_commands.c (1274)
+
+- There are 2 battle.h files!
+include/battle.h && include/constants/battle.h

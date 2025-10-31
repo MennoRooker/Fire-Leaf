@@ -1243,6 +1243,9 @@ static void ModulateDmgByType(u8 multiplier)
     if (gBattleMoveDamage == 0 && multiplier != 0)
         gBattleMoveDamage = 1;
 
+    // Update the global type effectiveness multiplier
+    gTypeEffectivenessMultiplier = (gTypeEffectivenessMultiplier * multiplier) / 10;
+
     switch (multiplier)
     {
     case TYPE_MUL_NO_EFFECT:
@@ -1281,6 +1284,9 @@ static void Cmd_typecalc(void)
         gBattlescriptCurrInstr++;
         return;
     }
+
+    // Reset type effectiveness multiplier to 1.0 (10 in fixed point)
+    gTypeEffectivenessMultiplier = 10;
 
     GET_MOVE_TYPE(gCurrentMove, moveType);
 
@@ -1338,6 +1344,19 @@ static void Cmd_typecalc(void)
     }
     if (gMoveResultFlags & MOVE_RESULT_DOESNT_AFFECT_FOE)
         gProtectStructs[gBattlerAttacker].targetNotAffected = 1;
+
+    // Check for extreme effectiveness (4x) and override SUPER_EFFECTIVE flag
+    if (gTypeEffectivenessMultiplier >= 40)
+    {
+        gMoveResultFlags &= ~MOVE_RESULT_SUPER_EFFECTIVE;
+        gMoveResultFlags |= MOVE_RESULT_EXTREMELY_EFFECTIVE;
+    }
+    // Check for very ineffective (0.25x) and override NOT_VERY_EFFECTIVE flag
+    else if (gTypeEffectivenessMultiplier <= 2)
+    {
+        gMoveResultFlags &= ~MOVE_RESULT_NOT_VERY_EFFECTIVE;
+        gMoveResultFlags |= MOVE_RESULT_VERY_INEFFECTIVE;
+    }
 
     gBattlescriptCurrInstr++;
 }
@@ -1942,15 +1961,27 @@ static void Cmd_resultmessage(void)
     else
     {
         gBattleCommunication[MSG_DISPLAY] = 1;
-        switch (gMoveResultFlags & (u8)(~MOVE_RESULT_MISSED))
+        
+        // Check for extreme effectiveness first (4x and 0.25x)
+        if (gMoveResultFlags & MOVE_RESULT_EXTREMELY_EFFECTIVE)
         {
-        case MOVE_RESULT_SUPER_EFFECTIVE:
-            stringId = STRINGID_SUPEREFFECTIVE;
-            break;
-        case MOVE_RESULT_NOT_VERY_EFFECTIVE:
-            stringId = STRINGID_NOTVERYEFFECTIVE;
-            break;
-        case MOVE_RESULT_ONE_HIT_KO:
+            stringId = STRINGID_EXTREMELYEFFECTIVE;
+        }
+        else if (gMoveResultFlags & MOVE_RESULT_VERY_INEFFECTIVE)
+        {
+            stringId = STRINGID_VERYINEFFECTIVE;
+        }
+        else
+        {
+            switch (gMoveResultFlags & (u8)(~MOVE_RESULT_MISSED))
+            {
+            case MOVE_RESULT_SUPER_EFFECTIVE:
+                stringId = STRINGID_SUPEREFFECTIVE;
+                break;
+            case MOVE_RESULT_NOT_VERY_EFFECTIVE:
+                stringId = STRINGID_NOTVERYEFFECTIVE;
+                break;
+            case MOVE_RESULT_ONE_HIT_KO:
             stringId = STRINGID_ONEHITKO;
             break;
         case MOVE_RESULT_FOE_ENDURED:
@@ -2006,6 +2037,7 @@ static void Cmd_resultmessage(void)
             else
             {
                 gBattleCommunication[MSG_DISPLAY] = 0;
+            }
             }
         }
     }

@@ -276,7 +276,10 @@ with the letter N...
 
 I'll ask around in the discord later if anybody can help.
 
-
+I approached Black Fragrant about his FireGold Johto sprites
+and I'm waiting for a response. In the meantime I'll try to
+implement "extremely effective" and "very ineffective" messa-
+ges during battle for 4x and 0.25x damage based on typing.
 
 
 

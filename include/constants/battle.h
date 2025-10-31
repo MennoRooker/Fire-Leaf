@@ -202,6 +202,10 @@
 #define MOVE_RESULT_FOE_HUNG_ON        (1 << 7)
 #define MOVE_RESULT_NO_EFFECT          (MOVE_RESULT_MISSED | MOVE_RESULT_DOESNT_AFFECT_FOE | MOVE_RESULT_FAILED)
 
+// Extended effectiveness flags (not in the standard MOVE_RESULT byte)
+#define MOVE_RESULT_EXTREMELY_EFFECTIVE    (1 << 8)
+#define MOVE_RESULT_VERY_INEFFECTIVE       (1 << 9)
+
 // Battle Weather flags
 #define B_WEATHER_RAIN_TEMPORARY      (1 << 0)
 #define B_WEATHER_RAIN_DOWNPOUR       (1 << 1)  // unused
