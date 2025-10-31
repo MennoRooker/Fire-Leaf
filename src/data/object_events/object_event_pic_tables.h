@@ -1752,3 +1752,15 @@ static const struct SpriteFrameImage sPicTable_Mom[] = {
     overworld_frame(gObjectEventPic_Mom, 2, 4, 2),
     overworld_frame(gObjectEventPic_Mom, 2, 4, 2),
 };
+
+static const struct SpriteFrameImage sPicTable_Bugsy[] = {
+    overworld_frame(gObjectEventPic_Bugsy, 4, 6, 0),  // down idle
+    overworld_frame(gObjectEventPic_Bugsy, 4, 6, 12), // up idle
+    overworld_frame(gObjectEventPic_Bugsy, 4, 6, 4),  // left idle
+    overworld_frame(gObjectEventPic_Bugsy, 4, 6, 3),  // down walk1
+    overworld_frame(gObjectEventPic_Bugsy, 4, 6, 1),  // down walk2
+    overworld_frame(gObjectEventPic_Bugsy, 4, 6, 13), // up walk1
+    overworld_frame(gObjectEventPic_Bugsy, 4, 6, 15), // up walk2
+    overworld_frame(gObjectEventPic_Bugsy, 4, 6, 5),  // left walk1
+    overworld_frame(gObjectEventPic_Bugsy, 4, 6, 7),  // left walk2
+};
