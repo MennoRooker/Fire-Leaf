@@ -314,10 +314,54 @@ I also need Bugsy to block Pewter city and force the player
 to run into their rival ar Route 22. The policeman should 
 force the player to face north as well.
 
+I tried to have Bugsy approach the player, but I think
+I need to instance it in the mapscripts, but at least
+it compiles after giving Bugsy the correct LOCALID in 
+porymap.
 
+Before I compile again with the mapscripts approach I want
+make a quick list of things I intend to change before I
+forget to do them:
 
+- Give Strong Jaw to Mightyena line
+- Give Bite to Poochyena at lvl 1
+- Change the lvls of route 1
+- Give Solar power to Charizard line
+- Give Metapod and Kakuna tackle in trainer parties
+- Give Ilumise Confusion in Viridian Forest trainer
+- Force SET mode with mocking text
+- Give Bulbasaur and Ivysaur smth other than Thick Fat
 
+I need to do the Bugsy thing with a trigger. I'll do that 
+later.
 
+First I want to add abilities. If I want to add Strong Jaw
+I'll have to define an array in battle_util.c with
+biting moves and I'll have to add the moves Ice Fang,
+Fire Fang and Thunder Fang into the game. I defined the 
+location of BITING_MOVES_END as well, but idk if I can
+put it at 0xFFFF like the SOUND_MOVES_END location, since
+they're in different u16 variables. I commented it out 
+for now.
+
+I think something like solar power is easier to implement.
+I added Solar Power and Strong Jaw to the abilities.h list 
+and I added these abilities to the Charizard line and the
+Feraligatr line. They will do nothing, but hopefully every-
+thing still compiles. I also changed Bulbasaurs and Ivy-
+saurs second abilities to effect spore until they evolve
+into Venusaur with Thick Fat.
+
+Checking Charmander's summary crashes the game... I think
+there needs to be some reference to the ability's name in
+the summary screen. I'll work with the tutorials online to
+see if I can make them work.
+
+I added names and descriptions so at least the game doesn't
+crash anymore. Now I want to go back to Bugsy.
+
+I did just realise that Bulbasaur having Effect Spore can
+be really annoying if you pick Squirtle...
 
 
 

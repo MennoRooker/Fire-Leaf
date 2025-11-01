@@ -27,12 +27,19 @@
 #include "constants/battle_script_commands.h"
 
 #define SOUND_MOVES_END 0xFFFF
+// #define BITING_MOVES_END 0xFFFF
 
 static const u16 sSoundMovesTable[] =
 {
     MOVE_GROWL, MOVE_ROAR, MOVE_SING, MOVE_SUPERSONIC, MOVE_SCREECH, MOVE_SNORE,
     MOVE_UPROAR, MOVE_METAL_SOUND, MOVE_GRASS_WHISTLE, MOVE_HYPER_VOICE, SOUND_MOVES_END
 };
+
+// static const u16 sBitingMoves[] = 
+// {
+//     MOVE_BITE, MOVE_CRUNCH, MOVE_FIRE_FANG, MOVE_POISON_FANG,
+//     MOVE_ICE_FANG, MOVE_THUNDER_FANG, BITING_MOVES_END
+// };
 
 u8 GetBattlerForBattleScript(u8 caseId)
 {

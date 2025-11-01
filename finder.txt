@@ -42,3 +42,6 @@ src/battle_script_commands.c (1274)
 
 - There are 2 battle.h files!
 include/battle.h && include/constants/battle.h
+
+- Ability-dependent moves tables
+src/battle_util.c
