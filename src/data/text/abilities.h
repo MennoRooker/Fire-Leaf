@@ -78,6 +78,7 @@ static const u8 sCacophonyDescription[] = _("Avoids sound-based moves.");
 static const u8 sAirLockDescription[] = _("Negates weather effects.");
 static const u8 sSolarPowerDescription[] = _("Ups SPATK but lowers HP in sun.");
 static const u8 sStrongJawDescription[] = _("Ups the power of biting moves.");
+static const u8 sSnowWarningDescription[] = _("Summons hail in battle.");
 
 const u8 *const gAbilityDescriptionPointers[ABILITIES_COUNT] =
 {
@@ -161,6 +162,7 @@ const u8 *const gAbilityDescriptionPointers[ABILITIES_COUNT] =
     [ABILITY_AIR_LOCK] = sAirLockDescription,
     [ABILITY_SOLAR_POWER] = sSolarPowerDescription,
     [ABILITY_STRONG_JAW] = sStrongJawDescription,
+    [ABILITY_SNOW_WARNING] = sSnowWarningDescription,
 };
 
 const u8 gAbilityNames[ABILITIES_COUNT][ABILITY_NAME_LENGTH + 1] =
@@ -245,4 +247,5 @@ const u8 gAbilityNames[ABILITIES_COUNT][ABILITY_NAME_LENGTH + 1] =
     [ABILITY_AIR_LOCK] = _("AIR LOCK"),
     [ABILITY_SOLAR_POWER] = _("SOLAR POWER"),
     [ABILITY_STRONG_JAW] = _("STRONG JAW"),
+    [ABILITY_SNOW_WARNING] = _("SNOW WARNING")
 };

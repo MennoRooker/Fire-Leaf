@@ -363,7 +363,17 @@ crash anymore. Now I want to go back to Bugsy.
 I did just realise that Bulbasaur having Effect Spore can
 be really annoying if you pick Squirtle...
 
+Bugsy's script to Viridian Forest now works, but I'll 
+have to still implement a story around it and keep the 
+player from going into Pewter City until the Route 22
+rival has been beaten and Bugsy's item has been obtained.
 
+Now though, I'll update some abilities and movesets of 
+early-game mons. I can generate files of wild encounters
+and trainer parties, so I think I'll stop updating those
+text files. I do still want to keep updating the species
+info text files based on the changes I make. The learn-
+sets I can do with a script again.
 
 !CURRENTLY all changes are either small, global changes
 or just pertaining to the first region of the game. The first

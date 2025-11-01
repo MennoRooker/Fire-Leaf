@@ -31,6 +31,12 @@ WATER -> WATER/PSYCHIC
 - GOLDUCK
 WATER -> WATER/PSYCHIC
 
+- SEEL
+WATER -> WATER/ICE
+
+- DEWGONG
+Thick Fat -> Snow Warning
+
 - ONIX
 atk:	45 -> 75
 
@@ -93,7 +99,7 @@ atk:	50 -> 75
 spatk:	50 -> 75
 
 - SHIFTRY
-spd:	80 -> 115
+spd:	80 -> 108
 
 - NINJASK
 Speed Boost -> Hyper Cutter

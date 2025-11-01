@@ -26,19 +26,13 @@ GRASS:
   + Seedot (10%)
   + Surskit (10%)
 	
-
 ================================ ROUTE 22 ================================
-
-- !BlockPlayerFromRival
-(NPC blocks route 22, must go to Viridian/Pewter gate first
-to speak with Bugsy)
 
 GRASS:
   + Sentret (30%)
   + Hoothoot (30%)
   + Zigzagoon (5%)
   + Ponyta (5%)
-
 
 ================================= ROUTE 3 =================================
 
