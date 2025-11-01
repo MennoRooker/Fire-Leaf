@@ -2241,7 +2241,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
     },
     [SPECIES_PONYTA] =
     {
-        .baseHP = 50,
+        .baseHP = 55,
         .baseAttack = 85,
         .baseDefense = 55,
         .baseSpeed = 90,
@@ -2263,14 +2263,14 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .friendship = 70,
         .growthRate = GROWTH_MEDIUM_FAST,
         .eggGroups = {EGG_GROUP_FIELD, EGG_GROUP_FIELD},
-        .abilities = {ABILITY_RUN_AWAY, ABILITY_FLASH_FIRE},
+        .abilities = {ABILITY_FLAME_BODY, ABILITY_FLASH_FIRE},
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_YELLOW,
         .noFlip = FALSE,
     },
     [SPECIES_RAPIDASH] =
     {
-        .baseHP = 65,
+        .baseHP = 75,
         .baseAttack = 100,
         .baseDefense = 70,
         .baseSpeed = 105,
@@ -2292,7 +2292,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .friendship = 70,
         .growthRate = GROWTH_MEDIUM_FAST,
         .eggGroups = {EGG_GROUP_FIELD, EGG_GROUP_FIELD},
-        .abilities = {ABILITY_RUN_AWAY, ABILITY_FLASH_FIRE},
+        .abilities = {ABILITY_FLAME_BODY, ABILITY_FLASH_FIRE},
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_YELLOW,
         .noFlip = FALSE,
@@ -7624,7 +7624,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .friendship = 70,
         .growthRate = GROWTH_MEDIUM_FAST,
         .eggGroups = {EGG_GROUP_FIELD, EGG_GROUP_FIELD},
-        .abilities = {ABILITY_RUN_AWAY, ABILITY_NONE},
+        .abilities = {ABILITY_RUN_AWAY, ABILITY_STRONG_JAW},
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_GRAY,
         .noFlip = FALSE,
@@ -7653,7 +7653,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .friendship = 70,
         .growthRate = GROWTH_MEDIUM_FAST,
         .eggGroups = {EGG_GROUP_FIELD, EGG_GROUP_FIELD},
-        .abilities = {ABILITY_INTIMIDATE, ABILITY_NONE},
+        .abilities = {ABILITY_INTIMIDATE, ABILITY_STRONG_JAW},
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_GRAY,
         .noFlip = FALSE,
@@ -10444,7 +10444,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
     },
     [SPECIES_AGGRON] =
     {
-        .baseHP = 100,
+        .baseHP = 92,
         .baseAttack = 110,
         .baseDefense = 180,
         .baseSpeed = 50,

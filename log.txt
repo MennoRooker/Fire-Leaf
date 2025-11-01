@@ -323,14 +323,14 @@ Before I compile again with the mapscripts approach I want
 make a quick list of things I intend to change before I
 forget to do them:
 
-- Give Strong Jaw to Mightyena line
-- Give Bite to Poochyena at lvl 1
-- Change the lvls of route 1
-- Give Solar power to Charizard line
-- Give Metapod and Kakuna tackle in trainer parties
-- Give Ilumise Confusion in Viridian Forest trainer
+x Give Strong Jaw to Mightyena line
+x Give Bite to Poochyena at lvl 1
+x Change the lvls of route 1
+x Give Solar power to Charizard line
+x Give Metapod and Kakuna tackle in trainer parties
+x Give Ilumise Confusion in Viridian Forest trainer
 - Force SET mode with mocking text
-- Give Bulbasaur and Ivysaur smth other than Thick Fat
+x Give Bulbasaur and Ivysaur smth other than Thick Fat
 
 I need to do the Bugsy thing with a trigger. I'll do that 
 later.
@@ -374,6 +374,16 @@ and trainer parties, so I think I'll stop updating those
 text files. I do still want to keep updating the species
 info text files based on the changes I make. The learn-
 sets I can do with a script again.
+
+- Add Aurora Veil
+- Add Ice Fang
+- Add Thunder Fang
+- Add Fire Fang
+- Feraligatr Ice & Thunder
+
+I changed Dark and Ghost effectiveness on steel to neutral
+as it is since gen 6. 
+
 
 !CURRENTLY all changes are either small, global changes
 or just pertaining to the first region of the game. The first

@@ -1,7 +1,31 @@
 POKÉMON CHANGES
 
-- VENUSAUR (LINE)
+- BULBASAUR
+Overgrow -> Overgrow/Effect Spore
+
+- IVYSAUR
+Overgrow -> Overgrow/Effect Spore
+
+- VENUSAUR
 Overgrow -> Overgrow/Thick Fat
+
+- SQUIRTLE
+Torrent -> Torrent/Shell Armor
+
+- WARTORTLE
+Torrent -> Torrent/Shell Armor
+
+- BLASTOISE
+Torrent -> Torrent/Shell Armor
+
+- CHARMANDER
+Blaze -> Blaze/Solar Power
+
+- CHARMELEON
+Blaze -> Blaze/Solar Power
+
+- CHARIZARD
+Blaze -> Blaze/Solar Power
 
 - METAPOD
 atk:	20 -> 40
@@ -31,6 +55,14 @@ WATER -> WATER/PSYCHIC
 - GOLDUCK
 WATER -> WATER/PSYCHIC
 
+- PONYTA
+hp:	50 -> 55
+Run Away -> Flame Body
+
+- RAPIDASH
+hp:	65 -> 75
+Run Away -> Flame Body
+
 - SEEL
 WATER -> WATER/ICE
 
@@ -40,8 +72,33 @@ Thick Fat -> Snow Warning
 - ONIX
 atk:	45 -> 75
 
+- CHIKORITA
+Overgrow -> Overgrow/Chlorophyll
+
+- BAYLEAF
+Overgrow -> Overgrow/Chlorophyll
+
+- MEGANIUM
+Overgrow -> Overgrow/Chlorophyll
+
+- CYNDAQUIL
+Blaze -> Blaze/Flash Fire
+
+- QUILAVA
+Blaze -> Blaze/Flash Fire
+
+- TYPHLOSION
+Blaze -> Blaze/Flash Fire
+
+- TOTODILE
+Torrent -> Torrent/Strong Jaw
+
+- CROCONAW
+Torrent -> Torrent/Strong Jaw
+
 - FERALIGATR
 WATER -> WATER/DARK
+Torrent -> Torrent/Strong Jaw
 
 - LEDIAN
 atk:	35 -> 85
@@ -79,13 +136,39 @@ spatk	80 -> 95
 def:	50 -> 58
 spd:	95 -> 105
 
-- BLAZIKEN (LINE)
+- TREECKO
+Overgrow -> Overgrow/Lightning Rod
+
+- GROVYLE
+Overgrow -> Overgrow/Lightning Rod
+
+- SCEPTILE
+Overgrow -> Overgrow/Lightning Rod
+
+- MUDKIP
+Toorent -> Torrent/Swift Swim
+
+- MARSHTOMP
+Torrent -> Torrent/Swift Swim
+
+- SWAMPERT
+Torrent -> Torrent/Swift Swim
+
+- TORCHIC
+Blaze -> Blaze/Speed Boost
+
+- COMBUSKEN
+Blaze -> Blaze/Speed Boost
+
+- BLAZIKEN
 Blaze -> Blaze/Speed Boost
 
 - POOCHYENA
+Run Away -> Run Away/Strong Jaw
 spd:	35 -> 55
 
 - MIGHTYENA
+Intimidate -> Intimidate/Strong Jaw
 atk:	90 -> 100
 spd:	70 -> 90
 
@@ -147,7 +230,7 @@ spdef:	60 -> 80
 hp:	60 -> 70
 
 - AGGRON
-hp:	70 -> 100
+hp:	70 -> 92
 
 - CRADILY
 spatk:	81 -> 91
