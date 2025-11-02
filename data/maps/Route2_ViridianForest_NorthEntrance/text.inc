@@ -19,6 +19,16 @@ Route2_ViridianForest_NorthEntrance_Text_CanCancelEvolution::
     .string "POKéMON the way they are.$"
 
 Route2_ViridianForest_NorthEntrance_Text_BugsyGreeting::
-    .string "Hey, you're a trainer right?\p"
-    .string "Have you seen my item?$"
+    .string "Hey, have you seen my BUG CATCHING\n"
+    .string "NET?\p"
+    .string "I left it somewhere around here,\n"
+    .string "but I can't find it anywhere.\p"
+    .string "Oh, you're a POKéMON TRAINER?\n"
+    .string "So am I! My name's BUGSY.\p"
+    .string "Sorry, I can't battle you right now.\n"
+    .string "I came to Kanto to catch cool\p"
+    .string "BUG POKéMON.\p"
+    .string "If you help me find my NET I promise\n"
+    .string "to battle you some day.\p"
+    .string "Follow me!$"
 

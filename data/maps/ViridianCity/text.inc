@@ -123,3 +123,9 @@ ViridianCity_Text_GymSign::
 ViridianCity_Text_GymDoorsAreLocked::
     .string "VIRIDIAN GYM's doors are locked…$"
 
+ViridianCity_Text_Route22IsBlocked::
+    .string "Sorry kid, ROUTE 22 is blocked.\p"
+    .string "Some punk tried to sneak past the\n"
+    .string "guards to VICTORY ROAD.\p"
+    .string "I'm here to catch him when he tries\n"
+    .string "to sneak back.$"

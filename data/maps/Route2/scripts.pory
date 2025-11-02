@@ -1,0 +1,61 @@
+mapscripts Route2_MapScripts {
+    MAP_SCRIPT_ON_TRANSITION: Route2_OnTransition
+    MAP_SCRIPT_ON_FRAME_TABLE [
+        VAR_BUGSY_ROUTE2_SCENE, 0: Route2_EventScript_BugsyCutscene
+    ]
+}
+
+script Route2_OnTransition {
+    if (!flag(FLAG_BUGSY_ITEM_EXCHANGED)) {
+        getplayerxy(VAR_TEMP_1, VAR_TEMP_2)
+        if (var(VAR_TEMP_2) >= 15) {  // If entering from SOUTH
+            setvar(VAR_BUGSY_ROUTE2_SCENE, 1)  // Skip the cutscene
+        } else {
+            setvar(VAR_BUGSY_ROUTE2_SCENE, 0)
+        }
+        // If entering from NORTH (< 15), do nothing - let it trigger naturally
+    }
+}
+
+script Route2_EventScript_BugsyCutscene {
+    lockall
+    applymovement(LOCALID_BUGSY_ROUTE2, Route2_Movement_BugsyFacesPlayer)
+    waitmovement(0)
+    playse(SE_PIN)
+    applymovement(LOCALID_BUGSY_ROUTE2, Common_Movement_ExclamationMark)
+    waitmovement(0)
+    applymovement(LOCALID_BUGSY_ROUTE2, Common_Movement_Delay48)
+    waitmovement(0)
+	applymovement(LOCALID_BUGSY_ROUTE2, Route2_Movement_BugsyApproach)
+	waitmovement(0)
+	msgbox(Route2_Text_BugsyNetNotInInventory, MSGBOX_DEFAULT)
+	applymovement(OBJ_EVENT_ID_PLAYER, Route2_Movement_PlayerLeaves)
+	warp(MAP_ROUTE2_VIRIDIAN_FOREST_NORTH_ENTRANCE, 7, 2)
+    setvar(VAR_BUGSY_ROUTE2_SCENE, 1)
+    setflag(FLAG_BUGSY_ITEM_EXCHANGED)
+    releaseall
+}
+
+movement Route2_Movement_BugsyFacesPlayer {
+    face_down
+}
+
+movement Route2_Movement_BugsyApproach {
+    walk_down
+    walk_down
+}
+
+movement Route2_Movement_PlayerLeaves {
+    walk_down
+    walk_down
+}
+
+raw`
+Route2_EventScript_RouteSign::
+	msgbox Route2_Text_RouteSign, MSGBOX_SIGN
+	end
+
+Route2_EventScript_DiglettsCaveSign::
+	msgbox Route2_Text_DiglettsCave, MSGBOX_SIGN
+	end
+`

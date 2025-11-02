@@ -474,39 +474,39 @@ ViridianCity_EventScript_DoTutorialBattle::
 	msgbox ViridianCity_Text_WatchThatToLearnBasics
 # 238 "data/maps/ViridianCity/scripts.pory"
 	return
+# 239 "data/maps/ViridianCity/scripts.pory"
+
+# 240 "data/maps/ViridianCity/scripts.pory"
+ViridianCity_EventScript_Policeman::
+# 241 "data/maps/ViridianCity/scripts.pory"
+	msgbox ViridianCity_Text_Route22IsBlocked
+# 242 "data/maps/ViridianCity/scripts.pory"
+	end
 
 ViridianCity_EventScript_BlockRoute22::
-# 243 "data/maps/ViridianCity/scripts.pory"
+# 246 "data/maps/ViridianCity/scripts.pory"
 	lockall
-# 244 "data/maps/ViridianCity/scripts.pory"
+# 247 "data/maps/ViridianCity/scripts.pory"
 	applymovement OBJ_EVENT_ID_PLAYER, FacePlayerUp
-# 245 "data/maps/ViridianCity/scripts.pory"
-	msgbox ViridianCity_EventScript_BlockRoute22_Text_0
-# 250 "data/maps/ViridianCity/scripts.pory"
+# 248 "data/maps/ViridianCity/scripts.pory"
+	msgbox ViridianCity_Text_Route22IsBlocked, MSGBOX_DEFAULT
+# 249 "data/maps/ViridianCity/scripts.pory"
 	applymovement OBJ_EVENT_ID_PLAYER, MovePlayerRight
-# 251 "data/maps/ViridianCity/scripts.pory"
+# 250 "data/maps/ViridianCity/scripts.pory"
 	waitmovement 0
-# 252 "data/maps/ViridianCity/scripts.pory"
+# 251 "data/maps/ViridianCity/scripts.pory"
 	releaseall
 	return
 
 
-# 255 "data/maps/ViridianCity/scripts.pory"
+# 254 "data/maps/ViridianCity/scripts.pory"
 MovePlayerRight:
-# 256 "data/maps/ViridianCity/scripts.pory"
+# 255 "data/maps/ViridianCity/scripts.pory"
 	walk_right
 	step_end
 
-# 259 "data/maps/ViridianCity/scripts.pory"
+# 258 "data/maps/ViridianCity/scripts.pory"
 FacePlayerUp:
-# 260 "data/maps/ViridianCity/scripts.pory"
+# 259 "data/maps/ViridianCity/scripts.pory"
 	face_up
 	step_end
-
-ViridianCity_EventScript_BlockRoute22_Text_0:
-# 245 "data/maps/ViridianCity/scripts.pory"
-	.string "Sorry kid, ROUTE 22 is blocked.\p"
-	.string "Some punk tried to sneak past the\n"
-	.string "guards to VICTORY ROAD.\p"
-	.string "I'm here to catch him when he tries\n"
-	.string "to sneak back.$"

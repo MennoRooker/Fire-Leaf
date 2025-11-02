@@ -1,16 +1,52 @@
-script MyScript {
-    end
+mapscripts ViridianForest_MapScripts {
+    MAP_SCRIPT_ON_TRANSITION: ViridianForest_OnTransition
+    MAP_SCRIPT_ON_FRAME_TABLE [
+        VAR_BUGSY_VIRIDIAN_FOREST_SCENE, 1: ViridianForest_EventScript_BugsyCutscene
+    ]
+}
+
+script ViridianForest_OnTransition {
+    setworldmapflag(FLAG_WORLD_MAP_VIRIDIAN_FOREST)
+}
+
+script ViridianForest_EventScript_BugsyCutscene {
+    lockall
+	applymovement(LOCALID_BUGSY_VIRIDIAN_FOREST, ViridianForest_Movement_BugsyLooksAround)
+	waitmovement(0)
+	msgbox(ViridianForest_Text_BugsyLooksForNet, MSGBOX_DEFAULT)
+	applymovement(LOCALID_BUGSY_VIRIDIAN_FOREST, ViridianForest_Movement_BugsyFacesPlayer)
+	waitmovement(0)
+	msgbox(ViridianForest_Text_BugsySendsPlayerToRoute22, MSGBOX_DEFAULT)
+    applymovement(LOCALID_BUGSY_VIRIDIAN_FOREST, ViridianForest_Movement_BugsyLeaves)
+    waitmovement(0)
+    removeobject(LOCALID_BUGSY_VIRIDIAN_FOREST)
+    setvar(VAR_BUGSY_VIRIDIAN_FOREST_SCENE, 0)
+    setflag(FLAG_HIDE_BUGSY_VIRIDIAN_FOREST)
+    releaseall
+}
+
+movement ViridianForest_Movement_BugsyLeaves {
+    walk_left
+    walk_up
+    walk_up
+}
+
+movement ViridianForest_Movement_BugsyFacesPlayer {
+	face_up
+}
+
+movement ViridianForest_Movement_BugsyLooksAround {
+	face_right
+	delay_16
+	face_down
+	delay_16
+	face_left
+	delay_16
+	face_down
+	delay_16
 }
 
 raw`
-ViridianForest_MapScripts::
-	map_script MAP_SCRIPT_ON_TRANSITION, ViridianForest_OnTransition
-	.byte 0
-
-ViridianForest_OnTransition::
-	setworldmapflag FLAG_WORLD_MAP_VIRIDIAN_FOREST
-	end
-
 ViridianForest_EventScript_Youngster::
 	msgbox ViridianForest_Text_FriendsItchingToBattle, MSGBOX_NPC
 	end

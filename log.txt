@@ -384,6 +384,19 @@ sets I can do with a script again.
 I changed Dark and Ghost effectiveness on steel to neutral
 as it is since gen 6. 
 
+Fixing the Bugsy cutscenes has been a nightmare. I think it 
+had something to do with the LOCALID of Bugsy being reused. 
+I made map-dependent LOCALIDs and things seem to work now.
+
+I want the player to find Bugsy's net with a custom
+sprite for the item within the bag, and I want Bugsy
+to give the player a permanent repel item that you can
+toggle on/off throughout the playthrough.
+
+I still need to make sure Bugsy isn't there on first load
+into VF and I need him to send the player back from route 
+2 into the gate until the item is retrieved.
+
 
 !CURRENTLY all changes are either small, global changes
 or just pertaining to the first region of the game. The first
@@ -393,6 +406,7 @@ before I move on to the larger scale changes.
 TO DO:
 x Add NPC to block route 22
 x Add Bugsy
+- Bugsy gives perma repel
 - Custom move animations
 - Add item to route 22
 - Instant Running Shoes

@@ -12,18 +12,27 @@ script Route2_ViridianForest_NorthEntrance_OnLoad {
 
 script Route2_ViridianForest_NorthEntrance_EventScript_Bugsy {
     lockall
-    playse(SE_PIN)                                                // Exclamation mark sound
-    applymovement(LOCALID_BUGSY, Common_Movement_ExclamationMark) // Exclamation mark above head
+    playse(SE_PIN)
+    applymovement(LOCALID_BUGSY_NORTH_GATE, Common_Movement_ExclamationMark)
     waitmovement(0)
-    applymovement(LOCALID_BUGSY, Common_Movement_Delay48)
+    applymovement(LOCALID_BUGSY_NORTH_GATE, Common_Movement_Delay48)
     waitmovement(0)
-    applymovement(LOCALID_BUGSY, Route2_ViridianForest_NorthEntrance_Movement_BugsyApproach)
+    applymovement(LOCALID_BUGSY_NORTH_GATE, Route2_ViridianForest_NorthEntrance_Movement_BugsyApproach)
     waitmovement(0)
     msgbox(Route2_ViridianForest_NorthEntrance_Text_BugsyGreeting, MSGBOX_DEFAULT)
     closemessage
     setvar(VAR_SPOKE_TO_BUGSY, 1)
-	applymovement(OBJ_EVENT_ID_PLAYER, MovePlayerDown)
+    applymovement(OBJ_EVENT_ID_PLAYER, Route2_ViridianForest_NorthEntrance_PlayerLetsBugsyPass)
+    applymovement(LOCALID_BUGSY_NORTH_GATE, Route2_ViridianForest_NorthEntrance_Movement_BugsyLeaves)
+    waitmovement(0)
+    removeobject(LOCALID_BUGSY_NORTH_GATE)
+    applymovement(OBJ_EVENT_ID_PLAYER, Route2_ViridianForest_NorthEntrance_PlayerLeavesAfterBugsy)
+    waitmovement(0)
+    setflag(FLAG_HIDE_BUGSY_NORTH_GATE)
+    clearflag(FLAG_HIDE_BUGSY_VIRIDIAN_FOREST)
+    setvar(VAR_BUGSY_VIRIDIAN_FOREST_SCENE, 1)
     warp(MAP_VIRIDIAN_FOREST, 5, 10)
+    waitstate
     releaseall
 }
 
@@ -32,8 +41,19 @@ movement Route2_ViridianForest_NorthEntrance_Movement_BugsyApproach {
     walk_down
 }
 
-movement MovePlayerDown {
-	walk_down
+movement Route2_ViridianForest_NorthEntrance_PlayerLetsBugsyPass {
+    walk_left
+    face_right
+}
+
+movement Route2_ViridianForest_NorthEntrance_Movement_BugsyLeaves {
+    walk_down
+    walk_down
+}
+
+movement Route2_ViridianForest_NorthEntrance_PlayerLeavesAfterBugsy {
+	walk_right
+    walk_down
 }
 
 

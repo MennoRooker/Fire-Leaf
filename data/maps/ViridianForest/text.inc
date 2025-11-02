@@ -103,3 +103,16 @@ ViridianForest_Text_LeavingViridianForest::
     .string "LEAVING VIRIDIAN FOREST\n"
     .string "PEWTER CITY AHEAD$"
 
+ViridianForest_Text_BugsyLooksForNet::
+    .string "Hmm, it's not here either.$"
+
+ViridianForest_Text_BugsySendsPlayerToRoute22::
+    .string "Maybe we'll find it if we\n"
+    .string "split up.\p"
+    .string "I'll look around Pewter City and\n"
+    .string "ROUTE 2.\p"
+    .string "Please head back to Viridian City\n"
+    .string "and look for it there.\p"
+    .string "If you find it I will give you\n"
+    .string "a reward in return.\p"
+    .string "Good luck!$"
