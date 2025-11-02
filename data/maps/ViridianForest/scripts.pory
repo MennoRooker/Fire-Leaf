@@ -1,16 +1,42 @@
-script MyScript {
-    end
+mapscripts ViridianForest_MapScripts {
+    MAP_SCRIPT_ON_TRANSITION: ViridianForest_OnTransition
+    MAP_SCRIPT_ON_FRAME_TABLE [
+        VAR_BUGSY_VIRIDIAN_FOREST_SCENE, 1: ViridianForest_EventScript_BugsyCutscene
+    ]
 }
 
+script ViridianForest_OnTransition {
+    setworldmapflag(FLAG_WORLD_MAP_VIRIDIAN_FOREST)
+}
+
+script ViridianForest_EventScript_BugsyCutscene {
+    lockall
+	msgbox("I really need this item.\n"
+	 	   "I can't run my GYM without it.")
+	applymovement(LOCALID_BUGSY, ViridianForest_Movement_BugsyFacesPlayer)
+	waitmovement(0)
+    msgbox("I'll look around route 2.\n"
+           "You check route 22 please.")
+    applymovement(LOCALID_BUGSY, ViridianForest_Movement_BugsyLeaves)
+    waitmovement(0)
+    removeobject(LOCALID_BUGSY)
+    setvar(VAR_BUGSY_VIRIDIAN_FOREST_SCENE, 0)
+    setflag(FLAG_BUGSY_CUTSCENE_COMPLETE)
+    releaseall
+}
+
+movement ViridianForest_Movement_BugsyLeaves {
+    walk_left
+    walk_up
+    walk_up
+}
+
+movement ViridianForest_Movement_BugsyFacesPlayer {
+	face_up
+}
+
+
 raw`
-ViridianForest_MapScripts::
-	map_script MAP_SCRIPT_ON_TRANSITION, ViridianForest_OnTransition
-	.byte 0
-
-ViridianForest_OnTransition::
-	setworldmapflag FLAG_WORLD_MAP_VIRIDIAN_FOREST
-	end
-
 ViridianForest_EventScript_Youngster::
 	msgbox ViridianForest_Text_FriendsItchingToBattle, MSGBOX_NPC
 	end

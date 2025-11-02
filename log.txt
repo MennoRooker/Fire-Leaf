@@ -380,6 +380,8 @@ sets I can do with a script again.
 - Add Thunder Fang
 - Add Fire Fang
 - Feraligatr Ice & Thunder
+- Buff Pickup ability
+
 
 I changed Dark and Ghost effectiveness on steel to neutral
 as it is since gen 6. 
