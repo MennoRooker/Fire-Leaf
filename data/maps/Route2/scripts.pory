@@ -28,11 +28,25 @@ script Route2_EventScript_BugsyCutscene {
     waitmovement(0)
 	applymovement(LOCALID_BUGSY_ROUTE2, Route2_Movement_BugsyApproach)
 	waitmovement(0)
-	msgbox(Route2_Text_BugsyNetNotInInventory, MSGBOX_DEFAULT)
-	applymovement(OBJ_EVENT_ID_PLAYER, Route2_Movement_PlayerLeaves)
-	warp(MAP_ROUTE2_VIRIDIAN_FOREST_NORTH_ENTRANCE, 7, 2)
-    setvar(VAR_BUGSY_ROUTE2_SCENE, 1)
-    setflag(FLAG_BUGSY_ITEM_EXCHANGED)
+	msgbox(Route2_Text_BugsyAsksForNet, MSGBOX_DEFAULT)
+
+    checkitem(ITEM_POTION, 1)
+
+    if (var(VAR_RESULT) == FALSE) {
+        msgbox(Route2_Text_BugsyNetNotInInventory, MSGBOX_DEFAULT)
+        applymovement(OBJ_EVENT_ID_PLAYER, Route2_Movement_PlayerLeaves)
+        warp(MAP_ROUTE2_VIRIDIAN_FOREST_NORTH_ENTRANCE, 7, 2)
+    } else {
+        msgbox(Route2_Text_BugsyNetInInventory, MSGBOX_DEFAULT)
+        removeitem(ITEM_POTION, 1)
+        giveitem(ITEM_REPEL, 1)
+        msgbox(Route2_Text_BugsySaysGoodbye, MSGBOX_DEFAULT)
+        setvar(VAR_BUGSY_ROUTE2_SCENE, 1)
+        setflag(FLAG_BUGSY_ITEM_EXCHANGED)
+        applymovement(LOCALID_BUGSY_ROUTE2, Route2_Movement_BugsyLeaves)
+        waitmovement(0)
+        removeobject(LOCALID_BUGSY_ROUTE2)
+    }
     releaseall
 }
 
@@ -48,6 +62,21 @@ movement Route2_Movement_BugsyApproach {
 movement Route2_Movement_PlayerLeaves {
     walk_down
     walk_down
+}
+
+movement Route2_Movement_BugsyLeaves {
+    walk_up
+    walk_up
+    walk_right
+    walk_right
+    walk_right
+    walk_right
+    walk_right
+    walk_up
+    walk_up
+    walk_up
+    walk_up
+    walk_up
 }
 
 raw`
