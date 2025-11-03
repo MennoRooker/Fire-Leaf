@@ -398,14 +398,20 @@ into VF and I need him to send the player back from route
 2 into the gate until the item is retrieved.
 
 Outrage to:
-- Arcanine
-- Feraligatr
-- Primeape
-- Gyarados (egg)
-- Flygon
-- Salamence 
-- Tropius
-- Whiscash (and D-dance)
+x Arcanine
+x Feraligatr
+x Gyarados (egg)
+x Flygon (egg)
+x Salamence (egg)
+x Tropius (egg)
+x Whiscash 
+x Walrein
+
+I changed the pickup table to trigger twice as often and
+give the player EV reducing berries. 10% chance for each
+different stat. 15% sitrus, 15% rare candy, 5% PP UP,
+3% lum, 2% King's Rock.
+
 
 Abilities to add:
 x Snow Warning
@@ -422,7 +428,7 @@ x Snow Warning
 - Contrary(maybe)
 - Moxie
 - Adaptability
-
+- Iron Fist (Ledian)
 
 !CURRENTLY all changes are either small, global changes
 or just pertaining to the first region of the game. The first

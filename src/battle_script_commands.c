@@ -771,22 +771,22 @@ struct PickupItem
 
 static const struct PickupItem sPickupItems[] =
 {
-    { ITEM_ORAN_BERRY, 15 },
-    { ITEM_CHERI_BERRY, 25 },
-    { ITEM_CHESTO_BERRY, 35 },
-    { ITEM_PECHA_BERRY, 45 },
-    { ITEM_RAWST_BERRY, 55 },
-    { ITEM_ASPEAR_BERRY, 65 },
-    { ITEM_PERSIM_BERRY, 75 },
-    { ITEM_TM10, 80 },
-    { ITEM_PP_UP, 85 },
+    { ITEM_SITRUS_BERRY, 15 },
+    { ITEM_POMEG_BERRY, 25 },
+    { ITEM_KELPSY_BERRY, 35 },
+    { ITEM_QUALOT_BERRY, 45 },
+    { ITEM_HONDEW_BERRY, 55 },
+    { ITEM_GREPA_BERRY, 65 },
+    { ITEM_TAMATO_BERRY, 75 },
+    { ITEM_PP_UP, 80 },
+    { ITEM_RARE_CANDY, 85 },
     { ITEM_RARE_CANDY, 90 },
-    { ITEM_NUGGET, 95 },
-    { ITEM_SPELON_BERRY, 96 },
-    { ITEM_PAMTRE_BERRY, 97 },
-    { ITEM_WATMEL_BERRY, 98 },
-    { ITEM_DURIN_BERRY, 99 },
-    { ITEM_BELUE_BERRY, 1 },
+    { ITEM_RARE_CANDY, 95 },
+    { ITEM_LUM_BERRY, 96 },
+    { ITEM_LUM_BERRY, 97 },
+    { ITEM_LUM_BERRY, 98 },
+    { ITEM_KINGS_ROCK, 99 },
+    { ITEM_KINGS_ROCK, 100 },
 
 };
 
@@ -9305,11 +9305,11 @@ static void Cmd_pickup(void)
             ability = gSpeciesInfo[species].abilities[1];
         else
             ability = gSpeciesInfo[species].abilities[0];
-        if (ability == ABILITY_PICKUP && species != SPECIES_NONE && species != SPECIES_EGG && heldItem == ITEM_NONE && !(Random() % 10))
+        if (ability == ABILITY_PICKUP && species != SPECIES_NONE && species != SPECIES_EGG && heldItem == ITEM_NONE && !(Random() % 5))
         {
             s32 random = Random() % 100;
 
-            for (j = 0; j < 15; ++j)
+            for (j = 0; j < 16; ++j)
                 if (sPickupItems[j].chance > random)
                     break;
             SetMonData(&gPlayerParty[i], MON_DATA_HELD_ITEM, &sPickupItems[j]);

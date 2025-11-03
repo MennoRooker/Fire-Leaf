@@ -436,6 +436,10 @@ const u16 gEggMoves[] = {
               MOVE_FALSE_SWIPE,
               MOVE_FAINT_ATTACK),
 
+    egg_moves(MAGIKARP,
+              MOVE_DRAGON_DANCE,
+              MOVE_OUTRAGE),
+
     egg_moves(LAPRAS,
               MOVE_FORESIGHT,
               MOVE_SUBSTITUTE,
@@ -1074,7 +1078,8 @@ const u16 gEggMoves[] = {
     egg_moves(TRAPINCH,
               MOVE_FOCUS_ENERGY,
               MOVE_QUICK_ATTACK,
-              MOVE_GUST),
+              MOVE_GUST,
+              MOVE_OUTRAGE),
 
     egg_moves(MAKUHITA,
               MOVE_FAINT_ATTACK,
@@ -1200,6 +1205,7 @@ const u16 gEggMoves[] = {
               MOVE_SLAM,
               MOVE_RAZOR_WIND,
               MOVE_LEECH_SEED,
+              MOVE_OUTRAGE,
               MOVE_NATURE_POWER),
 
     egg_moves(WHISMUR,
@@ -1298,7 +1304,8 @@ const u16 gEggMoves[] = {
               MOVE_THRASH,
               MOVE_DRAGON_RAGE,
               MOVE_TWISTER,
-              MOVE_DRAGON_DANCE),
+              MOVE_DRAGON_DANCE,
+              MOVE_OUTRAGE),
 
     egg_moves(CHIMECHO,
               MOVE_DISABLE,

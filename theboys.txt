@@ -1,0 +1,52 @@
+- MAX (Camper):
+loc:	route 2
+party:	ZIGZAGOON (5)
+text:	"I've never won a battle before."
+	"You're not even that strong..."
+
+- YOURI (Black Belt):
+loc:	...
+party:	...
+text:	"I bet I can bench press more than you."
+	"Grr"
+
+- KELVIN (...)
+loc:	...
+party:	...
+text:	""
+	"Damn, I was gonna buy drugs with
+	this money."
+
+- LUC (RS Fisherman)
+loc:	...
+party:	...
+text:	"You wanna bet on who can catch the
+	biggest fish? There's no way I lose!"
+	"Now I can't pay my rent."
+
+- ARON (Super Nerd, replace Jovan)
+loc:	Mt. Moon
+party:	Aron (13)
+	Jigglypuff (14)
+text:	"This cave is full of young trainers!"
+	"The levels of my POKéMON are also the
+	 ages I'm into."
+
+- ABE (Pokemaniac)
+loc:	...
+party:	...
+text:	"If you battle me I can explain to you how
+	good you are in football terms."
+	"Ketamine!"
+
+- MIKE ()
+loc:	...
+party:	...
+text:	""
+	""
+
+- JASON (Tamer)
+loc:	...
+party:	...
+text:	"I'm gonna make you obey me."
+	"DILANO!"
