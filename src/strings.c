@@ -876,6 +876,7 @@ const u8 gText_BattleSceneOn[] = _("ON");
 const u8 gText_BattleSceneOff[] = _("OFF");
 const u8 gText_BattleStyleShift[] = _("SHIFT");
 const u8 gText_BattleStyleSet[] = _("SET");
+const u8 gText_BattleStyleLocked[] = _("Sorry, this option isn't available");
 const u8 gText_SoundMono[] = _("MONO");
 const u8 gText_SoundStereo[] = _("STEREO");
 const u8 gTextJP_Type[] = _("タイプ");

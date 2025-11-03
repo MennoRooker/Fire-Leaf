@@ -407,11 +407,13 @@ x Tropius (egg)
 x Whiscash 
 x Walrein
 
+Bugsy is fully implemented into the game with all the
+relevant logic and sprites etc.
+
 I changed the pickup table to trigger twice as often and
 give the player EV reducing berries. 10% chance for each
 different stat. 15% sitrus, 15% rare candy, 5% PP UP,
 3% lum, 2% King's Rock.
-
 
 Abilities to add:
 x Snow Warning
@@ -430,6 +432,11 @@ x Snow Warning
 - Adaptability
 - Iron Fist (Ledian)
 
+SET mode and FAST text are now default. I still want to 
+implement forced SET mode at some point but I want to
+do it with the message and not with overriding in the 
+battle scripts.
+
 !CURRENTLY all changes are either small, global changes
 or just pertaining to the first region of the game. The first
 cartridge I flash will be a demo of these early game changes
@@ -440,7 +447,6 @@ x Add NPC to block route 22
 x Add Bugsy
 - Bugsy gives perma repel
 - Custom move animations
-- Add item to route 22
 - Instant Running Shoes
 - Instant National Dex
 - Get Old Rod from Bugsy
