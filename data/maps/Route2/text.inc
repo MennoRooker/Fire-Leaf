@@ -22,7 +22,7 @@ Route2_Text_BugsyNetInInventory::
     .string "that might be useful to you.$"
 
 Route2_Text_BugsyHasGivenRepel::
-    .string "This is a Repel. It keeps POKéMON\n"
+    .string "This is a REPEL. It keeps POKéMON\n"
     .string "away when you're walking through\p"
     .string "tall grass. It should make your\n"
     .string "journey a lot more tolerable.\p"

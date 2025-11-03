@@ -30,7 +30,7 @@ script Route2_EventScript_BugsyCutscene {
 	waitmovement(0)
 	msgbox(Route2_Text_BugsyAsksForNet, MSGBOX_DEFAULT)
 
-    checkitem(ITEM_POTION, 1)
+    checkitem(ITEM_BUGSYS_NET, 1)
 
     if (var(VAR_RESULT) == FALSE) {
         msgbox(Route2_Text_BugsyNetNotInInventory, MSGBOX_DEFAULT)
@@ -38,7 +38,7 @@ script Route2_EventScript_BugsyCutscene {
         warp(MAP_ROUTE2_VIRIDIAN_FOREST_NORTH_ENTRANCE, 7, 2)
     } else {
         msgbox(Route2_Text_BugsyNetInInventory, MSGBOX_DEFAULT)
-        removeitem(ITEM_POTION, 1)
+        removeitem(ITEM_BUGSYS_NET, 1)
         giveitem(ITEM_REPEL, 1)
         msgbox(Route2_Text_BugsySaysGoodbye, MSGBOX_DEFAULT)
         setvar(VAR_BUGSY_ROUTE2_SCENE, 1)

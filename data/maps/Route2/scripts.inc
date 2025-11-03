@@ -56,14 +56,14 @@ Route2_EventScript_BugsyCutscene::
 # 31 "data/maps/Route2/scripts.pory"
 	msgbox Route2_Text_BugsyAsksForNet, MSGBOX_DEFAULT
 # 33 "data/maps/Route2/scripts.pory"
-	checkitem ITEM_POTION, 1
+	checkitem ITEM_BUGSYS_NET, 1
 # 35 "data/maps/Route2/scripts.pory"
 	compare VAR_RESULT, FALSE
 	goto_if_eq Route2_EventScript_BugsyCutscene_2
 # 40 "data/maps/Route2/scripts.pory"
 	msgbox Route2_Text_BugsyNetInInventory, MSGBOX_DEFAULT
 # 41 "data/maps/Route2/scripts.pory"
-	removeitem ITEM_POTION, 1
+	removeitem ITEM_BUGSYS_NET, 1
 # 42 "data/maps/Route2/scripts.pory"
 	giveitem ITEM_REPEL, 1
 # 43 "data/maps/Route2/scripts.pory"

@@ -397,6 +397,32 @@ I still need to make sure Bugsy isn't there on first load
 into VF and I need him to send the player back from route 
 2 into the gate until the item is retrieved.
 
+Outrage to:
+- Arcanine
+- Feraligatr
+- Primeape
+- Gyarados (egg)
+- Flygon
+- Salamence 
+- Tropius
+- Whiscash (and D-dance)
+
+Abilities to add:
+x Snow Warning
+/ Solar Power
+/ Strong Jaw
+- Technician
+- Harvest (Bulbasaur and Ivysaur)
+- Regenerator
+- Sheer force
+- Magic Bounce
+- Overcoat
+- Prankster(maybe)
+- Simple
+- Contrary(maybe)
+- Moxie
+- Adaptability
+
 
 !CURRENTLY all changes are either small, global changes
 or just pertaining to the first region of the game. The first

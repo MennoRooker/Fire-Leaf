@@ -23,7 +23,7 @@ Route22_Text_EarlyRivalPostBattle::
 	.string "Oh yeah, you wanted that item,\n"
 	.string "didn't you?\p"
 	.string "It's useless anyway, you can only\n"
-	.string "useless POKéMON with it.\p"
+	.string "catch terrible POKéMON with it.\p"
 	.string "I threw it in the grass somewhere.\n"
 	.string "Good luck finding it. HA!$"
 

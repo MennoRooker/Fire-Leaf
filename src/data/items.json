@@ -6057,6 +6057,22 @@
       "battleUsage": 0,
       "battleUseFunc": "NULL",
       "secondaryId": 0
+    },
+    {
+      "english": "BUGSY'S NET",
+      "itemId": "ITEM_BUGSYS_NET",
+      "price": 0,
+      "holdEffect": "HOLD_EFFECT_NONE",
+      "holdEffectParam": 0,
+      "description_english": "A sturdy net that is used to\\ncatch BUG-type POKéMON!.",
+      "importance": 1,
+      "registrability": 1,
+      "pocket": "POCKET_KEY_ITEMS",
+      "type": "ITEM_TYPE_BAG_MENU",
+      "fieldUseFunc": "FieldUseFunc_OakStopsYou",
+      "battleUsage": 0,
+      "battleUseFunc": "NULL",
+      "secondaryId": 0
     }
   ]
 }
