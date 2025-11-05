@@ -238,7 +238,13 @@ ViridianCity_EventScript_DoTutorialBattle::
 	return
 
 ViridianCity_EventScript_Policeman::
-	msgbox ViridianCity_Text_Route22IsBlocked
+	lock
+	faceplayer
+	msgbox ViridianCity_Text_Route22IsBlocked, MSGBOX_DEFAULT
+	closemessage
+	applymovement VAR_LAST_TALKED, Common_Movement_FaceDown
+	waitmovement 0
+	release
 	end
 `
 

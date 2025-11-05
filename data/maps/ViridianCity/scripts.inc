@@ -479,34 +479,46 @@ ViridianCity_EventScript_DoTutorialBattle::
 # 240 "data/maps/ViridianCity/scripts.pory"
 ViridianCity_EventScript_Policeman::
 # 241 "data/maps/ViridianCity/scripts.pory"
-	msgbox ViridianCity_Text_Route22IsBlocked
+	lock
 # 242 "data/maps/ViridianCity/scripts.pory"
+	faceplayer
+# 243 "data/maps/ViridianCity/scripts.pory"
+	msgbox ViridianCity_Text_Route22IsBlocked, MSGBOX_DEFAULT
+# 244 "data/maps/ViridianCity/scripts.pory"
+	closemessage
+# 245 "data/maps/ViridianCity/scripts.pory"
+	applymovement VAR_LAST_TALKED, Common_Movement_FaceDown
+# 246 "data/maps/ViridianCity/scripts.pory"
+	waitmovement 0
+# 247 "data/maps/ViridianCity/scripts.pory"
+	release
+# 248 "data/maps/ViridianCity/scripts.pory"
 	end
 
 ViridianCity_EventScript_BlockRoute22::
-# 246 "data/maps/ViridianCity/scripts.pory"
+# 252 "data/maps/ViridianCity/scripts.pory"
 	lockall
-# 247 "data/maps/ViridianCity/scripts.pory"
+# 253 "data/maps/ViridianCity/scripts.pory"
 	applymovement OBJ_EVENT_ID_PLAYER, FacePlayerUp
-# 248 "data/maps/ViridianCity/scripts.pory"
+# 254 "data/maps/ViridianCity/scripts.pory"
 	msgbox ViridianCity_Text_Route22IsBlocked, MSGBOX_DEFAULT
-# 249 "data/maps/ViridianCity/scripts.pory"
+# 255 "data/maps/ViridianCity/scripts.pory"
 	applymovement OBJ_EVENT_ID_PLAYER, MovePlayerRight
-# 250 "data/maps/ViridianCity/scripts.pory"
+# 256 "data/maps/ViridianCity/scripts.pory"
 	waitmovement 0
-# 251 "data/maps/ViridianCity/scripts.pory"
+# 257 "data/maps/ViridianCity/scripts.pory"
 	releaseall
 	return
 
 
-# 254 "data/maps/ViridianCity/scripts.pory"
+# 260 "data/maps/ViridianCity/scripts.pory"
 MovePlayerRight:
-# 255 "data/maps/ViridianCity/scripts.pory"
+# 261 "data/maps/ViridianCity/scripts.pory"
 	walk_right
 	step_end
 
-# 258 "data/maps/ViridianCity/scripts.pory"
+# 264 "data/maps/ViridianCity/scripts.pory"
 FacePlayerUp:
-# 259 "data/maps/ViridianCity/scripts.pory"
+# 265 "data/maps/ViridianCity/scripts.pory"
 	face_up
 	step_end
