@@ -329,7 +329,7 @@ x Change the lvls of route 1
 x Give Solar power to Charizard line
 x Give Metapod and Kakuna tackle in trainer parties
 x Give Ilumise Confusion in Viridian Forest trainer
-- Force SET mode with mocking text
+x SET mode by default
 x Give Bulbasaur and Ivysaur smth other than Thick Fat
 
 I need to do the Bugsy thing with a trigger. I'll do that 
@@ -437,6 +437,14 @@ implement forced SET mode at some point but I want to
 do it with the message and not with overriding in the 
 battle scripts.
 
+I changed the options in LG to be BLUE and GARY over GREEN
+and ASH for the rival.
+
+I changed the English text of Bugsy's net to 'BUG CATCHING
+NET' to display a grammatically correct sentence when 
+picking up the net and handing it over to Bugsy. This
+SHOULDN'T be an issue, but I need to check to make sure.
+
 !CURRENTLY all changes are either small, global changes
 or just pertaining to the first region of the game. The first
 cartridge I flash will be a demo of these early game changes
@@ -455,6 +463,7 @@ x Add Bugsy
 - Linearization of the gyms and routes
 - Reusable TMs
 - Reusable berries (if held)
+- Force SET mode with mocking text
 
 Online resources/tutorials:
 https://github.com/pret/pokeemerald/wiki/Tutorials

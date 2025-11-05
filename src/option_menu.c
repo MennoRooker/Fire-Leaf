@@ -419,6 +419,14 @@ static u8 OptionMenu_ProcessInput(void)
             sOptionMenuPtr->option[sOptionMenuPtr->cursorPos] = 0;
         else
             sOptionMenuPtr->option[sOptionMenuPtr->cursorPos] = current + 1;
+
+            
+        // Block SHIFT mode selection
+        if (sOptionMenuPtr->cursorPos == MENUITEM_BATTLESTYLE && sOptionMenuPtr->option[MENUITEM_BATTLESTYLE] == OPTIONS_BATTLE_STYLE_SHIFT)
+        {
+            sOptionMenuPtr->option[MENUITEM_BATTLESTYLE] = OPTIONS_BATTLE_STYLE_SET;
+        }
+
         if (sOptionMenuPtr->cursorPos == MENUITEM_FRAMETYPE)
             return 2;
         else
@@ -431,6 +439,12 @@ static u8 OptionMenu_ProcessInput(void)
             *curr = sOptionMenuItemCounts[sOptionMenuPtr->cursorPos] - 1;
         else
             --*curr;
+    
+        // Block SHIFT mode selection
+        if (sOptionMenuPtr->cursorPos == MENUITEM_BATTLESTYLE && sOptionMenuPtr->option[MENUITEM_BATTLESTYLE] == OPTIONS_BATTLE_STYLE_SHIFT)
+        {
+            sOptionMenuPtr->option[MENUITEM_BATTLESTYLE] = OPTIONS_BATTLE_STYLE_SET;
+        }
         
         if (sOptionMenuPtr->cursorPos == MENUITEM_FRAMETYPE)
             return 2;
