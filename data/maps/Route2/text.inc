@@ -41,3 +41,12 @@ Route2_Text_BugsySaysGoodbye::
     .string "Good luck on your adventure.\n"
     .string "I'll see you around.$"
 
+Route2_Text_MaxIntro::
+    .string "I've never won a battle before.$"
+
+Route2_Text_MaxDefeat::
+    .string "You're not even that good...$"
+
+Route2_Text_MaxPostBattle::
+    .string "My ZIGZAGOON picks up useful items\n"
+    .string "for me.$"

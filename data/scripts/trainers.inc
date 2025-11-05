@@ -1,3 +1,8 @@
+Route2_EventScript_Max::
+	trainerbattle_single TRAINER_CAMPER_MAX, Route2_Text_MaxIntro, Route2_Text_MaxDefeat
+	msgbox Route2_Text_MaxPostBattle, MSGBOX_AUTOCLOSE
+	end
+
 Route3_EventScript_Ben::
 	trainerbattle_single TRAINER_YOUNGSTER_BEN, Route3_Text_BenIntro, Route3_Text_BenDefeat
 	specialvar VAR_RESULT, ShouldTryRematchBattle

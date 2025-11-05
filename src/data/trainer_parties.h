@@ -143,13 +143,13 @@ static const struct TrainerMonNoItemDefaultMoves sParty_RivalOaksLabCharmander[]
 // ======================================================================================= //
 // ======================================= Route 2 ======================================= //
 // ======================================================================================= //
-// static const struct TrainerMonNoItemDefaultMoves sParty_PicnickerMax[] = {
-//     {
-//         .iv = 0,
-//         .lvl = 6,
-//         .species = SPECIES_ZIGZAGOON,
-//     },
-// };
+static const struct TrainerMonNoItemDefaultMoves sParty_CamperMax[] = {
+    {
+        .iv = 0,
+        .lvl = 6,
+        .species = SPECIES_ZIGZAGOON,
+    },
+};
 
 
 // =========================================================================================== //

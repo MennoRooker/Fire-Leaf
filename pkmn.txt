@@ -49,6 +49,9 @@ spd:	75 -> 95
 atk:	85 -> 105
 POISON -> POISON/DARK
 
+- MEOWTH
+Pickup -> Limber
+
 - PSYDUCK
 WATER -> WATER/PSYCHIC
 
