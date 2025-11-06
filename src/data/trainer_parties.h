@@ -560,31 +560,18 @@ static const struct TrainerMonNoItemDefaultMoves sParty_LassIris[] = {
     },
 };
 
-static const struct TrainerMonNoItemDefaultMoves sParty_SuperNerdJovan[] = {
+static const struct TrainerMonNoItemDefaultMoves sParty_SuperNerdAron[] = {
     {
         .iv = 0,
-        .lvl = 11,
-        .species = SPECIES_MAGNEMITE,
+        .lvl = 13,
+        .species = SPECIES_ARON,
     },
     {
         .iv = 0,
-        .lvl = 11,
-        .species = SPECIES_VOLTORB,
+        .lvl = 14,
+        .species = SPECIES_JIGGLYPUFF,
     },
 };
-
-// static const struct TrainerMonNoItemDefaultMoves sParty_SuperNerdAron[] = {
-//     {
-//         .iv = 0,
-//         .lvl = 13,
-//         .species = SPECIES_ARON,
-//     },
-//     {
-//         .iv = 0,
-//         .lvl = 14,
-//         .species = SPECIES_JIGGLYPUFF,
-//     },
-// };
 
 static const struct TrainerMonNoItemDefaultMoves sParty_BugCatcherRobby[] = {
     {

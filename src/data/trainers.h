@@ -1682,15 +1682,15 @@ const struct Trainer gTrainers[] = {
         .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE,
         .party = NO_ITEM_DEFAULT_MOVES(sParty_PokemaniacAshton),
     },
-    [TRAINER_SUPER_NERD_JOVAN] = {
+    [TRAINER_SUPER_NERD_ARON] = {
         .trainerClass = TRAINER_CLASS_SUPER_NERD,
         .encounterMusic_gender = TRAINER_ENCOUNTER_MUSIC_SUSPICIOUS,
         .trainerPic = TRAINER_PIC_SUPER_NERD,
-        .trainerName = _("JOVAN"),
+        .trainerName = _("ARON"),
         .items = {},
         .doubleBattle = FALSE,
         .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE,
-        .party = NO_ITEM_DEFAULT_MOVES(sParty_SuperNerdJovan),
+        .party = NO_ITEM_DEFAULT_MOVES(sParty_SuperNerdAron),
     },
     [TRAINER_SUPER_NERD_MIGUEL] = {
         .trainerClass = TRAINER_CLASS_SUPER_NERD,

@@ -449,6 +449,9 @@ I added Max to route 2. It was simple enough, I just need
 to check the previous commit for reference next time I add
 somebody. Next I want to change JOVAN to ARON in Mt. Moon.
 
+For Aron I just grab the commit for Max and follow similar
+steps.
+
 !CURRENTLY all changes are either small, global changes
 or just pertaining to the first region of the game. The first
 cartridge I flash will be a demo of these early game changes

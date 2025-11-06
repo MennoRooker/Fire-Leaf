@@ -35,16 +35,16 @@ MtMoon_1F_Text_MiriamPostBattle::
     .string "How do you get out of here?\n"
     .string "It's so big, I may get lost.$"
 
-MtMoon_1F_Text_JovanIntro::
-    .string "What!\n"
-    .string "Don't sneak up on me!$"
+MtMoon_1F_Text_AronIntro::
+    .string "This cave is full of young trainers!$"
 
-MtMoon_1F_Text_JovanDefeat::
-    .string "My POKéMON won't do!$"
+MtMoon_1F_Text_AronDefeat::
+    .string "The levels of my POKéMON are also\n"
+    .string "the ages I'm into.$"
 
-MtMoon_1F_Text_JovanPostBattle::
-    .string "I have to find stronger POKéMON.\n"
-    .string "Where might they be?$"
+MtMoon_1F_Text_AronPostBattle::
+    .string "Don't tell my parole officer you\n"
+    .string "saw me here, please.$"
 
 MtMoon_1F_Text_IrisIntro::
     .string "What?\n"

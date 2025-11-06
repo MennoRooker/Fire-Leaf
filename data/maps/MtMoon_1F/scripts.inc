@@ -30,9 +30,9 @@ MtMoon_1F_EventScript_Iris::
 	msgbox MtMoon_1F_Text_IrisPostBattle, MSGBOX_AUTOCLOSE
 	end
 
-MtMoon_1F_EventScript_Jovan::
-	trainerbattle_single TRAINER_SUPER_NERD_JOVAN, MtMoon_1F_Text_JovanIntro, MtMoon_1F_Text_JovanDefeat
-	msgbox MtMoon_1F_Text_JovanPostBattle, MSGBOX_AUTOCLOSE
+MtMoon_1F_EventScript_Aron::
+	trainerbattle_single TRAINER_SUPER_NERD_ARON, MtMoon_1F_Text_AronIntro, MtMoon_1F_Text_AronDefeat
+	msgbox MtMoon_1F_Text_AronPostBattle, MSGBOX_AUTOCLOSE
 	end
 
 MtMoon_1F_EventScript_Kent::
