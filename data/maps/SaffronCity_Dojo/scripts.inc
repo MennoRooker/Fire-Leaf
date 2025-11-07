@@ -118,9 +118,9 @@ SaffronCity_Dojo_EventScript_Hitoshi::
 	msgbox SaffronCity_Dojo_Text_HitoshiPostBattle, MSGBOX_AUTOCLOSE
 	end
 
-SaffronCity_Dojo_EventScript_Hideki::
-	trainerbattle_single TRAINER_BLACK_BELT_HIDEKI, SaffronCity_Dojo_Text_HidekiIntro, SaffronCity_Dojo_Text_HidekiDefeat
-	msgbox SaffronCity_Dojo_Text_HidekiPostBattle, MSGBOX_AUTOCLOSE
+SaffronCity_Dojo_EventScript_Youri::
+	trainerbattle_single TRAINER_BLACK_BELT_YOURI, SaffronCity_Dojo_Text_YouriIntro, SaffronCity_Dojo_Text_YouriDefeat
+	msgbox SaffronCity_Dojo_Text_YouriPostBattle, MSGBOX_AUTOCLOSE
 	end
 
 SaffronCity_Dojo_EventScript_Aaron::

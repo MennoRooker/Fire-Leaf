@@ -322,7 +322,7 @@
 #define TRAINER_BIRD_KEEPER_MARLON               316
 #define TRAINER_BLACK_BELT_KOICHI                317
 #define TRAINER_BLACK_BELT_MIKE                  318
-#define TRAINER_BLACK_BELT_HIDEKI                319
+#define TRAINER_BLACK_BELT_YOURI                 319
 #define TRAINER_BLACK_BELT_AARON                 320
 #define TRAINER_BLACK_BELT_HITOSHI               321
 #define TRAINER_BLACK_BELT_ATSUSHI               322

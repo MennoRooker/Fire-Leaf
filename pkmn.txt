@@ -205,6 +205,14 @@ spd:	80 -> 108
 - NINJASK
 Speed Boost -> Hyper Cutter
 
+- BRELOOM
+hp:	60 -> 70
+spatk:	60 -> 70
+spd:	70 -> 78
+
+- TORKOAL
+White Smoke -> Drought
+
 - WHISCASH
 atk:	78 -> 88
 
@@ -255,6 +263,9 @@ spatk:	81 -> 91
 
 - ARMALDO
 spd:	45 -> 55
+
+- GROUDON
+GROUND -> GROUND/FIRE
 
 - RAYQUAZA
 spd:	95 -> 115

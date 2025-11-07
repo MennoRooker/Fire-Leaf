@@ -76,6 +76,9 @@ Raises both atk and spatk
 - Lick
 20 -> 30
 
+- Bone Club
+85% -> 90%
+
 - Waterfall
 Now has a 20% chance to flinch
 

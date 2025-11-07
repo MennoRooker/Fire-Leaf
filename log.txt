@@ -344,7 +344,7 @@ put it at 0xFFFF like the SOUND_MOVES_END location, since
 they're in different u16 variables. I commented it out 
 for now.
 
-I think something like solar power is easier to implement.
+I think something like Solar Power is easier to implement.
 I added Solar Power and Strong Jaw to the abilities.h list 
 and I added these abilities to the Charizard line and the
 Feraligatr line. They will do nothing, but hopefully every-
@@ -379,7 +379,7 @@ sets I can do with a script again.
 - Add Ice Fang
 - Add Thunder Fang
 - Add Fire Fang
-- Feraligatr Ice & Thunder
+- Feraligatr Ice & Thunder Fang
 
 I changed Dark and Ghost effectiveness on steel to neutral
 as it is since gen 6. 
@@ -431,6 +431,7 @@ x Snow Warning
 - Moxie
 - Adaptability
 - Iron Fist (Ledian)
+- Poison Heal
 
 SET mode and FAST text are now default. I still want to 
 implement forced SET mode at some point but I want to
@@ -440,17 +441,23 @@ battle scripts.
 I changed the options in LG to be BLUE and GARY over GREEN
 and ASH for the rival.
 
-I changed the English text of Bugsy's net to 'BUG CATCHING
-NET' to display a grammatically correct sentence when 
-picking up the net and handing it over to Bugsy. This
-SHOULDN'T be an issue, but I need to check to make sure.
+I changed the English text of Bugsy's net to 'BUG NET'
+to display a grammatically correct sentence when you're 
+picking up the net and handing it over to Bugsy. The max
+length for an item name is apparently 14 characters.
 
 I added Max to route 2. It was simple enough, I just need
 to check the previous commit for reference next time I add
-somebody. Next I want to change JOVAN to ARON in Mt. Moon.
+somebody. For Aron I just grab the commit for Max and follow
+similar steps. The earliest Black Belt is in the dojo in
+Saffron City. If I want to add Youri I could put him in 
+earlier, or I could put him in the dojo. There is also a 
+Black Belt Mike there and I can edit him to have Mike in
+the game so that I don't need to add his name elsewhere. 
 
-For Aron I just grab the commit for Max and follow similar
-steps. 
+I need to add Brave Bird or Dragon Ascent into the game
+and teach them to Rayquaza and Pidgeot. If I add Dragon
+Ascent I can use the same logic to add Close Combat.
 
 I now want to add the running shoes, but apparently they 
 aren't an actual item. The game set the flag called 
@@ -478,6 +485,7 @@ x Gen 6 types (no fairy)
 - Reusable TMs
 - Reusable berries (if held)
 x Force SET mode
+- Trick Room (?)
 
 Online resources/tutorials:
 https://github.com/pret/pokeemerald/wiki/Tutorials

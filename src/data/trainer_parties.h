@@ -282,14 +282,14 @@ static const struct TrainerMonNoItemCustomMoves sParty_CamperLiam[] = {
     {
         .iv = 0,
         .lvl = 10,
-        .species = SPECIES_GEODUDE,
-        .moves = {MOVE_TACKLE, MOVE_DEFENSE_CURL, MOVE_NONE, MOVE_NONE},
+        .species = SPECIES_SANDSHREW,
+        .moves = {MOVE_SCRATCH, MOVE_DEFENSE_CURL, MOVE_SAND_ATTACK, MOVE_NONE},
     },
     {
         .iv = 0,
         .lvl = 11,
-        .species = SPECIES_SANDSHREW,
-        .moves = {MOVE_SCRATCH, MOVE_DEFENSE_CURL, MOVE_SAND_ATTACK, MOVE_NONE},
+        .species = SPECIES_GEODUDE,
+        .moves = {MOVE_TACKLE, MOVE_DEFENSE_CURL, MOVE_NONE, MOVE_NONE},
     },
 };
 
@@ -4080,62 +4080,20 @@ static const struct TrainerMonNoItemDefaultMoves sParty_BirdKeeperMarlon[] = {
     },
 };
 
-static const struct TrainerMonItemDefaultMoves sParty_BlackBeltKoichi[] = {
-    {
-        .iv= 10,
-        .lvl = 37,
-        .species = SPECIES_HITMONLEE,
-        .heldItem = ITEM_BLACK_BELT,
-    },
-    {
-        .iv= 10,
-        .lvl = 37,
-        .species = SPECIES_HITMONCHAN,
-        .heldItem = ITEM_BLACK_BELT,
-    },
-};
-
-static const struct TrainerMonItemDefaultMoves sParty_BlackBeltMike[] = {
-    {
-        .iv= 10,
-        .lvl = 31,
-        .species = SPECIES_MANKEY,
-        .heldItem = ITEM_BLACK_BELT,
-    },
-    {
-        .iv= 10,
-        .lvl = 31,
-        .species = SPECIES_MANKEY,
-        .heldItem = ITEM_BLACK_BELT,
-    },
-    {
-        .iv= 10,
-        .lvl = 31,
-        .species = SPECIES_PRIMEAPE,
-        .heldItem = ITEM_BLACK_BELT,
-    },
-};
-
-static const struct TrainerMonItemDefaultMoves sParty_BlackBeltHideki[] = {
-    {
-        .iv= 10,
-        .lvl = 32,
-        .species = SPECIES_MACHOP,
-        .heldItem = ITEM_BLACK_BELT,
-    },
+// ======================================================================================== //
+// ========================================= Dojo ========================================= //
+// ======================================================================================== //
+static const struct TrainerMonItemDefaultMoves sParty_BlackBeltYouri[] = {
     {
         .iv= 10,
         .lvl = 32,
         .species = SPECIES_MACHOKE,
         .heldItem = ITEM_BLACK_BELT,
     },
-};
-
-static const struct TrainerMonItemDefaultMoves sParty_BlackBeltAaron[] = {
     {
         .iv= 10,
-        .lvl = 36,
-        .species = SPECIES_PRIMEAPE,
+        .lvl = 32,
+        .species = SPECIES_HARIYAMA,
         .heldItem = ITEM_BLACK_BELT,
     },
 };
@@ -4161,6 +4119,54 @@ static const struct TrainerMonItemDefaultMoves sParty_BlackBeltHitoshi[] = {
     },
 };
 
+static const struct TrainerMonItemDefaultMoves sParty_BlackBeltMike[] = {
+    {
+        .iv= 10,
+        .lvl = 31,
+        .species = SPECIES_MEDITITE,
+        .heldItem = ITEM_BLACK_BELT,
+    },
+    {
+        .iv= 10,
+        .lvl = 31,
+        .species = SPECIES_HITMONTOP,
+        .heldItem = ITEM_BLACK_BELT,
+    },
+    {
+        .iv= 10,
+        .lvl = 31,
+        .species = SPECIES_PRIMEAPE,
+        .heldItem = ITEM_BLACK_BELT,
+    },
+};
+
+static const struct TrainerMonItemDefaultMoves sParty_BlackBeltAaron[] = {
+    {
+        .iv= 10,
+        .lvl = 36,
+        .species = SPECIES_PRIMEAPE,
+        .heldItem = ITEM_BLACK_BELT,
+    },
+};
+
+static const struct TrainerMonItemDefaultMoves sParty_BlackBeltKoichi[] = {
+    {
+        .iv= 10,
+        .lvl = 37,
+        .species = SPECIES_HITMONLEE,
+        .heldItem = ITEM_BLACK_BELT,
+    },
+    {
+        .iv= 10,
+        .lvl = 37,
+        .species = SPECIES_HITMONCHAN,
+        .heldItem = ITEM_BLACK_BELT,
+    },
+};
+
+// ======================================================================================== //
+// ======================================== Others ======================================== //
+// ======================================================================================== //
 static const struct TrainerMonItemDefaultMoves sParty_BlackBeltAtsushi[] = {
     {
         .iv= 10,

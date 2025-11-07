@@ -23,27 +23,23 @@ SaffronCity_Dojo_Text_StayAndTrainWithUs::
     .string "Stay and train at karate with us!$"
 
 SaffronCity_Dojo_Text_MikeIntro::
-    .string "Hoargh!\n"
-    .string "Take your shoes off!$"
+    .string "Do you know what calisthenics is?$"
 
 SaffronCity_Dojo_Text_MikeDefeat::
-    .string "I give up!$"
+    .string "I should have focused on my breathing.$"
 
 SaffronCity_Dojo_Text_MikePostBattle::
-    .string "You wait 'til you see our MASTER!\n"
-    .string "I'm a small fry compared to him!$"
+    .string "Breathe in, breathe out.\n"
+    .string "Breathe in, breathe out.$"
 
-SaffronCity_Dojo_Text_HidekiIntro::
-    .string "I hear you're good!\n"
-    .string "Show me!$"
+SaffronCity_Dojo_Text_YouriIntro::
+    .string "How much do you bench?$"
 
-SaffronCity_Dojo_Text_HidekiDefeat::
-    .string "Judge!\n"
-    .string "One point!$"
+SaffronCity_Dojo_Text_YouriDefeat::
+    .string "I can still bench more than you!$"
 
-SaffronCity_Dojo_Text_HidekiPostBattle::
-    .string "Our MASTER is a pro fighter.\n"
-    .string "Be prepared to lose!$"
+SaffronCity_Dojo_Text_YouriPostBattle::
+    .string "-grr-$"
 
 SaffronCity_Dojo_Text_AaronIntro::
     .string "Hiyah!\n"

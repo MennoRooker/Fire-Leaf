@@ -1,5 +1,5 @@
 - MAX (Camper):
-loc:	route 2
+loc:	Route 2
 party:	ZIGZAGOON (5)
 text:	"I've never won a battle before."
 	"You're not even that strong..."
@@ -7,8 +7,9 @@ text:	"I've never won a battle before."
 - YOURI (Black Belt):
 loc:	...
 party:	...
-text:	"I bet I can bench press more than you."
-	"Grr"
+text:	"How much can you bench?"
+	"I can still bench more than you."
+	"*grr*"
 
 - KELVIN (...)
 loc:	...
@@ -40,10 +41,12 @@ text:	"If you battle me I can explain to you how
 	"Ketamine!"
 
 - MIKE ()
-loc:	...
+loc:	Saffron City Dojo
 party:	...
-text:	""
-	""
+text:	"Do you know what calisthenics is?"
+	"I should have focused on my breathing."
+	"Breathe in, breathe out.
+	Breathe in, breathe out."
 
 - JASON (Tamer)
 loc:	...

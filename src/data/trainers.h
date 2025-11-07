@@ -3182,7 +3182,7 @@ const struct Trainer gTrainers[] = {
         .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE,
         .party = ITEM_DEFAULT_MOVES(sParty_BlackBeltMike),
     },
-    [TRAINER_BLACK_BELT_HIDEKI] = {
+    [TRAINER_BLACK_BELT_YOURI] = {
         .trainerClass = TRAINER_CLASS_BLACK_BELT,
         .encounterMusic_gender = TRAINER_ENCOUNTER_MUSIC_INTENSE,
         .trainerPic = TRAINER_PIC_BLACK_BELT,
@@ -3190,7 +3190,7 @@ const struct Trainer gTrainers[] = {
         .items = {},
         .doubleBattle = FALSE,
         .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE,
-        .party = ITEM_DEFAULT_MOVES(sParty_BlackBeltHideki),
+        .party = ITEM_DEFAULT_MOVES(sParty_BlackBeltYouri),
     },
     [TRAINER_BLACK_BELT_AARON] = {
         .trainerClass = TRAINER_CLASS_BLACK_BELT,
