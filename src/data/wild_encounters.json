@@ -21051,19 +21051,19 @@
             "encounter_rate": 21,
             "mons": [
               {
-                "min_level": 8,
-                "max_level": 8,
-                "species": "SPECIES_WEEDLE"
+                "min_level": 9,
+                "max_level": 10,
+                "species": "SPECIES_SNUBBULL"
               },
               {
-                "min_level": 8,
-                "max_level": 8,
-                "species": "SPECIES_CATERPIE"
+                "min_level": 9,
+                "max_level": 10,
+                "species": "SPECIES_TAILLOW"
               },
               {
                 "min_level": 13,
                 "max_level": 13,
-                "species": "SPECIES_PIDGEY"
+                "species": "SPECIES_HOUNDOUR"
               },
               {
                 "min_level": 14,
@@ -21088,7 +21088,7 @@
               {
                 "min_level": 12,
                 "max_level": 12,
-                "species": "SPECIES_ODDISH"
+                "species": "SPECIES_METAPOD"
               },
               {
                 "min_level": 9,
@@ -21103,7 +21103,7 @@
               {
                 "min_level": 9,
                 "max_level": 9,
-                "species": "SPECIES_METAPOD"
+                "species": "SPECIES_KAKUNA"
               },
               {
                 "min_level": 13,
@@ -21207,17 +21207,17 @@
               {
                 "min_level": 8,
                 "max_level": 8,
-                "species": "SPECIES_WEEDLE"
+                "species": "SPECIES_SNUBBULL"
               },
               {
                 "min_level": 8,
                 "max_level": 8,
-                "species": "SPECIES_CATERPIE"
+                "species": "SPECIES_TAILLOW"
               },
               {
                 "min_level": 13,
                 "max_level": 13,
-                "species": "SPECIES_PIDGEY"
+                "species": "SPECIES_HOUNDOUR"
               },
               {
                 "min_level": 14,
@@ -21242,12 +21242,12 @@
               {
                 "min_level": 12,
                 "max_level": 12,
-                "species": "SPECIES_BELLSPROUT"
+                "species": "SPECIES_METAPOD"
               },
               {
                 "min_level": 9,
                 "max_level": 9,
-                "species": "SPECIES_METAPOD"
+                "species": "SPECIES_KAKUNA"
               },
               {
                 "min_level": 9,

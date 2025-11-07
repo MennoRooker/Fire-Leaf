@@ -132,6 +132,12 @@ spd:	40 -> 105
 - POLITOED
 Damp -> Drizzle
 
+- SUNKERN
+hp:	30 -> 35
+def:	30 -> 35
+spatk:	30 -> 45
+spdef:	30 -> 35
+
 - STEELIX
 atk:	85 -> 100
 
@@ -203,6 +209,9 @@ spd:	65 -> 85
 - DUSTOX
 atk:	50 -> 75
 spatk:	50 -> 75
+
+- NUZLEAF
+spd:	60 -> 70
 
 - SHIFTRY
 spd:	80 -> 108
