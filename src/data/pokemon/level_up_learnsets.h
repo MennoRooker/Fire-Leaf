@@ -831,7 +831,8 @@ static const u16 sArcanineLevelUpLearnset[] = {
 static const u16 sPoliwagLevelUpLearnset[] = {
     LEVEL_UP_MOVE(1, MOVE_BUBBLE),
     LEVEL_UP_MOVE(7, MOVE_HYPNOSIS),
-    LEVEL_UP_MOVE(13, MOVE_WATER_GUN),
+    LEVEL_UP_MOVE(10, MOVE_WATER_GUN),
+    LEVEL_UP_MOVE(13, MOVE_BUBBLE_BEAM),
     LEVEL_UP_MOVE(19, MOVE_DOUBLE_SLAP),
     LEVEL_UP_MOVE(25, MOVE_RAIN_DANCE),
     LEVEL_UP_MOVE(31, MOVE_BODY_SLAM),
@@ -841,11 +842,11 @@ static const u16 sPoliwagLevelUpLearnset[] = {
 };
 
 static const u16 sPoliwhirlLevelUpLearnset[] = {
-    LEVEL_UP_MOVE(1, MOVE_BUBBLE),
+    LEVEL_UP_MOVE(1, MOVE_BUBBLE_BEAM),
     LEVEL_UP_MOVE(1, MOVE_HYPNOSIS),
     LEVEL_UP_MOVE(1, MOVE_WATER_GUN),
     LEVEL_UP_MOVE(7, MOVE_HYPNOSIS),
-    LEVEL_UP_MOVE(13, MOVE_WATER_GUN),
+    LEVEL_UP_MOVE(13, MOVE_POUND),
     LEVEL_UP_MOVE(19, MOVE_DOUBLE_SLAP),
     LEVEL_UP_MOVE(27, MOVE_RAIN_DANCE),
     LEVEL_UP_MOVE(35, MOVE_BODY_SLAM),
@@ -3911,6 +3912,7 @@ static const u16 sWurmpleLevelUpLearnset[] = {
 
 static const u16 sSilcoonLevelUpLearnset[] = {
     LEVEL_UP_MOVE(1, MOVE_HARDEN),
+    LEVEL_UP_MOVE(1, MOVE_POUND),
     LEVEL_UP_MOVE(7, MOVE_HARDEN),
     LEVEL_UP_END
 };
@@ -3932,6 +3934,7 @@ static const u16 sBeautiflyLevelUpLearnset[] = {
 
 static const u16 sCascoonLevelUpLearnset[] = {
     LEVEL_UP_MOVE(1, MOVE_HARDEN),
+    LEVEL_UP_MOVE(1, MOVE_POUND),
     LEVEL_UP_MOVE(7, MOVE_HARDEN),
     LEVEL_UP_END
 };

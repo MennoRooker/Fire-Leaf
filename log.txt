@@ -419,7 +419,7 @@ Abilities to add:
 x Snow Warning
 / Solar Power
 / Strong Jaw
-- Technician
+- Technician (Breloom & Hitmontop)
 - Harvest (Bulbasaur and Ivysaur)
 - Regenerator
 - Sheer force
@@ -458,6 +458,10 @@ the game so that I don't need to add his name elsewhere.
 I need to add Brave Bird or Dragon Ascent into the game
 and teach them to Rayquaza and Pidgeot. If I add Dragon
 Ascent I can use the same logic to add Close Combat.
+
+I want Misty to only be available after having talked to
+Bill. That way we get more linearization and I can make 
+her fight slightly harder.
 
 I now want to add the running shoes, but apparently they 
 aren't an actual item. The game set the flag called 
