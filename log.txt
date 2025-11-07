@@ -450,7 +450,14 @@ to check the previous commit for reference next time I add
 somebody. Next I want to change JOVAN to ARON in Mt. Moon.
 
 For Aron I just grab the commit for Max and follow similar
-steps.
+steps. 
+
+I now want to add the running shoes, but apparently they 
+aren't an actual item. The game set the flag called 
+FLAG_SYS_B_DASH to make the player able to move fast.
+I need to set this flag earlier and let the aide give
+out the Exp. Share instead. I'll then edit the aide that
+gives the Exp. Share normally.
 
 !CURRENTLY all changes are either small, global changes
 or just pertaining to the first region of the game. The first
@@ -466,11 +473,11 @@ x Add Bugsy
 - Instant National Dex
 - Get Old Rod from Bugsy
 - Weather defense boosts
-- Gen 6 types (no fairy)
+x Gen 6 types (no fairy)
 - Linearization of the gyms and routes
 - Reusable TMs
 - Reusable berries (if held)
-- Force SET mode with mocking text
+x Force SET mode
 
 Online resources/tutorials:
 https://github.com/pret/pokeemerald/wiki/Tutorials
