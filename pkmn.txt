@@ -78,6 +78,11 @@ Run Away -> Flame Body
 hp:	65 -> 75
 Run Away -> Flame Body
 
+- FARFETCH'D
+atk:	65 -> 74
+spd:	60 -> 74
+NORMAL/FLYING -> FIGHTING/FLYING
+
 - SEEL
 WATER -> WATER/ICE
 

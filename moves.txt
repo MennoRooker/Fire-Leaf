@@ -27,6 +27,10 @@ High crit rate
 - Jump Kick
 70 -> 90
 
+- Fury Attack
+15 -> 20
+85% -> 90%
+
 - Tackle
 35 -> 45
 95% -> 100%
@@ -66,6 +70,10 @@ Raises both atk and spatk
 
 - Petal Dance
 70 -> 120
+
+- Fire Spin
+12 -> 25
+70% -> 85%
 
 - Thunder
 70% -> 75%

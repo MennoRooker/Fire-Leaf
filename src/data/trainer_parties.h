@@ -2648,16 +2648,29 @@ static const struct TrainerMonNoItemDefaultMoves sParty_FishermanNed[] = {
     },
 };
 
-static const struct TrainerMonNoItemDefaultMoves sParty_FishermanChip[] = {
+static const struct TrainerMonNoItemDefaultMoves sParty_FishermanLuc[] = {
     {
         .iv = 0,
         .lvl = 24,
-        .species = SPECIES_TENTACOOL,
+        .species = SPECIES_MAGIKARP,
     },
     {
         .iv = 0,
-        .lvl = 24,
+        .lvl = 25,
         .species = SPECIES_GOLDEEN,
+    },
+};
+
+static const struct TrainerMonNoItemDefaultMoves sParty_FishermanLuc2[] = {
+    {
+        .iv = 5,
+        .lvl = 33,
+        .species = SPECIES_GYARADOS,
+    },
+    {
+        .iv = 5,
+        .lvl = 33,
+        .species = SPECIES_SEAKING,
     },
 };
 

@@ -240,9 +240,9 @@ Route12_Text_NedRematchIntro::
 	.string "I got a bite, here!\l"
 	.string "Th-this might be the real thing!$"
 
-Route12_Text_ChipRematchIntro::
+Route12_Text_LucRematchIntro::
 	.string "You're finally here.\n"
-	.string "Fishing is a waiting game.$"
+	.string "I'm not losing my money this time!$"
 
 Route12_Text_JustinRematchIntro::
 	.string "Still can't find a MOON STONE…\n"

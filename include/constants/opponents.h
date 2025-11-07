@@ -229,7 +229,7 @@
 #define TRAINER_FISHERMAN_DALE                   223
 #define TRAINER_FISHERMAN_BARNY                  224
 #define TRAINER_FISHERMAN_NED                    225
-#define TRAINER_FISHERMAN_CHIP                   226
+#define TRAINER_FISHERMAN_LUC                    226
 #define TRAINER_FISHERMAN_HANK                   227
 #define TRAINER_FISHERMAN_ELLIOT                 228
 #define TRAINER_FISHERMAN_RONALD                 229

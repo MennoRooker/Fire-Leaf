@@ -29,16 +29,16 @@ Route12_Text_NedPostBattle::
     .string "Hang on!\n"
     .string "My line's snagged!$"
 
-Route12_Text_ChipIntro::
-    .string "Be patient.\n"
-    .string "Fishing is a waiting game.$"
+Route12_Text_LucIntro::
+    .string "You wanna bet on who can catch the\n"
+    .string "biggest fish?$"
 
-Route12_Text_ChipDefeat::
-    .string "That one got away!$"
+Route12_Text_LucDefeat::
+    .string "Now I can't pay my rent.$"
 
-Route12_Text_ChipPostBattle::
-    .string "With a better ROD, I could catch\n"
-    .string "better POKéMON…$"
+Route12_Text_LucPostBattle::
+    .string "As soon as I get my next paycheck we\n"
+    .string "can battle again!"
 
 Route12_Text_JustinIntro::
     .string "I'm searching for a MOON STONE.\n"

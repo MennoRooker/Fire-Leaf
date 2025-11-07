@@ -826,6 +826,7 @@ static const u32 sTMHMLearnsets[][2] =
                                         | TMHM(TM23_IRON_TAIL)
                                         | TMHM(TM27_RETURN)
                                         | TMHM(TM28_DIG)
+                                        | TMHM(TM30_SHADOW_BALL)
                                         | TMHM(TM32_DOUBLE_TEAM)
                                         | TMHM(TM35_FLAMETHROWER)
                                         | TMHM(TM38_FIRE_BLAST)
@@ -846,6 +847,7 @@ static const u32 sTMHMLearnsets[][2] =
                                         | TMHM(TM23_IRON_TAIL)
                                         | TMHM(TM27_RETURN)
                                         | TMHM(TM28_DIG)
+                                        | TMHM(TM30_SHADOW_BALL)
                                         | TMHM(TM32_DOUBLE_TEAM)
                                         | TMHM(TM35_FLAMETHROWER)
                                         | TMHM(TM38_FIRE_BLAST)
@@ -1918,6 +1920,7 @@ static const u32 sTMHMLearnsets[][2] =
                                         | TMHM(TM21_FRUSTRATION)
                                         | TMHM(TM23_IRON_TAIL)
                                         | TMHM(TM27_RETURN)
+                                        | TMHM(TM31_BRICK_BREAK)
                                         | TMHM(TM32_DOUBLE_TEAM)
                                         | TMHM(TM40_AERIAL_ACE)
                                         | TMHM(TM42_FACADE)
@@ -1927,7 +1930,8 @@ static const u32 sTMHMLearnsets[][2] =
                                         | TMHM(TM46_THIEF)
                                         | TMHM(TM47_STEEL_WING)
                                         | TMHM(HM01_CUT)
-                                        | TMHM(HM02_FLY)),
+                                        | TMHM(HM02_FLY)
+                                        | TMHM(HM06_ROCK_SMASH)),
 
     [SPECIES_DODUO]       = TMHM_LEARNSET(TMHM(TM06_TOXIC)
                                         | TMHM(TM10_HIDDEN_POWER)

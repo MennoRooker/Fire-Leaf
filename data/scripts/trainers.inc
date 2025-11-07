@@ -831,16 +831,16 @@ Route12_EventScript_NedRematch::
 	msgbox Route12_Text_NedPostBattle, MSGBOX_AUTOCLOSE
 	end
 
-Route12_EventScript_Chip::
-	trainerbattle_single TRAINER_FISHERMAN_CHIP, Route12_Text_ChipIntro, Route12_Text_ChipDefeat
+Route12_EventScript_Luc::
+	trainerbattle_single TRAINER_FISHERMAN_LUC, Route12_Text_LucIntro, Route12_Text_LucDefeat
 	specialvar VAR_RESULT, ShouldTryRematchBattle
-	goto_if_eq VAR_RESULT, TRUE, Route12_EventScript_ChipRematch
-	msgbox Route12_Text_ChipPostBattle, MSGBOX_AUTOCLOSE
+	goto_if_eq VAR_RESULT, TRUE, Route12_EventScript_LucRematch
+	msgbox Route12_Text_LucPostBattle, MSGBOX_AUTOCLOSE
 	end
 
-Route12_EventScript_ChipRematch::
-	trainerbattle_rematch TRAINER_FISHERMAN_CHIP, Route12_Text_ChipRematchIntro, Route12_Text_ChipDefeat
-	msgbox Route12_Text_ChipPostBattle, MSGBOX_AUTOCLOSE
+Route12_EventScript_LucRematch::
+	trainerbattle_rematch TRAINER_FISHERMAN_LUC, Route12_Text_LucRematchIntro, Route12_Text_LucDefeat
+	msgbox Route12_Text_LucPostBattle, MSGBOX_AUTOCLOSE
 	end
 
 Route12_EventScript_Hank::

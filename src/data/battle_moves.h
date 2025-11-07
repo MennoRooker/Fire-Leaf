@@ -406,9 +406,9 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
     [MOVE_FURY_ATTACK] =
     {
         .effect = EFFECT_MULTI_HIT,
-        .power = 15,
+        .power = 20,
         .type = TYPE_NORMAL,
-        .accuracy = 85,
+        .accuracy = 90,
         .pp = 20,
         .secondaryEffectChance = 0,
         .target = MOVE_TARGET_SELECTED,
@@ -1082,9 +1082,9 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
     [MOVE_FIRE_SPIN] =
     {
         .effect = EFFECT_TRAP,
-        .power = 15,
+        .power = 25,
         .type = TYPE_FIRE,
-        .accuracy = 70,
+        .accuracy = 85,
         .pp = 15,
         .secondaryEffectChance = 100,
         .target = MOVE_TARGET_SELECTED,

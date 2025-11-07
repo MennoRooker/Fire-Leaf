@@ -2252,15 +2252,15 @@ const struct Trainer gTrainers[] = {
         .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE,
         .party = NO_ITEM_DEFAULT_MOVES(sParty_FishermanNed),
     },
-    [TRAINER_FISHERMAN_CHIP] = {
+    [TRAINER_FISHERMAN_LUC] = {
         .trainerClass = TRAINER_CLASS_FISHERMAN,
         .encounterMusic_gender = TRAINER_ENCOUNTER_MUSIC_HIKER,
         .trainerPic = TRAINER_PIC_FISHERMAN,
-        .trainerName = _("CHIP"),
+        .trainerName = _("LUC"),
         .items = {},
         .doubleBattle = FALSE,
         .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE,
-        .party = NO_ITEM_DEFAULT_MOVES(sParty_FishermanChip),
+        .party = NO_ITEM_DEFAULT_MOVES(sParty_FishermanLuc),
     },
     [TRAINER_FISHERMAN_HANK] = {
         .trainerClass = TRAINER_CLASS_FISHERMAN,

@@ -2416,12 +2416,12 @@ const struct SpeciesInfo gSpeciesInfo[] =
     [SPECIES_FARFETCHD] =
     {
         .baseHP = 52,
-        .baseAttack = 65,
+        .baseAttack = 74,
         .baseDefense = 55,
-        .baseSpeed = 60,
+        .baseSpeed = 74,
         .baseSpAttack = 58,
         .baseSpDefense = 62,
-        .types = {TYPE_NORMAL, TYPE_FLYING},
+        .types = {TYPE_FIGHTING, TYPE_FLYING},
         .catchRate = 45,
         .expYield = 94,
         .evYield_HP = 0,

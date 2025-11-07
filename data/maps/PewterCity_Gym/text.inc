@@ -45,7 +45,7 @@ PewterCity_Gym_Text_ExplainTM39::
     .string "technique for POKéMON.\p"
     .string "Using a TM teaches the move it\n"
     .string "contains to a POKéMON.\p"
-    .string "A TM is good for only one use.\p"
+    .string "A TM is something very valuable.\p"
     .string "So, when you use one, pick the\n"
     .string "POKéMON carefully.\p"
     .string "Anyways…\n"

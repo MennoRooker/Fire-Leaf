@@ -250,6 +250,7 @@ ViridianCity_EventScript_Policeman::
 
 script ViridianCity_EventScript_BlockRoute22 {
     lockall
+	textcolor(NPC_TEXT_COLOR_MALE)
 	applymovement(OBJ_EVENT_ID_PLAYER, FacePlayerUp)
     msgbox(ViridianCity_Text_Route22IsBlocked, MSGBOX_DEFAULT)
 	applymovement(OBJ_EVENT_ID_PLAYER, MovePlayerRight)

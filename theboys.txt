@@ -3,35 +3,40 @@ loc:	Route 2
 party:	ZIGZAGOON (5)
 text:	"I've never won a battle before."
 	"You're not even that strong..."
+	"My ZIGZAGOON picks up useful items for
+	me."
 
 - YOURI (Black Belt):
-loc:	...
-party:	...
+loc:	Saffron City Dojo
+party:	MACHOKE (31), HARIYAMA (31)
 text:	"How much can you bench?"
 	"I can still bench more than you."
-	"*grr*"
+	"-grr-"
 
-- KELVIN (...)
-loc:	...
-party:	...
-text:	""
-	"Damn, I was gonna buy drugs with
-	this money."
+- KELVIN (Burglar)
+loc:	Outside Pewter's museum
+party:	POOCHYENA (8), VULPIX (8)
+text:	"I got my hands on some collector's
+	items. I'm gonna sell these for profit."
+	"No way!"
+	"I'm still going to sell these items and
+	buy drugs with the money I make."
 
 - LUC (RS Fisherman)
-loc:	...
-party:	...
+loc:	Route 12
+party:	MAGIKARP (24), GOLDEEN (25)
 text:	"You wanna bet on who can catch the
 	biggest fish? There's no way I lose!"
 	"Now I can't pay my rent."
 
 - ARON (Super Nerd, replace Jovan)
 loc:	Mt. Moon
-party:	Aron (13)
-	Jigglypuff (14)
+party:	ARON (13), JIGGLYPUFF (14)
 text:	"This cave is full of young trainers!"
 	"The levels of my POKéMON are also the
-	 ages I'm into."
+	ages I'm into."
+	"Don't tell my parole officer you saw
+	me here, please."
 
 - ABE (Pokemaniac)
 loc:	...

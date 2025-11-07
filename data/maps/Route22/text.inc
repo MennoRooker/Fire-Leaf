@@ -9,7 +9,7 @@ Route22_Text_EarlyRivalIntro::
 	.string "The guard won't let you through\n"
 	.string "without them.\p"
 	.string "What's that? You're looking for\n"
-	.string "Bugsy's item?\p"
+	.string "a BUG CATCHING NET?\p"
 	.string "I found that thing in Viridian Forest.\n"
 	.string "It was right there for the taking.\p"
 	.string "If you want it, you're gonna have\n"

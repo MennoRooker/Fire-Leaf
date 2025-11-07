@@ -9305,7 +9305,7 @@ static void Cmd_pickup(void)
             ability = gSpeciesInfo[species].abilities[1];
         else
             ability = gSpeciesInfo[species].abilities[0];
-        if (ability == ABILITY_PICKUP && species != SPECIES_NONE && species != SPECIES_EGG && heldItem == ITEM_NONE && !(Random() % 5))
+        if (ability == ABILITY_PICKUP && species != SPECIES_NONE && species != SPECIES_EGG && heldItem == ITEM_NONE && !(Random() % 8))
         {
             s32 random = Random() % 100;
 
