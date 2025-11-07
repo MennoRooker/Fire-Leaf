@@ -1,29 +1,23 @@
-RUN 1:
+DEMO:
+Pokemon and moves buffed
+Increased Pokemon variety
+Increased trainer Pokemon variety and level
+Story linearization
+Custom sprites, items and cutsenes
+Better access to EVs, IVs and natures
+QoL changes
+
+
 Dark and Dragon are now physical, Ghost is special
+Changed global exp curve from /7 to /6 (~17% increase)
+*Added newer abilities into the game
+*Gen 8 weather effects
 
-RUN 2:
-moves.txt
-pkmn.txt
-learnsets.txt
 
-RUN 3:
-pkmn.txt
-encounters.txt
+For additional documentation, look at:
+- moves.txt (all the moves that were changed)
+- pkmn.txt (all Pokemon that got buffs/changes)
+- learnsets.txt (all learnsets of all Pokemon)
+- encounters.txt (all wild encounters)
+- parties.txt (all trainer parties)
 
-RUN 4:
-changed global exp curve from /7 to /6 (~17% increase)
-
-.
-.
-.
-.
-.
-.
-.
-.
-.
-
-RUN X:
-Add custom animations (Quiver Dance...)
-Add events in overworld through porymap
-Johto sprites

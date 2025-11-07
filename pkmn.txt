@@ -45,6 +45,18 @@ atk:	80 -> 100
 def:	40 -> 55
 spd:	75 -> 95
 
+- PIDGEY
+Keen Eye -> Keen Eye/Own Tempo
+
+- PIDGEOTTO
+atk:	60 -> 65
+spd:	71 -> 81
+Keen Eye -> Keen Eye/Own Tempo
+
+-PIDGEOT
+atk:	80 -> 96
+Keen Eye -> Keen Eye/Own Tempo
+
 - ARBOK
 atk:	85 -> 105
 POISON -> POISON/DARK
@@ -74,6 +86,9 @@ Thick Fat -> Snow Warning
 
 - ONIX
 atk:	45 -> 75
+
+- CHANSEY
+Lucky Egg 5% -> 50%
 
 - CHIKORITA
 Overgrow -> Overgrow/Chlorophyll
