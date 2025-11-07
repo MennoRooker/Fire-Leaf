@@ -2889,7 +2889,7 @@ static const u16 sGirafarigLevelUpLearnset[] = {
 static const u16 sPinecoLevelUpLearnset[] = {
     LEVEL_UP_MOVE(1, MOVE_TACKLE),
     LEVEL_UP_MOVE(1, MOVE_PROTECT),
-    LEVEL_UP_MOVE(8, MOVE_SELF_DESTRUCT),
+    LEVEL_UP_MOVE(11, MOVE_SELF_DESTRUCT),
     LEVEL_UP_MOVE(15, MOVE_TAKE_DOWN),
     LEVEL_UP_MOVE(22, MOVE_RAPID_SPIN),
     LEVEL_UP_MOVE(29, MOVE_BIDE),
