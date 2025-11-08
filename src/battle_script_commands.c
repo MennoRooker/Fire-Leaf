@@ -1346,16 +1346,20 @@ static void Cmd_typecalc(void)
         gProtectStructs[gBattlerAttacker].targetNotAffected = 1;
 
     // Check for extreme effectiveness (4x) and override SUPER_EFFECTIVE flag
-    if (gTypeEffectivenessMultiplier >= 40)
+    if (!(gMoveResultFlags & MOVE_RESULT_DOESNT_AFFECT_FOE)    // not immune
+        && !(gMoveResultFlags & MOVE_RESULT_NO_EFFECT)         // no other failure
+        && gTypeEffectivenessMultiplier > 0)                   // ensure > 0x
     {
-        gMoveResultFlags &= ~MOVE_RESULT_SUPER_EFFECTIVE;
-        gMoveResultFlags |= MOVE_RESULT_EXTREMELY_EFFECTIVE;
-    }
-    // Check for very ineffective (0.25x) and override NOT_VERY_EFFECTIVE flag
-    else if (gTypeEffectivenessMultiplier <= 2)
-    {
-        gMoveResultFlags &= ~MOVE_RESULT_NOT_VERY_EFFECTIVE;
-        gMoveResultFlags |= MOVE_RESULT_VERY_INEFFECTIVE;
+        if (gTypeEffectivenessMultiplier >= 40) // 4x or more
+        {
+            gMoveResultFlags &= ~MOVE_RESULT_SUPER_EFFECTIVE;
+            gMoveResultFlags |= MOVE_RESULT_EXTREMELY_EFFECTIVE;
+        }
+        else if (gTypeEffectivenessMultiplier <= 3) // 0.25x (3/10) or less but >0
+        {
+            gMoveResultFlags &= ~MOVE_RESULT_NOT_VERY_EFFECTIVE;
+            gMoveResultFlags |= MOVE_RESULT_VERY_INEFFECTIVE;
+        }
     }
 
     gBattlescriptCurrInstr++;

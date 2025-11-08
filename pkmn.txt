@@ -132,6 +132,17 @@ spd:	40 -> 105
 - POLITOED
 Damp -> Drizzle
 
+- HOPPIP
+spatk:	35 -> 45
+spd:	50 -> 60
+
+- SKIPLOOM
+spatk:	45 -> 55
+spd:	80 -> 85
+
+- JUMPLUFF
+spatk:	55 -> 65
+
 - SUNKERN
 hp:	30 -> 35
 def:	30 -> 35

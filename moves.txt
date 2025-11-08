@@ -123,6 +123,9 @@ Now has a 20% chance to flinch
 - Bonemerang
 90% -> 100%
 
+- Mud-Slap
+20 -> 25
+
 - Outrage
 90 -> 120
 

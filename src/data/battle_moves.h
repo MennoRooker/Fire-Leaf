@@ -2460,7 +2460,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
     [MOVE_MUD_SLAP] =
     {
         .effect = EFFECT_ACCURACY_DOWN_HIT,
-        .power = 20,
+        .power = 25,
         .type = TYPE_GROUND,
         .accuracy = 100,
         .pp = 10,

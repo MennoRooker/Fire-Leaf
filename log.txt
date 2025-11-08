@@ -375,12 +375,6 @@ text files. I do still want to keep updating the species
 info text files based on the changes I make. The learn-
 sets I can do with a script again.
 
-- Add Aurora Veil
-- Add Ice Fang
-- Add Thunder Fang
-- Add Fire Fang
-- Feraligatr Ice & Thunder Fang
-
 I changed Dark and Ghost effectiveness on steel to neutral
 as it is since gen 6. 
 
@@ -432,6 +426,24 @@ x Snow Warning
 - Adaptability
 - Iron Fist (Ledian)
 - Poison Heal
+- Change truant
+- Wind Rider (Jumpluff & Shiftry)
+
+Moves to add:
+x Quiver Dance
+- Air Slash
+- Close Combat
+- Brave Bird/Dragon Ascent
+- Aurora Veil
+- Ice Fang
+- Thunder Fang
+- Fire Fang
+
+Items to add:
+- Eviolite
+- Expert Belt
+- Wise Glasses
+- Muscle Band
 
 SET mode and FAST text are now default. I still want to 
 implement forced SET mode at some point but I want to
@@ -455,13 +467,12 @@ earlier, or I could put him in the dojo. There is also a
 Black Belt Mike there and I can edit him to have Mike in
 the game so that I don't need to add his name elsewhere. 
 
-I need to add Brave Bird or Dragon Ascent into the game
-and teach them to Rayquaza and Pidgeot. If I add Dragon
-Ascent I can use the same logic to add Close Combat.
-
 I want Misty to only be available after having talked to
 Bill. That way we get more linearization and I can make 
 her fight slightly harder.
+
+Hoppip stops evolving, could this be a National Dex 
+issue?
 
 I now want to add the running shoes, but apparently they 
 aren't an actual item. The game set the flag called 
@@ -482,7 +493,7 @@ x Add Bugsy
 - Custom move animations
 - Instant Running Shoes
 - Instant National Dex
-- Get Old Rod from Bugsy
+- Get Old Rod from Old Man
 - Weather defense boosts
 x Gen 6 types (no fairy)
 - Linearization of the gyms and routes
@@ -490,6 +501,9 @@ x Gen 6 types (no fairy)
 - Reusable berries (if held)
 x Force SET mode
 - Trick Room (?)
+- Sitrus berry 25% HP
+- Make EV berries usable
+- Very ineffective text not on unaffected
 
 Online resources/tutorials:
 https://github.com/pret/pokeemerald/wiki/Tutorials

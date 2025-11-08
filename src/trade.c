@@ -2751,28 +2751,6 @@ static u32 CanTradeSelectedMon(struct Pokemon * playerParty, int partyCount, int
         species[i] = GetMonData(&playerParty[i], MON_DATA_SPECIES);
     }
 
-    // Cant trade Eggs or non-Kanto mons if player doesn't have National Dex
-    if (!IsNationalPokedexEnabled())
-    {
-        // See comment below
-    #ifdef BUGFIX
-        if (species2[monIdx] == SPECIES_EGG)
-            return CANT_TRADE_EGG_YET;
-    #endif
-
-        if (species2[monIdx] > KANTO_SPECIES_END)
-            return CANT_TRADE_NATIONAL;
-
-        // This is meant to be SPECIES_EGG. There are obviously no circumstances
-        // where you're allowed to trade SPECIES_NONE, so it wouldn't make sense to
-        // only check this if the National Dex is missing. SPECIES_EGG will accidentally
-        // be handled instead by the conditional above. Both of these problems are fixed in Emerald.
-    #ifndef BUGFIX
-        if (species2[monIdx] == SPECIES_NONE)
-            return CANT_TRADE_EGG_YET;
-    #endif
-    }
-
     partner = &gLinkPlayers[GetMultiplayerId() ^ 1];
     if ((partner->version & 0xFF) != VERSION_RUBY &&
         (partner->version & 0xFF) != VERSION_SAPPHIRE)
@@ -2912,30 +2890,13 @@ int GetUnionRoomTradeMessageId(struct RfuGameCompatibilityData player, struct Rf
     if (playerSpecies2 == SPECIES_EGG && playerSpecies2 != partnerSpecies)
         return UR_TRADE_MSG_MON_CANT_BE_TRADED_1;
 
-    // If the player doesn't have the National Dex then Eggs and non-Kanto Pokémon can't be traded
-    if (!playerHasNationalDex)
-    {
-        if (playerSpecies2 == SPECIES_EGG)
-            return UR_TRADE_MSG_EGG_CANT_BE_TRADED;
-
-        if (playerSpecies2 > KANTO_SPECIES_END)
-            return UR_TRADE_MSG_MON_CANT_BE_TRADED_2;
-
-        if (partnerSpecies > KANTO_SPECIES_END)
-            return UR_TRADE_MSG_PARTNERS_MON_CANT_BE_TRADED;
-    }
-
-    // If the partner doesn't have the National Dex then the player's offer has to be a Kanto Pokémon
-    if (!partnerHasNationalDex && playerSpecies2 > KANTO_SPECIES_END)
-        return UR_TRADE_MSG_PARTNER_CANT_ACCEPT_MON;
-
     // Trade is allowed
     return UR_TRADE_MSG_NONE;
 }
 
 int CanRegisterMonForTradingBoard(struct RfuGameCompatibilityData player, u16 species2, u16 species, bool8 isModernFatefulEncounter)
 {
-    bool8 hasNationalDex = player.hasNationalDex;
+    bool8 hasNationalDex = TRUE;
 
     if (IsDeoxysOrMewUntradable(species, isModernFatefulEncounter))
         return CANT_REGISTER_MON;
