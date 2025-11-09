@@ -426,7 +426,13 @@ static u8 OptionMenu_ProcessInput(void)
         {
             sOptionMenuPtr->option[MENUITEM_BATTLESTYLE] = OPTIONS_BATTLE_STYLE_SET;
         }
-
+        
+        // Force LR mode
+        if (sOptionMenuPtr->cursorPos == MENUITEM_BUTTONMODE && (sOptionMenuPtr->option[MENUITEM_BUTTONMODE] == OPTIONS_BUTTON_MODE_L_EQUALS_A || sOptionMenuPtr->option[MENUITEM_BUTTONMODE] == OPTIONS_BUTTON_MODE_HELP))
+        {
+            sOptionMenuPtr->option[MENUITEM_BUTTONMODE] = OPTIONS_BUTTON_MODE_LR;
+        }
+        
         if (sOptionMenuPtr->cursorPos == MENUITEM_FRAMETYPE)
             return 2;
         else
@@ -445,7 +451,13 @@ static u8 OptionMenu_ProcessInput(void)
         {
             sOptionMenuPtr->option[MENUITEM_BATTLESTYLE] = OPTIONS_BATTLE_STYLE_SET;
         }
-        
+
+        // Force LR mode
+        if (sOptionMenuPtr->cursorPos == MENUITEM_BUTTONMODE && (sOptionMenuPtr->option[MENUITEM_BUTTONMODE] == OPTIONS_BUTTON_MODE_L_EQUALS_A || sOptionMenuPtr->option[MENUITEM_BUTTONMODE] == OPTIONS_BUTTON_MODE_HELP))
+        {
+            sOptionMenuPtr->option[MENUITEM_BUTTONMODE] = OPTIONS_BUTTON_MODE_LR;
+        }
+
         if (sOptionMenuPtr->cursorPos == MENUITEM_FRAMETYPE)
             return 2;
         else

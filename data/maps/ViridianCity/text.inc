@@ -129,3 +129,33 @@ ViridianCity_Text_Route22IsBlocked::
     .string "guards to VICTORY ROAD.\p"
     .string "I'm here to catch him when he tries\n"
     .string "to sneak back.$"
+
+ViridianCity_Text_TakeRunningShoesToo::
+    .string "Take these too.$"
+
+ViridianCity_Text_ReceivedRunningShoesFromOldMan::
+    .string "{PLAYER} received the\n"
+    .string "RUNNING SHOES from the OLD MAN.$"
+
+ViridianCity_Text_SwitchedShoesWithRunningShoes::
+    .string "{PLAYER} switched shoes with the\n"
+    .string "RUNNING SHOES.$"
+
+ViridianCity_Text_ExplainRunningShoes::
+    .string "Press the B Button to run.\n"
+    .string "But only where there's room to run!$"
+
+ViridianCity_Text_TakeOldRodToo::
+    .string "You know what?\n"
+    .string "You can have this as well.$"
+
+ViridianCity_Text_NoNeedForOldRodAnymore::
+    .string "I have no need for this thing\n"
+    .string "anymore.\p"
+    .string "When I was younger I used to catch\n"
+    .string "plenty with this OLD ROD.\p"
+    .string "Now I want you to have it.$"
+
+ViridianCity_Text_ReceivedOldRodFromOldMan::
+    .string "{PLAYER} received an OLD ROD from\n"
+    .string "the OLD MAN.$"

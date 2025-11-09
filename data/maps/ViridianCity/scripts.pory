@@ -235,6 +235,26 @@ ViridianCity_EventScript_DoTutorialBattle::
 	setvar VAR_MAP_SCENE_VIRIDIAN_CITY_OLD_MAN, 2
 	giveitem ITEM_TEACHY_TV
 	msgbox ViridianCity_Text_WatchThatToLearnBasics
+	waitmessage
+	msgbox ViridianCity_Text_TakeRunningShoesToo
+	textcolor NPC_TEXT_COLOR_NEUTRAL
+	playfanfare MUS_OBTAIN_KEY_ITEM
+	message ViridianCity_Text_ReceivedRunningShoesFromOldMan
+	waitmessage
+	waitfanfare
+	msgbox ViridianCity_Text_SwitchedShoesWithRunningShoes
+	special DisableMsgBoxWalkaway
+	signmsg
+	msgbox ViridianCity_Text_ExplainRunningShoes
+	normalmsg
+	call EventScript_RestorePrevTextColor
+	setflag FLAG_SYS_B_DASH
+	msgbox ViridianCity_Text_TakeOldRodToo
+	additem ITEM_OLD_ROD
+	msgbox ViridianCity_Text_NoNeedForOldRodAnymore
+	msgreceiveditem ViridianCity_Text_ReceivedOldRodFromOldMan, ITEM_OLD_ROD
+	setflag FLAG_GOT_OLD_ROD
+	release
 	return
 
 ViridianCity_EventScript_Policeman::

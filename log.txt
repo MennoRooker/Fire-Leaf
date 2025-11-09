@@ -426,8 +426,9 @@ x Snow Warning
 - Adaptability
 - Iron Fist (Ledian)
 - Poison Heal
-- Change truant
+- Truant(change)
 - Wind Rider (Jumpluff & Shiftry)
+- Physical contact moves (Flareon & Hitmonchan)
 
 Moves to add:
 x Quiver Dance
@@ -471,8 +472,21 @@ I want Misty to only be available after having talked to
 Bill. That way we get more linearization and I can make 
 her fight slightly harder.
 
-Hoppip stops evolving, could this be a National Dex 
-issue?
+National Dex flag checks have been removed to allow all
+mons to evolve and be traded before you actually get
+the National Dex.
+
+I balanced everything up to Vermillion, but I need to 
+add linearization so that you fight the rival at the
+right level. I think Diglett cave needs to remain 
+closed until you've beaten him though. Still need
+that same kind of linearization for Cerulean.
+
+I think for the L=fly, R=repel function I want to 
+force LR mode like I did with SET mode. That way
+I never need to get rid of the HELP menus, just
+make sure you use L and R outside of the bag if you
+want to fly/repel.
 
 I now want to add the running shoes, but apparently they 
 aren't an actual item. The game set the flag called 
@@ -492,7 +506,7 @@ x Add Bugsy
 - Bugsy gives perma repel
 - Custom move animations
 - Instant Running Shoes
-- Instant National Dex
+x Instant National Dex
 - Get Old Rod from Old Man
 - Weather defense boosts
 x Gen 6 types (no fairy)
@@ -503,7 +517,6 @@ x Force SET mode
 - Trick Room (?)
 - Sitrus berry 25% HP
 - Make EV berries usable
-- Very ineffective text not on unaffected
 
 Online resources/tutorials:
 https://github.com/pret/pokeemerald/wiki/Tutorials

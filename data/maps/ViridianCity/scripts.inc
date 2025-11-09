@@ -473,54 +473,94 @@ ViridianCity_EventScript_DoTutorialBattle::
 # 237 "data/maps/ViridianCity/scripts.pory"
 	msgbox ViridianCity_Text_WatchThatToLearnBasics
 # 238 "data/maps/ViridianCity/scripts.pory"
-	return
+	waitmessage
 # 239 "data/maps/ViridianCity/scripts.pory"
-
+	msgbox ViridianCity_Text_TakeRunningShoesToo
 # 240 "data/maps/ViridianCity/scripts.pory"
-ViridianCity_EventScript_Policeman::
+	textcolor NPC_TEXT_COLOR_NEUTRAL
 # 241 "data/maps/ViridianCity/scripts.pory"
-	lock
+	playfanfare MUS_OBTAIN_KEY_ITEM
 # 242 "data/maps/ViridianCity/scripts.pory"
-	faceplayer
+	message ViridianCity_Text_ReceivedRunningShoesFromOldMan
 # 243 "data/maps/ViridianCity/scripts.pory"
-	msgbox ViridianCity_Text_Route22IsBlocked, MSGBOX_DEFAULT
+	waitmessage
 # 244 "data/maps/ViridianCity/scripts.pory"
-	closemessage
+	waitfanfare
 # 245 "data/maps/ViridianCity/scripts.pory"
-	applymovement VAR_LAST_TALKED, Common_Movement_FaceDown
+	msgbox ViridianCity_Text_SwitchedShoesWithRunningShoes
 # 246 "data/maps/ViridianCity/scripts.pory"
-	waitmovement 0
+	special DisableMsgBoxWalkaway
 # 247 "data/maps/ViridianCity/scripts.pory"
-	release
+	signmsg
 # 248 "data/maps/ViridianCity/scripts.pory"
+	msgbox ViridianCity_Text_ExplainRunningShoes
+# 249 "data/maps/ViridianCity/scripts.pory"
+	normalmsg
+# 250 "data/maps/ViridianCity/scripts.pory"
+	call EventScript_RestorePrevTextColor
+# 251 "data/maps/ViridianCity/scripts.pory"
+	setflag FLAG_SYS_B_DASH
+# 252 "data/maps/ViridianCity/scripts.pory"
+	msgbox ViridianCity_Text_TakeOldRodToo
+# 253 "data/maps/ViridianCity/scripts.pory"
+	additem ITEM_OLD_ROD
+# 254 "data/maps/ViridianCity/scripts.pory"
+	msgbox ViridianCity_Text_NoNeedForOldRodAnymore
+# 255 "data/maps/ViridianCity/scripts.pory"
+	msgreceiveditem ViridianCity_Text_ReceivedOldRodFromOldMan, ITEM_OLD_ROD
+# 256 "data/maps/ViridianCity/scripts.pory"
+	setflag FLAG_GOT_OLD_ROD
+# 257 "data/maps/ViridianCity/scripts.pory"
+	release
+# 258 "data/maps/ViridianCity/scripts.pory"
+	return
+# 259 "data/maps/ViridianCity/scripts.pory"
+
+# 260 "data/maps/ViridianCity/scripts.pory"
+ViridianCity_EventScript_Policeman::
+# 261 "data/maps/ViridianCity/scripts.pory"
+	lock
+# 262 "data/maps/ViridianCity/scripts.pory"
+	faceplayer
+# 263 "data/maps/ViridianCity/scripts.pory"
+	msgbox ViridianCity_Text_Route22IsBlocked, MSGBOX_DEFAULT
+# 264 "data/maps/ViridianCity/scripts.pory"
+	closemessage
+# 265 "data/maps/ViridianCity/scripts.pory"
+	applymovement VAR_LAST_TALKED, Common_Movement_FaceDown
+# 266 "data/maps/ViridianCity/scripts.pory"
+	waitmovement 0
+# 267 "data/maps/ViridianCity/scripts.pory"
+	release
+# 268 "data/maps/ViridianCity/scripts.pory"
 	end
 
 ViridianCity_EventScript_BlockRoute22::
-# 252 "data/maps/ViridianCity/scripts.pory"
+# 272 "data/maps/ViridianCity/scripts.pory"
 	lockall
-# 253 "data/maps/ViridianCity/scripts.pory"
+# 273 "data/maps/ViridianCity/scripts.pory"
 	textcolor NPC_TEXT_COLOR_MALE
-# 254 "data/maps/ViridianCity/scripts.pory"
+# 274 "data/maps/ViridianCity/scripts.pory"
 	applymovement OBJ_EVENT_ID_PLAYER, FacePlayerUp
-# 255 "data/maps/ViridianCity/scripts.pory"
+# 275 "data/maps/ViridianCity/scripts.pory"
 	msgbox ViridianCity_Text_Route22IsBlocked, MSGBOX_DEFAULT
-# 256 "data/maps/ViridianCity/scripts.pory"
+# 276 "data/maps/ViridianCity/scripts.pory"
 	applymovement OBJ_EVENT_ID_PLAYER, MovePlayerRight
-# 257 "data/maps/ViridianCity/scripts.pory"
+# 277 "data/maps/ViridianCity/scripts.pory"
 	waitmovement 0
-# 258 "data/maps/ViridianCity/scripts.pory"
+# 278 "data/maps/ViridianCity/scripts.pory"
 	releaseall
 	return
 
 
-# 261 "data/maps/ViridianCity/scripts.pory"
+# 281 "data/maps/ViridianCity/scripts.pory"
 MovePlayerRight:
-# 262 "data/maps/ViridianCity/scripts.pory"
+# 282 "data/maps/ViridianCity/scripts.pory"
 	walk_right
 	step_end
 
-# 265 "data/maps/ViridianCity/scripts.pory"
+# 285 "data/maps/ViridianCity/scripts.pory"
 FacePlayerUp:
-# 266 "data/maps/ViridianCity/scripts.pory"
+# 286 "data/maps/ViridianCity/scripts.pory"
 	face_up
 	step_end

@@ -1228,7 +1228,7 @@ static const struct TrainerMonNoItemDefaultMoves sParty_CamperRicky3[] = {
     },
     {
         .iv = 6,
-        lvl = 35,
+        .lvl = 35,
         .species = SPECIES_GRAVELER,
     },
 };

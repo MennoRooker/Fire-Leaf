@@ -9,8 +9,8 @@ VermilionCity_House1_Text_TakeThisAndFish::
     .string "I think we can be friends.\p"
     .string "Take this and fish, young friend!$"
 
-VermilionCity_House1_Text_ReceivedOldRodFromFishingGuru::
-    .string "{PLAYER} received an OLD ROD from\n"
+VermilionCity_House1_Text_ReceivedGoodRodFromFishingGuru::
+    .string "{PLAYER} received the GOOD ROD from\n"
     .string "the FISHING GURU.$"
 
 VermilionCity_House1_Text_FishingIsAWayOfLife::

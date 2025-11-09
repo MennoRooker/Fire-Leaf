@@ -61,6 +61,12 @@ Keen Eye -> Keen Eye/Own Tempo
 atk:	85 -> 105
 POISON -> POISON/DARK
 
+- VULPIX
+Flash Fire -> Flash Fire/Drought
+
+- NINETALES
+Flash Fire -> Flash Fire/Drought
+
 - MEOWTH
 Pickup -> Limber
 
@@ -234,6 +240,20 @@ Speed Boost -> Hyper Cutter
 hp:	60 -> 70
 spatk:	60 -> 70
 spd:	70 -> 78
+
+- WINGULL
+Keen Eye -> Keen Eye/Early Bird
+
+- PELLIPER
+Keen Eye -> Keen Eye/Drizzle
+
+- WAILMER
+def:	35 -> 40
+spdef:	35 -> 42
+
+- WAILORD
+def:	45 -> 50
+spdef:	45 -> 55
 
 - TORKOAL
 White Smoke -> Drought

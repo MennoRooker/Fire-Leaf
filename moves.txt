@@ -97,7 +97,8 @@ Now has a 20% chance to flinch
 85 -> 110
 
 - Glare
-75% -> 95%
+75% -> 90%
+30PP -> 15PP
 
 - Dream Eater
 100 -> 120
