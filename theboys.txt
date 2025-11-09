@@ -22,14 +22,14 @@ text:	"I got my hands on some collector's
 	"I'm still going to sell these items and
 	buy drugs with the money I make."
 
-- LUC (RS Fisherman)
+- LUC (Fisherman)
 loc:	Route 12
 party:	MAGIKARP (24), GOLDEEN (25)
 text:	"You wanna bet on who can catch the
 	biggest fish? There's no way I lose!"
 	"Now I can't pay my rent."
 
-- ARON (Super Nerd, replace Jovan)
+- ARON (Super Nerd)
 loc:	Mt. Moon
 party:	ARON (13), JIGGLYPUFF (14)
 text:	"This cave is full of young trainers!"
@@ -38,23 +38,34 @@ text:	"This cave is full of young trainers!"
 	"Don't tell my parole officer you saw
 	me here, please."
 
-- ABE (Pokemaniac)
+- ABE (Pokemaniac (Ashton))
 loc:	...
 party:	...
 text:	"If you battle me I can explain to you how
 	good you are in football terms."
 	"Ketamine!"
 
-- MIKE ()
+- MIKE (Black Belt)
 loc:	Saffron City Dojo
-party:	...
+party:	MEDITITE (31), HITMONTOP (31), PRIMEAPE (31)
 text:	"Do you know what calisthenics is?"
 	"I should have focused on my breathing."
 	"Breathe in, breathe out.
 	Breathe in, breathe out."
 
 - JASON (Tamer)
-loc:	...
+loc:	Viridian City Gym
 party:	...
 text:	"I'm gonna make you obey me."
 	"DILANO!"
+	"People need discipline, I just happen
+	to enjoy teaching them that."
+
+- THOMAS (Youngster Pete)
+loc:	Route 2
+party:	Ralts (9)
+text:	"Do you wanna trade POKéMON cards?"
+	"I'm not giving you my cards.
+	Hahaha!"
+	"My cousin has much cooler POKéMON
+	than you."

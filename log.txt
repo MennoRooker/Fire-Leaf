@@ -513,6 +513,7 @@ x Gen 6 types (no fairy)
 - Linearization of the gyms and routes
 - Reusable TMs
 - Reusable berries (if held)
+- Neutralize natures in daycare
 x Force SET mode
 - Trick Room (?)
 - Sitrus berry 25% HP

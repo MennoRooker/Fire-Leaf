@@ -2410,6 +2410,18 @@ s32 CalculateBaseDamage(struct BattlePokemon *attacker, struct BattlePokemon *de
     spAttack = attacker->spAttack;
     spDefense = defender->spDefense;
 
+    // Gen 4+ weather stat boosts
+    if ((gBattleWeather & B_WEATHER_SANDSTORM)
+        && (defender->type1 == TYPE_ROCK || defender->type2 == TYPE_ROCK))
+    {
+        spDefense = (spDefense * 150) / 100; // 50% boost
+    }
+    if ((gBattleWeather & B_WEATHER_HAIL)
+        && (defender->type1 == TYPE_ICE || defender->type2 == TYPE_ICE))
+    {
+        defense = (defense * 150) / 100; // 50% boost
+    }
+
     // Get attacker hold item info
     if (attacker->item == ITEM_ENIGMA_BERRY)
     {

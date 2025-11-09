@@ -75,15 +75,14 @@ ViridianCity_Gym_Text_AtsushiPostBattle::
     .string "I'm still not worthy!$"
 
 ViridianCity_Gym_Text_JasonIntro::
-    .string "POKéMON and I, we make wonderful\n"
-    .string "music together!$"
+    .string "I'm going to make you obey me.$"
 
 ViridianCity_Gym_Text_JasonDefeat::
-    .string "You are in perfect harmony!$"
+    .string "DILANO!$"
 
 ViridianCity_Gym_Text_JasonPostBattle::
-    .string "Do you know the identity of our\n"
-    .string "GYM LEADER?$"
+    .string "People lack discipline, I just\n"
+    .string "happen to enjoy teaching them that.$"
 
 ViridianCity_Gym_Text_KiyoIntro::
     .string "Karate is the ultimate form of\n"
