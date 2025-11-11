@@ -135,6 +135,15 @@ atk:	35 -> 85
 - ARIADOS
 spd:	40 -> 105
 
+- AZURILL
+NORMAL -> WATER/NORMAL
+
+- MARILL
+WATER -> WATER/NORMAL
+
+- AZUMARILL
+WATER -> WATER/NORMAL
+
 - POLITOED
 Damp -> Drizzle
 
@@ -257,6 +266,9 @@ spdef:	45 -> 55
 
 - TORKOAL
 White Smoke -> Drought
+
+- ALTARIA
+atk:	70 -> 80
 
 - WHISCASH
 atk:	78 -> 88
