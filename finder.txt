@@ -45,3 +45,26 @@ include/battle.h && include/constants/battle.h
 
 - Ability-dependent moves tables
 src/battle_util.c
+
+- Fonts
+src/new_menu_helpers.c
+
+Colors:
+{BackGround, Color, Shadow}
+0 = None
+1 = Red
+2 = Orange
+3 = Amber
+4 = Lime
+5 = Green
+6 = Yellow
+7 = Blue
+8 = Purple
+9 = Dark grey
+10= Grey
+11= Shaded amber
+12= Fuchsia
+13= Anthracite
+14= Black
+15= White
+

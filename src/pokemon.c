@@ -1386,6 +1386,16 @@ static const s8 sNatureStatTable[NUM_NATURES][NUM_NATURE_STATS] =
     [NATURE_QUIRKY]  = {    0,      0,      0,      0,      0   },
 };
 
+s8 GetNatureStatModifier(u8 nature, u8 statIndex)
+{
+    // statIndex uses STAT_ATK=1, STAT_DEF=2, etc.
+    // Nature table is indexed 0-4 (Attack, Defense, Speed, Sp.Atk, Sp.Def)
+    // So we need to subtract 1 to convert STAT_ constants to nature table indices
+    if (statIndex <= STAT_HP || statIndex > NUM_NATURE_STATS)
+        return 0;
+    return sNatureStatTable[nature][statIndex - 1];
+}
+
 #include "data/pokemon/tmhm_learnsets.h"
 #include "data/pokemon/trainer_class_lookups.h"
 #include "data/pokemon/cry_ids.h"
