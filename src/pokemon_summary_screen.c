@@ -916,6 +916,9 @@ static const u8 sLevelNickTextColors[][3] =
     {0, 11, 10},
 };
 
+static const u8 sStatBoostedTextColor[3] = {0, 14, 9}; // Green for boosted stats
+static const u8 sStatLoweredTextColor[3] = {0, 9, 10}; // Orange for lowered stats
+
 static const u8 ALIGNED(4) sMultiBattlePartyOrder[] =
 {
     0, 2, 3, 1, 4, 5
@@ -2498,12 +2501,35 @@ static void PrintInfoPage(void)
 
 static void PrintSkillsPage(void)
 {
+    u8 nature = GetNature(&sMonSummaryScreen->currentMon);
+    s8 atkMod, defMod, spaMod, spdMod, speMod;
+    const u8 *colorAtk, *colorDef, *colorSpA, *colorSpD, *colorSpe;
+
+    // Get nature modifiers for each stat
+    atkMod = GetNatureStatModifier(nature, STAT_ATK);
+    defMod = GetNatureStatModifier(nature, STAT_DEF);
+    speMod = GetNatureStatModifier(nature, STAT_SPEED);
+    spaMod = GetNatureStatModifier(nature, STAT_SPATK);
+    spdMod = GetNatureStatModifier(nature, STAT_SPDEF);
+
+    // Determine colors based on nature modifiers
+    colorAtk = (atkMod > 0) ? sStatBoostedTextColor : (atkMod < 0) ? sStatLoweredTextColor : sLevelNickTextColors[0];
+    colorDef = (defMod > 0) ? sStatBoostedTextColor : (defMod < 0) ? sStatLoweredTextColor : sLevelNickTextColors[0];
+    colorSpA = (spaMod > 0) ? sStatBoostedTextColor : (spaMod < 0) ? sStatLoweredTextColor : sLevelNickTextColors[0];
+    colorSpD = (spdMod > 0) ? sStatBoostedTextColor : (spdMod < 0) ? sStatLoweredTextColor : sLevelNickTextColors[0];
+    colorSpe = (speMod > 0) ? sStatBoostedTextColor : (speMod < 0) ? sStatLoweredTextColor : sLevelNickTextColors[0];
+
+    // HP is unaffected by nature
     AddTextPrinterParameterized3(sMonSummaryScreen->windowIds[POKESUM_WIN_RIGHT_PANE], FONT_NORMAL, 14 + sMonSkillsPrinterXpos->curHpStr, 4, sLevelNickTextColors[0], TEXT_SKIP_DRAW, sMonSummaryScreen->summary.curHpStrBuf);
-    AddTextPrinterParameterized3(sMonSummaryScreen->windowIds[POKESUM_WIN_RIGHT_PANE], FONT_NORMAL, 50 + sMonSkillsPrinterXpos->atkStr, 22, sLevelNickTextColors[0], TEXT_SKIP_DRAW, sMonSummaryScreen->summary.statValueStrBufs[PSS_STAT_ATK]);
-    AddTextPrinterParameterized3(sMonSummaryScreen->windowIds[POKESUM_WIN_RIGHT_PANE], FONT_NORMAL, 50 + sMonSkillsPrinterXpos->defStr, 35, sLevelNickTextColors[0], TEXT_SKIP_DRAW, sMonSummaryScreen->summary.statValueStrBufs[PSS_STAT_DEF]);
-    AddTextPrinterParameterized3(sMonSummaryScreen->windowIds[POKESUM_WIN_RIGHT_PANE], FONT_NORMAL, 50 + sMonSkillsPrinterXpos->spAStr, 48, sLevelNickTextColors[0], TEXT_SKIP_DRAW, sMonSummaryScreen->summary.statValueStrBufs[PSS_STAT_SPA]);
-    AddTextPrinterParameterized3(sMonSummaryScreen->windowIds[POKESUM_WIN_RIGHT_PANE], FONT_NORMAL, 50 + sMonSkillsPrinterXpos->spDStr, 61, sLevelNickTextColors[0], TEXT_SKIP_DRAW, sMonSummaryScreen->summary.statValueStrBufs[PSS_STAT_SPD]);
-    AddTextPrinterParameterized3(sMonSummaryScreen->windowIds[POKESUM_WIN_RIGHT_PANE], FONT_NORMAL, 50 + sMonSkillsPrinterXpos->speStr, 74, sLevelNickTextColors[0], TEXT_SKIP_DRAW, sMonSummaryScreen->summary.statValueStrBufs[PSS_STAT_SPE]);
+    
+    // Print stats with appropriate colors
+    AddTextPrinterParameterized3(sMonSummaryScreen->windowIds[POKESUM_WIN_RIGHT_PANE], FONT_NORMAL, 50 + sMonSkillsPrinterXpos->atkStr, 22, colorAtk, TEXT_SKIP_DRAW, sMonSummaryScreen->summary.statValueStrBufs[PSS_STAT_ATK]);
+    AddTextPrinterParameterized3(sMonSummaryScreen->windowIds[POKESUM_WIN_RIGHT_PANE], FONT_NORMAL, 50 + sMonSkillsPrinterXpos->defStr, 35, colorDef, TEXT_SKIP_DRAW, sMonSummaryScreen->summary.statValueStrBufs[PSS_STAT_DEF]);
+    AddTextPrinterParameterized3(sMonSummaryScreen->windowIds[POKESUM_WIN_RIGHT_PANE], FONT_NORMAL, 50 + sMonSkillsPrinterXpos->spAStr, 48, colorSpA, TEXT_SKIP_DRAW, sMonSummaryScreen->summary.statValueStrBufs[PSS_STAT_SPA]);
+    AddTextPrinterParameterized3(sMonSummaryScreen->windowIds[POKESUM_WIN_RIGHT_PANE], FONT_NORMAL, 50 + sMonSkillsPrinterXpos->spDStr, 61, colorSpD, TEXT_SKIP_DRAW, sMonSummaryScreen->summary.statValueStrBufs[PSS_STAT_SPD]);
+    AddTextPrinterParameterized3(sMonSummaryScreen->windowIds[POKESUM_WIN_RIGHT_PANE], FONT_NORMAL, 50 + sMonSkillsPrinterXpos->speStr, 74, colorSpe, TEXT_SKIP_DRAW, sMonSummaryScreen->summary.statValueStrBufs[PSS_STAT_SPE]);
+    
+    // EXP and Next Level are unaffected by nature
     AddTextPrinterParameterized3(sMonSummaryScreen->windowIds[POKESUM_WIN_RIGHT_PANE], FONT_NORMAL, 15 + sMonSkillsPrinterXpos->expStr, 87, sLevelNickTextColors[0], TEXT_SKIP_DRAW, sMonSummaryScreen->summary.expPointsStrBuf);
     AddTextPrinterParameterized3(sMonSummaryScreen->windowIds[POKESUM_WIN_RIGHT_PANE], FONT_NORMAL, 15 + sMonSkillsPrinterXpos->toNextLevel, 100, sLevelNickTextColors[0], TEXT_SKIP_DRAW, sMonSummaryScreen->summary.expToNextLevelStrBuf);
 }
