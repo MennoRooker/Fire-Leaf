@@ -92,13 +92,13 @@ vate at 50% HP instead of 30%. I now want to think of abili-
 ties for all the other starters so that each has a second 
 ability slot that is used. I think for the 9 starter lines:
 
-VEN: Thick Fat
+VEN: Harvest to Thick Fat
 BLA: Shell Armor
 CHA: *Solar Power
 MEG: Chlorophyll
 FRA: *Strong Jaw
 TYP: Flash Fire
-SCE: Lightning Rod(?)
+SCE: Lightning Rod
 SWA: Swift Swim
 BLA: Speed Boost
 
@@ -246,14 +246,6 @@ of picture in array respectively. Since my Bugsy is in a
 4x4 grid instead of Wx1, I'll need to figure out how to 
 get the correct frames in the correct order of the table.
 
-According to ChatGPT the indexing of the function
-overworld_frame simply continues on the next row, so I
-have Bugsy's table set at the bottom of the pic_tables.
-Since Bugsy's frames are at a height of 6 pixels instead 
-of 4 and 4 wide instead of 2 I'll have to see if scaling
-works. Now I'll add a label for the pic and pallete as
-is shown in the tutorial. I'll use u32 for the pic just to
-be sure.
 
 If not for the tutorial on how to add new events to the
 overworld this would be impossible so keep the steps as
@@ -266,18 +258,8 @@ will keep it commented out for now and just use the existing
 want a super tall Bugsy so even if I need the full image I'll
 have to compress him down a bit first.
 
-I added all the necessities so I'll compile and wee what it
-looks like when I add Bugsy to a map.
-
 I added the sprite to porymap and all I see in a green box 
 with the letter N...
-
-I'll ask around in the discord later if anybody can help.
-
-I approached Black Fragrant about his FireGold Johto sprites
-and I'm waiting for a response. In the meantime I'll try to
-implement "extremely effective" and "very ineffective" messa-
-ges during battle for 4x and 0.25x damage based on typing.
 
 Finally able to add Bugsy as a custom sprite! He's only a
 head and he's huge, but that has to do with the oam tables 
@@ -321,18 +303,6 @@ Before I compile again with the mapscripts approach I want
 make a quick list of things I intend to change before I
 forget to do them:
 
-x Give Strong Jaw to Mightyena line
-x Give Bite to Poochyena at lvl 1
-x Change the lvls of route 1
-x Give Solar power to Charizard line
-x Give Metapod and Kakuna tackle in trainer parties
-x Give Ilumise Confusion in Viridian Forest trainer
-x SET mode by default
-x Give Bulbasaur and Ivysaur smth other than Thick Fat
-
-I need to do the Bugsy thing with a trigger. I'll do that 
-later.
-
 First I want to add abilities. If I want to add Strong Jaw
 I'll have to define an array in battle_util.c with
 biting moves and I'll have to add the moves Ice Fang,
@@ -350,28 +320,8 @@ thing still compiles. I also changed Bulbasaurs and Ivy-
 saurs second abilities to effect spore until they evolve
 into Venusaur with Thick Fat.
 
-Checking Charmander's summary crashes the game... I think
-there needs to be some reference to the ability's name in
-the summary screen. I'll work with the tutorials online to
-see if I can make them work.
-
-I added names and descriptions so at least the game doesn't
-crash anymore. Now I want to go back to Bugsy.
-
 I did just realise that Bulbasaur having Effect Spore can
 be really annoying if you pick Squirtle...
-
-Bugsy's script to Viridian Forest now works, but I'll 
-have to still implement a story around it and keep the 
-player from going into Pewter City until the Route 22
-rival has been beaten and Bugsy's item has been obtained.
-
-Now though, I'll update some abilities and movesets of 
-early-game mons. I can generate files of wild encounters
-and trainer parties, so I think I'll stop updating those
-text files. I do still want to keep updating the species
-info text files based on the changes I make. The learn-
-sets I can do with a script again.
 
 I changed Dark and Ghost effectiveness on steel to neutral
 as it is since gen 6. 
@@ -380,69 +330,17 @@ Fixing the Bugsy cutscenes has been a nightmare. I think it
 had something to do with the LOCALID of Bugsy being reused. 
 I made map-dependent LOCALIDs and things seem to work now.
 
-I want the player to find Bugsy's net with a custom
-sprite for the item within the bag, and I want Bugsy
-to give the player a permanent repel item that you can
-toggle on/off throughout the playthrough.
-
-I still need to make sure Bugsy isn't there on first load
-into VF and I need him to send the player back from route 
-2 into the gate until the item is retrieved.
-
-Outrage to:
-x Arcanine
-x Feraligatr
-x Gyarados (egg)
-x Flygon (egg)
-x Salamence (egg)
-x Tropius (egg)
-x Whiscash 
-x Walrein
+Bugsy's net has a custom sprite created in GIMP from the 
+bug catcher sprite.
 
 Bugsy is fully implemented into the game with all the
 relevant logic and sprites etc.
 
-I changed the pickup table to trigger twice as often and
+I changed the pickup table to trigger more often and
 give the player EV reducing berries. 10% chance for each
 different stat. 15% sitrus, 15% rare candy, 5% PP UP,
-3% lum, 2% King's Rock.
-
-Abilities to add:
-x Snow Warning
-/ Solar Power
-/ Strong Jaw
-- Technician (Breloom & Hitmontop)
-- Harvest (Bulbasaur and Ivysaur)
-- Regenerator
-- Sheer force
-- Magic Bounce
-- Overcoat
-- Prankster(maybe)
-- Simple
-- Contrary(maybe)
-- Moxie
-- Adaptability
-- Iron Fist (Ledian & Hitmonchan)
-- Poison Heal
-- Truant(change)
-- Wind Rider (Jumpluff & Shiftry)
-- Physical contact moves (Flareon & Hitmonchan)
-
-Moves to add:
-x Quiver Dance
-- Air Slash
-- Close Combat
-- Brave Bird/Dragon Ascent
-- Aurora Veil
-- Ice Fang
-- Thunder Fang
-- Fire Fang
-
-Items to add:
-- Eviolite
-- Expert Belt
-- Wise Glasses
-- Muscle Band
+3% lum, 2% King's Rock. With the updated pickup table
+there's no reason to make berries reusable.
 
 SET mode and FAST text are now default. I still want to 
 implement forced SET mode at some point but I want to
@@ -480,18 +378,9 @@ right level. I think Diglett cave needs to remain
 closed until you've beaten him though. Still need
 that same kind of linearization for Cerulean.
 
-I think for the L=fly, R=repel function I want to 
-force LR mode like I did with SET mode. That way
-I never need to get rid of the HELP menus, just
-make sure you use L and R outside of the bag if you
-want to fly/repel.
-
 I now want to add the running shoes, but apparently they 
 aren't an actual item. The game set the flag called 
 FLAG_SYS_B_DASH to make the player able to move fast.
-I need to set this flag earlier and let the aide give
-out the Exp. Share instead. I'll then edit the aide that
-gives the Exp. Share normally.
 
 I've kept the version exclusives just that for now, but
 I think I want to give the player the option to catch the 
@@ -503,24 +392,15 @@ only in open seas.
 The only reason to have Azurill over Marill at the start
 of the game would be to give it an insane pre-evo move so
 I'll give it Body Slam and Charm.
-
-If I want to have EV reducing berries I want to have the 
-IV/EV screens implemented first. That way I can immediate-
-ly check if the berries work.
-
-LR BUTTONS:
-- Remove L=A
-- For LR mode:
-	LR Fly/Repel in overworld
-	LR in bag/summary
-	LR keys switch between Stats/IVs/EVs
-	LR Left switches mon with lead and vice versa
-- For HELP mode:
-	LR Fly/Repel in overworld
-	Arrow keys in bag/summary
-	Press (A) to switch between Stats/IVs/EVs
-	Vanilla switch functionality
 	
+I added nature highlighting and I changed some more
+wild encounters. I think what I want to have finished
+in the DEMO should be the IV/EV stuff, the encounters
+and trainer battles and adding the boys to the story.
+Other than that I think a lot of the tougher implemen-
+tations need to wait.
+
+
 
 
 
@@ -537,23 +417,72 @@ before I move on to the larger scale changes.
 TO DO:
 x Add NPC to block route 22
 x Add Bugsy
-- Bugsy gives perma repel
-- Nature highlighting
+x Force SET mode
+- Make EV berries usable
+x Nature highlighting
 - IV/EV screen
-- Custom move animations
+- Linearize Cerulean
 x Instant Running Shoes
 x Instant National Dex
 x Get Old Rod from Old Man
 x Weather defense boosts
 x Gen 6 types (no fairy)
+- Implement abilites
+- Generate docs with Python scripts
 - Linearization of the gyms and routes
 - Reusable TMs
-- Reusable berries (if held)
 - Neutralize natures in daycare
-x Force SET mode
-- Trick Room (?)
+- Custom move animations
 - Sitrus berry 25% HP
-- Make EV berries usable
+- Bugsy gives perma repel
+- Add medicine pocket
+- Add gen 4 evos
+
+
+Abilities to add:
+x Snow Warning
+/ Solar Power
+/ Strong Jaw
+- Technician (Breloom & Hitmontop)
+- Harvest (Bulbasaur and Ivysaur)
+- Regenerator
+- Sheer force
+- Magic Bounce
+- Overcoat
+- Prankster(maybe)
+- Simple
+- Contrary(maybe)
+- Moxie
+- Adaptability
+- Iron Fist (Ledian & Hitmonchan)
+- Poison Heal
+- Truant(change)
+- Wind Rider (Jumpluff & Shiftry)
+- Physical contact moves (Flareon & Hitmonchan)
+
+Moves to add:
+x Quiver Dance
+- Air Slash
+- Close Combat
+- Brave Bird/Dragon Ascent
+- Aurora Veil
+- Ice Fang
+- Thunder Fang
+- Fire Fang
+
+Items to add:
+- Eviolite
+- Expert Belt
+- Wise Glasses
+- Muscle Band
+- Focus sash
+
+
+LR BUTTONS:
+- LR Fly/Repel in overworld
+- LR+arrow keys switch pockets in bag
+- LR keys switch between Stats/IVs/EVs
+- LR Left switches mon with lead and vice versa
 
 Online resources/tutorials:
 https://github.com/pret/pokeemerald/wiki/Tutorials

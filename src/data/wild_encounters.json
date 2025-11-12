@@ -1575,12 +1575,12 @@
             "encounter_rate": 5,
             "mons": [
               {
-                "min_level": 18,
+                "min_level": 15,
                 "max_level": 18,
                 "species": "SPECIES_DIGLETT"
               },
               {
-                "min_level": 19,
+                "min_level": 16,
                 "max_level": 19,
                 "species": "SPECIES_DIGLETT"
               },
@@ -1644,12 +1644,12 @@
             "encounter_rate": 5,
             "mons": [
               {
-                "min_level": 18,
+                "min_level": 15,
                 "max_level": 18,
                 "species": "SPECIES_DIGLETT"
               },
               {
-                "min_level": 19,
+                "min_level": 16,
                 "max_level": 19,
                 "species": "SPECIES_DIGLETT"
               },
@@ -17856,7 +17856,7 @@
               {
                 "min_level": 15,
                 "max_level": 15,
-                "species": "SPECIES_SPEAROW"
+                "species": "SPECIES_MAGNEMITE"
               },
               {
                 "min_level": 12,
@@ -18010,7 +18010,7 @@
               {
                 "min_level": 15,
                 "max_level": 15,
-                "species": "SPECIES_SPEAROW"
+                "species": "SPECIES_MAGNEMITE"
               },
               {
                 "min_level": 12,

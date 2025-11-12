@@ -1,4 +1,4 @@
-- MAX (Camper):
+x MAX (Camper):
 loc:	Route 2
 party:	ZIGZAGOON (5)
 text:	"I've never won a battle before."
@@ -6,7 +6,7 @@ text:	"I've never won a battle before."
 	"My ZIGZAGOON picks up useful items for
 	me."
 
-- YOURI (Black Belt):
+/ YOURI (Black Belt):
 loc:	Saffron City Dojo
 party:	MACHOKE (31), HARIYAMA (31)
 text:	"How much can you bench?"
@@ -18,18 +18,20 @@ loc:	Outside Pewter's museum
 party:	POOCHYENA (8), VULPIX (8)
 text:	"I got my hands on some collector's
 	items. I'm gonna sell these for profit."
-	"No way!"
+	"My wife won't be happy."
 	"I'm still going to sell these items and
 	buy drugs with the money I make."
 
-- LUC (Fisherman)
+x LUC (Fisherman)
 loc:	Route 12
 party:	MAGIKARP (24), GOLDEEN (25)
 text:	"You wanna bet on who can catch the
 	biggest fish? There's no way I lose!"
 	"Now I can't pay my rent."
+	"As soon as I get my next paycheck
+	we can battle again!"
 
-- ARON (Super Nerd)
+x ARON (Super Nerd)
 loc:	Mt. Moon
 party:	ARON (13), JIGGLYPUFF (14)
 text:	"This cave is full of young trainers!"
@@ -44,8 +46,9 @@ party:	...
 text:	"If you battle me I can explain to you how
 	good you are in football terms."
 	"Ketamine!"
+	""
 
-- MIKE (Black Belt)
+/ MIKE (Black Belt)
 loc:	Saffron City Dojo
 party:	MEDITITE (31), HITMONTOP (31), PRIMEAPE (31)
 text:	"Do you know what calisthenics is?"
@@ -62,7 +65,7 @@ text:	"I'm gonna make you obey me."
 	to enjoy teaching them that."
 
 - THOMAS (Youngster Pete)
-loc:	Route 2
+loc:	Route 22
 party:	Ralts (9)
 text:	"Do you wanna trade POKéMON cards?"
 	"I'm not giving you my cards.

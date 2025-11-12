@@ -84,6 +84,12 @@ Run Away -> Flame Body
 hp:	65 -> 75
 Run Away -> Flame Body
 
+- MAGNEMITE
+Magnet Pull/Sturdy -> Levitate
+
+- MAGNETON
+Magnet Pull/Sturdy -> Levitate
+
 - FARFETCH'D
 atk:	65 -> 74
 spd:	60 -> 74
@@ -98,8 +104,17 @@ Thick Fat -> Snow Warning
 - ONIX
 atk:	45 -> 75
 
+- KRABBY
+spdef:	25 -> 35
+
+- KINGLER
+spdef:	50 -> 55
+
 - CHANSEY
 Lucky Egg 5% -> 50%
+
+- STARYU
+Water -> Water/Psychic
 
 - CHIKORITA
 Overgrow -> Overgrow/Chlorophyll
@@ -284,6 +299,9 @@ atk:	100 -> 110
 
 - CAMERUPT
 hp:	70 -> 100
+
+- SEALEO
+atk:	60 -> 70
 
 - WALREIN
 atk:	80 -> 110
