@@ -11084,10 +11084,10 @@ const struct SpeciesInfo gSpeciesInfo[] =
     {
         .baseHP = 105,
         .baseAttack = 150,
-        .baseDefense = 90,
+        .baseDefense = 85,
         .baseSpeed = 115,
-        .baseSpAttack = 150,
-        .baseSpDefense = 90,
+        .baseSpAttack = 140,
+        .baseSpDefense = 85,
         .types = {TYPE_DRAGON, TYPE_FLYING},
         .catchRate = 3,
         .expYield = 220,

@@ -63,6 +63,7 @@ NORMAL -> ROCK
 
 - Mega Drain
 40 -> 50
+10PP -> 15PP
 
 - Growth
 Raises both atk and spatk
@@ -132,6 +133,7 @@ Now has a 20% chance to flinch
 
 - Giga Drain
 60 -> 75
+5PP -> 10PP
 
 - Mega Horn
 85% -> 90%

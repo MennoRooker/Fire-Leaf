@@ -25,9 +25,9 @@ RockTunnel_1F_EventScript_Lucas::
 	msgbox RockTunnel_1F_Text_LucasPostBattle, MSGBOX_AUTOCLOSE
 	end
 
-RockTunnel_1F_EventScript_Ashton::
-	trainerbattle_single TRAINER_POKEMANIAC_ASHTON, RockTunnel_1F_Text_AshtonIntro, RockTunnel_1F_Text_AshtonDefeat
-	msgbox RockTunnel_1F_Text_AshtonPostBattle, MSGBOX_AUTOCLOSE
+RockTunnel_1F_EventScript_Abe::
+	trainerbattle_single TRAINER_POKEMANIAC_ASHTON, RockTunnel_1F_Text_AbeIntro, RockTunnel_1F_Text_AbeDefeat
+	msgbox RockTunnel_1F_Text_AbePostBattle, MSGBOX_AUTOCLOSE
 	end
 
 RockTunnel_1F_EventScript_Leah::

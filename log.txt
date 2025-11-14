@@ -400,6 +400,9 @@ and trainer battles and adding the boys to the story.
 Other than that I think a lot of the tougher implemen-
 tations need to wait.
 
+If I'm going to make TMs reusable I need to change the
+accessibility of them. Like TM31 Brick Break being in
+the store, but you already find it in the S.S. Anne.
 
 
 
@@ -409,10 +412,13 @@ tations need to wait.
 
 
 
-!CURRENTLY all changes are either small, global changes
-or just pertaining to the first region of the game. The first
-cartridge I flash will be a demo of these early game changes
-before I move on to the larger scale changes.
+
+
+
+
+
+
+
 
 TO DO:
 x Add NPC to block route 22
@@ -422,21 +428,28 @@ x Force SET mode
 x Nature highlighting
 - IV/EV screen
 - Linearize Cerulean
+- TM redistriibution
+- Ethers -> Elixirs
+- Remove X items
 x Instant Running Shoes
 x Instant National Dex
 x Get Old Rod from Old Man
 x Weather defense boosts
 x Gen 6 types (no fairy)
+- No items in battle
+---------------------------------------
+- Bugsy gives perma repel
 - Implement abilites
-- Generate docs with Python scripts
+- Determine natures of opponents
 - Linearization of the gyms and routes
 - Reusable TMs
 - Neutralize natures in daycare
 - Custom move animations
 - Sitrus berry 25% HP
-- Bugsy gives perma repel
 - Add medicine pocket
+- Generate docs with Python scripts
 - Add gen 4 evos
+
 
 
 Abilities to add:

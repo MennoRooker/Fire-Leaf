@@ -43,10 +43,11 @@ text:	"This cave is full of young trainers!"
 - ABE (Pokemaniac (Ashton))
 loc:	...
 party:	...
-text:	"If you battle me I can explain to you how
+text:	"If you battle me I can tell you how
 	good you are in football terms."
+	"You know ball."
 	"Ketamine!"
-	""
+	
 
 / MIKE (Black Belt)
 loc:	Saffron City Dojo

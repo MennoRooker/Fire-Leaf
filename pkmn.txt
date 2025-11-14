@@ -295,7 +295,7 @@ spatk:	40 -> 90
 spd:	95 -> 115
 
 - FLYGON
-atk:	100 -> 110
+atk:	100-> 110
 
 - CAMERUPT
 hp:	70 -> 100
@@ -324,7 +324,7 @@ spd:	75 -> 98
 
 - SEVIPER
 def:	60 -> 90
-spatk:	100 -> 80
+spatk:	100-> 80
 spdef:	60 -> 80
 
 - LAIRON
@@ -343,4 +343,7 @@ spd:	45 -> 55
 GROUND -> GROUND/FIRE
 
 - RAYQUAZA
+def:	90 -> 85
+spatk:	150-> 140
+spdef:	90 -> 85
 spd:	95 -> 115

@@ -34,15 +34,15 @@ RockTunnel_1F_Text_LucasDefeat::
 RockTunnel_1F_Text_LucasPostBattle::
     .string "You're talented enough to hike!$"
 
-RockTunnel_1F_Text_AshtonIntro::
-    .string "POKéMON fight!\n"
-    .string "Ready, go!$"
+RockTunnel_1F_Text_AbeIntro::
+    .string "If you battle me I can tell you how\n"
+    .string "good you are in football terms.$"
 
-RockTunnel_1F_Text_AshtonDefeat::
-    .string "Game over!$"
+RockTunnel_1F_Text_AbeDefeat::
+    .string "You know ball.$"
 
-RockTunnel_1F_Text_AshtonPostBattle::
-    .string "Oh well, I'll get a ZUBAT as I go!$"
+RockTunnel_1F_Text_AbePostBattle::
+    .string "Ketamine!$"
 
 RockTunnel_1F_Text_LeahIntro::
     .string "Eek!\p"
