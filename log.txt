@@ -404,6 +404,11 @@ If I'm going to make TMs reusable I need to change the
 accessibility of them. Like TM31 Brick Break being in
 the store, but you already find it in the S.S. Anne.
 
+Maybe it's a fun idea to require the player to collect
+certain things from all the different surf zones once
+you get the HM. That way you're not stumbling upon it
+later in the game, when you're already overleveled.
+
 
 
 
@@ -428,7 +433,7 @@ x Force SET mode
 x Nature highlighting
 - IV/EV screen
 - Linearize Cerulean
-- TM redistriibution
+- TM redistribution
 - Ethers -> Elixirs
 - Remove X items
 x Instant Running Shoes
