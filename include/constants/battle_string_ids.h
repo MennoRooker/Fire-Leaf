@@ -395,8 +395,9 @@
 #define STRINGID_TARGETTRAPPEDBYSPIDERWEB 393
 #define STRINGID_TARGETNOLONGERTRAPPEDBYSPIDERWEB 394
 #define STRINGID_PKMNRAISEDATTACKWITH 395
+#define STRINGID_PKMNTOOKDAMAGEFROMITEM 396
 
-#define BATTLESTRINGS_COUNT     396
+#define BATTLESTRINGS_COUNT     397
 
 // This is the string id that gBattleStringsTable starts with.
 // String ids before this (e.g. STRINGID_INTROMSG) are not in the table,

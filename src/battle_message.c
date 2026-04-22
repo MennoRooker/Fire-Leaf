@@ -524,6 +524,7 @@ const u8 gText_WinEarnsPrizeMoney[] = _("OAK: Hm! Excellent!\pIf you win, you ea
 const u8 gText_HowDissapointing[] = _("OAK: Hm…\nHow disappointing…\pIf you win, you earn prize money,\nand your POKéMON grow.\pBut if you lose, {B_PLAYER_NAME}, you end\nup paying prize money…\pHowever, since you had no warning\nthis time, I'll pay for you.\pBut things won't be this way once\nyou step outside these doors.\pThat's why you must strengthen your\nPOKéMON by battling wild POKéMON.\p");
 static const u8 sText_PkmnHungOnWithSturdy[] = _("{B_DEF_NAME_WITH_PREFIX} hung on\nwith STURDY!");
 static const u8 sText_PkmnsItemWeakenedTypeMove[] = _("{B_DEF_NAME_WITH_PREFIX}'s {B_LAST_ITEM}\nweakened the {B_BUFF1}-type move!");
+static const u8 sText_PkmnTookDamageFromItem[] = _("{B_ATK_NAME_WITH_PREFIX} took damage\nfrom {B_LAST_ITEM}.");
 
 const u8 *const gBattleStringsTable[BATTLESTRINGS_COUNT - BATTLESTRINGS_TABLE_START] = {
     [STRINGID_TRAINER1LOSETEXT - BATTLESTRINGS_TABLE_START]              = sText_Trainer1LoseText,
@@ -910,6 +911,7 @@ const u8 *const gBattleStringsTable[BATTLESTRINGS_COUNT - BATTLESTRINGS_TABLE_ST
     [STRINGID_TARGETTRAPPEDBYSPIDERWEB - BATTLESTRINGS_TABLE_START]      = sText_TargetTrappedBySpiderWeb,
     [STRINGID_TARGETNOLONGERTRAPPEDBYSPIDERWEB - BATTLESTRINGS_TABLE_START] = sText_TargetNoLongerTrappedBySpiderWeb,
     [STRINGID_PKMNRAISEDATTACKWITH - BATTLESTRINGS_TABLE_START]          = sText_PkmnRaisedAttackWith,
+    [STRINGID_PKMNTOOKDAMAGEFROMITEM - BATTLESTRINGS_TABLE_START]        = sText_PkmnTookDamageFromItem,
 };
 
 const u16 gMissStringIds[] =

@@ -2614,6 +2614,8 @@ s32 CalculateBaseDamage(struct BattlePokemon *attacker, struct BattlePokemon *de
         gBattleMovePower = (4505 * gBattleMovePower) / 4096;
     if (attackerHoldEffect == HOLD_EFFECT_WISE_GLASSES && IS_TYPE_SPECIAL(type))
         gBattleMovePower = (4505 * gBattleMovePower) / 4096;
+    if (attackerHoldEffect == HOLD_EFFECT_LIFE_ORB)
+        gBattleMovePower = (5324 * gBattleMovePower) / 4096;
     if (attacker->ability == ABILITY_STRONG_JAW && IsBitingMove(gCurrentMove))
         gBattleMovePower = (150 * gBattleMovePower) / 100;
     if (type == TYPE_BUG && attacker->ability == ABILITY_SWARM && attacker->hp <= (attacker->maxHP / 2))

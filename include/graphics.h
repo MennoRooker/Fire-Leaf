@@ -3205,6 +3205,8 @@ extern const u32 gItemIcon_WiseGlasses[];
 extern const u32 gItemIconPalette_WiseGlasses[];
 extern const u32 gItemIcon_LightClay[];
 extern const u32 gItemIconPalette_LightClay[];
+extern const u32 gItemIcon_LifeOrb[];
+extern const u32 gItemIconPalette_LifeOrb[];
 extern const u32 gItemIcon_Scarf[];
 extern const u32 gItemIconPalette_RedScarf[];
 extern const u32 gItemIconPalette_BlueScarf[];

@@ -259,8 +259,8 @@ static const u32 *const sItemIconTable[ITEMS_COUNT + 1][2] =
     [ITEM_WIDE_LENS]      = {gItemIcon_WideLens, gItemIconPalette_WideLens},
     [ITEM_WISE_GLASSES]   = {gItemIcon_WiseGlasses, gItemIconPalette_WiseGlasses},
     [ITEM_LIGHT_CLAY]     = {gItemIcon_LightClay, gItemIconPalette_LightClay},
+    [ITEM_LIFE_ORB]       = {gItemIcon_LifeOrb, gItemIconPalette_LifeOrb},
     // ????????
-    [ITEM_0F1]            = {gItemIcon_QuestionMark, gItemIconPalette_QuestionMark},
     [ITEM_0F2]            = {gItemIcon_QuestionMark, gItemIconPalette_QuestionMark},
     [ITEM_0F3]            = {gItemIcon_QuestionMark, gItemIconPalette_QuestionMark},
     [ITEM_0F4]            = {gItemIcon_QuestionMark, gItemIconPalette_QuestionMark},

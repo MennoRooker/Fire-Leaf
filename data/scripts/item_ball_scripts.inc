@@ -334,8 +334,8 @@ PokemonMansion_B1F_EventScript_ItemTM14::
 	finditem ITEM_TM14
 	end
 
-PokemonMansion_B1F_EventScript_ItemFullRestore::
-	finditem ITEM_FULL_RESTORE
+PokemonMansion_B1F_EventScript_ItemLifeOrb::
+	finditem ITEM_LIFE_ORB
 	end
 
 PokemonMansion_B1F_EventScript_ItemTM22::

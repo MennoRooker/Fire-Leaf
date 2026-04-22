@@ -247,7 +247,7 @@
 #define ITEM_WIDE_LENS 238
 #define ITEM_WISE_GLASSES 239
 #define ITEM_LIGHT_CLAY 240
-#define ITEM_0F1 241
+#define ITEM_LIFE_ORB 241
 #define ITEM_0F2 242
 #define ITEM_0F3 243
 #define ITEM_0F4 244
