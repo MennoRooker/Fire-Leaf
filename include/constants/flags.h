@@ -489,7 +489,7 @@
 #define FLAG_HIDE_SEAFOAM_ISLANDS_1F_ICE_HEAL                   0x1D4
 #define FLAG_HIDE_SEAFOAM_ISLANDS_B1F_WATER_STONE               0x1D5
 #define FLAG_HIDE_SEAFOAM_ISLANDS_B1F_REVIVE                    0x1D6
-#define FLAG_HIDE_SEAFOAM_ISLANDS_B2F_BIG_PEARL                 0x1D7
+#define FLAG_HIDE_SEAFOAM_ISLANDS_B2F_NEVER_MELT_ICE            0x1D7
 #define FLAG_HIDE_SEAFOAM_ISLANDS_B4F_ULTRA_BALL                0x1D8
 #define FLAG_HIDE_FOUR_ISLAND_STAR_PIECE                        0x1D9
 #define FLAG_HIDE_FOUR_ISLAND_STARDUST                          0x1DA

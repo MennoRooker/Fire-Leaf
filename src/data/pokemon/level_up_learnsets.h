@@ -2093,8 +2093,6 @@ static const u16 sKabutopsLevelUpLearnset[] = {
 static const u16 sAerodactylLevelUpLearnset[] = {
     LEVEL_UP_MOVE(1, MOVE_WING_ATTACK),
     LEVEL_UP_MOVE(1, MOVE_THUNDER_FANG),
-    LEVEL_UP_MOVE(1, MOVE_ICE_FANG),
-    LEVEL_UP_MOVE(1, MOVE_FIRE_FANG),
     LEVEL_UP_MOVE(8, MOVE_AGILITY),
     LEVEL_UP_MOVE(15, MOVE_BITE),
     LEVEL_UP_MOVE(22, MOVE_SUPERSONIC),

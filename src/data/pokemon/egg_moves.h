@@ -481,6 +481,8 @@ const u16 gEggMoves[] = {
     egg_moves(AERODACTYL,
               MOVE_WHIRLWIND,
               MOVE_PURSUIT,
+              MOVE_ICE_FANG,
+              MOVE_FIRE_FANG,
               MOVE_FORESIGHT,
               MOVE_STEEL_WING,
               MOVE_DRAGON_BREATH,

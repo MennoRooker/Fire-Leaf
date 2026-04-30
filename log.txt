@@ -1281,7 +1281,6 @@ Electivire and probably Garchomp etc.
 
 
 TO DO:
-x Add Bugsy
 x Force SET mode
 x EV berries
 x Nature highlighting
@@ -1289,32 +1288,27 @@ x IV/EV screen
 x Medicine pocket
 x LR buttons
 x Perma repel
-x L = map before getting fly
-x TM redistribution
-x Remove Ethers
-x Remove X items
-x Instant Running Shoes
+x All TMs in stores
+x No Ethers
+x No X items
+x Early Running Shoes
 x Instant National Dex
-x NatDex checks by aides
-x Opponent natures & abilities
 x Sitrus berry 25% HP
 x Weather defense boosts
 x Gen 6 type mechanics
 x No items in battle
 x Catch rates
 x Neutralize natures in daycare
-x Poison & Paralysis
-x Implement current abilities
+x Poison, Sleep & Para rework
+x New abilities
 x Fishing rods redistribution
 x Full restore PP
 x Exp Candies
-x Rename scripts
 x Dynamic items
 x Bottle Caps
-x Sleep turns
-x Tutors require shards
-x VS Seeker
-x Recharge Moves
+x Shards for tutors
+x VS Seeker rework
+x Recharge Moves rework
 x AI fixes
 x Cerulean relearner
 x Egg Move tutor
@@ -1338,6 +1332,7 @@ x Linearizations
 - International Dex (Gens IV & V)
 - Paul Champion
 - Physical/special split
+- Pokedex stats screen
 - Dynamic speed
 - Implement all abilites
 - Custom move animations

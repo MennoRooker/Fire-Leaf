@@ -514,8 +514,8 @@ SeafoamIslands_B1F_EventScript_ItemRevive::
 	finditem ITEM_REVIVE
 	end
 
-SeafoamIslands_B2F_EventScript_ItemBigPearl::
-	finditem ITEM_BIG_PEARL
+SeafoamIslands_B2F_EventScript_ItemNeverMeltIce::
+	finditem ITEM_NEVER_MELT_ICE
 	end
 
 SeafoamIslands_B4F_EventScript_ItemUltraBall::
