@@ -6726,6 +6726,8 @@ static void Cmd_trymirrormove(void)
 
 static void Cmd_setrain(void)
 {
+    u8 holdEffect = ItemId_GetHoldEffect(gBattleMons[gBattlerAttacker].item);
+
     if (gBattleWeather & B_WEATHER_RAIN)
     {
         gMoveResultFlags |= MOVE_RESULT_MISSED;
@@ -6735,7 +6737,7 @@ static void Cmd_setrain(void)
     {
         gBattleWeather = B_WEATHER_RAIN_TEMPORARY;
         gBattleCommunication[MULTISTRING_CHOOSER] = B_MSG_STARTED_RAIN;
-        gWishFutureKnock.weatherDuration = 5;
+        gWishFutureKnock.weatherDuration = (holdEffect == HOLD_EFFECT_DAMP_ROCK) ? 8 : 5;
     }
     gBattlescriptCurrInstr++;
 }
@@ -7553,6 +7555,8 @@ static void Cmd_damagetohalftargethp(void)
 
 static void Cmd_setsandstorm(void)
 {
+    u8 holdEffect = ItemId_GetHoldEffect(gBattleMons[gBattlerAttacker].item);
+
     if (gBattleWeather & B_WEATHER_SANDSTORM)
     {
         gMoveResultFlags |= MOVE_RESULT_MISSED;
@@ -7562,7 +7566,7 @@ static void Cmd_setsandstorm(void)
     {
         gBattleWeather = B_WEATHER_SANDSTORM_TEMPORARY;
         gBattleCommunication[MULTISTRING_CHOOSER] = B_MSG_STARTED_SANDSTORM;
-        gWishFutureKnock.weatherDuration = 5;
+        gWishFutureKnock.weatherDuration = (holdEffect == HOLD_EFFECT_SMOOTH_ROCK) ? 8 : 5;
     }
     gBattlescriptCurrInstr++;
 }
@@ -8734,6 +8738,8 @@ static void Cmd_jumpifnopursuitswitchdmg(void)
 
 static void Cmd_setsunny(void)
 {
+    u8 holdEffect = ItemId_GetHoldEffect(gBattleMons[gBattlerAttacker].item);
+
     if (gBattleWeather & B_WEATHER_SUN)
     {
         gMoveResultFlags |= MOVE_RESULT_MISSED;
@@ -8743,7 +8749,7 @@ static void Cmd_setsunny(void)
     {
         gBattleWeather = B_WEATHER_SUN_TEMPORARY;
         gBattleCommunication[MULTISTRING_CHOOSER] = B_MSG_STARTED_SUNLIGHT;
-        gWishFutureKnock.weatherDuration = 5;
+        gWishFutureKnock.weatherDuration = (holdEffect == HOLD_EFFECT_HEAT_ROCK) ? 8 : 5;
     }
 
     gBattlescriptCurrInstr++;
@@ -9009,6 +9015,8 @@ static void Cmd_setminimize(void)
 
 static void Cmd_sethail(void)
 {
+    u8 holdEffect = ItemId_GetHoldEffect(gBattleMons[gBattlerAttacker].item);
+
     if (gBattleWeather & B_WEATHER_HAIL)
     {
         gMoveResultFlags |= MOVE_RESULT_MISSED;
@@ -9018,7 +9026,7 @@ static void Cmd_sethail(void)
     {
         gBattleWeather = B_WEATHER_HAIL_TEMPORARY;
         gBattleCommunication[MULTISTRING_CHOOSER] = B_MSG_STARTED_HAIL;
-        gWishFutureKnock.weatherDuration = 5;
+        gWishFutureKnock.weatherDuration = (holdEffect == HOLD_EFFECT_ICY_ROCK) ? 8 : 5;
     }
 
     gBattlescriptCurrInstr++;

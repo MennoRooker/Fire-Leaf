@@ -7682,8 +7682,8 @@ static const struct TrainerMonItemCustomMovesNatureAbility sParty_LeaderBlaine[]
         .lvl = 53,
         .species = SPECIES_RAPIDASH,
         .moves = {MOVE_SOLAR_BEAM, MOVE_FIRE_SPIN, MOVE_SUNNY_DAY, MOVE_IRON_TAIL},
-        .heldItem = ITEM_POWER_HERB,
-        .nature = NATURE_HARDY,
+        .heldItem = ITEM_BRIGHT_POWDER,
+        .nature = NATURE_HASTY,
         .abilitySlot = 1,
     },
     {

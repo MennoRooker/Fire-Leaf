@@ -1408,19 +1408,20 @@ x Loaded Dice
 x Wise Glasses
 x Muscle Band
 x Choice Items
+x Life Orb
+x Damp Rock
+x Heat Rock
+x Smooth Rock
+x Icy Rock
 / Rocky Helmet
 / Assault Vest
 / Big Root
 / Wide Lens
 / Expert Belt
-/ Damp Rock
-/ Heat Rock
-/ Smooth Rock
-/ Icy Rock
 / Eviolite
 / Air Balloon
 / Light Clay
-- Life Orb
+
 
 
 
