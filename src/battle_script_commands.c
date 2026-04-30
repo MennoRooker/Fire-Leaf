@@ -618,7 +618,8 @@ static const struct StatFractions sAccuracyStageRatios[] =
 };
 
 // The chance is 1/N for each stage.
-static const u16 sCriticalHitChance[] = {16, 8, 4, 3, 2};
+// Custom progression: 1/16, 1/8, 1/4, 1/2, 1/1 (guaranteed at max stage).
+static const u16 sCriticalHitChance[] = {16, 8, 4, 2, 1};
 
 static const u32 sStatusFlagsForMoveEffects[NUM_MOVE_EFFECTS] =
 {
@@ -2913,15 +2914,18 @@ void SetMoveEffect(bool8 primary, u8 certain)
                 }
                 break;
             case MOVE_EFFECT_PREVENT_ESCAPE:
-                gBattleMons[gBattlerTarget].status2 |= STATUS2_ESCAPE_PREVENTION;
-                if (gCurrentMove == MOVE_SPIDER_WEB)
+                if (!IS_BATTLER_OF_TYPE(gBattlerTarget, TYPE_GHOST))
                 {
-                    gDisableStructs[gBattlerTarget].spiderWebTrapTimer = 4;
-                }
-                else
-                {
-                    gDisableStructs[gBattlerTarget].battlerPreventingEscape = gBattlerAttacker;
-                    gDisableStructs[gBattlerTarget].isEscapePreventionUserDependent = TRUE;
+                    gBattleMons[gBattlerTarget].status2 |= STATUS2_ESCAPE_PREVENTION;
+                    if (gCurrentMove == MOVE_SPIDER_WEB)
+                    {
+                        gDisableStructs[gBattlerTarget].spiderWebTrapTimer = 4;
+                    }
+                    else
+                    {
+                        gDisableStructs[gBattlerTarget].battlerPreventingEscape = gBattlerAttacker;
+                        gDisableStructs[gBattlerTarget].isEscapePreventionUserDependent = TRUE;
+                    }
                 }
                 gBattlescriptCurrInstr++;
                 break;
