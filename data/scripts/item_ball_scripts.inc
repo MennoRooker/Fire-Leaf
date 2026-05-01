@@ -602,8 +602,8 @@ ThreeIsland_BerryForest_EventScript_ItemChoiceSpecs::
 	finditem ITEM_CHOICE_SPECS
 	end
 
-MtEmber_Exterior_EventScript_ItemUltraBall::
-	finditem ITEM_ULTRA_BALL
+MtEmber_Exterior_EventScript_ItemHeatRock::
+	finditem ITEM_HEAT_ROCK
 	end
 
 MtEmber_Exterior_EventScript_ItemFireStone::
@@ -618,8 +618,8 @@ FourIsland_IcefallCave_1F_EventScript_ItemUltraBall::
 	finditem ITEM_ULTRA_BALL
 	end
 
-FourIsland_IcefallCave_1F_EventScript_ItemHM07::
-	finditem ITEM_HM07
+FourIsland_IcefallCave_1F_EventScript_ItemIcyRock::
+	finditem ITEM_ICY_ROCK
 	end
 
 FourIsland_IcefallCave_B1F_EventScript_ItemFullRestore::

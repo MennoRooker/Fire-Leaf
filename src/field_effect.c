@@ -1632,8 +1632,19 @@ static bool8 waterfall_1_do_anim_probably(struct Task *task, struct ObjectEvent 
     if (!ObjectEventIsMovementOverridden(playerObj))
     {
         ObjectEventClearHeldMovementIfFinished(playerObj);
-        gFieldEffectArguments[0] = task->data[1];
-        FieldEffectStart(FLDEFF_FIELD_MOVE_SHOW_MON_INIT);
+        if (task->data[1] == PARTY_SIZE)
+        {
+            // No party mon knows Waterfall, show Seaking with fixed personality/trainer values.
+            gFieldEffectArguments[0] = SPECIES_SEAKING | 0x80000000;
+            gFieldEffectArguments[1] = 0x12345678;
+            gFieldEffectArguments[2] = 0x79ABCDEF;
+            FieldEffectStart(FLDEFF_FIELD_MOVE_SHOW_MON);
+        }
+        else
+        {
+            gFieldEffectArguments[0] = task->data[1];
+            FieldEffectStart(FLDEFF_FIELD_MOVE_SHOW_MON_INIT);
+        }
         task->data[0]++;
     }
     return FALSE;

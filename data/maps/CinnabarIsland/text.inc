@@ -41,7 +41,7 @@ CinnabarIsland_Text_ComeWithMeToOneIsland::
     .string "A friend invited me, so I'm on my\n"
     .string "way out there.\p"
     .string "How about it?\n"
-    .string "Do you feel like coming with me?$"
+    .string "Are you ready to come with me?$"
 
 CinnabarIsland_Text_AllRightLetsGo::
     .string "All right, then.\n"

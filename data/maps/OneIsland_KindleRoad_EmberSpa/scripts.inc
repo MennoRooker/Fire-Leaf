@@ -25,8 +25,20 @@ OneIsland_KindleRoad_EmberSpa_EventScript_BlackBelt::
 	release
 	end
 
-OneIsland_KindleRoad_EmberSpa_EventScript_OldRockSmashMan::
-	msgbox OneIsland_KindleRoad_EmberSpa_Text_UsedThisToMakeEmberSpa, MSGBOX_NPC
+OneIsland_KindleRoad_EmberSpa_EventScript_WaterfallMan::
+	lock
+	faceplayer
+	goto_if_set FLAG_GOT_HM07, OneIsland_KindleRoad_EmberSpa_EventScript_AlreadyGotHM07
+	msgbox OneIsland_KindleRoad_EmberSpa_Text_UsedThisToMakeEmberSpa
+	giveitem ITEM_HM07
+	setflag FLAG_GOT_HM07
+	msgbox OneIsland_KindleRoad_EmberSpa_Text_ExplainHM07
+	release
+	end
+
+OneIsland_KindleRoad_EmberSpa_EventScript_AlreadyGotHM07::
+	msgbox OneIsland_KindleRoad_EmberSpa_Text_ExplainHM07
+	release
 	end
 
 OneIsland_KindleRoad_EmberSpa_EventScript_SpaHeal::

@@ -1279,6 +1279,15 @@ of gen 4 mons so he would be perfect for an international
 dex showcase and finisher. I want him to at least have an
 Electivire and probably Garchomp etc.
 
+With so many held items being available to the player I 
+eventually want to tone it down quite a bit. I think 
+having the 3 choice items as rewards for the Pokémon 
+Tower makes sense. Then remove items like the Life Orb 
+from the mid-game and make those end-game items. Perhaps
+the weather rock could be in their respective caves, but
+with reusable berries there is much that the player gets
+to make their life easier.
+
 
 TO DO:
 x Force SET mode
@@ -1313,17 +1322,15 @@ x AI fixes
 x Cerulean relearner
 x Egg Move tutor
 x Linearizations
-/ HMs rework
+x HMs rework
 / Balancing
-- Letters
-- Ghosts can escape
 - ITEM-MOVE option
 - HP beeping
 - Faster Bike
 - Victory Road FLY checkpoint
 - Agatha's Flutter Mane
 - Max rematch
-- Steven E4
+- Champion Paul
 - Title screen
 - Clean up
 - Documentation
@@ -1332,7 +1339,7 @@ x Linearizations
 - International Dex (Gens IV & V)
 - Paul Champion
 - Physical/special split
-- Pokedex stats screen
+- Pokedex stats & evo screens
 - Dynamic speed
 - Implement all abilites
 - Custom move animations
@@ -1345,8 +1352,53 @@ x Linearizations
 
 
 
+ITEMS TO ADD:
+x Soul Orb
+x Exp Candies
+x Bottle Caps
+x Focus Sash
+x Loaded Dice
+x Wise Glasses
+x Muscle Band
+x Choice Items
+x Life Orb
+x Damp Rock
+x Heat Rock
+x Smooth Rock
+x Icy Rock
+/ Rocky Helmet
+/ Assault Vest
+/ Big Root
+/ Wide Lens
+/ Expert Belt
+/ Eviolite
+/ Air Balloon
+/ Light Clay
 
-Abilities to add:
+MOVES TO ADD:
+x Quiver Dance
+x Bulldoze
+x Ice Fang
+x Thunder Fang
+x Fire Fang
+- Iron Head
+- X-Scissor
+- Bug Bite
+- Air Slash
+- Close Combat
+- Brave Bird/Dragon Ascent
+- Aurora Veil
+- Poison Jab
+- Rock Polish (Erika's sudowoodo)
+- Freeze Dry
+- Dark Pulse
+- Focus Blast
+- Aura Sphere
+- Draco Meteor
+- Dragon Pulse
+- High Horsepower
+
+ABILITIES TO ADD:
 x Snow Warning
 x Dragon's Maw
 x Solar Power
@@ -1372,56 +1424,6 @@ x Solid Rock
 - Sniper
 - Tinted Lens
 - Multiscale
-
-
-Moves to add:
-x Quiver Dance
-x Bulldoze
-x Ice Fang
-x Thunder Fang
-x Fire Fang
-- Iron Head
-- X-Scissor
-- Bug Bite
-- Air Slash
-- Close Combat
-- Brave Bird/Dragon Ascent
-- Aurora Veil
-- Poison Jab
-- Rock Polish (Erika's sudowoodo)
-- Freeze Dry
-- Dark Pulse
-- Focus Blast
-- Aura Sphere
-- Draco Meteor
-- Dragon Pulse
-- High Horsepower
-
-
-
-Items to add:
-x Soul Orb
-x Exp Candies
-x Bottle Caps
-x Focus Sash
-x Loaded Dice
-x Wise Glasses
-x Muscle Band
-x Choice Items
-x Life Orb
-x Damp Rock
-x Heat Rock
-x Smooth Rock
-x Icy Rock
-/ Rocky Helmet
-/ Assault Vest
-/ Big Root
-/ Wide Lens
-/ Expert Belt
-/ Eviolite
-/ Air Balloon
-/ Light Clay
-
 
 
 

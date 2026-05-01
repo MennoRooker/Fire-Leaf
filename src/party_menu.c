@@ -4339,7 +4339,16 @@ void CB2_ReturnToPartyMenuFromFlyMap(void)
 
 static void FieldCallback_Waterfall(void)
 {
-    gFieldEffectArguments[0] = GetCursorSelectionMonId();
+    u8 i;
+    gFieldEffectArguments[0] = PARTY_SIZE;
+    for (i = 0; i < PARTY_SIZE; i++)
+    {
+        if (!GetMonData(&gPlayerParty[i], MON_DATA_IS_EGG) && MonKnowsMove(&gPlayerParty[i], MOVE_WATERFALL))
+        {
+            gFieldEffectArguments[0] = i;
+            break;
+        }
+    }
     FieldEffectStart(FLDEFF_USE_WATERFALL);
 }
 

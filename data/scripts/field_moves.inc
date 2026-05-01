@@ -191,13 +191,9 @@ Text_StrengthMadeMovingBouldersPossible::
 EventScript_Waterfall::
 	goto_if_questlog EventScript_ReleaseEnd
 	lockall
+	goto_if_unset FLAG_GOT_HM07, EventScript_WaterCrashingDown
 	checkpartymove MOVE_WATERFALL
-	goto_if_eq VAR_RESULT, PARTY_SIZE, EventScript_WaterCrashingDown
-	bufferpartymonnick STR_VAR_1, VAR_RESULT
 	setfieldeffectargument 0, VAR_RESULT
-	msgbox Text_UseWaterfall, MSGBOX_YESNO
-	goto_if_eq VAR_RESULT, NO, EventScript_EndWaterfall
-	msgbox Text_MonUsedWaterfall
 	dofieldeffect FLDEFF_USE_WATERFALL
 	goto EventScript_EndWaterfall
 
@@ -212,13 +208,6 @@ EventScript_EndWaterfall:
 Text_WallOfWaterCrashingDown::
 	.string "A wall of water is crashing down\n"
 	.string "with a mighty roar.$"
-
-Text_UseWaterfall::
-	.string "It's a large waterfall.\n"
-	.string "Would you like to use WATERFALL?$"
-
-Text_MonUsedWaterfall::
-	.string "{STR_VAR_1} used WATERFALL.$"
 
 @ Unused leftover from R/S
 EventScript_DeepWater::

@@ -43,5 +43,11 @@ OneIsland_KindleRoad_EmberSpa_Text_UsedThisToMakeEmberSpa::
     .string "volcanoes.\p"
     .string "The EMBER SPA here, well,\n"
     .string "I made it years ago.\p"
-    .string "I hewed the pool right out of a\n"
-    .string "gigantic boulder by hand.$"
+    .string "It was hard to navigate the caves\n"
+    .string "and waterfalls, but I did it.\p"
+    .string "Luckily I had help from my POKéMON\n"
+    .string "SEAKING.$"
+
+OneIsland_KindleRoad_EmberSpa_Text_ExplainHM07::
+    .string "Climb up waterfalls with a strong\n"
+    .string "enough WATER-type POKéMON.$"
