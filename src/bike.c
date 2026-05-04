@@ -191,7 +191,7 @@ static void BikeTransition_MoveDirection(u8 direction)
             else if (PlayerIsMovingOnRockStairs(direction))
                 PlayerWalkFaster(direction);
             else
-                PlayerRideWaterCurrent(direction);
+                PlayerBikeFast(direction);
         }
     }
 }

@@ -860,6 +860,11 @@ void PlayerRideWaterCurrent(u8 direction)
     PlayerSetAnimId(GetRideWaterCurrentMovementAction(direction), 2);
 }
 
+void PlayerBikeFast(u8 direction)
+{
+    PlayerSetAnimId(GetWalkFasterMovementAction(direction), 2);
+}
+
 void PlayerWalkFaster(u8 direction)
 {
     PlayerSetAnimId(GetWalkFasterMovementAction(direction), 2);
@@ -878,7 +883,7 @@ void PlayerRunSlow(u8 direction)
 void PlayerOnBikeCollide(u8 direction)
 {
     PlayCollisionSoundIfNotFacingWarp(direction);
-    PlayerSetAnimId(GetWalkInPlaceNormalMovementAction(direction), 2);
+    PlayerSetAnimId(GetWalkInPlaceSlowMovementAction(direction), 2);
 }
 
 void PlayerNotOnBikeCollide(u8 direction)

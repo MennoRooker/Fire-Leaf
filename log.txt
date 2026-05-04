@@ -1330,10 +1330,10 @@ x Cerulean relearner
 x Egg Move tutor
 x Linearizations
 x HMs rework
+x Faster Bike
 / Balancing
 - ITEM-MOVE option
 - HP beeping
-- Faster Bike
 - Victory Road FLY checkpoint
 - Agatha's Flutter Mane
 - Max rematch
