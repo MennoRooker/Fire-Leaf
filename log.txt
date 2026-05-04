@@ -1288,6 +1288,13 @@ the weather rock could be in their respective caves, but
 with reusable berries there is much that the player gets
 to make their life easier.
 
+I want to change berries to be consumed after a battle.
+I think having reusable berries is simply not justifiable
+when there are supposed to be Medicine items that can be
+used instead. There should be berry merchants that sell
+berries with varying rarities based on how far the player
+has come. The Two Island merchant should sell a lot of
+these berries after Lostelle is saved.
 
 TO DO:
 x Force SET mode
@@ -1330,7 +1337,6 @@ x HMs rework
 - Victory Road FLY checkpoint
 - Agatha's Flutter Mane
 - Max rematch
-- Champion Paul
 - Title screen
 - Clean up
 - Documentation

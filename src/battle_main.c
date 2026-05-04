@@ -3949,6 +3949,12 @@ static void RestoreConsumedHeldItemsToParty(void)
         if (item == ITEM_NONE)
             continue;
 
+        if (item >= FIRST_BERRY_INDEX && item <= LAST_BERRY_INDEX)
+        {
+            gBattleStruct->usedHeldItemsByParty[i] = ITEM_NONE;
+            continue;
+        }
+
         if (GetMonData(&gPlayerParty[i], MON_DATA_SPECIES) == SPECIES_NONE)
             continue;
 

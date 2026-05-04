@@ -13,19 +13,27 @@ CeladonCity_DepartmentStore_5F_EventScript_FloorSign::
 	msgbox CeladonCity_DepartmentStore_5F_Text_Drugstore, MSGBOX_SIGN
 	end
 
-CeladonCity_DepartmentStore_5F_EventScript_ClerkXItems::
+CeladonCity_DepartmentStore_5F_EventScript_ClerkBerries::
 	goto_if_questlog EventScript_ReleaseEnd
 	lock
 	faceplayer
 	message Text_MayIHelpYou
 	waitmessage
-	pokemart CeladonCity_DepartmentStore_5F_EVBerries
+	pokemart CeladonCity_DepartmentStore_5F_Berries
 	msgbox Text_PleaseComeAgain
 	release
 	end
 
 	.align 2
-CeladonCity_DepartmentStore_5F_EVBerries::
+CeladonCity_DepartmentStore_5F_Berries::
+	.2byte ITEM_ORAN_BERRY
+	.2byte ITEM_PERSIM_BERRY
+	.2byte ITEM_CHERI_BERRY
+	.2byte ITEM_CHESTO_BERRY
+	.2byte ITEM_PECHA_BERRY
+	.2byte ITEM_RAWST_BERRY
+	.2byte ITEM_ASPEAR_BERRY
+	.2byte ITEM_LEPPA_BERRY
 	.2byte ITEM_POMEG_BERRY
 	.2byte ITEM_KELPSY_BERRY
 	.2byte ITEM_QUALOT_BERRY
@@ -36,19 +44,19 @@ CeladonCity_DepartmentStore_5F_EVBerries::
 	release
 	end
 
-CeladonCity_DepartmentStore_5F_EventScript_ClerkVitamins::
+CeladonCity_DepartmentStore_5F_EventScript_ClerkSupplements::
 	goto_if_questlog EventScript_ReleaseEnd
 	lock
 	faceplayer
 	message Text_MayIHelpYou
 	waitmessage
-	pokemart CeladonCity_DepartmentStore_5F_Vitamins
+	pokemart CeladonCity_DepartmentStore_5F_Supplements
 	msgbox Text_PleaseComeAgain
 	release
 	end
 
 	.align 2
-CeladonCity_DepartmentStore_5F_Vitamins::
+CeladonCity_DepartmentStore_5F_Supplements::
 	.2byte ITEM_HP_UP
 	.2byte ITEM_PROTEIN
 	.2byte ITEM_IRON

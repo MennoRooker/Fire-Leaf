@@ -8201,13 +8201,13 @@ static const struct TrainerMonNoItemDefaultMoves sParty_TeamRocketGrunt44[] = {
 static const struct TrainerMonNoItemCustomMoves sParty_BikerGoon[] = {
     {
         .iv = 15,
-        .lvl = 49,
+        .lvl = 51,
         .species = SPECIES_WEEZING,
         .moves = {MOVE_HAZE, MOVE_SMOKESCREEN, MOVE_SLUDGE, MOVE_HEADBUTT},
     },
     {
         .iv = 15,
-        .lvl = 49,
+        .lvl = 51,
         .species = SPECIES_MUK,
         .moves = {MOVE_ACID_ARMOR, MOVE_SCREECH, MOVE_MUD_SHOT, MOVE_SLUDGE},
     },
@@ -8216,7 +8216,7 @@ static const struct TrainerMonNoItemCustomMoves sParty_BikerGoon[] = {
 static const struct TrainerMonNoItemCustomMoves sParty_BikerGoon2[] = {
     {
         .iv = 15,
-        .lvl = 52,
+        .lvl = 54,
         .species = SPECIES_ARBOK,
         .moves = {MOVE_BULLDOZE, MOVE_POISON_FANG, MOVE_CRUNCH, MOVE_GLARE},
     },
@@ -8225,7 +8225,7 @@ static const struct TrainerMonNoItemCustomMoves sParty_BikerGoon2[] = {
 static const struct TrainerMonNoItemDefaultMoves sParty_BikerGoon3[] = {
     {
         .iv = 15,
-        .lvl = 52,
+        .lvl = 54,
         .species = SPECIES_GRANBULL,
     },
 };
@@ -8257,6 +8257,15 @@ static const struct TrainerMonItemCustomMovesNatureAbility sParty_CueBallPaxton[
         .heldItem = ITEM_HARD_STONE,
         .nature = NATURE_ADAMANT,
         .abilitySlot = 0,
+    },
+    {
+        .iv = 15,
+        .lvl = 53,
+        .species = SPECIES_HARIYAMA,
+        .moves = {MOVE_ARM_THRUST, MOVE_STRENGTH, MOVE_BULK_UP, MOVE_FACADE},
+        .heldItem = ITEM_LOADED_DICE,
+        .nature = NATURE_BRAVE,
+        .abilitySlot = 1,
     },
 };
 

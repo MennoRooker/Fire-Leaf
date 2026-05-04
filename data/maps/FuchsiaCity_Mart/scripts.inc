@@ -23,14 +23,21 @@ FuchsiaCity_Mart_EventScript_Clerk::
 	.align 2
 FuchsiaCity_Mart_Items::
 	.2byte ITEM_ULTRA_BALL
-	.2byte ITEM_GREAT_BALL
-	.2byte ITEM_POKE_BALL
 	.2byte ITEM_HYPER_POTION
-	.2byte ITEM_SUPER_POTION
-	.2byte ITEM_POTION
-	.2byte ITEM_REVIVE
 	.2byte ITEM_FULL_HEAL
-	.2byte ITEM_ELIXIR
+	.2byte ITEM_SITRUS_BERRY
+	.2byte ITEM_FIGY_BERRY 
+	.2byte ITEM_WIKI_BERRY 
+	.2byte ITEM_MAGO_BERRY 
+	.2byte ITEM_AGUAV_BERRY 
+	.2byte ITEM_IAPAPA_BERRY
+	.2byte ITEM_LIECHI_BERRY
+	.2byte ITEM_GANLON_BERRY
+	.2byte ITEM_SALAC_BERRY 	
+	.2byte ITEM_PETAYA_BERRY
+	.2byte ITEM_APICOT_BERRY
+	.2byte ITEM_LANSAT_BERRY
+	.2byte ITEM_STARF_BERRY 	
 	.2byte ITEM_NONE
 	release
 	end

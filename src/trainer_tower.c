@@ -361,24 +361,6 @@ static const u16 sFloorLayouts[MAX_TRAINER_TOWER_FLOORS][NUM_TOWER_CHALLENGE_TYP
     {LAYOUT_TRAINER_TOWER_8F, LAYOUT_TRAINER_TOWER_8F_DOUBLES, LAYOUT_TRAINER_TOWER_8F_KNOCKOUT}
 };
 
-static const u16 sPrizeList[] = {
-    ITEM_HP_UP,
-    ITEM_PROTEIN,
-    ITEM_IRON,
-    ITEM_CARBOS,
-    ITEM_CALCIUM,
-    ITEM_ZINC,
-    ITEM_BRIGHT_POWDER,
-    ITEM_WHITE_HERB,
-    ITEM_MENTAL_HERB,
-    ITEM_CHOICE_BAND,
-    ITEM_KINGS_ROCK,
-    ITEM_SCOPE_LENS,
-    ITEM_METAL_COAT,
-    ITEM_DRAGON_SCALE,
-    ITEM_UP_GRADE
-};
-
 static const u16 sTrainerTowerEncounterMusic[] = {
     [TRAINER_ENCOUNTER_MUSIC_MALE]        = MUS_ENCOUNTER_BOY,
     [TRAINER_ENCOUNTER_MUSIC_FEMALE]      = MUS_ENCOUNTER_GIRL,
@@ -798,7 +780,24 @@ static void GetOwnerState(void)
 
 static void GiveChallengePrize(void)
 {
-    u16 itemId = sPrizeList[sTrainerTowerState->data.floors->prize];
+    u16 itemId;
+
+    switch (gSaveBlock1Ptr->towerChallengeId)
+    {
+    case CHALLENGE_TYPE_SINGLE:
+        itemId = ITEM_CHOICE_BAND;
+        break;
+    case CHALLENGE_TYPE_DOUBLE:
+        itemId = ITEM_CHOICE_SPECS;
+        break;
+    case CHALLENGE_TYPE_KNOCKOUT:
+        itemId = ITEM_CHOICE_SCARF;
+        break;
+    case CHALLENGE_TYPE_MIXED:
+    default:
+        itemId = ITEM_LIFE_ORB;
+        break;
+    }
 
     if (TRAINER_TOWER.receivedPrize)
     {
