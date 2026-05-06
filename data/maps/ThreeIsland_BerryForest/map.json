@@ -209,8 +209,8 @@
       "movement_range_y": 1,
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
-      "script": "ThreeIsland_BerryForest_EventScript_ItemChoiceSpecs",
-      "flag": "FLAG_HIDE_THREE_ISLAND_BERRY_FOREST_CHOICE_SPECS"
+      "script": "ThreeIsland_BerryForest_EventScript_ItemBottleCap",
+      "flag": "FLAG_HIDE_THREE_ISLAND_BERRY_FOREST_BOTTLE_CAP"
     }
   ],
   "warp_events": [
@@ -259,8 +259,8 @@
       "x": 31,
       "y": 25,
       "elevation": 3,
-      "item": "ITEM_CHILAN_BERRY",
-      "flag": "FLAG_HIDDEN_ITEM_THREE_ISLAND_BERRY_FOREST_RAZZ_BERRY",
+      "item": "ITEM_YACHE_BERRY",
+      "flag": "FLAG_HIDDEN_ITEM_THREE_ISLAND_BERRY_FOREST_YACHE_BERRY",
       "quantity": 1,
       "underfoot": false
     },
@@ -269,8 +269,8 @@
       "x": 15,
       "y": 15,
       "elevation": 3,
-      "item": "ITEM_OCCA_BERRY",
-      "flag": "FLAG_HIDDEN_ITEM_THREE_ISLAND_BERRY_FOREST_BLUK_BERRY",
+      "item": "ITEM_WACAN_BERRY",
+      "flag": "FLAG_HIDDEN_ITEM_THREE_ISLAND_BERRY_FOREST_WACAN_BERRY",
       "quantity": 1,
       "underfoot": false
     },
@@ -279,8 +279,8 @@
       "x": 25,
       "y": 24,
       "elevation": 3,
-      "item": "ITEM_PASSHO_BERRY",
-      "flag": "FLAG_HIDDEN_ITEM_THREE_ISLAND_BERRY_FOREST_NANAB_BERRY",
+      "item": "ITEM_HABAN_BERRY",
+      "flag": "FLAG_HIDDEN_ITEM_THREE_ISLAND_BERRY_FOREST_HABAN_BERRY",
       "quantity": 1,
       "underfoot": false
     },
@@ -289,8 +289,8 @@
       "x": 11,
       "y": 24,
       "elevation": 3,
-      "item": "ITEM_WACAN_BERRY",
-      "flag": "FLAG_HIDDEN_ITEM_THREE_ISLAND_BERRY_FOREST_WEPEAR_BERRY",
+      "item": "ITEM_SITRUS_BERRY",
+      "flag": "FLAG_HIDDEN_ITEM_THREE_ISLAND_BERRY_FOREST_SITRUS_BERRY",
       "quantity": 1,
       "underfoot": false
     },
@@ -370,7 +370,7 @@
       "y": 16,
       "elevation": 3,
       "item": "ITEM_RINDO_BERRY",
-      "flag": "FLAG_HIDDEN_ITEM_THREE_ISLAND_BERRY_FOREST_PINAP_BERRY",
+      "flag": "FLAG_HIDDEN_ITEM_THREE_ISLAND_BERRY_FOREST_RINDO_BERRY",
       "quantity": 1,
       "underfoot": false
     },

@@ -92,9 +92,9 @@ TwoIsland_JoyfulGameCorner_Text_OhThisIsFromBill::
     .string "You know, you've been fantastic.\n"
     .string "I want you to have this.$"
 
-TwoIsland_JoyfulGameCorner_Text_ReceivedMoonStoneFromLostellesDaddy::
-    .string "{PLAYER} received a MOON STONE\n"
-    .string "from LOSTELLE's daddy.$"
+TwoIsland_JoyfulGameCorner_Text_ReceivedShardsFromLostellesDaddy::
+    .string "{PLAYER} received 4 SHARDS from\n"
+    .string "LOSTELLE's daddy.$"
 
 TwoIsland_JoyfulGameCorner_Text_NotGoingToFitInBag::
     .string "Your BAG's not going to fit another\n"

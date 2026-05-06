@@ -226,8 +226,8 @@ SafariZone_West_EventScript_ItemGoldTeeth::
 	finditem ITEM_GOLD_TEETH
 	end
 
-SafariZone_West_EventScript_ItemChoiceBand::
-	finditem ITEM_CHOICE_BAND
+SafariZone_West_EventScript_ItemYellowShard::
+	finditem ITEM_YELLOW_SHARD
 	end
 
 SafariZone_West_EventScript_ItemMaxRevive::
@@ -334,8 +334,8 @@ PokemonMansion_B1F_EventScript_ItemTM14::
 	finditem ITEM_TM14
 	end
 
-PokemonMansion_B1F_EventScript_ItemLifeOrb::
-	finditem ITEM_LIFE_ORB
+PokemonMansion_B1F_EventScript_ItemGreenShard::
+	finditem ITEM_GREEN_SHARD
 	end
 
 PokemonMansion_B1F_EventScript_ItemTM22::
@@ -362,8 +362,8 @@ VictoryRoad_2F_EventScript_ItemTM07::
 	finditem ITEM_TM07
 	end
 
-VictoryRoad_2F_EventScript_ItemChoiceScarf::
-	finditem ITEM_CHOICE_SCARF
+VictoryRoad_2F_EventScript_ItemBlueShard::
+	finditem ITEM_BLUE_SHARD
 	end
 
 VictoryRoad_2F_EventScript_ItemTM37::
@@ -598,8 +598,8 @@ ThreeIsland_BerryForest_EventScript_ItemFullHeal::
 	finditem ITEM_FULL_HEAL
 	end
 
-ThreeIsland_BerryForest_EventScript_ItemChoiceSpecs::
-	finditem ITEM_CHOICE_SPECS
+ThreeIsland_BerryForest_EventScript_ItemBottleCap::
+	finditem ITEM_BOTTLE_CAP
 	end
 
 MtEmber_Exterior_EventScript_ItemHeatRock::

@@ -120,7 +120,7 @@
       "y": 7,
       "elevation": 3,
       "item": "ITEM_CHILAN_BERRY",
-      "flag": "FLAG_HIDDEN_ITEM_FIVE_ISLAND_MEMORIAL_PILLAR_RAZZ_BERRY",
+      "flag": "FLAG_HIDDEN_ITEM_FIVE_ISLAND_MEMORIAL_PILLAR_CHILAN_BERRY",
       "quantity": 1,
       "underfoot": false
     },
@@ -140,7 +140,7 @@
       "y": 25,
       "elevation": 3,
       "item": "ITEM_OCCA_BERRY",
-      "flag": "FLAG_HIDDEN_ITEM_FIVE_ISLAND_MEMORIAL_PILLAR_BLUK_BERRY",
+      "flag": "FLAG_HIDDEN_ITEM_FIVE_ISLAND_MEMORIAL_PILLAR_OCCA_BERRY",
       "quantity": 1,
       "underfoot": false
     }

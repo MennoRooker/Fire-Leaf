@@ -6,7 +6,7 @@ TwoIsland_JoyfulGameCorner_MapScripts::
 	.byte 0
 
 TwoIsland_JoyfulGameCorner_OnTransition::
-	call_if_set FLAG_GOT_MOON_STONE_FROM_JOYFUL_GAME_CORNER, TwoIsland_JoyfulGameCorner_EventScript_SetLostelleReturnedPos
+	call_if_set FLAG_GOT_SHARDS_FROM_JOYFUL_GAME_CORNER, TwoIsland_JoyfulGameCorner_EventScript_SetLostelleReturnedPos
 	end
 
 TwoIsland_JoyfulGameCorner_EventScript_SetLostelleReturnedPos::
@@ -140,14 +140,15 @@ TwoIsland_JoyfulGameCorner_EventScript_LostellesDaddy::
 	lock
 	faceplayer
 	goto_if_eq VAR_MAP_SCENE_TWO_ISLAND_JOYFUL_GAME_CORNER, 4, JoyfulGameCorner_EventScript_MinigameAttendant
-	goto_if_set FLAG_GOT_MOON_STONE_FROM_JOYFUL_GAME_CORNER, TwoIsland_JoyfulGameCorner_EventScript_GetGameCornerRunning
+	goto_if_set FLAG_GOT_SHARDS_FROM_JOYFUL_GAME_CORNER, TwoIsland_JoyfulGameCorner_EventScript_GetGameCornerRunning
 	goto_if_eq VAR_MAP_SCENE_TWO_ISLAND_JOYFUL_GAME_CORNER, 3, TwoIsland_JoyfulGameCorner_EventScript_GiveDaddyMeteorite
+	goto_if_set FLAG_NO_ROOM_FOR_JOYFUL_GAME_CORNER_SHARDS, TwoIsland_JoyfulGameCorner_EventScript_ReceiveShards
 	msgbox TwoIsland_JoyfulGameCorner_Text_PleaseGoToThreeIsland
 	release
 	end
 
 TwoIsland_JoyfulGameCorner_EventScript_GiveDaddyMeteorite::
-	goto_if_set FLAG_NO_ROOM_FOR_JOYFUL_GAME_CORNER_MOON_STONE, TwoIsland_JoyfulGameCorner_EventScript_ReceiveMoonStone
+	goto_if_set FLAG_NO_ROOM_FOR_JOYFUL_GAME_CORNER_SHARDS, TwoIsland_JoyfulGameCorner_EventScript_ReceiveShards
 	msgbox TwoIsland_JoyfulGameCorner_Text_ThisIsForMe
 	setvar VAR_MAP_SCENE_ONE_ISLAND_POKEMON_CENTER_1F, 2
 	textcolor NPC_TEXT_COLOR_NEUTRAL
@@ -158,15 +159,27 @@ TwoIsland_JoyfulGameCorner_EventScript_GiveDaddyMeteorite::
 	call EventScript_RestorePrevTextColor
 	removeitem ITEM_METEORITE
 	msgbox TwoIsland_JoyfulGameCorner_Text_OhThisIsFromBill
-	goto TwoIsland_JoyfulGameCorner_EventScript_ReceiveMoonStone
+	goto TwoIsland_JoyfulGameCorner_EventScript_ReceiveShards
 	end
 
-TwoIsland_JoyfulGameCorner_EventScript_ReceiveMoonStone::
-	checkitemspace ITEM_MOON_STONE
-	goto_if_eq VAR_RESULT, FALSE, TwoIsland_JoyfulGameCorner_EventScript_NoRoomForMoonStone
-	additem ITEM_MOON_STONE
-	setflag FLAG_GOT_MOON_STONE_FROM_JOYFUL_GAME_CORNER
-	msgreceiveditem TwoIsland_JoyfulGameCorner_Text_ReceivedMoonStoneFromLostellesDaddy, ITEM_MOON_STONE
+TwoIsland_JoyfulGameCorner_EventScript_ReceiveShards::
+	checkitemspace ITEM_RED_SHARD
+	goto_if_eq VAR_RESULT, FALSE, TwoIsland_JoyfulGameCorner_EventScript_NoRoomForShards
+	checkitemspace ITEM_BLUE_SHARD
+	goto_if_eq VAR_RESULT, FALSE, TwoIsland_JoyfulGameCorner_EventScript_NoRoomForShards
+	checkitemspace ITEM_YELLOW_SHARD
+	goto_if_eq VAR_RESULT, FALSE, TwoIsland_JoyfulGameCorner_EventScript_NoRoomForShards
+	checkitemspace ITEM_GREEN_SHARD
+	goto_if_eq VAR_RESULT, FALSE, TwoIsland_JoyfulGameCorner_EventScript_NoRoomForShards
+	additem ITEM_RED_SHARD
+	additem ITEM_BLUE_SHARD
+	additem ITEM_YELLOW_SHARD
+	additem ITEM_GREEN_SHARD
+	setflag FLAG_GOT_SHARDS_FROM_JOYFUL_GAME_CORNER
+	playfanfare MUS_OBTAIN_ITEM
+	message TwoIsland_JoyfulGameCorner_Text_ReceivedShardsFromLostellesDaddy
+	waitmessage
+	waitfanfare
 	release
 	end
 
@@ -175,8 +188,8 @@ TwoIsland_JoyfulGameCorner_EventScript_GetGameCornerRunning::
 	release
 	end
 
-TwoIsland_JoyfulGameCorner_EventScript_NoRoomForMoonStone::
-	setflag FLAG_NO_ROOM_FOR_JOYFUL_GAME_CORNER_MOON_STONE
+TwoIsland_JoyfulGameCorner_EventScript_NoRoomForShards::
+	setflag FLAG_NO_ROOM_FOR_JOYFUL_GAME_CORNER_SHARDS
 	msgbox TwoIsland_JoyfulGameCorner_Text_NotGoingToFitInBag
 	release
 	end
