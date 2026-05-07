@@ -1331,9 +1331,9 @@ x Egg Move tutor
 x Linearizations
 x HMs rework
 x Faster Bike
+x HP beeping
 / Balancing
 - ITEM-MOVE option
-- HP beeping
 - Victory Road FLY checkpoint
 - Agatha's Flutter Mane
 - Max rematch
