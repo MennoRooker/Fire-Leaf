@@ -2763,7 +2763,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
     },
     [SPECIES_ONIX] =
     {
-        .baseHP = 35,
+        .baseHP = 50,
         .baseAttack = 75,
         .baseDefense = 160,
         .baseSpeed = 70,
@@ -2771,7 +2771,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .baseSpDefense = 45,
         .types = {TYPE_ROCK, TYPE_GROUND},
         .catchRate = 45,
-        .expYield = 108,
+        .expYield = 128,
         .evYield_HP = 0,
         .evYield_Attack = 0,
         .evYield_Defense = 1,
@@ -6041,7 +6041,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
     [SPECIES_STEELIX] =
     {
         .baseHP = 75,
-        .baseAttack = 100,
+        .baseAttack = 108,
         .baseDefense = 200,
         .baseSpeed = 30,
         .baseSpAttack = 55,

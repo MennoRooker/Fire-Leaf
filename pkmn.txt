@@ -129,6 +129,7 @@ Thick Fat -> Snow Warning
 Levitate -> Shadow Tag
 
 - ONIX
+hp:	35 -> 50
 atk:	45 -> 75
 
 - KRABBY
@@ -233,7 +234,7 @@ spatk:	30 -> 45
 spdef:	30 -> 35
 
 - STEELIX
-atk:	85 -> 100
+atk:	85 -> 108
 
 - MAGCARGO
 hp:	50 -> 60

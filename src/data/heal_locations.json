@@ -153,6 +153,14 @@
       "respawn_npc": "LOCALID_SEVEN_ISLAND_NURSE"
     },
     {
+      "id": "HEAL_LOCATION_VICTORY_ROAD",
+      "map": "MAP_ROUTE23",
+      "x": 5,
+      "y": 29,
+      "respawn_map": "MAP_INDIGO_PLATEAU_POKEMON_CENTER_1F",
+      "respawn_npc": "LOCALID_LEAGUE_NURSE"
+    },
+    {
       "id": "HEAL_LOCATION_SIX_ISLAND",
       "map": "MAP_SIX_ISLAND",
       "x": 11,

@@ -870,7 +870,7 @@ static const u8 sMapFlyDestinations[][3] = {
     [MAPSEC_UNDERGROUND_PATH    - KANTO_MAPSEC_START] = {MAP(MAP_PALLET_TOWN),                           HEAL_LOCATION_NONE},
     [MAPSEC_UNDERGROUND_PATH_2  - KANTO_MAPSEC_START] = {MAP(MAP_PALLET_TOWN),                           HEAL_LOCATION_NONE},
     [MAPSEC_DIGLETTS_CAVE       - KANTO_MAPSEC_START] = {MAP(MAP_PALLET_TOWN),                           HEAL_LOCATION_NONE},
-    [MAPSEC_KANTO_VICTORY_ROAD  - KANTO_MAPSEC_START] = {MAP(MAP_PALLET_TOWN),                           HEAL_LOCATION_NONE},
+    [MAPSEC_KANTO_VICTORY_ROAD  - KANTO_MAPSEC_START] = {MAP(MAP_ROUTE23),                               HEAL_LOCATION_VICTORY_ROAD},
     [MAPSEC_ROCKET_HIDEOUT      - KANTO_MAPSEC_START] = {MAP(MAP_PALLET_TOWN),                           HEAL_LOCATION_NONE},
     [MAPSEC_SILPH_CO            - KANTO_MAPSEC_START] = {MAP(MAP_PALLET_TOWN),                           HEAL_LOCATION_NONE},
     [MAPSEC_POKEMON_MANSION     - KANTO_MAPSEC_START] = {MAP(MAP_PALLET_TOWN),                           HEAL_LOCATION_NONE},
@@ -3559,6 +3559,7 @@ static void CreateFlyIcons(void)
 {
     u16 i, y, x;
     u8 numIcons = 0;
+    u8 mapsec;
     if (GetRegionMapPermission(MAPPERM_HAS_FLY_DESTINATIONS))
     {
         for (i = 0; i < REGIONMAP_COUNT; i++)
@@ -3568,6 +3569,28 @@ static void CreateFlyIcons(void)
                 for (x = 0; x < MAP_WIDTH; x++)
                 {
                     if (GetMapsecType(GetSelectedMapSection(i, LAYER_MAP, y, x)) == MAPSECTYPE_VISITED)
+                    {
+                        CreateFlyIconSprite(i, numIcons, x, y, numIcons + 10, 10);
+                        numIcons++;
+                    }
+                }
+            }
+        }
+        // Also create FLY icons for dungeon mapsecs that have a real FLY destination
+        for (i = 0; i < REGIONMAP_COUNT; i++)
+        {
+            for (y = 0; y < MAP_HEIGHT; y++)
+            {
+                for (x = 0; x < MAP_WIDTH; x++)
+                {
+                    mapsec = GetSelectedMapSection(i, LAYER_DUNGEON, y, x);
+                    if (mapsec == MAPSEC_NONE)
+                        continue;
+                    if (mapsec < KANTO_MAPSEC_START)
+                        continue;
+                    if (sMapFlyDestinations[mapsec - KANTO_MAPSEC_START][2] == HEAL_LOCATION_NONE)
+                        continue;
+                    if (GetDungeonMapsecType(mapsec) == MAPSECTYPE_VISITED)
                     {
                         CreateFlyIconSprite(i, numIcons, x, y, numIcons + 10, 10);
                         numIcons++;
@@ -3882,6 +3905,20 @@ void CB2_OpenTownMap(void)
     InitRegionMap(REGIONMAP_TYPE_NORMAL);
 }
 
+static u16 GetFlyableDungeonMapsecUnderCursor(void)
+{
+    u8 mapsec = GetDungeonMapsecUnderCursor();
+    if (mapsec == MAPSEC_NONE)
+        return MAPSEC_NONE;
+    if (mapsec < KANTO_MAPSEC_START)
+        return MAPSEC_NONE;
+    if (sMapFlyDestinations[mapsec - KANTO_MAPSEC_START][2] == HEAL_LOCATION_NONE)
+        return MAPSEC_NONE;
+    if (GetDungeonMapsecType(mapsec) != MAPSECTYPE_VISITED)
+        return MAPSEC_NONE;
+    return mapsec;
+}
+
 static void Task_FlyMap(u8 taskId)
 {
     switch (sFlyMap->state)
@@ -3936,7 +3973,7 @@ static void Task_FlyMap(u8 taskId)
             sFlyMap->state = 6;
             break;
         case MAP_INPUT_MOVE_END:
-            if (GetSelectedMapsecType(LAYER_MAP) == MAPSECTYPE_VISITED)
+            if (GetSelectedMapsecType(LAYER_MAP) == MAPSECTYPE_VISITED || GetFlyableDungeonMapsecUnderCursor() != MAPSEC_NONE)
                 PlaySE(SE_DEX_PAGE);
             else
                 PlaySEForSelectedMapsec();
@@ -3949,7 +3986,7 @@ static void Task_FlyMap(u8 taskId)
                 PlaySE(SE_M_SPIT_UP);
                 PrintTopBarTextRight(gText_RegionMap_AButtonCancel);
             }
-            else if (GetSelectedMapsecType(LAYER_MAP) == MAPSECTYPE_VISITED || GetSelectedMapsecType(LAYER_MAP) == MAPSECTYPE_UNKNOWN)
+            else if (GetSelectedMapsecType(LAYER_MAP) == MAPSECTYPE_VISITED || GetSelectedMapsecType(LAYER_MAP) == MAPSECTYPE_UNKNOWN || GetFlyableDungeonMapsecUnderCursor() != MAPSEC_NONE)
             {
                 PrintTopBarTextRight(gText_RegionMap_AButtonOK);
             }
@@ -3959,7 +3996,7 @@ static void Task_FlyMap(u8 taskId)
             }
             break;
         case MAP_INPUT_A_BUTTON:
-            if ((GetSelectedMapsecType(LAYER_MAP) == MAPSECTYPE_VISITED || GetSelectedMapsecType(LAYER_MAP) == MAPSECTYPE_UNKNOWN) && GetRegionMapPermission(MAPPERM_HAS_FLY_DESTINATIONS) == TRUE)
+            if ((GetSelectedMapsecType(LAYER_MAP) == MAPSECTYPE_VISITED || GetSelectedMapsecType(LAYER_MAP) == MAPSECTYPE_UNKNOWN || GetFlyableDungeonMapsecUnderCursor() != MAPSEC_NONE) && GetRegionMapPermission(MAPPERM_HAS_FLY_DESTINATIONS) == TRUE)
             {
                 switch (GetMapTypeByGroupAndId(gSaveBlock1Ptr->location.mapGroup, gSaveBlock1Ptr->location.mapNum))
                 {
@@ -3994,7 +4031,10 @@ static void Task_FlyMap(u8 taskId)
         if (!gPaletteFade.active)
         {
             if (sFlyMap->selectedDestination == TRUE)
-                SetFlyWarpDestination(GetMapsecUnderCursor());
+            {
+                u16 flyMapsec = GetFlyableDungeonMapsecUnderCursor();
+                SetFlyWarpDestination(flyMapsec != MAPSEC_NONE ? flyMapsec : GetMapsecUnderCursor());
+            }
             FreeFlyMap(taskId);
         }
         break;

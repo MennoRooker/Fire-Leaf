@@ -1296,6 +1296,14 @@ berries with varying rarities based on how far the player
 has come. The Two Island merchant should sell a lot of
 these berries after Lostelle is saved.
 
+MOVE_ITEM option should be as follows:
+If mon has an item: menu should be MOVE, TAKE, GIVE and
+text should say "Do what with {item.name}?"
+If mon has no item: no menu, straight to the bag to
+give the item.
+Moving should work as it does in the box, but with a 
+different UI. 
+
 TO DO:
 x Force SET mode
 x EV berries
@@ -1333,10 +1341,10 @@ x HMs rework
 x Faster Bike
 x HP beeping
 / Balancing
-- ITEM-MOVE option
 - Victory Road FLY checkpoint
 - Agatha's Flutter Mane
 - Max rematch
+- MOVE_ITEM option
 - Title screen
 - Clean up
 - Documentation
