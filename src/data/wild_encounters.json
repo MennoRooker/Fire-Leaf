@@ -1720,7 +1720,7 @@
               {
                 "min_level": 40,
                 "max_level": 40,
-                "species": "SPECIES_GRAVELER"
+                "species": "SPECIES_GOLBAT"
               },
               {
                 "min_level": 40,
@@ -1740,7 +1740,7 @@
               {
                 "min_level": 42,
                 "max_level": 42,
-                "species": "SPECIES_ALTARIA"
+                "species": "SPECIES_RHYDON"
               },
               {
                 "min_level": 44,
@@ -1878,7 +1878,7 @@
               {
                 "min_level": 42,
                 "max_level": 42,
-                "species": "SPECIES_PILOSWINE"
+                "species": "SPECIES_ALTARIA"
               },
               {
                 "min_level": 46,
@@ -2031,7 +2031,7 @@
               {
                 "min_level": 44,
                 "max_level": 44,
-                "species": "SPECIES_MAROWAK"
+                "species": "SPECIES_PILOSWINE"
               },
               {
                 "min_level": 44,

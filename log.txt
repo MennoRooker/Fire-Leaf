@@ -1304,6 +1304,17 @@ give the item.
 Moving should work as it does in the box, but with a 
 different UI. 
 
+I'm going to finalize the changes to the demo, at least
+for now. Tonight I will hand out the version I have to
+Jason. I will be playing the E4 and Champion once more 
+just to make sure that I have the version I want, but 
+after that it is only documentation and the title screen
+that I need to do.
+
+I'll leave several changes that are quite simple for a 
+later point, since I think they should only be present 
+in the first official release.
+
 TO DO:
 x Force SET mode
 x EV berries
@@ -1340,21 +1351,22 @@ x Linearizations
 x HMs rework
 x Faster Bike
 x HP beeping
-/ Balancing
-- Victory Road FLY checkpoint
-- Agatha's Flutter Mane
-- Max rematch
-- MOVE_ITEM option
+x Victory Road FLY checkpoint
+x Balancing
 - Title screen
 - Clean up
 - Documentation
 ---------------------------------------
 - Add Fairy type
+- Agatha's Flutter Mane
+- Max rematch
 - International Dex (Gens IV & V)
 - Paul Champion
 - Physical/special split
 - Pokedex stats & evo screens
+- Elemental punches tutor
 - Dynamic speed
+- MOVE_ITEM option
 - Implement all abilites
 - Custom move animations
 - Determine opponent EVs
