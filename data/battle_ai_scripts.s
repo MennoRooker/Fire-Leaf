@@ -733,6 +733,8 @@ AI_CheckViability::
 	if_effect EFFECT_MOONLIGHT, AI_CV_HealWeather
 	if_effect EFFECT_RAIN_DANCE, AI_CV_RainDance
 	if_effect EFFECT_SUNNY_DAY, AI_CV_SunnyDay
+	if_effect EFFECT_SANDSTORM, AI_CV_Sandstorm
+	if_effect EFFECT_WEATHER_BALL, AI_CV_WeatherBall
 	if_effect EFFECT_BELLY_DRUM, AI_CV_BellyDrum
 	if_effect EFFECT_PSYCH_UP, AI_CV_PsychUp
 	if_effect EFFECT_MIRROR_COAT, AI_CV_MirrorCoat
@@ -2164,12 +2166,24 @@ AI_CV_RainDance::
 AI_CV_RainDance2::
 	if_hp_less_than AI_USER, 40, AI_CV_RainDance_ScoreDown1
 	get_weather
-	if_equal AI_WEATHER_HAIL, AI_CV_RainDance3
-	if_equal AI_WEATHER_SUN, AI_CV_RainDance3
-	if_equal AI_WEATHER_SANDSTORM, AI_CV_RainDance3
+	if_equal AI_WEATHER_HAIL, AI_CV_RainDance_CheckHail
+	if_equal AI_WEATHER_SUN, AI_CV_RainDance_CheckSun
+	if_equal AI_WEATHER_SANDSTORM, AI_CV_RainDance_CheckSand
 	get_ability AI_USER
 	if_equal ABILITY_RAIN_DISH, AI_CV_RainDance3
 	goto AI_CV_RainDance_End
+
+AI_CV_RainDance_CheckHail::
+	if_has_move AI_USER, MOVE_HAIL, AI_CV_RainDance_End
+	goto AI_CV_RainDance3
+
+AI_CV_RainDance_CheckSun::
+	if_has_move AI_USER, MOVE_SUNNY_DAY, AI_CV_RainDance_End
+	goto AI_CV_RainDance3
+
+AI_CV_RainDance_CheckSand::
+	if_has_move AI_USER, MOVE_SANDSTORM, AI_CV_RainDance_End
+	goto AI_CV_RainDance3
 
 AI_CV_RainDance3::
 	score +1
@@ -2184,10 +2198,22 @@ AI_CV_RainDance_End::
 AI_CV_SunnyDay::
 	if_hp_less_than AI_USER, 40, AI_CV_SunnyDay_ScoreDown1
 	get_weather
-	if_equal AI_WEATHER_HAIL, AI_CV_SunnyDay2
-	if_equal AI_WEATHER_RAIN, AI_CV_SunnyDay2
-	if_equal AI_WEATHER_SANDSTORM, AI_CV_SunnyDay2
+	if_equal AI_WEATHER_HAIL, AI_CV_SunnyDay_CheckHail
+	if_equal AI_WEATHER_RAIN, AI_CV_SunnyDay_CheckRain
+	if_equal AI_WEATHER_SANDSTORM, AI_CV_SunnyDay_CheckSand
 	goto AI_CV_SunnyDay_End
+
+AI_CV_SunnyDay_CheckHail::
+	if_has_move AI_USER, MOVE_HAIL, AI_CV_SunnyDay_End
+	goto AI_CV_SunnyDay2
+
+AI_CV_SunnyDay_CheckRain::
+	if_has_move AI_USER, MOVE_RAIN_DANCE, AI_CV_SunnyDay_End
+	goto AI_CV_SunnyDay2
+
+AI_CV_SunnyDay_CheckSand::
+	if_has_move AI_USER, MOVE_SANDSTORM, AI_CV_SunnyDay_End
+	goto AI_CV_SunnyDay2
 
 AI_CV_SunnyDay2::
 	score +1
@@ -2387,10 +2413,22 @@ AI_CV_SpitUp_End::
 AI_CV_Hail::
 	if_hp_less_than AI_USER, 40, AI_CV_Hail_ScoreDown1
 	get_weather
-	if_equal AI_WEATHER_SUN, AI_CV_Hail2
-	if_equal AI_WEATHER_RAIN, AI_CV_Hail2
-	if_equal AI_WEATHER_SANDSTORM, AI_CV_Hail2
+	if_equal AI_WEATHER_SUN, AI_CV_Hail_CheckSun
+	if_equal AI_WEATHER_RAIN, AI_CV_Hail_CheckRain
+	if_equal AI_WEATHER_SANDSTORM, AI_CV_Hail_CheckSand
 	goto AI_CV_Hail_End
+
+AI_CV_Hail_CheckSun::
+	if_has_move AI_USER, MOVE_SUNNY_DAY, AI_CV_Hail_End
+	goto AI_CV_Hail2
+
+AI_CV_Hail_CheckRain::
+	if_has_move AI_USER, MOVE_RAIN_DANCE, AI_CV_Hail_End
+	goto AI_CV_Hail2
+
+AI_CV_Hail_CheckSand::
+	if_has_move AI_USER, MOVE_SANDSTORM, AI_CV_Hail_End
+	goto AI_CV_Hail2
 
 AI_CV_Hail2::
 	score +1
@@ -2401,6 +2439,108 @@ AI_CV_Hail_ScoreDown1::
 
 AI_CV_Hail_End::
 	end
+
+AI_CV_Sandstorm::
+	if_hp_less_than AI_USER, 40, AI_CV_Sandstorm_ScoreDown1
+	get_weather
+	if_equal AI_WEATHER_HAIL, AI_CV_Sandstorm_CheckHail
+	if_equal AI_WEATHER_RAIN, AI_CV_Sandstorm_CheckRain
+	if_equal AI_WEATHER_SUN, AI_CV_Sandstorm_CheckSun
+	goto AI_CV_Sandstorm_End
+
+AI_CV_Sandstorm_CheckHail::
+	if_has_move AI_USER, MOVE_HAIL, AI_CV_Sandstorm_End
+	goto AI_CV_Sandstorm2
+
+AI_CV_Sandstorm_CheckRain::
+	if_has_move AI_USER, MOVE_RAIN_DANCE, AI_CV_Sandstorm_End
+	goto AI_CV_Sandstorm2
+
+AI_CV_Sandstorm_CheckSun::
+	if_has_move AI_USER, MOVE_SUNNY_DAY, AI_CV_Sandstorm_End
+	goto AI_CV_Sandstorm2
+
+AI_CV_Sandstorm2::
+	score +1
+	goto AI_CV_Sandstorm_End
+
+AI_CV_Sandstorm_ScoreDown1::
+	score -1
+
+AI_CV_Sandstorm_End::
+	end
+
+AI_CV_WeatherBall::
+	get_weather
+	if_equal AI_WEATHER_NONE, AI_CV_WeatherBall_End
+	score +1
+	get_weather
+	if_equal AI_WEATHER_RAIN, AI_CV_WeatherBall_Rain
+	if_equal AI_WEATHER_SUN, AI_CV_WeatherBall_Sun
+	if_equal AI_WEATHER_HAIL, AI_CV_WeatherBall_Hail
+	if_equal AI_WEATHER_SANDSTORM, AI_CV_WeatherBall_Sand
+	goto AI_CV_WeatherBall_End
+
+AI_CV_WeatherBall_Rain::
+	get_target_type1
+	if_in_bytes AI_CV_WeatherBall_WaterWeakTypes, AI_CV_WeatherBall_Bonus
+	get_target_type2
+	if_in_bytes AI_CV_WeatherBall_WaterWeakTypes, AI_CV_WeatherBall_Bonus
+	goto AI_CV_WeatherBall_End
+
+AI_CV_WeatherBall_Sun::
+	get_target_type1
+	if_in_bytes AI_CV_WeatherBall_FireWeakTypes, AI_CV_WeatherBall_Bonus
+	get_target_type2
+	if_in_bytes AI_CV_WeatherBall_FireWeakTypes, AI_CV_WeatherBall_Bonus
+	goto AI_CV_WeatherBall_End
+
+AI_CV_WeatherBall_Hail::
+	get_target_type1
+	if_in_bytes AI_CV_WeatherBall_IceWeakTypes, AI_CV_WeatherBall_Bonus
+	get_target_type2
+	if_in_bytes AI_CV_WeatherBall_IceWeakTypes, AI_CV_WeatherBall_Bonus
+	goto AI_CV_WeatherBall_End
+
+AI_CV_WeatherBall_Sand::
+	get_target_type1
+	if_in_bytes AI_CV_WeatherBall_RockWeakTypes, AI_CV_WeatherBall_Bonus
+	get_target_type2
+	if_in_bytes AI_CV_WeatherBall_RockWeakTypes, AI_CV_WeatherBall_Bonus
+	goto AI_CV_WeatherBall_End
+
+AI_CV_WeatherBall_Bonus::
+	score +1
+
+AI_CV_WeatherBall_End::
+	end
+
+AI_CV_WeatherBall_WaterWeakTypes::
+	.byte TYPE_FIRE
+	.byte TYPE_ROCK
+	.byte TYPE_GROUND
+	.byte -1
+
+AI_CV_WeatherBall_FireWeakTypes::
+	.byte TYPE_GRASS
+	.byte TYPE_ICE
+	.byte TYPE_BUG
+	.byte TYPE_STEEL
+	.byte -1
+
+AI_CV_WeatherBall_IceWeakTypes::
+	.byte TYPE_FLYING
+	.byte TYPE_GROUND
+	.byte TYPE_GRASS
+	.byte TYPE_DRAGON
+	.byte -1
+
+AI_CV_WeatherBall_RockWeakTypes::
+	.byte TYPE_FIRE
+	.byte TYPE_ICE
+	.byte TYPE_FLYING
+	.byte TYPE_BUG
+	.byte -1
 
 @ BUG: Facade score is increased if the target is statused, but should be if the user is. Replace AI_TARGET with AI_USER
 AI_CV_Facade::
