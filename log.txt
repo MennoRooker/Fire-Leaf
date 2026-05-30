@@ -1353,7 +1353,7 @@ x Faster Bike
 x HP beeping
 x Victory Road FLY checkpoint
 x Balancing
-- Title screen
+x Title screen
 - Clean up
 - Documentation
 ---------------------------------------

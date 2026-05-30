@@ -847,7 +847,7 @@ static void SetPlayerCardData(struct TrainerCard *trainerCard, u8 cardType)
         if (trainerCard->rse.hofDebutHours != 0 || (trainerCard->rse.hofDebutMinutes != 0 || trainerCard->rse.hofDebutSeconds != 0))
             trainerCard->rse.stars = cardType;
 
-        if (HasAllKantoMons())
+        if (HasAllRegionalMons())
             trainerCard->rse.stars++;
 
         if (HasAllMons())
@@ -868,7 +868,7 @@ void TrainerCard_GenerateCardForLinkPlayer(struct TrainerCard *trainerCard)
     if (trainerCard->rse.hofDebutHours != 0 || trainerCard->rse.hofDebutMinutes != 0 || trainerCard->rse.hofDebutSeconds != 0)
         trainerCard->rse.stars = 1;
 
-    trainerCard->rse.caughtAllHoenn = HasAllKantoMons();
+    trainerCard->rse.caughtAllHoenn = HasAllRegionalMons();
     trainerCard->hasAllMons = HasAllMons();
     trainerCard->berriesPicked = gSaveBlock2Ptr->berryPick.berriesPicked;
     trainerCard->jumpsInRow = gSaveBlock2Ptr->pokeJump.jumpsInRow;
@@ -1169,7 +1169,7 @@ static u16 GetCaughtMonsCount(void)
     if (IsNationalPokedexEnabled())
         return GetNationalPokedexCount(FLAG_GET_CAUGHT);
     else
-        return GetKantoPokedexCount(FLAG_GET_CAUGHT);
+        return GetRegionalPokedexCount(FLAG_GET_CAUGHT);
 }
 
 static void PrintPokedexOnCard(void)

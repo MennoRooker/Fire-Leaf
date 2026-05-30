@@ -423,7 +423,9 @@ enum {
 
 #define KANTO_DEX_COUNT     NATIONAL_DEX_MEW
 #define JOHTO_DEX_COUNT     NATIONAL_DEX_CELEBI
-#define NATIONAL_DEX_COUNT  NATIONAL_DEX_DEOXYS
+// Gen 1-3 ceiling; always 386. NATIONAL_DEX_COUNT will grow when Gen 4+ are added.
+#define REGIONAL_DEX_COUNT  NATIONAL_DEX_DEOXYS
+#define NATIONAL_DEX_COUNT  REGIONAL_DEX_COUNT
 
 // Hoenn Pokedex order
 enum {

@@ -24,8 +24,8 @@ u16 GetPokedexCount(void)
 {
     if (gSpecialVar_0x8004 == 0)
     {
-        gSpecialVar_0x8005 = GetKantoPokedexCount(0);
-        gSpecialVar_0x8006 = GetKantoPokedexCount(1);
+        gSpecialVar_0x8005 = GetRegionalPokedexCount(0);
+        gSpecialVar_0x8006 = GetRegionalPokedexCount(1);
     }
     else
     {

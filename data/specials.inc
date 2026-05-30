@@ -347,7 +347,7 @@ gSpecials::
 	def_special Script_FadeOutMapMusic
 	def_special NullFieldSpecial
 	def_special NullFieldSpecial
-	def_special HasAllKantoMons
+	def_special HasAllRegionalMons
 	def_special IsMonOTNameNotPlayers
 	def_special NullFieldSpecial
 	def_special Dummy_TryEnableBravoTrainerBattleTower

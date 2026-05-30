@@ -319,7 +319,7 @@ static const struct WindowTemplate sWindowTemplate_DexCounts = {
 
 static const struct ListMenuItem sListMenuItems_KantoDexModeSelect[] = {
     {gText_PokemonList,                  LIST_HEADER},
-    {gText_NumericalMode,                DEX_MODE(NUMERICAL_KANTO)},
+    {gText_NumericalMode,                DEX_MODE(NUMERICAL_REGIONAL)},
     {gText_PokemonHabitats,              LIST_HEADER},
     {gText_DexCategory_GrasslandPkmn,    DEX_CATEGORY_GRASSLAND},
     {gText_DexCategory_ForestPkmn,       DEX_CATEGORY_FOREST},
@@ -362,7 +362,7 @@ static const struct ListMenuTemplate sListMenuTemplate_KantoDexModeSelect = {
 
 static const struct ListMenuItem sListMenuItems_NatDexModeSelect[] = {
     {gText_PokemonList,                  LIST_HEADER},
-    {gText_NumericalModeKanto,           DEX_MODE(NUMERICAL_KANTO)},
+    {gText_NumericalModeRegional,        DEX_MODE(NUMERICAL_REGIONAL)},
     {gText_NumericalModeNational,        DEX_MODE(NUMERICAL_NATIONAL)},
     {gText_PokemonHabitats,              LIST_HEADER},
     {gText_DexCategory_GrasslandPkmn,    DEX_CATEGORY_GRASSLAND},
@@ -470,7 +470,7 @@ static const struct PokedexScreenWindowGfx sTopMenuSelectionIconGfxPtrs[] = {
         .tiles = sTopMenuIconTiles_Rare,
         .pal   = sTopMenuIconPals_Rare
     },
-    [DEX_MODE(NUMERICAL_KANTO)] = {
+    [DEX_MODE(NUMERICAL_REGIONAL)] = {
         .tiles = sTopMenuIconTiles_Numerical,
         .pal   = sTopMenuIconPals_Numerical
     },
@@ -1062,7 +1062,7 @@ static void Task_PokedexScreen(u8 taskId)
                     sPokedexScreenData->state = 7;
                 }
                 break;
-            case DEX_MODE(NUMERICAL_KANTO):
+            case DEX_MODE(NUMERICAL_REGIONAL):
             case DEX_MODE(NUMERICAL_NATIONAL):
                 RemoveScrollIndicatorArrowPair(sPokedexScreenData->scrollArrowsTaskId);
                 sPokedexScreenData->dexOrderId = sPokedexScreenData->modeSelectInput - DEX_CATEGORY_COUNT;
@@ -1137,12 +1137,12 @@ static void DexScreen_InitGfxForTopMenu(void)
         sPokedexScreenData->modeSelectListMenuId = ListMenuInit(&listMenuTemplate, sPokedexScreenData->modeSelectCursorPos, sPokedexScreenData->modeSelectItemsAbove);
         FillWindowPixelBuffer(sPokedexScreenData->dexCountsWindowId, PIXEL_FILL(0));
         DexScreen_AddTextPrinterParameterized(sPokedexScreenData->dexCountsWindowId, FONT_SMALL, gText_Seen, 0, 2, 0);
-        DexScreen_AddTextPrinterParameterized(sPokedexScreenData->dexCountsWindowId, FONT_SMALL, gText_Kanto, 8, 13, 0);
+        DexScreen_AddTextPrinterParameterized(sPokedexScreenData->dexCountsWindowId, FONT_SMALL, gText_Regional, 8, 13, 0);
         DexScreen_PrintNum3RightAlign(sPokedexScreenData->dexCountsWindowId, 0, sPokedexScreenData->numSeenKanto, 52, 13, 2);
         DexScreen_AddTextPrinterParameterized(sPokedexScreenData->dexCountsWindowId, FONT_SMALL, gText_National, 8, 24, 0);
         DexScreen_PrintNum3RightAlign(sPokedexScreenData->dexCountsWindowId, 0, sPokedexScreenData->numSeenNational, 52, 24, 2);
         DexScreen_AddTextPrinterParameterized(sPokedexScreenData->dexCountsWindowId, FONT_SMALL, gText_Owned, 0, 37, 0);
-        DexScreen_AddTextPrinterParameterized(sPokedexScreenData->dexCountsWindowId, FONT_SMALL, gText_Kanto, 8, 48, 0);
+        DexScreen_AddTextPrinterParameterized(sPokedexScreenData->dexCountsWindowId, FONT_SMALL, gText_Regional, 8, 48, 0);
         DexScreen_PrintNum3RightAlign(sPokedexScreenData->dexCountsWindowId, 0, sPokedexScreenData->numOwnedKanto, 52, 48, 2);
         DexScreen_AddTextPrinterParameterized(sPokedexScreenData->dexCountsWindowId, FONT_SMALL, gText_National, 8, 59, 0);
         DexScreen_PrintNum3RightAlign(sPokedexScreenData->dexCountsWindowId, 0, sPokedexScreenData->numOwnedNational, 52, 59, 2);
@@ -1370,7 +1370,7 @@ static void DexScreen_CreateCharacteristicListMenu(void)
 
 static u16 DexScreen_CountMonsInOrderedList(u8 orderIdx)
 {
-    s32 max_n = IsNationalPokedexEnabled() ? NATIONAL_DEX_COUNT : NATIONAL_DEX_COUNT;
+    s32 max_n = IsNationalPokedexEnabled() ? NATIONAL_DEX_COUNT : REGIONAL_DEX_COUNT;
     u16 ndex_num;
     u16 ret = NATIONAL_DEX_NONE;
     s32 i;
@@ -1380,8 +1380,8 @@ static u16 DexScreen_CountMonsInOrderedList(u8 orderIdx)
     switch (orderIdx)
     {
     default:
-    case DEX_ORDER_NUMERICAL_KANTO:
-        for (i = 0; i < NATIONAL_DEX_COUNT; i++)
+    case DEX_ORDER_NUMERICAL_REGIONAL:
+        for (i = 0; i < REGIONAL_DEX_COUNT; i++)
         {
             ndex_num = i + 1;
             seen = DexScreen_GetSetPokedexFlag(ndex_num, FLAG_GET_SEEN, FALSE);
@@ -1493,7 +1493,7 @@ static void DexScreen_InitListMenuForOrderedList(const struct ListMenuTemplate *
     switch (order)
     {
     default:
-    case DEX_ORDER_NUMERICAL_KANTO:
+    case DEX_ORDER_NUMERICAL_REGIONAL:
         sPokedexScreenData->orderedListMenuTaskId = ListMenuInitInRect(template, sListMenuRects_OrderedList, sPokedexScreenData->kantoOrderMenuCursorPos, sPokedexScreenData->kantoOrderMenuItemsAbove);
         break;
     case DEX_ORDER_ATOZ:
@@ -1513,7 +1513,7 @@ static void DexScreen_DestroyDexOrderListMenu(u8 order)
     switch (order)
     {
     default:
-    case DEX_ORDER_NUMERICAL_KANTO:
+    case DEX_ORDER_NUMERICAL_REGIONAL:
         DestroyListMenuTask(sPokedexScreenData->orderedListMenuTaskId, &sPokedexScreenData->kantoOrderMenuCursorPos, &sPokedexScreenData->kantoOrderMenuItemsAbove);
         break;
     case DEX_ORDER_ATOZ:
@@ -2040,7 +2040,7 @@ static bool32 DexScreen_TryScrollMonsVertical(u8 direction)
     switch (sPokedexScreenData->dexOrderId)
     {
     default:
-    case DEX_ORDER_NUMERICAL_KANTO:
+    case DEX_ORDER_NUMERICAL_REGIONAL:
         cursorPos_p = &sPokedexScreenData->kantoOrderMenuCursorPos;
         itemsAbove_p = &sPokedexScreenData->kantoOrderMenuItemsAbove;
         break;
@@ -3169,7 +3169,7 @@ static int DexScreen_CanShowMonInDex(u16 species)
 {
     if (IsNationalPokedexEnabled() == TRUE)
         return TRUE;
-    if (SpeciesToNationalPokedexNum(species) <= NATIONAL_DEX_COUNT)
+    if (SpeciesToNationalPokedexNum(species) <= REGIONAL_DEX_COUNT)
         return TRUE;
     return FALSE;
 }
@@ -3309,7 +3309,7 @@ u8 DexScreen_RegisterMonToPokedex(u16 species)
     DexScreen_GetSetPokedexFlag(species, FLAG_SET_SEEN, TRUE);
     DexScreen_GetSetPokedexFlag(species, FLAG_SET_CAUGHT, TRUE);
 
-    if (!IsNationalPokedexEnabled() && SpeciesToNationalPokedexNum(species) > NATIONAL_DEX_COUNT)
+    if (!IsNationalPokedexEnabled() && SpeciesToNationalPokedexNum(species) > REGIONAL_DEX_COUNT)
         return CreateTask(Task_DexScreen_RegisterNonKantoMonBeforeNationalDex, 0);
 
     DexScreen_LoadResources();

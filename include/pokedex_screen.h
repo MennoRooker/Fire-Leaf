@@ -12,7 +12,7 @@
 #define DEX_CATEGORY_RARE           8
 #define DEX_CATEGORY_COUNT          9
 
-#define DEX_ORDER_NUMERICAL_KANTO    0
+#define DEX_ORDER_NUMERICAL_REGIONAL 0
 #define DEX_ORDER_ATOZ               1
 #define DEX_ORDER_TYPE               2
 #define DEX_ORDER_LIGHTEST           3

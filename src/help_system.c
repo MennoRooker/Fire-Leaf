@@ -2145,7 +2145,7 @@ static bool8 IsHelpSystemSubmenuEnabled(u8 id)
         case HELP_USING_SWITCH:
         case HELP_USING_SHIFT:
             // Only show if player has caught mon after starter
-            if (GetKantoPokedexCount(1) > 1)
+            if (GetRegionalPokedexCount(1) > 1)
                 return TRUE;
             return FALSE;
         case HELP_USING_TM:
