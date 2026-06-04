@@ -421,6 +421,16 @@ spatk:	40 -> 90
 - SHELGON
 spdef:	50 -> 70
 
+- REGIROCK
+atk:	100-> 120
+
+- REGICE
+spatk:	100-> 120
+
+- Registeel
+atk:	75 -> 85
+spd:	50 -> 60
+
 - GROUDON
 GROUND -> GROUND/FIRE
 
