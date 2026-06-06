@@ -1354,9 +1354,9 @@ x HP beeping
 x Victory Road FLY checkpoint
 x Balancing
 x Title screen
-- Clean up
 - Documentation
 ---------------------------------------
+- Clean up
 - Add Fairy type
 - Agatha's Flutter Mane
 - Max rematch
