@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 """
-Generate a first-pass trainer documentation page from existing project data.
+Generate an overview page from existing project data.
 
 Output:
-  docs/trainer_docs/index2.html
+  docs/OVERVIEW.html
 
 Optional:
-  python scripts/generate_trainer_docs.py --section "Route 2"
+  python3 scripts/generate_overview.py --section "Route 2"
 """
 
 from __future__ import annotations
@@ -14,6 +14,7 @@ from __future__ import annotations
 import argparse
 import html
 import json
+import os
 import re
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
@@ -419,7 +420,7 @@ def build_model(section_filter: Optional[str]) -> Dict[str, object]:
         {
             "name": name,
             "slug": slugify(name),
-            "mapImage": f"../maps/{slugify(name)}.png",
+            "mapImage": f"docs/maps/{slugify(name)}.png",
             "trainers": trs,
         }
         for name, trs in sections.items()
@@ -434,6 +435,10 @@ def build_model(section_filter: Optional[str]) -> Dict[str, object]:
 def render_html(model: Dict[str, object], out_path: Path) -> None:
     type_icons = model["typeIcons"]
     sections = model["sections"]
+    output_dir = out_path.parent
+
+    def asset_url(rel_path: str) -> str:
+        return os.path.relpath(ROOT / rel_path, output_dir).replace("\\", "/")
 
     css = """
 :root {
@@ -538,7 +543,7 @@ h1 { margin: 0 0 8px 0; }
 .type-icon {
   display: inline-block;
   image-rendering: pixelated;
-  background-image: url("../../graphics/interface/menu_info.png");
+    background-image: url("__TYPE_ICON_URL__");
   background-repeat: no-repeat;
 }
 .mon-body { padding: 6px; text-align: center; font-size: 30px; line-height: 1.25; }
@@ -550,21 +555,17 @@ h1 { margin: 0 0 8px 0; }
   line-height: 1.15;
 }
 .move-row { display: flex; align-items: center; justify-content: center; gap: 6px; }
-.meta {
-  color: #4c4339;
-  font-size: 12px;
-  border-top: 1px solid #bfb2a1;
-  padding: 3px 6px;
-}
+
 @media (max-width: 1200px) {
     .map-pane { min-height: 90px; }
 }
 """
+    css = css.replace("__TYPE_ICON_URL__", asset_url("graphics/interface/menu_info.png"))
 
     html_chunks: List[str] = []
     html_chunks.append("<!doctype html><html><head><meta charset='utf-8'>")
     html_chunks.append("<meta name='viewport' content='width=device-width, initial-scale=1'>")
-    html_chunks.append("<title>Trainer Docs (First Pass)</title>")
+    html_chunks.append("<title>Trainer Overview</title>")
     html_chunks.append("<style>")
     html_chunks.append(css)
 
@@ -574,14 +575,14 @@ h1 { margin: 0 0 8px 0; }
         )
 
     html_chunks.append("</style></head><body><div class='wrap'>")
-    html_chunks.append("<h1>Trainer Docs (First Pass)</h1>")
+    html_chunks.append("<h1>Trainer Overview</h1>")
     html_chunks.append(
         "<p class='hint'>Map images are optional. Place route screenshots in docs/maps using section slug names.</p>"
     )
 
     for sec in sections:
         section_name = html.escape(str(sec["name"]))
-        map_img = html.escape(str(sec["mapImage"]))
+        map_img = html.escape(asset_url(str(sec["mapImage"])))
         html_chunks.append("<section class='section'>")
         html_chunks.append(f"<div class='section-head'><strong>{section_name}</strong><span>{len(sec['trainers'])} trainers</span></div>")
         html_chunks.append("<div class='map-pane'>")
@@ -594,10 +595,10 @@ h1 { margin: 0 0 8px 0; }
         for tr in sec["trainers"]:
             trainer_name = html.escape(str(tr["name"]))
             trainer_class = html.escape(str(tr["class"]))
-            trainer_sprite = html.escape(str(tr["sprite"]))
+            trainer_sprite = html.escape(asset_url(str(tr["sprite"])))
             html_chunks.append("<article class='trainer-card'><div class='trainer-main'>")
             html_chunks.append("<div class='trainer-left'>")
-            html_chunks.append(f"<img src='../../{trainer_sprite}' alt='{trainer_name}'>")
+            html_chunks.append(f"<img src='{trainer_sprite}' alt='{trainer_name}'>")
             html_chunks.append(f"<div class='trainer-class'>{trainer_class}</div>")
             html_chunks.append(f"<div class='trainer-name'>{trainer_name}</div>")
             html_chunks.append("</div>")
@@ -605,7 +606,7 @@ h1 { margin: 0 0 8px 0; }
             html_chunks.append("<div class='mons'>")
             for mon in tr["mons"]:
                 mon_name = html.escape(str(mon["speciesName"]))
-                mon_sprite = html.escape(str(mon["sprite"]))
+                mon_sprite = html.escape(asset_url(str(mon["sprite"])))
                 lvl = html.escape(str(mon["level"]))
                 nature = html.escape(str(mon["nature"]))
                 ability = html.escape(str(mon["ability"]))
@@ -613,7 +614,7 @@ h1 { margin: 0 0 8px 0; }
 
                 html_chunks.append("<div class='mon'>")
                 html_chunks.append("<div class='mon-head'>")
-                html_chunks.append(f"<img src='../../{mon_sprite}' alt='{mon_name}'>")
+                html_chunks.append(f"<img src='{mon_sprite}' alt='{mon_name}'>")
                 html_chunks.append(f"<div class='mon-name'>{mon_name}</div>")
                 html_chunks.append(f"<div class='lvl'>{lvl}</div>")
 
@@ -643,9 +644,6 @@ h1 { margin: 0 0 8px 0; }
                     html_chunks.append("<div class='move-row'><span>-</span></div>")
                 html_chunks.append("</div>")
 
-                html_chunks.append(
-                    f"<div class='meta'>{html.escape(str(mon['speciesToken']))}</div>"
-                )
                 html_chunks.append("</div>")
 
             html_chunks.append("</div>")
@@ -660,12 +658,12 @@ h1 { margin: 0 0 8px 0; }
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Generate first-pass trainer docs HTML")
+    parser = argparse.ArgumentParser(description="Generate trainer overview HTML")
     parser.add_argument("--section", help="Only render one section title (case-insensitive)")
     args = parser.parse_args()
 
     model = build_model(args.section)
-    out_path = ROOT / "docs" / "trainer_docs" / "index2.html"
+    out_path = ROOT / "docs" / "OVERVIEW.html"
     render_html(model, out_path)
 
     print(f"Wrote: {out_path}")
