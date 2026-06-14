@@ -1315,6 +1315,21 @@ I'll leave several changes that are quite simple for a
 later point, since I think they should only be present 
 in the first official release.
 
+The cleanup of the quest log will truncate SaveBlock1 
+once again so I made a branch called DEMO that will
+keep the old SaveBlock1 struct. The master branch will
+have a cleaned up struct, but will likely not be
+compatible with the DEMO version.
+
+I need to make several python scripts to get the docu-
+mentation right. I'm looking at Radical Red, but that 
+might be a little ambitious. I do want to have all
+the relevant sprites in there and show the routes 
+and maps in the documentation itself. In Porymap you
+can see the full maps, but I have to keep in mind that 
+some maps have some random remnants of excess assets
+that I need to remove before adding them to the docs.
+
 TO DO:
 x Force SET mode
 x EV berries
@@ -1363,7 +1378,15 @@ x Title screen
 - International Dex (Gens IV & V)
 - Paul Champion
 - Physical/special split
-- Pokedex stats & evo screens
+- Pokedex:
+  • Stats screen
+    ‣ Pokemon DB colors
+    ‣ Full 0-255 scaling
+  • Evos screen
+    ‣ Only if seen
+    ‣ Evo methods
+  • LR navigation
+  • Edit titles
 - Elemental punches tutor
 - Dynamic speed
 - MOVE_ITEM option
