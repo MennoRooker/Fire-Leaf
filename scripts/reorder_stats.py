@@ -5,10 +5,11 @@ Moves .baseSpeed and .evYield_Speed entries to appear after .baseSpDefense and
 The order HP, Atk, Def, Spd, SpAtk, SpDef becomes HP, Atk, Def, SpAtk, SpDef, Spd.
 """
 
+import os
 import re
 import sys
 
-FILE = "../src/data/pokemon/species_info.h"
+FILE = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "../src/data/pokemon/species_info.h"))
 
 with open(FILE, "r", encoding="utf-8") as f:
     content = f.read()

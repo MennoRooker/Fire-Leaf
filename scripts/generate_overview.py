@@ -24,6 +24,15 @@ from typing import Dict, List, Optional
 
 ROOT = Path(__file__).resolve().parents[1]
 
+# Insert extra sections relative to trainer_parties section comments.
+# Format: ("Anchor Section", ["Section To Insert", "Another Section"])
+# Each inserted section is placed immediately after its anchor, in listed order.
+# This keeps trainer_parties ordering as the base and lets you place maps between
+# canonical sections (for example Route 1 and Viridian City after Oak's Lab).
+MANUAL_SECTION_INSERTS: List[tuple[str, List[str]]] = [
+    ("Oak's Lab", ["Route 1", "Viridian City"]),
+]
+
 
 def read_text(rel_path: str) -> str:
     return (ROOT / rel_path).read_text(encoding="utf-8")
@@ -90,8 +99,25 @@ def parse_move_types() -> Dict[str, str]:
 def parse_species_info_types_and_abilities() -> Dict[str, Dict[str, object]]:
     text = read_text("src/data/pokemon/species_info.h")
     out: Dict[str, Dict[str, object]] = {}
-    entry_re = re.compile(r"\[(SPECIES_[A-Z0-9_]+)\]\s*=\s*\{(.*?)\n\s*\},", re.S)
-    for species, body in entry_re.findall(text):
+    start_re = re.compile(r"^\s*\[(SPECIES_[A-Z0-9_]+)\]\s*=\s*\{\s*$", re.M)
+
+    for m in start_re.finditer(text):
+        species = m.group(1)
+        body_start = m.end()
+        depth = 1
+        i = body_start
+        while i < len(text) and depth > 0:
+            ch = text[i]
+            if ch == "{":
+                depth += 1
+            elif ch == "}":
+                depth -= 1
+            i += 1
+
+        if depth != 0:
+            continue
+
+        body = text[body_start : i - 1]
         t = re.search(
             r"\.types\s*=\s*\{\s*(TYPE_[A-Z0-9_]+)\s*,\s*(TYPE_[A-Z0-9_]+)\s*\}",
             body,
@@ -314,13 +340,15 @@ def parse_party_mon(mon_block: str) -> Dict[str, object]:
     return out
 
 
-def parse_parties() -> Dict[str, Dict[str, object]]:
+def parse_parties() -> Dict[str, object]:
     text = read_text("src/data/trainer_parties.h")
     lines = text.splitlines()
 
     started = False
     current_section = "Unsorted"
     out: Dict[str, Dict[str, object]] = {}
+    section_order: List[str] = []
+    seen_sections = set()
 
     sec_re = re.compile(r"^\s*//\s*=+\s*(.*?)\s*=+\s*//\s*$")
     head_re = re.compile(r"^\s*static const struct\s+(\w+)\s+(sParty_[A-Za-z0-9_]+)\[\]\s*=\s*\{\s*$")
@@ -341,6 +369,9 @@ def parse_parties() -> Dict[str, Dict[str, object]]:
             title = msec.group(1).strip()
             if title:
                 current_section = title
+                if current_section not in seen_sections:
+                    section_order.append(current_section)
+                    seen_sections.add(current_section)
 
         mhead = head_re.match(line)
         if not mhead:
@@ -374,7 +405,7 @@ def parse_parties() -> Dict[str, Dict[str, object]]:
         }
         i += 1
 
-    return out
+    return {"parties": out, "sectionOrder": section_order}
 
 
 def slugify(name: str) -> str:
@@ -382,9 +413,65 @@ def slugify(name: str) -> str:
     return s.lower() or "section"
 
 
+SECTION_THEME_OVERRIDES: Dict[str, str] = {
+    "pewter city": "city-pewter",
+    "cerulean city": "city-cerulean",
+    "vermilion city": "city-vermilion",
+    "celadon city": "city-celadon",
+    "fuchsia city": "city-fuchsia",
+    "saffron city": "city-saffron",
+    "viridian city": "city-viridian",
+    "cinnabar island": "city-cinnabar",
+    "pewter city gym": "gym-pewter",
+    "cerulean city gym": "gym-cerulean",
+    "vermilion city gym": "gym-vermilion",
+    "celadon city gym": "gym-celadon",
+    "fuchsia city gym": "gym-fuchsia",
+    "saffron city gym": "gym-saffron",
+    "viridian city gym": "gym-viridian",
+    "cinnabar island gym": "gym-cinnabar",
+}
+
+
+def resolve_section_theme(section_name: str) -> str:
+    key = section_name.strip().lower()
+    if key in SECTION_THEME_OVERRIDES:
+        return SECTION_THEME_OVERRIDES[key]
+
+    if "forest" in key:
+        return "forest"
+
+    cave_markers = (
+        "cave",
+        "tunnel",
+        "mt.",
+        "mount",
+        "rock tunnel",
+        "victory road",
+        "hideout",
+        "rocket hideout",
+        "pokemon tower",
+    )
+    if any(marker in key for marker in cave_markers):
+        return "cave"
+
+    if re.search(r"\broute\b", key):
+        return "route"
+
+    if re.search(r"\bgym\b", key):
+        return "gym-generic"
+
+    if any(token in key for token in ("city", "town", "island")):
+        return "city-generic"
+
+    return "default"
+
+
 def build_model(section_filter: Optional[str]) -> Dict[str, object]:
     trainers = parse_trainers()
-    parties = parse_parties()
+    parties_data = parse_parties()
+    parties = parties_data["parties"]
+    party_section_order = parties_data["sectionOrder"]
 
     species_names = parse_species_names()
     move_names = parse_move_names()
@@ -480,6 +567,19 @@ def build_model(section_filter: Optional[str]) -> Dict[str, object]:
                 "slots": slots,
             }
 
+            if encounter_kind == "fishing_mons" and slots:
+                rod_groups: List[Dict[str, object]] = []
+                old_slots = slots[:2]
+                good_slots = slots[2:5]
+                super_slots = slots[5:]
+                if old_slots:
+                    rod_groups.append({"label": "Old Rod", "icon": "graphics/items/icons/old_rod.png", "slots": old_slots})
+                if good_slots:
+                    rod_groups.append({"label": "Good Rod", "icon": "graphics/items/icons/good_rod.png", "slots": good_slots})
+                if super_slots:
+                    rod_groups.append({"label": "Super Rod", "icon": "graphics/items/icons/super_rod.png", "slots": super_slots})
+                panel["rodGroups"] = rod_groups
+
             if encounter_kind in ("land_mons", "rock_smash_mons"):
                 left_panels.append(panel)
             else:
@@ -523,6 +623,10 @@ def build_model(section_filter: Optional[str]) -> Dict[str, object]:
         trainer_name = t["trainerName"].strip()
         if not trainer_name:
             trainer_name = trainer_id.replace("TRAINER_", "").replace("_", " ").title()
+        if trainer_id.startswith("TRAINER_RIVAL_"):
+            trainer_name = "Rival"
+        if trainer_name.upper() == "TERRY":
+            trainer_name = "Rival"
 
         class_name = trainer_class_names.get(t["trainerClass"], pretty_token(t["trainerClass"], "TRAINER_CLASS_"))
         trainer_obj: Dict[str, object] = {
@@ -578,16 +682,46 @@ def build_model(section_filter: Optional[str]) -> Dict[str, object]:
 
         sections.setdefault(section, []).append(trainer_obj)
 
-    ordered_sections = [
-        {
-            "name": name,
-            "slug": slugify(name),
-            "mapImage": f"docs/maps/{slugify(name)}.png",
-            "encounters": get_section_encounters(name),
-            "trainers": trs,
-        }
-        for name, trs in sections.items()
-    ]
+    for _, insert_names in MANUAL_SECTION_INSERTS:
+        for name in insert_names:
+            sections.setdefault(name, [])
+
+    ordered_section_names: List[str] = [name for name in party_section_order if name in sections]
+
+    for anchor_name, insert_names in MANUAL_SECTION_INSERTS:
+        if anchor_name not in ordered_section_names:
+            continue
+
+        insert_pos = ordered_section_names.index(anchor_name) + 1
+        for name in insert_names:
+            if name not in sections:
+                continue
+            if name in ordered_section_names:
+                old_idx = ordered_section_names.index(name)
+                ordered_section_names.pop(old_idx)
+                if old_idx < insert_pos:
+                    insert_pos -= 1
+            ordered_section_names.insert(insert_pos, name)
+            insert_pos += 1
+
+    section_name_set = set(ordered_section_names)
+    for name in sections.keys():
+        if name not in section_name_set:
+            ordered_section_names.append(name)
+            section_name_set.add(name)
+
+    ordered_sections = []
+    for name in ordered_section_names:
+        ordered_sections.append(
+            {
+                "name": name,
+                "slug": slugify(name),
+                "theme": resolve_section_theme(name),
+                "mapImage": f"docs/maps/{slugify(name)}.png",
+                "encounters": get_section_encounters(name),
+                "trainers": sections[name],
+            }
+        )
 
     return {
         "sections": ordered_sections,
@@ -624,21 +758,37 @@ body {
 h1 { margin: 0 0 8px 0; }
 .hint { margin: 0 0 18px 0; color: #4a433d; }
 .section {
+    --section-bg: #efe9e0;
+    --section-head-bg: #ddd2c4;
+    --map-pane-bg: #d8d0c4;
+    --map-left-bg: #cfc7bb;
+    --enc-bg: #efefef;
+    --enc-panel-bg: #f4f4f4;
+    --enc-kind-bg: #e2e2e2;
+    --enc-line: #908a83;
+    --enc-grid-line: #8f8f8f;
+    --enc-th-bg: #dedede;
+    --trainer-card-bg: #e4ddd4;
+    --trainer-left-bg: #e0d8ce;
+    --mon-bg: #f8f5ef;
+    --mon-head-bg: #d2c4b4;
+    --mon-body-bg: #f8f5ef;
+    --moves-bg: #f6f2eb;
   border: 3px solid var(--line);
-  background: #efe9e0;
+    background: var(--section-bg);
   margin: 16px 0 30px;
 }
 .section-head {
   border-bottom: 3px solid var(--line);
   padding: 10px 12px;
-  background: #ddd2c4;
+    background: var(--section-head-bg);
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 .map-pane {
     min-height: 120px;
-  background: #d8d0c4;
+    background: var(--map-pane-bg);
     display: grid;
     align-items: stretch;
   padding: 10px;
@@ -656,7 +806,7 @@ h1 { margin: 0 0 8px 0; }
 }
 .map-left {
     border: 2px solid var(--line);
-    background: #cfc7bb;
+    background: var(--map-left-bg);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -667,7 +817,7 @@ h1 { margin: 0 0 8px 0; }
 .map-fallback { display: none; color: #574d42; font-size: 16px; }
 .encounters {
     border: 2px solid var(--line);
-    background: #efefef;
+    background: var(--enc-bg);
     display: flex;
     flex-direction: column;
     gap: 8px;
@@ -692,25 +842,49 @@ h1 { margin: 0 0 8px 0; }
     gap: 8px;
 }
 .enc-panel {
-    border: 2px solid #908a83;
-    background: #f4f4f4;
+    border: 2px solid var(--enc-line);
+    background: var(--enc-panel-bg);
 }
 .enc-kind-head {
-    border-bottom: 2px solid #908a83;
+    border-bottom: 2px solid var(--enc-line);
     padding: 4px 8px;
     font-size: 14px;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.6px;
-    background: #e2e2e2;
+    background: var(--enc-kind-bg);
 }
 .enc-grid { width: 100%; border-collapse: collapse; font-size: 14px; }
-.enc-grid th, .enc-grid td { border-bottom: 1px solid #8f8f8f; padding: 4px 6px; }
-.enc-grid th { background: #dedede; font-weight: 700; }
+.enc-grid th, .enc-grid td { border-bottom: 1px solid var(--enc-grid-line); padding: 4px 6px; }
+.enc-grid tbody tr { height: 40px; }
+.enc-grid th { background: var(--enc-th-bg); font-weight: 700; }
 .enc-grid .rarity { width: 58px; text-align: center; font-weight: 700; }
+.enc-grid .rarity-very-low { background: #9ae28f; }
+.enc-grid .rarity-low { background: #c4e788; }
+.enc-grid .rarity-mid { background: #e6ca82; }
+.enc-grid .rarity-high { background: #eca169; }
+.enc-grid .rarity-very-high { background: #ea8080; }
+.enc-grid .rarity-other { background: #d7d7d7; }
 .enc-grid .species-cell { display: flex; align-items: center; gap: 8px; }
 .enc-grid .species-cell img { width: 32px; height: 32px; image-rendering: pixelated; }
-.enc-grid .lvl { width: 62px; text-align: center; font-weight: 700; }
+.enc-grid .lvl { width: 62px; text-align: center; font-weight: 700; font-size: 11px; }
+.enc-grid .rod-header td {
+    background: var(--enc-kind-bg);
+    font-weight: 700;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-top: 2px solid var(--enc-line);
+    padding: 3px 6px;
+    height: auto;
+}
+.enc-grid .rod-header td img {
+    width: 20px;
+    height: 20px;
+    image-rendering: pixelated;
+    vertical-align: middle;
+    margin-right: 5px;
+}
 .enc-placeholder {
     padding: 14px 10px;
     text-align: center;
@@ -725,7 +899,7 @@ h1 { margin: 0 0 8px 0; }
 }
 .trainer-card {
   border: 3px solid var(--line);
-  background: var(--panel);
+    background: var(--trainer-card-bg);
 }
 .trainer-main {
   display: grid;
@@ -733,6 +907,7 @@ h1 { margin: 0 0 8px 0; }
 }
 .trainer-left {
   border-right: 3px solid var(--line);
+    background: var(--trainer-left-bg);
   text-align: center;
   padding: 6px;
 }
@@ -750,13 +925,14 @@ h1 { margin: 0 0 8px 0; }
 .mon {
   border-left: 3px solid var(--line);
   border-bottom: 3px solid var(--line);
-  background: #f8f5ef;
+    background: var(--mon-bg);
 }
 .mons .mon:last-child {
     border-right: 3px solid var(--line);
 }
 .mon-head {
   border-bottom: 3px solid var(--line);
+    background: var(--mon-head-bg);
   text-align: center;
   padding: 4px;
 }
@@ -784,11 +960,209 @@ h1 { margin: 0 0 8px 0; }
 .mon-body .item { font-size: 28px; }
 .moves {
   border-top: 3px solid var(--line);
+    background: var(--moves-bg);
   padding: 4px 6px;
   font-size: 30px;
   line-height: 1.15;
 }
 .move-row { display: flex; align-items: center; justify-content: center; gap: 6px; }
+
+.section[data-theme='route'] {
+    --section-bg: #f1ead8;
+    --section-head-bg: #d6ccb4;
+    --map-pane-bg: #e4dcc8;
+    --map-left-bg: #d6ceb8;
+    --enc-bg: #eef3e4;
+    --enc-panel-bg: #f5f8ef;
+    --enc-kind-bg: #dde8cb;
+    --trainer-card-bg: #e5dccd;
+    --trainer-left-bg: #d8d2c0;
+    --mon-bg: #f7f2e8;
+    --mon-head-bg: #d8ccb8;
+    --moves-bg: #f3eee3;
+}
+
+.section[data-theme='forest'] {
+    --section-bg: #d8e5d2;
+    --section-head-bg: #b2c9aa;
+    --map-pane-bg: #c4d7bc;
+    --map-left-bg: #b8cbaa;
+    --enc-bg: #dbe9d3;
+    --enc-panel-bg: #edf4e8;
+    --enc-kind-bg: #cadfc0;
+    --enc-line: #5d7852;
+    --enc-grid-line: #6a8560;
+    --enc-th-bg: #c2d7ba;
+    --trainer-card-bg: #d4e1cf;
+    --trainer-left-bg: #bfd1b7;
+    --mon-bg: #eef5e9;
+    --mon-head-bg: #b7caaa;
+    --moves-bg: #e9f1e3;
+}
+
+.section[data-theme='cave'] {
+    --section-bg: #e0d8ce;
+    --section-head-bg: #c2b5a7;
+    --map-pane-bg: #cec4b8;
+    --map-left-bg: #bbb0a2;
+    --enc-bg: #e6dfd6;
+    --enc-panel-bg: #f0eae1;
+    --enc-kind-bg: #d4c9bc;
+    --enc-line: #6f665e;
+    --enc-grid-line: #7e756c;
+    --enc-th-bg: #d1c4b7;
+    --trainer-card-bg: #dbd2c8;
+    --trainer-left-bg: #c9bcad;
+    --mon-bg: #f2ece5;
+    --mon-head-bg: #c3b5a6;
+    --moves-bg: #eee6dd;
+}
+
+.section[data-theme='city-generic'] {
+    --section-bg: #e9e6df;
+    --section-head-bg: #ccc6bb;
+    --map-pane-bg: #d7d2c7;
+    --map-left-bg: #c8c2b6;
+    --enc-bg: #ece9e2;
+    --enc-panel-bg: #f5f2ec;
+    --enc-kind-bg: #dad4c9;
+    --trainer-card-bg: #e3ddd3;
+    --trainer-left-bg: #d3ccbf;
+    --mon-bg: #f7f3ec;
+    --mon-head-bg: #d0c5b5;
+    --moves-bg: #f2ede4;
+}
+
+.section[data-theme='city-pewter'],
+.section[data-theme='gym-pewter'] {
+    --section-bg: #efe9e0;
+    --section-head-bg: #ddd2c4;
+    --map-pane-bg: #d8d0c4;
+    --map-left-bg: #cfc7bb;
+    --enc-bg: #efefef;
+    --enc-panel-bg: #f4f4f4;
+    --enc-kind-bg: #e2e2e2;
+    --trainer-card-bg: #e4ddd4;
+    --trainer-left-bg: #e0d8ce;
+    --mon-bg: #f8f5ef;
+    --mon-head-bg: #d2c4b4;
+    --moves-bg: #f6f2eb;
+}
+
+.section[data-theme='city-cerulean'],
+.section[data-theme='gym-cerulean'] {
+    --section-bg: #d3deea;
+    --section-head-bg: #3f84c2;
+    --map-pane-bg: #c3d3e3;
+    --map-left-bg: #adc3d9;
+    --enc-bg: #d8e5f2;
+    --enc-panel-bg: #e9f1f8;
+    --enc-kind-bg: #b9d1e9;
+    --enc-line: #3f6484;
+    --enc-grid-line: #4f7494;
+    --enc-th-bg: #b6cde3;
+    --trainer-card-bg: #cbdae8;
+    --trainer-left-bg: #c0d4e7;
+    --mon-bg: #e9f0f7;
+    --mon-head-bg: #3f84c2;
+    --moves-bg: #e5edf5;
+}
+
+.section[data-theme='city-vermilion'],
+.section[data-theme='gym-vermilion'] {
+    --section-bg: #efe0d3;
+    --section-head-bg: #d98749;
+    --map-pane-bg: #e5d0be;
+    --map-left-bg: #ddc2ab;
+    --enc-bg: #f2e6db;
+    --enc-panel-bg: #f7eee6;
+    --enc-kind-bg: #ecd2bf;
+    --trainer-card-bg: #e8d7c8;
+    --trainer-left-bg: #dfc8b2;
+    --mon-bg: #f7efe7;
+    --mon-head-bg: #e1b894;
+    --moves-bg: #f3e8de;
+}
+
+.section[data-theme='city-celadon'],
+.section[data-theme='gym-celadon'] {
+    --section-bg: #dde8d8;
+    --section-head-bg: #7ea96d;
+    --map-pane-bg: #cfddca;
+    --map-left-bg: #c1d0bb;
+    --enc-bg: #e4eedf;
+    --enc-panel-bg: #f1f6ee;
+    --enc-kind-bg: #cfe1c6;
+    --trainer-card-bg: #d7e3d1;
+    --trainer-left-bg: #c6d8be;
+    --mon-bg: #eef4ea;
+    --mon-head-bg: #aec7a2;
+    --moves-bg: #e8f0e2;
+}
+
+.section[data-theme='city-fuchsia'],
+.section[data-theme='gym-fuchsia'] {
+    --section-bg: #eadbea;
+    --section-head-bg: #b16cab;
+    --map-pane-bg: #dec9de;
+    --map-left-bg: #d2b8d1;
+    --enc-bg: #efe3ef;
+    --enc-panel-bg: #f7eff7;
+    --enc-kind-bg: #e2c9e1;
+    --trainer-card-bg: #e3d3e2;
+    --trainer-left-bg: #d8c2d7;
+    --mon-bg: #f5edf5;
+    --mon-head-bg: #ccadd0;
+    --moves-bg: #f1e8f1;
+}
+
+.section[data-theme='city-saffron'],
+.section[data-theme='gym-saffron'] {
+    --section-bg: #f0e6c9;
+    --section-head-bg: #ceac4a;
+    --map-pane-bg: #e7d9b7;
+    --map-left-bg: #dfcc9d;
+    --enc-bg: #f5edd8;
+    --enc-panel-bg: #fbf5e8;
+    --enc-kind-bg: #eddcae;
+    --trainer-card-bg: #ebdec0;
+    --trainer-left-bg: #e1cf9f;
+    --mon-bg: #f9f4e4;
+    --mon-head-bg: #e1ca87;
+    --moves-bg: #f5eed8;
+}
+
+.section[data-theme='city-viridian'],
+.section[data-theme='gym-viridian'] {
+    --section-bg: #d8e8d7;
+    --section-head-bg: #6f9a64;
+    --map-pane-bg: #c7dbc3;
+    --map-left-bg: #b8cfb3;
+    --enc-bg: #deebdb;
+    --enc-panel-bg: #eef5ec;
+    --enc-kind-bg: #c8dcc1;
+    --trainer-card-bg: #d2e0ce;
+    --trainer-left-bg: #bdd2b7;
+    --mon-bg: #edf4ea;
+    --mon-head-bg: #abc6a0;
+    --moves-bg: #e6efe3;
+}
+
+.section[data-theme='city-cinnabar'],
+.section[data-theme='gym-cinnabar'] {
+    --section-bg: #edd9d2;
+    --section-head-bg: #c06049;
+    --map-pane-bg: #e2c6bc;
+    --map-left-bg: #d8b4a7;
+    --enc-bg: #f1e0da;
+    --enc-panel-bg: #f8ece8;
+    --enc-kind-bg: #e8c7bc;
+    --trainer-card-bg: #e7d2ca;
+    --trainer-left-bg: #dabeb3;
+    --mon-bg: #f6ece9;
+    --mon-head-bg: #d8a897;
+    --moves-bg: #f2e4de;
+}
 
 @media (max-width: 1200px) {
     .map-pane {
@@ -821,25 +1195,58 @@ h1 { margin: 0 0 8px 0; }
     )
 
     def render_encounter_panel(panel: Dict[str, object]) -> None:
-        panel_title = html.escape(str(panel.get("title", "Encounter")))
-        html_chunks.append("<section class='enc-panel'>")
-        html_chunks.append(f"<div class='enc-kind-head'>{panel_title}</div>")
-        html_chunks.append("<table class='enc-grid'>")
-        html_chunks.append("<thead><tr><th class='rarity'>Rarity</th><th>Pokemon</th><th class='lvl'>Level</th></tr></thead>")
-        html_chunks.append("<tbody>")
-        for slot in panel.get("slots", []):
+        kind = str(panel.get("kind", ""))
+        is_non_land = kind != "land_mons"
+
+        def get_rarity_class(rarity: int) -> str:
+            if is_non_land:
+                if rarity >= 40:
+                    return "rarity-very-low"
+                if rarity >= 25:
+                    return "rarity-low"
+                if rarity >= 5:
+                    return "rarity-mid"
+                if rarity >= 2:
+                    return "rarity-high"
+                return "rarity-very-high"
+            fixed = {20: "rarity-very-low", 10: "rarity-low", 5: "rarity-mid", 4: "rarity-high", 1: "rarity-very-high"}
+            return fixed.get(rarity, "rarity-other")
+
+        def render_slot_row(slot: Dict[str, object]) -> None:
             e_name = html.escape(str(slot["speciesName"]))
             e_lvl = html.escape(str(slot["level"]))
-            e_rarity = html.escape(f"{slot['rarity']}%")
+            rarity = int(slot.get("rarity", 0))
+            e_rarity = html.escape(f"{rarity}%")
+            rarity_class = get_rarity_class(rarity)
             e_sprite = html.escape(asset_url(str(slot["sprite"])))
             html_chunks.append("<tr>")
-            html_chunks.append(f"<td class='rarity'>{e_rarity}</td>")
+            html_chunks.append(f"<td class='rarity {rarity_class}'>{e_rarity}</td>")
             html_chunks.append("<td><div class='species-cell'>")
             html_chunks.append(f"<img src='{e_sprite}' alt='{e_name}'>")
             html_chunks.append(f"<span>{e_name}</span>")
             html_chunks.append("</div></td>")
             html_chunks.append(f"<td class='lvl'>{e_lvl}</td>")
             html_chunks.append("</tr>")
+
+        panel_title = html.escape(str(panel.get("title", "Encounter")))
+        html_chunks.append("<section class='enc-panel'>")
+        html_chunks.append(f"<div class='enc-kind-head'>{panel_title}</div>")
+        html_chunks.append("<table class='enc-grid'>")
+        html_chunks.append("<thead><tr><th class='rarity'>Rarity</th><th>Pokemon</th><th class='lvl'>Level</th></tr></thead>")
+        html_chunks.append("<tbody>")
+        rod_groups = panel.get("rodGroups")
+        if rod_groups:
+            for group in rod_groups:
+                group_label = html.escape(str(group.get("label", "")))
+                group_icon = html.escape(asset_url(str(group.get("icon", ""))))
+                html_chunks.append("<tr class='rod-header'>")
+                html_chunks.append(f"<td colspan='3'><img src='{group_icon}' alt='{group_label}'>{group_label}</td>")
+                html_chunks.append("</tr>")
+                for slot in group.get("slots", []):
+                    render_slot_row(slot)
+        else:
+            for slot in panel.get("slots", []):
+                render_slot_row(slot)
         html_chunks.append("</tbody></table>")
         html_chunks.append("</section>")
 
@@ -853,7 +1260,9 @@ h1 { margin: 0 0 8px 0; }
         elif encounters and encounters.get("mode") == "single":
             pane_mode = "single"
 
-        html_chunks.append("<section class='section'>")
+        section_theme = html.escape(str(sec.get("theme", "default")))
+
+        html_chunks.append(f"<section class='section' data-theme='{section_theme}'>")
         html_chunks.append(f"<div class='section-head'><strong>{section_name}</strong><span>{len(sec['trainers'])} trainers</span></div>")
         html_chunks.append(f"<div class='map-pane map-pane--{pane_mode}'>")
         html_chunks.append("<div class='map-left'>")
