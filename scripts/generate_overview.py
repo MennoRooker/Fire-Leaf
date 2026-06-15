@@ -7,6 +7,8 @@ Output:
 
 Optional:
   python3 scripts/generate_overview.py --section "Route 2"
+
+Run with --section to specify 1 map section to generate.
 """
 
 from __future__ import annotations
@@ -17,7 +19,7 @@ import json
 import os
 import re
 from pathlib import Path
-from typing import Dict, List, Optional, Tuple
+from typing import Dict, List, Optional
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -173,6 +175,71 @@ def parse_type_icon_specs() -> Dict[str, Dict[str, int]]:
             "y": tile_y,
         }
     return out
+
+
+ENCOUNTER_KIND_ORDER = [
+    "land_mons",
+    "rock_smash_mons",
+    "water_mons",
+    "fishing_mons",
+]
+
+ENCOUNTER_KIND_TITLES = {
+    "land_mons": "Land",
+    "rock_smash_mons": "Rock Smash",
+    "water_mons": "Surf",
+    "fishing_mons": "Fishing",
+}
+
+
+def parse_firered_encounters() -> Dict[str, object]:
+    data = json.loads(read_text("src/data/wild_encounters.json"))
+    groups = data.get("wild_encounter_groups", [])
+
+    target_group = None
+    for group in groups:
+        if group.get("for_maps"):
+            target_group = group
+            break
+
+    if not target_group:
+        return {"ratesByType": {}, "byMap": {}}
+
+    rates_by_type: Dict[str, List[int]] = {}
+    for field in target_group.get("fields", []):
+        field_type = str(field.get("type", ""))
+        if field_type in ENCOUNTER_KIND_ORDER:
+            rates_by_type[field_type] = [int(x) for x in field.get("encounter_rates", [])]
+
+    by_map: Dict[str, Dict[str, object]] = {}
+    for enc in target_group.get("encounters", []):
+        base_label = str(enc.get("base_label", ""))
+        if not base_label.endswith("_FireRed"):
+            continue
+
+        type_data: Dict[str, Dict[str, object]] = {}
+        for encounter_kind in ENCOUNTER_KIND_ORDER:
+            if encounter_kind not in enc:
+                continue
+
+            encounter_entry = enc[encounter_kind]
+            type_data[encounter_kind] = {
+                "encounterRate": int(encounter_entry.get("encounter_rate", 0)),
+                "mons": encounter_entry.get("mons", []),
+            }
+
+        if not type_data:
+            continue
+
+        map_name = str(enc.get("map", ""))
+        map_token = map_name[4:] if map_name.startswith("MAP_") else map_name
+        by_map[map_token] = {
+            "map": map_name,
+            "baseLabel": base_label,
+            "types": type_data,
+        }
+
+    return {"ratesByType": rates_by_type, "byMap": by_map}
 
 
 def parse_trainers() -> Dict[str, Dict[str, str]]:
@@ -336,6 +403,7 @@ def build_model(section_filter: Optional[str]) -> Dict[str, object]:
     mon_sym_to_png = parse_mon_symbol_to_png_path()
 
     type_icon_specs = parse_type_icon_specs()
+    wild_encounters = parse_firered_encounters()
 
     def trainer_pic_path(pic_token: str) -> str:
         idx = trainer_pic_ids.get(pic_token)
@@ -350,6 +418,95 @@ def build_model(section_filter: Optional[str]) -> Dict[str, object]:
             return "graphics/pokemon/question_mark/front.png"
         sym = mon_front_syms[idx]
         return mon_sym_to_png.get(sym, "graphics/pokemon/question_mark/front.png")
+
+    def get_section_encounters(section_name: str) -> Optional[Dict[str, object]]:
+        section_key = slugify(section_name).upper()
+        section_key_norm = section_key.replace("_", "")
+        if not section_key:
+            return None
+
+        candidates: List[tuple[int, str]] = []
+        for map_token in wild_encounters["byMap"].keys():
+            map_token_norm = map_token.replace("_", "")
+            score = -1
+            if map_token_norm == section_key_norm:
+                score = 4
+            elif map_token_norm.startswith(section_key_norm):
+                score = 3
+            elif section_key_norm.startswith(map_token_norm):
+                score = 2
+            elif section_key_norm in map_token_norm:
+                score = 1
+
+            if score >= 0:
+                candidates.append((score, map_token))
+
+        if not candidates:
+            return None
+
+        candidates.sort(key=lambda x: (x[0], len(x[1])), reverse=True)
+        chosen = wild_encounters["byMap"][candidates[0][1]]
+
+        left_panels: List[Dict[str, object]] = []
+        right_panels: List[Dict[str, object]] = []
+
+        for encounter_kind in ENCOUNTER_KIND_ORDER:
+            kind_data = chosen.get("types", {}).get(encounter_kind)
+            if not kind_data:
+                continue
+
+            slots: List[Dict[str, object]] = []
+            rates = wild_encounters["ratesByType"].get(encounter_kind, [])
+            for idx, mon in enumerate(kind_data.get("mons", [])):
+                species_token = str(mon.get("species", "SPECIES_NONE"))
+                min_level = int(mon.get("min_level", 0))
+                max_level = int(mon.get("max_level", 0))
+                slots.append(
+                    {
+                        "rarity": rates[idx] if idx < len(rates) else 0,
+                        "speciesName": species_names.get(species_token, pretty_token(species_token, "SPECIES_")),
+                        "sprite": species_front_path(species_token),
+                        "level": f"{min_level}-{max_level}" if min_level != max_level else str(min_level),
+                    }
+                )
+
+            if not slots:
+                continue
+
+            panel = {
+                "kind": encounter_kind,
+                "title": ENCOUNTER_KIND_TITLES.get(encounter_kind, encounter_kind),
+                "encounterRate": kind_data.get("encounterRate", 0),
+                "slots": slots,
+            }
+
+            if encounter_kind in ("land_mons", "rock_smash_mons"):
+                left_panels.append(panel)
+            else:
+                right_panels.append(panel)
+
+        has_land_family = bool(left_panels)
+        has_aquatic_family = bool(right_panels)
+        has_any = has_land_family or has_aquatic_family
+        if not has_any:
+            return None
+
+        if has_land_family and has_aquatic_family:
+            mode = "dual"
+        else:
+            mode = "single"
+
+        single_panels: List[Dict[str, object]] = left_panels if has_land_family else right_panels
+
+        return {
+            "map": chosen.get("map", ""),
+            "mode": mode,
+            "hasLandFamily": has_land_family,
+            "hasAquaticFamily": has_aquatic_family,
+            "leftPanels": left_panels,
+            "rightPanels": right_panels,
+            "singlePanels": single_panels,
+        }
 
     sections: Dict[str, List[Dict[str, object]]] = {}
 
@@ -399,7 +556,12 @@ def build_model(section_filter: Optional[str]) -> Dict[str, object]:
             }
 
             item_token = mon_obj["itemToken"]
-            mon_obj["itemName"] = item_names.get(item_token, pretty_token(item_token, "ITEM_"))
+            if item_token == "ITEM_NONE":
+                mon_obj["itemName"] = "-"
+            else:
+                item_name = item_names.get(item_token, pretty_token(item_token, "ITEM_"))
+                # Some placeholder item strings are rendered as only '?' chars.
+                mon_obj["itemName"] = "-" if item_name and set(item_name) == {"?"} else item_name
 
             for move_token in mon.get("moves", []):
                 move_token = str(move_token)
@@ -421,6 +583,7 @@ def build_model(section_filter: Optional[str]) -> Dict[str, object]:
             "name": name,
             "slug": slugify(name),
             "mapImage": f"docs/maps/{slugify(name)}.png",
+            "encounters": get_section_encounters(name),
             "trainers": trs,
         }
         for name, trs in sections.items()
@@ -476,13 +639,84 @@ h1 { margin: 0 0 8px 0; }
 .map-pane {
     min-height: 120px;
   background: #d8d0c4;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+    display: grid;
+    align-items: stretch;
   padding: 10px;
     border-bottom: 3px solid var(--line);
+    gap: 10px;
 }
-.map-pane img { max-width: 100%; max-height: 100%; image-rendering: pixelated; }
+.map-pane--map-only {
+    grid-template-columns: minmax(0, 1fr);
+}
+.map-pane--single {
+    grid-template-columns: minmax(0, 3fr) minmax(220px, 1fr);
+}
+.map-pane--dual {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+}
+.map-left {
+    border: 2px solid var(--line);
+    background: #cfc7bb;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 160px;
+    position: relative;
+}
+.map-left img { max-width: 100%; max-height: 100%; image-rendering: pixelated; }
+.map-fallback { display: none; color: #574d42; font-size: 16px; }
+.encounters {
+    border: 2px solid var(--line);
+    background: #efefef;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 8px;
+}
+.enc-family-head {
+    padding: 2px 0 0;
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+.enc-columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    min-height: 0;
+}
+.enc-col {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.enc-panel {
+    border: 2px solid #908a83;
+    background: #f4f4f4;
+}
+.enc-kind-head {
+    border-bottom: 2px solid #908a83;
+    padding: 4px 8px;
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    background: #e2e2e2;
+}
+.enc-grid { width: 100%; border-collapse: collapse; font-size: 14px; }
+.enc-grid th, .enc-grid td { border-bottom: 1px solid #8f8f8f; padding: 4px 6px; }
+.enc-grid th { background: #dedede; font-weight: 700; }
+.enc-grid .rarity { width: 58px; text-align: center; font-weight: 700; }
+.enc-grid .species-cell { display: flex; align-items: center; gap: 8px; }
+.enc-grid .species-cell img { width: 32px; height: 32px; image-rendering: pixelated; }
+.enc-grid .lvl { width: 62px; text-align: center; font-weight: 700; }
+.enc-placeholder {
+    padding: 14px 10px;
+    text-align: center;
+    color: #5b5651;
+    font-size: 15px;
+}
 .cards {
   display: grid;
   gap: 10px;
@@ -557,7 +791,13 @@ h1 { margin: 0 0 8px 0; }
 .move-row { display: flex; align-items: center; justify-content: center; gap: 6px; }
 
 @media (max-width: 1200px) {
-    .map-pane { min-height: 90px; }
+    .map-pane {
+        min-height: 90px;
+        grid-template-columns: 1fr;
+    }
+    .enc-columns {
+        grid-template-columns: 1fr;
+    }
 }
 """
     css = css.replace("__TYPE_ICON_URL__", asset_url("graphics/interface/menu_info.png"))
@@ -565,7 +805,7 @@ h1 { margin: 0 0 8px 0; }
     html_chunks: List[str] = []
     html_chunks.append("<!doctype html><html><head><meta charset='utf-8'>")
     html_chunks.append("<meta name='viewport' content='width=device-width, initial-scale=1'>")
-    html_chunks.append("<title>Trainer Overview</title>")
+    html_chunks.append("<title>Overview</title>")
     html_chunks.append("<style>")
     html_chunks.append(css)
 
@@ -575,20 +815,75 @@ h1 { margin: 0 0 8px 0; }
         )
 
     html_chunks.append("</style></head><body><div class='wrap'>")
-    html_chunks.append("<h1>Trainer Overview</h1>")
+    html_chunks.append("<h1>Overview</h1>")
     html_chunks.append(
         "<p class='hint'>Map images are optional. Place route screenshots in docs/maps using section slug names.</p>"
     )
 
+    def render_encounter_panel(panel: Dict[str, object]) -> None:
+        panel_title = html.escape(str(panel.get("title", "Encounter")))
+        html_chunks.append("<section class='enc-panel'>")
+        html_chunks.append(f"<div class='enc-kind-head'>{panel_title}</div>")
+        html_chunks.append("<table class='enc-grid'>")
+        html_chunks.append("<thead><tr><th class='rarity'>Rarity</th><th>Pokemon</th><th class='lvl'>Level</th></tr></thead>")
+        html_chunks.append("<tbody>")
+        for slot in panel.get("slots", []):
+            e_name = html.escape(str(slot["speciesName"]))
+            e_lvl = html.escape(str(slot["level"]))
+            e_rarity = html.escape(f"{slot['rarity']}%")
+            e_sprite = html.escape(asset_url(str(slot["sprite"])))
+            html_chunks.append("<tr>")
+            html_chunks.append(f"<td class='rarity'>{e_rarity}</td>")
+            html_chunks.append("<td><div class='species-cell'>")
+            html_chunks.append(f"<img src='{e_sprite}' alt='{e_name}'>")
+            html_chunks.append(f"<span>{e_name}</span>")
+            html_chunks.append("</div></td>")
+            html_chunks.append(f"<td class='lvl'>{e_lvl}</td>")
+            html_chunks.append("</tr>")
+        html_chunks.append("</tbody></table>")
+        html_chunks.append("</section>")
+
     for sec in sections:
         section_name = html.escape(str(sec["name"]))
         map_img = html.escape(asset_url(str(sec["mapImage"])))
+        encounters = sec.get("encounters")
+        pane_mode = "map-only"
+        if encounters and encounters.get("mode") == "dual":
+            pane_mode = "dual"
+        elif encounters and encounters.get("mode") == "single":
+            pane_mode = "single"
+
         html_chunks.append("<section class='section'>")
         html_chunks.append(f"<div class='section-head'><strong>{section_name}</strong><span>{len(sec['trainers'])} trainers</span></div>")
-        html_chunks.append("<div class='map-pane'>")
+        html_chunks.append(f"<div class='map-pane map-pane--{pane_mode}'>")
+        html_chunks.append("<div class='map-left'>")
         html_chunks.append(
-            f"<img src='{map_img}' alt='Map for {section_name}' onerror=\"this.style.display='none';this.parentElement.innerHTML='<em>No map image yet</em>'\">"
+            f"<img src='{map_img}' alt='Map for {section_name}' onerror=\"this.style.display='none';this.parentElement.querySelector('.map-fallback').style.display='block';\">"
         )
+        html_chunks.append("<div class='map-fallback'>No map image yet</div>")
+        html_chunks.append("</div>")
+
+        if encounters:
+            html_chunks.append("<aside class='encounters'>")
+            html_chunks.append("<div class='enc-family-head'>Wild Encounters (FireRed)</div>")
+
+            if encounters.get("mode") == "dual":
+                html_chunks.append("<div class='enc-columns'>")
+                html_chunks.append("<div class='enc-col'>")
+                for panel in encounters.get("leftPanels", []):
+                    render_encounter_panel(panel)
+                html_chunks.append("</div>")
+                html_chunks.append("<div class='enc-col'>")
+                for panel in encounters.get("rightPanels", []):
+                    render_encounter_panel(panel)
+                html_chunks.append("</div>")
+                html_chunks.append("</div>")
+            else:
+                for panel in encounters.get("singlePanels", []):
+                    render_encounter_panel(panel)
+
+            html_chunks.append("</aside>")
+
         html_chunks.append("</div>")
         html_chunks.append("<div class='cards'>")
 
@@ -658,7 +953,7 @@ h1 { margin: 0 0 8px 0; }
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Generate trainer overview HTML")
+    parser = argparse.ArgumentParser(description="Generate overview HTML")
     parser.add_argument("--section", help="Only render one section title (case-insensitive)")
     args = parser.parse_args()
 
