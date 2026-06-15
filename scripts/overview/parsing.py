@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import re
+import sys
 from pathlib import Path
 from typing import Dict, List
 
@@ -309,11 +310,29 @@ def parse_parties() -> Dict[str, object]:
         block_text = "\n".join(block_lines)
         body_match = re.search(r"\{(.*)\}\s*;\s*$", block_text, re.S)
         body = body_match.group(1) if body_match else ""
+        section_name = current_section
+        # Protect against accidental section spillover when trailing party blocks
+        # appear after the final CHAMPION header without a new section marker.
+        if current_section == "CHAMPION" and not party_name.startswith("sParty_Champion"):
+            section_name = "Unsorted"
+
+        if section_name == "Unsorted" and section_name not in seen_sections:
+            section_order.append(section_name)
+            seen_sections.add(section_name)
+
         out[party_name] = {
-            "section": current_section,
+            "section": section_name,
             "structType": struct_type,
             "mons": [parse_party_mon(mon_block) for mon_block in extract_top_level_brace_blocks(body)],
         }
         i += 1
+
+    section_sizes: Dict[str, int] = {}
+    for party in out.values():
+        section = str(party.get("section", "Unsorted"))
+        section_sizes[section] = section_sizes.get(section, 0) + 1
+    for section, size in sorted(section_sizes.items(), key=lambda kv: kv[1], reverse=True):
+        if size > 80:
+            print(f"Warning: parse_parties section '{section}' has {size} parties.", file=sys.stderr)
 
     return {"parties": out, "sectionOrder": section_order}

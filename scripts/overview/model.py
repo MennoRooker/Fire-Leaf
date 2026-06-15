@@ -46,12 +46,39 @@ SECTION_THEME_OVERRIDES: Dict[str, str] = {
     "saffron city gym": "gym-saffron",
     "viridian city gym": "gym-viridian",
     "cinnabar island gym": "gym-cinnabar",
+    "cinnabar gym": "gym-cinnabar",
+    "vermillion city gym": "gym-vermilion",
+    # Elite Four
+    "e4-1": "e4-lorelei",
+    "e4-2": "e4-bruno",
+    "e4-3": "e4-agatha",
+    "e4-4": "e4-lance",
 }
 
 
 def slugify(name: str) -> str:
     s = re.sub(r"[^A-Za-z0-9]+", "_", name).strip("_")
     return s.lower() or "section"
+
+
+def normalize_for_match(name: str) -> str:
+    return slugify(name).upper().replace("_", "")
+
+
+def map_token_to_section_name(map_token: str) -> str:
+    parts: List[str] = []
+    for raw in map_token.split("_"):
+        token = raw.strip()
+        if not token:
+            continue
+        upper = token.upper()
+        if re.fullmatch(r"B\d+F|\d+F", upper):
+            parts.append(upper)
+        elif len(upper) <= 2 and upper.isalpha():
+            parts.append(upper)
+        else:
+            parts.append(upper[:1] + upper[1:].lower())
+    return " ".join(parts) or pretty_token(map_token, "")
 
 
 def resolve_section_theme(section_name: str) -> str:
@@ -102,6 +129,11 @@ def build_model(section_filter: Optional[str]) -> Dict[str, object]:
     mon_sym_to_png = parse_mon_symbol_to_png_path()
     type_icon_specs = parse_type_icon_specs()
     wild_encounters = parse_firered_encounters()
+    encounter_map_tokens = list(wild_encounters["byMap"].keys())
+    encounter_map_by_section: Dict[str, str] = {}
+    for map_token in encounter_map_tokens:
+        section_name = map_token_to_section_name(map_token)
+        encounter_map_by_section.setdefault(section_name, map_token)
 
     def trainer_pic_path(pic_token: str) -> str:
         idx = trainer_pic_ids.get(pic_token)
@@ -110,36 +142,46 @@ def build_model(section_filter: Optional[str]) -> Dict[str, object]:
         return trainer_sym_to_png.get(trainer_front_syms[idx], "graphics/trainers/front_pics/youngster_front_pic.png")
 
     def species_front_path(species_token: str) -> str:
+        if species_token == "SPECIES_CASTFORM":
+            return "graphics/pokemon/castform/normal/front.png"
         idx = species_ids.get(species_token)
         if idx is None or idx >= len(mon_front_syms):
             return "graphics/pokemon/question_mark/front.png"
         return mon_sym_to_png.get(mon_front_syms[idx], "graphics/pokemon/question_mark/front.png")
 
     def get_section_encounters(section_name: str) -> Optional[Dict[str, object]]:
-        section_key_norm = slugify(section_name).upper().replace("_", "")
+        section_key_norm = normalize_for_match(section_name)
         if not section_key_norm:
             return None
 
-        candidates: List[tuple[int, str]] = []
-        for map_token in wild_encounters["byMap"].keys():
-            map_token_norm = map_token.replace("_", "")
-            score = -1
-            if map_token_norm == section_key_norm:
-                score = 4
-            elif map_token_norm.startswith(section_key_norm):
-                score = 3
-            elif section_key_norm.startswith(map_token_norm):
-                score = 2
-            elif section_key_norm in map_token_norm:
-                score = 1
-            if score >= 0:
-                candidates.append((score, map_token))
-
-        if not candidates:
+        # Gym sections should never show wild encounters.
+        if resolve_section_theme(section_name).startswith("gym") or re.search(r"\bgym\b", section_name.lower()):
             return None
 
-        candidates.sort(key=lambda x: (x[0], len(x[1])), reverse=True)
-        chosen = wild_encounters["byMap"][candidates[0][1]]
+        preferred_map_token = encounter_map_by_section.get(section_name)
+        if preferred_map_token:
+            chosen = wild_encounters["byMap"][preferred_map_token]
+        else:
+            candidates: List[tuple[int, str]] = []
+            for map_token in encounter_map_tokens:
+                map_token_norm = map_token.replace("_", "")
+                score = -1
+                if map_token_norm == section_key_norm:
+                    score = 4
+                elif map_token_norm.startswith(section_key_norm):
+                    score = 3
+                elif section_key_norm.startswith(map_token_norm):
+                    score = 2
+                elif section_key_norm in map_token_norm:
+                    score = 1
+                if score >= 0:
+                    candidates.append((score, map_token))
+
+            if not candidates:
+                return None
+
+            candidates.sort(key=lambda x: (x[0], len(x[1])), reverse=True)
+            chosen = wild_encounters["byMap"][candidates[0][1]]
         left_panels: List[Dict[str, object]] = []
         right_panels: List[Dict[str, object]] = []
 
@@ -201,6 +243,12 @@ def build_model(section_filter: Optional[str]) -> Dict[str, object]:
         }
 
     sections: Dict[str, List[Dict[str, object]]] = {}
+    for map_token in encounter_map_tokens:
+        section_name = map_token_to_section_name(map_token)
+        if section_filter and section_filter.lower() != section_name.lower():
+            continue
+        sections.setdefault(section_name, [])
+
     for trainer_id, trainer in trainers.items():
         party = parties.get(trainer["partyName"])
         if not party:

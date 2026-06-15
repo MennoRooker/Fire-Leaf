@@ -42,6 +42,7 @@ h1 { margin: 0 0 8px 0; }
   border-bottom: 3px solid var(--line);
   padding: 10px 12px;
     background: var(--section-head-bg);
+  color: var(--section-head-color, var(--ink));
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -297,8 +298,7 @@ h1 { margin: 0 0 8px 0; }
     --moves-bg: #f2ede4;
 }
 
-.section[data-theme='city-pewter'],
-.section[data-theme='gym-pewter'] {
+.section[data-theme='city-pewter'] {
     --section-bg: #efe9e0;
     --section-head-bg: #ddd2c4;
     --map-pane-bg: #d8d0c4;
@@ -313,8 +313,21 @@ h1 { margin: 0 0 8px 0; }
     --moves-bg: #f6f2eb;
 }
 
-.section[data-theme='city-cerulean'],
-.section[data-theme='gym-cerulean'] {
+/* Rock/Brock — stone brown */
+.section[data-theme='gym-pewter'] {
+    --section-head-color: #f8f4ee;
+    --section-bg: #f0e8dc;
+    --section-head-bg: #8c7a68;
+    --map-pane-bg: #e8dece;
+    --map-left-bg: #d8ccb8;
+    --trainer-card-bg: #e8ddd0;
+    --trainer-left-bg: #8c7a68;
+    --mon-bg: #f8f4ee;
+    --mon-head-bg: #8c7a68;
+    --moves-bg: #f4eee6;
+}
+
+.section[data-theme='city-cerulean'] {
     --section-bg: #d3deea;
     --section-head-bg: #3f84c2;
     --map-pane-bg: #c3d3e3;
@@ -332,8 +345,21 @@ h1 { margin: 0 0 8px 0; }
     --moves-bg: #e5edf5;
 }
 
-.section[data-theme='city-vermilion'],
-.section[data-theme='gym-vermilion'] {
+/* Water/Misty — vivid ocean blue */
+.section[data-theme='gym-cerulean'] {
+    --section-head-color: #ffffff;
+    --section-bg: #ccdff8;
+    --section-head-bg: #1868c0;
+    --map-pane-bg: #bcd4f0;
+    --map-left-bg: #a8c8e8;
+    --trainer-card-bg: #c0d8f0;
+    --trainer-left-bg: #1868c0;
+    --mon-bg: #e2f0f8;
+    --mon-head-bg: #1868c0;
+    --moves-bg: #d8ecf8;
+}
+
+.section[data-theme='city-vermilion'] {
     --section-bg: #efe0d3;
     --section-head-bg: #d98749;
     --map-pane-bg: #e5d0be;
@@ -348,8 +374,21 @@ h1 { margin: 0 0 8px 0; }
     --moves-bg: #f3e8de;
 }
 
-.section[data-theme='city-celadon'],
-.section[data-theme='gym-celadon'] {
+/* Electric/Surge — vivid gold-yellow */
+.section[data-theme='gym-vermilion'] {
+    --section-head-color: #1a1200;
+    --section-bg: #fff8c8;
+    --section-head-bg: #c89400;
+    --map-pane-bg: #f8eeaa;
+    --map-left-bg: #f0e294;
+    --trainer-card-bg: #f8eec4;
+    --trainer-left-bg: #c89400;
+    --mon-bg: #fffce0;
+    --mon-head-bg: #c89400;
+    --moves-bg: #faf4cc;
+}
+
+.section[data-theme='city-celadon'] {
     --section-bg: #dde8d8;
     --section-head-bg: #7ea96d;
     --map-pane-bg: #cfddca;
@@ -364,8 +403,21 @@ h1 { margin: 0 0 8px 0; }
     --moves-bg: #e8f0e2;
 }
 
-.section[data-theme='city-fuchsia'],
-.section[data-theme='gym-fuchsia'] {
+/* Grass/Erika — vivid forest green */
+.section[data-theme='gym-celadon'] {
+    --section-head-color: #ffffff;
+    --section-bg: #d4f0cc;
+    --section-head-bg: #3a8830;
+    --map-pane-bg: #c4e8bc;
+    --map-left-bg: #b0dcaa;
+    --trainer-card-bg: #c8e4bc;
+    --trainer-left-bg: #3a8830;
+    --mon-bg: #e8f8e4;
+    --mon-head-bg: #3a8830;
+    --moves-bg: #daf4d4;
+}
+
+.section[data-theme='city-fuchsia'] {
     --section-bg: #eadbea;
     --section-head-bg: #b16cab;
     --map-pane-bg: #dec9de;
@@ -380,8 +432,21 @@ h1 { margin: 0 0 8px 0; }
     --moves-bg: #f1e8f1;
 }
 
-.section[data-theme='city-saffron'],
-.section[data-theme='gym-saffron'] {
+/* Poison/Koga — deep toxic purple */
+.section[data-theme='gym-fuchsia'] {
+    --section-head-color: #ffffff;
+    --section-bg: #f0dcf4;
+    --section-head-bg: #7030a8;
+    --map-pane-bg: #e8ceec;
+    --map-left-bg: #dcbce4;
+    --trainer-card-bg: #ecd4f0;
+    --trainer-left-bg: #7030a8;
+    --mon-bg: #f8eef8;
+    --mon-head-bg: #7030a8;
+    --moves-bg: #f4e8f8;
+}
+
+.section[data-theme='city-saffron'] {
     --section-bg: #f0e6c9;
     --section-head-bg: #ceac4a;
     --map-pane-bg: #e7d9b7;
@@ -396,8 +461,21 @@ h1 { margin: 0 0 8px 0; }
     --moves-bg: #f5eed8;
 }
 
-.section[data-theme='city-viridian'],
-.section[data-theme='gym-viridian'] {
+/* Psychic/Sabrina — vivid hot magenta */
+.section[data-theme='gym-saffron'] {
+    --section-head-color: #ffffff;
+    --section-bg: #f8d8f0;
+    --section-head-bg: #c02090;
+    --map-pane-bg: #f0c8e8;
+    --map-left-bg: #e8b8de;
+    --trainer-card-bg: #f0ccec;
+    --trainer-left-bg: #c02090;
+    --mon-bg: #fceef8;
+    --mon-head-bg: #c02090;
+    --moves-bg: #f8e4f4;
+}
+
+.section[data-theme='city-viridian'] {
     --section-bg: #d8e8d7;
     --section-head-bg: #6f9a64;
     --map-pane-bg: #c7dbc3;
@@ -412,8 +490,21 @@ h1 { margin: 0 0 8px 0; }
     --moves-bg: #e6efe3;
 }
 
-.section[data-theme='city-cinnabar'],
-.section[data-theme='gym-cinnabar'] {
+/* Ground/Giovanni — earthy desert brown */
+.section[data-theme='gym-viridian'] {
+    --section-head-color: #f8f0e4;
+    --section-bg: #f0e4cc;
+    --section-head-bg: #806038;
+    --map-pane-bg: #e8d8b8;
+    --map-left-bg: #dccaa0;
+    --trainer-card-bg: #e8d8b4;
+    --trainer-left-bg: #806038;
+    --mon-bg: #f8f0e0;
+    --mon-head-bg: #806038;
+    --moves-bg: #f4ecca;
+}
+
+.section[data-theme='city-cinnabar'] {
     --section-bg: #edd9d2;
     --section-head-bg: #c06049;
     --map-pane-bg: #e2c6bc;
@@ -426,6 +517,77 @@ h1 { margin: 0 0 8px 0; }
     --mon-bg: #f6ece9;
     --mon-head-bg: #d8a897;
     --moves-bg: #f2e4de;
+}
+
+/* Fire/Blaine — vivid crimson red */
+.section[data-theme='gym-cinnabar'] {
+    --section-head-color: #ffffff;
+    --section-bg: #f8dcd0;
+    --section-head-bg: #b82020;
+    --map-pane-bg: #f0ccc0;
+    --map-left-bg: #e8bcb0;
+    --trainer-card-bg: #f0d0c4;
+    --trainer-left-bg: #b82020;
+    --mon-bg: #faeae4;
+    --mon-head-bg: #b82020;
+    --moves-bg: #f8e4dc;
+}
+
+
+/* Ice/Lorelei */
+.section[data-theme='e4-lorelei'] {
+    --section-head-color: #ffffff;
+    --section-bg: #d8f0f8;
+    --section-head-bg: #1898c8;
+    --map-pane-bg: #c8e8f4;
+    --map-left-bg: #b8dcec;
+    --trainer-card-bg: #cce8f4;
+    --trainer-left-bg: #1898c8;
+    --mon-bg: #e8f8fc;
+    --mon-head-bg: #1898c8;
+    --moves-bg: #d4ecf8;
+}
+
+/* Fighting/Bruno */
+.section[data-theme='e4-bruno'] {
+    --section-head-color: #ffffff;
+    --section-bg: #f8dcd8;
+    --section-head-bg: #982018;
+    --map-pane-bg: #f0ccc8;
+    --map-left-bg: #e8bcb8;
+    --trainer-card-bg: #f0d0c8;
+    --trainer-left-bg: #982018;
+    --mon-bg: #faeae8;
+    --mon-head-bg: #982018;
+    --moves-bg: #f8e4e0;
+}
+
+/* Ghost/Agatha */
+.section[data-theme='e4-agatha'] {
+    --section-head-color: #ffffff;
+    --section-bg: #ecdaf4;
+    --section-head-bg: #6838a0;
+    --map-pane-bg: #e4ceee;
+    --map-left-bg: #d8bce4;
+    --trainer-card-bg: #e8d2f0;
+    --trainer-left-bg: #6838a0;
+    --mon-bg: #f6eef8;
+    --mon-head-bg: #6838a0;
+    --moves-bg: #f0e6f6;
+}
+
+/* Dragon/Lance */
+.section[data-theme='e4-lance'] {
+    --section-head-color: #ffffff;
+    --section-bg: #dcd0f0;
+    --section-head-bg: #3820a8;
+    --map-pane-bg: #d0c4e8;
+    --map-left-bg: #c4b4e0;
+    --trainer-card-bg: #d4c8ec;
+    --trainer-left-bg: #3820a8;
+    --mon-bg: #eee8f8;
+    --mon-head-bg: #3820a8;
+    --moves-bg: #e8e0f4;
 }
 
 @media (max-width: 1200px) {
