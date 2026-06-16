@@ -74,8 +74,15 @@ h1 { margin: 0 0 8px 0; }
     min-height: 160px;
     position: relative;
 }
-.map-left img { max-width: 100%; max-height: 100%; image-rendering: pixelated; }
-.map-fallback { display: none; color: #574d42; font-size: 16px; }
+.map-canvas {
+  display: none;
+  max-width: 100%;
+  max-height: 100%;
+  image-rendering: pixelated;
+}
+.map-left.map-ready .map-canvas { display: block; }
+.map-left.map-ready .map-fallback { display: none; }
+.map-fallback { display: block; color: #574d42; font-size: 16px; text-align: center; padding: 8px; }
 .encounters {
     border: 2px solid var(--line);
   background: #ffffff;

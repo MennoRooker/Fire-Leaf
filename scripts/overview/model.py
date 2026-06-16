@@ -9,6 +9,8 @@ from .parsing import (
     parse_define_ints,
     parse_firered_encounters,
     parse_item_names,
+    parse_layouts_by_id,
+    parse_map_layout_records,
     parse_mon_symbol_to_png_path,
     parse_move_names,
     parse_move_types,
@@ -20,6 +22,7 @@ from .parsing import (
     parse_trainer_class_names,
     parse_trainer_symbol_to_png_path,
     parse_trainers,
+    parse_tileset_metatile_paths,
     parse_type_icon_specs,
     pretty_token,
 )
@@ -55,6 +58,10 @@ SECTION_THEME_OVERRIDES: Dict[str, str] = {
     "e4-4": "e4-lance",
 }
 
+SECTION_MAP_TOKEN_OVERRIDES: Dict[str, str] = {
+    "oak's lab": "PALLET_TOWN_PROFESSOR_OAKS_LAB",
+}
+
 
 def slugify(name: str) -> str:
     s = re.sub(r"[^A-Za-z0-9]+", "_", name).strip("_")
@@ -63,6 +70,10 @@ def slugify(name: str) -> str:
 
 def normalize_for_match(name: str) -> str:
     return slugify(name).upper().replace("_", "")
+
+
+def camel_words(name: str) -> str:
+    return re.sub(r"([a-z0-9])([A-Z])", r"\1 \2", name.replace("_", " ")).strip()
 
 
 def map_token_to_section_name(map_token: str) -> str:
@@ -129,11 +140,99 @@ def build_model(section_filter: Optional[str]) -> Dict[str, object]:
     mon_sym_to_png = parse_mon_symbol_to_png_path()
     type_icon_specs = parse_type_icon_specs()
     wild_encounters = parse_firered_encounters()
+    layouts_by_id = parse_layouts_by_id()
+    map_layout_data = parse_map_layout_records()
+    map_records = list(map_layout_data["records"])
+    map_by_token = dict(map_layout_data["byToken"])
+    metatile_paths_by_symbol = parse_tileset_metatile_paths()
     encounter_map_tokens = list(wild_encounters["byMap"].keys())
     encounter_map_by_section: Dict[str, str] = {}
     for map_token in encounter_map_tokens:
         section_name = map_token_to_section_name(map_token)
         encounter_map_by_section.setdefault(section_name, map_token)
+
+    map_by_norm_section: Dict[str, Dict[str, str]] = {}
+    for record in map_records:
+        candidates = {
+            map_token_to_section_name(record["mapToken"]),
+            camel_words(record["mapName"]),
+            record["mapName"],
+        }
+        for candidate in candidates:
+            norm = normalize_for_match(candidate)
+            if norm:
+                map_by_norm_section.setdefault(norm, record)
+
+    def resolve_section_map_record(section_name: str) -> Optional[Dict[str, str]]:
+        override = SECTION_MAP_TOKEN_OVERRIDES.get(section_name.strip().lower())
+        if override and override in map_by_token:
+            return map_by_token[override]
+
+        encounter_token = encounter_map_by_section.get(section_name)
+        if encounter_token and encounter_token in map_by_token:
+            return map_by_token[encounter_token]
+
+        section_key = normalize_for_match(section_name)
+        if section_key in map_by_norm_section:
+            return map_by_norm_section[section_key]
+
+        # Fallback for manually titled sections that are only partial map names.
+        # We pick the shortest matching map candidate to reduce false positives.
+        candidates: List[tuple[int, Dict[str, str]]] = []
+        for record in map_records:
+            map_norm = normalize_for_match(record["mapToken"])
+            if section_key and section_key in map_norm:
+                candidates.append((len(map_norm), record))
+
+        if candidates:
+            candidates.sort(key=lambda x: x[0])
+            return candidates[0][1]
+
+        return None
+
+    def tileset_to_metatile_path(tileset_symbol: str) -> Optional[str]:
+        metatiles_symbol = tileset_symbol.replace("gTileset_", "gMetatiles_")
+        return metatile_paths_by_symbol.get(metatiles_symbol)
+
+    def build_map_render(section_name: str) -> Optional[Dict[str, object]]:
+        map_record = resolve_section_map_record(section_name)
+        if not map_record:
+            return None
+
+        layout = layouts_by_id.get(map_record["layout"])
+        if not layout:
+            return None
+
+        primary_tileset = str(layout.get("primary_tileset", ""))
+        secondary_tileset = str(layout.get("secondary_tileset", ""))
+        blockdata_path = str(layout.get("blockdata_filepath", ""))
+        if not (primary_tileset and secondary_tileset and blockdata_path):
+            return None
+
+        primary_metatiles = tileset_to_metatile_path(primary_tileset)
+        secondary_metatiles = tileset_to_metatile_path(secondary_tileset)
+        if not (primary_metatiles and secondary_metatiles):
+            return None
+
+        return {
+            "mapId": map_record["mapId"],
+            "mapName": map_record["mapName"],
+            "mapToken": map_record["mapToken"],
+            "layoutId": str(layout.get("id", "")),
+            "width": int(layout.get("width", 0)),
+            "height": int(layout.get("height", 0)),
+            "blockdataPath": blockdata_path,
+            "primary": {
+                "tileset": primary_tileset,
+                "metatilesPath": primary_metatiles,
+                "tilesPngPath": primary_metatiles.replace("metatiles.bin", "tiles.png"),
+            },
+            "secondary": {
+                "tileset": secondary_tileset,
+                "metatilesPath": secondary_metatiles,
+                "tilesPngPath": secondary_metatiles.replace("metatiles.bin", "tiles.png"),
+            },
+        }
 
     def trainer_pic_path(pic_token: str) -> str:
         idx = trainer_pic_ids.get(pic_token)
@@ -341,6 +440,7 @@ def build_model(section_filter: Optional[str]) -> Dict[str, object]:
                 "slug": slugify(name),
                 "theme": resolve_section_theme(name),
                 "mapImage": f"docs/maps/{slugify(name)}.png",
+                "mapRender": build_map_render(name),
                 "encounters": get_section_encounters(name),
                 "trainers": sections[name],
             }

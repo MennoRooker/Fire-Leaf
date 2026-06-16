@@ -1,6 +1,9 @@
 from __future__ import annotations
 
+import base64
 import html
+import importlib
+import json
 import os
 from pathlib import Path
 from typing import Dict, List
@@ -173,6 +176,7 @@ def render_section(section: Dict[str, object], type_icons: Dict[str, Dict[str, i
             "__TRAINER_COUNT__": str(len(section["trainers"])),
             "__PANE_MODE__": pane_mode,
             "__MAP_IMAGE__": html.escape(asset_url(str(section["mapImage"]))),
+            "__MAP_KEY__": html.escape(str(section["slug"])),
             "__ENCOUNTERS_HTML__": render_encounters(encounters, asset_url, templates) if encounters else "",
             "__TRAINER_CARDS_HTML__": "".join(render_trainer_card(trainer, type_icons, asset_url, templates) for trainer in section["trainers"]),
         },
@@ -181,6 +185,73 @@ def render_section(section: Dict[str, object], type_icons: Dict[str, Dict[str, i
 
 def render_sections_html(sections: List[Dict[str, object]], type_icons: Dict[str, Dict[str, int]], asset_url, templates: Dict[str, str]) -> str:
     return "\n".join(render_section(section, type_icons, asset_url, templates) for section in sections)
+
+
+def _read_base64(rel_path: str) -> str:
+    raw = (ROOT / rel_path).read_bytes()
+    return base64.b64encode(raw).decode("ascii")
+
+
+def _read_tileset_palettes_base64(metatiles_rel_path: str) -> List[str]:
+    palettes_dir = (ROOT / metatiles_rel_path).parent / "palettes"
+    out: List[str] = []
+    for idx in range(16):
+        pal_path = palettes_dir / f"{idx:02d}.pal"
+        out.append(base64.b64encode(pal_path.read_bytes()).decode("ascii"))
+    return out
+
+
+def _read_indexed_png_pixels_base64(rel_path: str) -> Dict[str, object]:
+    pil_image = importlib.import_module("PIL.Image")
+
+    with pil_image.open(ROOT / rel_path) as img:
+        indexed = img.convert("P")
+        width, height = indexed.size
+        pixel_bytes = indexed.tobytes()
+    return {
+        "width": width,
+        "height": height,
+        "pixelsB64": base64.b64encode(pixel_bytes).decode("ascii"),
+    }
+
+
+def build_map_render_data(sections: List[Dict[str, object]], asset_url) -> Dict[str, Dict[str, object]]:
+    payload: Dict[str, Dict[str, object]] = {}
+    for section in sections:
+        section_key = str(section.get("slug", ""))
+        map_render = section.get("mapRender")
+        if not section_key or not isinstance(map_render, dict):
+            continue
+
+        try:
+            width = int(map_render.get("width", 0))
+            height = int(map_render.get("height", 0))
+            if width <= 0 or height <= 0:
+                continue
+
+            blockdata_path = str(map_render["blockdataPath"])
+            primary = map_render["primary"]
+            secondary = map_render["secondary"]
+
+            payload[section_key] = {
+                "mapName": str(map_render.get("mapName", "")),
+                "mapId": str(map_render.get("mapId", "")),
+                "width": width,
+                "height": height,
+                "blockdataB64": _read_base64(blockdata_path),
+                "primaryMetatilesB64": _read_base64(str(primary["metatilesPath"])),
+                "secondaryMetatilesB64": _read_base64(str(secondary["metatilesPath"])),
+                "primaryTilesUrl": asset_url(str(primary["tilesPngPath"])),
+                "secondaryTilesUrl": asset_url(str(secondary["tilesPngPath"])),
+                "primaryPalettesB64": _read_tileset_palettes_base64(str(primary["metatilesPath"])),
+                "secondaryPalettesB64": _read_tileset_palettes_base64(str(secondary["metatilesPath"])),
+                "primaryTilePixels": _read_indexed_png_pixels_base64(str(primary["tilesPngPath"])),
+                "secondaryTilePixels": _read_indexed_png_pixels_base64(str(secondary["tilesPngPath"])),
+            }
+        except (FileNotFoundError, KeyError, OSError, ValueError, TypeError):
+            continue
+
+    return payload
 
 
 def render_html(model: Dict[str, object], out_path: Path) -> None:
@@ -203,9 +274,14 @@ def render_html(model: Dict[str, object], out_path: Path) -> None:
     css = read_overview_source("static", "overview.css")
     css = css.replace("__TYPE_ICON_URL__", asset_url("graphics/interface/menu_info.png"))
     css = "\n".join((css, render_type_icon_css(model["typeIcons"])))
+    map_render_data = build_map_render_data(model["sections"], asset_url)
+    map_render_data_json = json.dumps(map_render_data, separators=(",", ":")).replace("</", "<\\/")
+    map_render_script = read_overview_source("static", "overview_map_renderer.js")
     page_html = templates["main_template"]
     page_html = page_html.replace("__STYLE_BLOCK__", f"<style>\n{css}\n</style>")
     page_html = page_html.replace("__SECTIONS_HTML__", render_sections_html(model["sections"], model["typeIcons"], asset_url, templates))
+    page_html = page_html.replace("__MAP_RENDER_DATA_BLOCK__", f"<script id='overview-map-data' type='application/json'>{map_render_data_json}</script>")
+    page_html = page_html.replace("__SCRIPT_BLOCK__", f"<script>\n{map_render_script}\n</script>")
 
     out_path.parent.mkdir(parents=True, exist_ok=True)
     out_path.write_text(page_html, encoding="utf-8")

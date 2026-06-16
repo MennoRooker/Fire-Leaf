@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """
-Generate an overview page from existing project data.
+Generates an overview page from existing project data.
+The overview acts as a mastersheet of maps with wild
+encounters, trainers, items and shops.
 
 Output:
   docs/OVERVIEW.html

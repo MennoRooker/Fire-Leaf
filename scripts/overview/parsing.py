@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from functools import lru_cache
 import json
 import re
 import sys
@@ -202,6 +203,56 @@ def parse_firered_encounters() -> Dict[str, object]:
         by_map[map_token] = {"map": map_name, "baseLabel": base_label, "types": type_data}
 
     return {"ratesByType": rates_by_type, "byMap": by_map}
+
+
+@lru_cache(maxsize=1)
+def parse_layouts_by_id() -> Dict[str, Dict[str, object]]:
+    data = json.loads(read_text("data/layouts/layouts.json"))
+    out: Dict[str, Dict[str, object]] = {}
+    for layout in data.get("layouts", []):
+        layout_id = str(layout.get("id", "")).strip()
+        if layout_id:
+            out[layout_id] = layout
+    return out
+
+
+@lru_cache(maxsize=1)
+def parse_tileset_metatile_paths() -> Dict[str, str]:
+    text = read_text("src/data/tilesets/metatiles.h")
+    out: Dict[str, str] = {}
+    pattern = re.compile(r"const u16\s+(gMetatiles_[A-Za-z0-9_]+)\[\]\s*=\s*INCBIN_U16\(\"([^\"]+)\"\);")
+    for symbol, path in pattern.findall(text):
+        out[symbol] = path
+    return out
+
+
+@lru_cache(maxsize=1)
+def parse_map_layout_records() -> Dict[str, object]:
+    maps_dir = ROOT / "data" / "maps"
+    records: List[Dict[str, str]] = []
+    by_token: Dict[str, Dict[str, str]] = {}
+
+    for map_json in sorted(maps_dir.glob("*/map.json")):
+        data = json.loads(map_json.read_text(encoding="utf-8"))
+        map_id = str(data.get("id", "")).strip()
+        layout_id = str(data.get("layout", "")).strip()
+        map_name = str(data.get("name", "")).strip()
+        if not map_id.startswith("MAP_") or not layout_id:
+            continue
+
+        map_token = map_id[4:]
+        rel_map_json = map_json.relative_to(ROOT).as_posix()
+        record = {
+            "mapId": map_id,
+            "mapToken": map_token,
+            "mapName": map_name,
+            "layout": layout_id,
+            "mapJsonPath": rel_map_json,
+        }
+        records.append(record)
+        by_token.setdefault(map_token, record)
+
+    return {"records": records, "byToken": by_token}
 
 
 def parse_trainers() -> Dict[str, Dict[str, str]]:
