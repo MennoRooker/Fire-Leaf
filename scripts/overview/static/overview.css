@@ -139,7 +139,7 @@ h1 { margin: 0 0 8px 0; }
 .enc-grid .rarity-other { background: #d7d7d7; }
 .enc-grid .species-cell { display: flex; align-items: center; gap: 8px; }
 .enc-grid .species-cell img { width: 32px; height: 32px; image-rendering: pixelated; }
-.enc-grid .lvl { width: 62px; text-align: center; font-weight: 700; font-size: 11px; }
+.enc-grid .lvl { width: 62px; text-align: center; font-weight: 700; font-size: 12px; }
 .enc-grid .rod-header td {
   background: #f3f3f3;
     font-weight: 700;
@@ -214,16 +214,17 @@ h1 { margin: 0 0 8px 0; }
   image-rendering: pixelated;
 }
 .mon-name { font-size: 30px; font-weight: 800; line-height: 1.0; }
-.lvl { font-size: 30px; font-weight: 800; margin-top: -6px; }
+.lvl { font-size: 26px; font-weight: 800; margin-top: 0px; }
 .types {
   display: flex;
   justify-content: center;
-  gap: 4px;
+  gap: 20px;
   margin-top: 4px;
   min-height: 14px;
 }
 .type-icon {
   display: inline-block;
+  transform: scale(1.5);
   image-rendering: pixelated;
     background-image: url("__TYPE_ICON_URL__");
   background-repeat: no-repeat;
@@ -234,7 +235,7 @@ h1 { margin: 0 0 8px 0; }
   border-top: 3px solid var(--line);
     background: var(--moves-bg);
   padding: 4px 6px;
-  font-size: 30px;
+  font-size: 20px;
   line-height: 1.15;
 }
 .move-row { display: flex; align-items: center; justify-content: center; gap: 6px; }
@@ -356,13 +357,13 @@ h1 { margin: 0 0 8px 0; }
 .section[data-theme='gym-cerulean'] {
     --section-head-color: #ffffff;
     --section-bg: #ccdff8;
-    --section-head-bg: #1868c0;
+    --section-head-bg: #3883c8;
     --map-pane-bg: #bcd4f0;
     --map-left-bg: #a8c8e8;
     --trainer-card-bg: #c0d8f0;
-    --trainer-left-bg: #1868c0;
+    --trainer-left-bg: #3883c8;
     --mon-bg: #e2f0f8;
-    --mon-head-bg: #1868c0;
+    --mon-head-bg: #3883c8;
     --moves-bg: #d8ecf8;
 }
 
@@ -383,15 +384,15 @@ h1 { margin: 0 0 8px 0; }
 
 /* Electric/Surge — vivid gold-yellow */
 .section[data-theme='gym-vermilion'] {
-    --section-head-color: #1a1200;
+    --section-head-color: #ffffff;
     --section-bg: #fff8c8;
-    --section-head-bg: #c89400;
+    --section-head-bg: #f4dc26;
     --map-pane-bg: #f8eeaa;
     --map-left-bg: #f0e294;
     --trainer-card-bg: #f8eec4;
-    --trainer-left-bg: #c89400;
+    --trainer-left-bg: #f4dc26;
     --mon-bg: #fffce0;
-    --mon-head-bg: #c89400;
+    --mon-head-bg: #f4dc26;
     --moves-bg: #faf4cc;
 }
 
