@@ -11,6 +11,9 @@ Optional:
   python3 scripts/generate_overview.py --section "Route 2"
 
 Run with --section to specify 1 map section to generate.
+
+Map display overrides (split routes, floor maps, merged sections):
+  scripts/overview/section_overrides.json
 """
 
 from __future__ import annotations

@@ -160,6 +160,30 @@ def render_encounters(encounters: Dict[str, object], asset_url, templates: Dict[
     return "".join(chunks)
 
 
+def render_trainer_cards(
+    section: Dict[str, object],
+    type_icons: Dict[str, Dict[str, int]],
+    asset_url,
+    templates: Dict[str, str],
+) -> str:
+    groups = section.get("trainerGroups")
+    if groups:
+        chunks: List[str] = []
+        for group in groups:
+            if not isinstance(group, dict):
+                continue
+            label = html.escape(str(group.get("label", "")))
+            trainers = group.get("trainers", [])
+            if not trainers:
+                continue
+            chunks.append(f"<div class='trainer-group-head'>{label}</div>")
+            chunks.extend(render_trainer_card(trainer, type_icons, asset_url, templates) for trainer in trainers)
+        if chunks:
+            return "".join(chunks)
+
+    return "".join(render_trainer_card(trainer, type_icons, asset_url, templates) for trainer in section["trainers"])
+
+
 def render_section(section: Dict[str, object], type_icons: Dict[str, Dict[str, int]], asset_url, templates: Dict[str, str]) -> str:
     encounters = section.get("encounters")
     pane_mode = "map-only"
@@ -178,7 +202,7 @@ def render_section(section: Dict[str, object], type_icons: Dict[str, Dict[str, i
             "__MAP_IMAGE__": html.escape(asset_url(str(section["mapImage"]))),
             "__MAP_KEY__": html.escape(str(section["slug"])),
             "__ENCOUNTERS_HTML__": render_encounters(encounters, asset_url, templates) if encounters else "",
-            "__TRAINER_CARDS_HTML__": "".join(render_trainer_card(trainer, type_icons, asset_url, templates) for trainer in section["trainers"]),
+            "__TRAINER_CARDS_HTML__": render_trainer_cards(section, type_icons, asset_url, templates),
         },
     )
 
@@ -192,13 +216,47 @@ def _read_base64(rel_path: str) -> str:
     return base64.b64encode(raw).decode("ascii")
 
 
-def _read_tileset_palettes_base64(metatiles_rel_path: str) -> List[str]:
-    palettes_dir = (ROOT / metatiles_rel_path).parent / "palettes"
+def _palettes_from_indexed_png(rel_path: str) -> List[str]:
+    pil_image = importlib.import_module("PIL.Image")
+
+    with pil_image.open(ROOT / rel_path) as img:
+        indexed = img.convert("P")
+        palette = indexed.getpalette()
+    if not palette:
+        raise ValueError(f"PNG has no palette: {rel_path}")
+
+    def rgb_at(color_index: int) -> tuple[int, int, int]:
+        idx = color_index * 3
+        if idx + 2 < len(palette):
+            return palette[idx], palette[idx + 1], palette[idx +2]
+        return 0, 0, 0
+    
+    num_colors = len(palette) // 3
+    single_bank = num_colors <= 16
+
     out: List[str] = []
-    for idx in range(16):
-        pal_path = palettes_dir / f"{idx:02d}.pal"
-        out.append(base64.b64encode(pal_path.read_bytes()).decode("ascii"))
+    for bank in range(16):
+        lines = ["JASC-PAL", "0100", "16"]
+        for color_idx in range(16):
+            if single_bank:
+                r, g, b = rgb_at(color_idx)
+            else:
+                r, g, b = rgb_at(bank * 16 + color_idx)
+            lines.append(f"{r} {g} {b}")
+        out.append(base64.b64encode(("\r\n".join(lines) + "\r\n").encode("ascii")).decode("ascii"))
     return out
+
+
+def _read_tileset_palettes_base64(metatiles_rel_path: str, tiles_png_path: str) -> List[str]:
+    palettes_dir = (ROOT / metatiles_rel_path).parent / "palettes"
+    if palettes_dir.is_dir() and (palettes_dir / "00.pal").is_file():
+        out: List[str] = []
+        for idx in range(16):
+            pal_path = palettes_dir / f"{idx:02d}.pal"
+            out.append(base64.b64encode(pal_path.read_bytes()).decode("ascii"))
+        return out
+
+    return _palettes_from_indexed_png(tiles_png_path)
 
 
 def _read_indexed_png_pixels_base64(rel_path: str) -> Dict[str, object]:
@@ -243,11 +301,14 @@ def build_map_render_data(sections: List[Dict[str, object]], asset_url) -> Dict[
                 "secondaryMetatilesB64": _read_base64(str(secondary["metatilesPath"])),
                 "primaryTilesUrl": asset_url(str(primary["tilesPngPath"])),
                 "secondaryTilesUrl": asset_url(str(secondary["tilesPngPath"])),
-                "primaryPalettesB64": _read_tileset_palettes_base64(str(primary["metatilesPath"])),
-                "secondaryPalettesB64": _read_tileset_palettes_base64(str(secondary["metatilesPath"])),
+                "primaryPalettesB64": _read_tileset_palettes_base64(str(primary["metatilesPath"]), str(primary["tilesPngPath"])),
+                "secondaryPalettesB64": _read_tileset_palettes_base64(str(secondary["metatilesPath"]), str(secondary["tilesPngPath"])),
                 "primaryTilePixels": _read_indexed_png_pixels_base64(str(primary["tilesPngPath"])),
                 "secondaryTilePixels": _read_indexed_png_pixels_base64(str(secondary["tilesPngPath"])),
             }
+            crop = map_render.get("crop")
+            if isinstance(crop, dict):
+                payload[section_key]["crop"] = crop
         except (FileNotFoundError, KeyError, OSError, ValueError, TypeError):
             continue
 

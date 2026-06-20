@@ -136,6 +136,21 @@
       throw new Error("Invalid map dimensions");
     }
 
+    const crop = payload.crop || {};
+    const x0 = crop.x0 != null ? Number(crop.x0) : 0;
+    const x1 = crop.x1 != null ? Number(crop.x1) : 1;
+    const y0 = crop.y0 != null ? Number(crop.y0) : 0;
+    const y1 = crop.y1 != null ? Number(crop.y1) : 1;
+    const xStart = Math.max(0, Math.floor(width * x0));
+    const xEnd = Math.min(width, Math.ceil(width * x1));
+    const yStart = Math.max(0, Math.floor(height * y0));
+    const yEnd = Math.min(height, Math.ceil(height * y1));
+    const cropWidth = xEnd - xStart;
+    const cropHeight = yEnd - yStart;
+    if (cropWidth <= 0 || cropHeight <= 0) {
+      throw new Error("Invalid map crop");
+    }
+
     const blockdata = decodeBase64ToU16(payload.blockdataB64);
     const primaryMetatiles = decodeBase64ToU16(payload.primaryMetatilesB64);
     const secondaryMetatiles = decodeBase64ToU16(payload.secondaryMetatilesB64);
@@ -146,8 +161,8 @@
 
     const secondaryMetatileCount = Math.floor(secondaryMetatiles.length / 8);
 
-    const pixelWidth = width * 16;
-    const pixelHeight = height * 16;
+    const pixelWidth = cropWidth * 16;
+    const pixelHeight = cropHeight * 16;
     canvas.width = pixelWidth;
     canvas.height = pixelHeight;
 
@@ -165,20 +180,23 @@
       const block = blockdata[i] & 0x3ff;
       const x = i % width;
       const y = Math.floor(i / width);
+      if (x < xStart || x >= xEnd || y < yStart || y >= yEnd) {
+        continue;
+      }
 
       if (block < NUM_METATILES_PRIMARY) {
         const base = block * 8;
         if (base + 8 > primaryMetatiles.length) {
           continue;
         }
-        drawMetatile(out, pixelWidth, pixelHeight, primaryMetatiles.subarray(base, base + 8), primaryTiles, secondaryTiles, primaryPalettes, secondaryPalettes, x, y);
+        drawMetatile(out, pixelWidth, pixelHeight, primaryMetatiles.subarray(base, base + 8), primaryTiles, secondaryTiles, primaryPalettes, secondaryPalettes, x - xStart, y - yStart);
       } else {
         const secondaryBlock = block - NUM_METATILES_PRIMARY;
         if (secondaryBlock < 0 || secondaryBlock >= secondaryMetatileCount) {
           continue;
         }
         const base = secondaryBlock * 8;
-        drawMetatile(out, pixelWidth, pixelHeight, secondaryMetatiles.subarray(base, base + 8), primaryTiles, secondaryTiles, primaryPalettes, secondaryPalettes, x, y);
+        drawMetatile(out, pixelWidth, pixelHeight, secondaryMetatiles.subarray(base, base + 8), primaryTiles, secondaryTiles, primaryPalettes, secondaryPalettes, x - xStart, y - yStart);
       }
     }
 

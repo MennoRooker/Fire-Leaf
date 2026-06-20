@@ -5,10 +5,24 @@ import json
 import re
 import sys
 from pathlib import Path
-from typing import Dict, List
+from typing import Dict, List, Optional
 
 
 ROOT = Path(__file__).resolve().parents[2]
+
+
+def resolve_tiles_png_path(metatiles_rel_path: str) -> Optional[str]:
+    """Resolve tiles.png for a metatiles.bin path (standard tileset dir or map_preview fallback)."""
+    tileset_dir = (ROOT / metatiles_rel_path).parent
+    standard = tileset_dir / "tiles.png"
+    if standard.is_file():
+        return standard.relative_to(ROOT).as_posix()
+
+    preview = ROOT / "graphics" / "map_preview" / tileset_dir.name / "tiles.png"
+    if preview.is_file():
+        return preview.relative_to(ROOT).as_posix()
+
+    return None
 
 ENCOUNTER_KIND_ORDER = [
     "land_mons",
@@ -323,7 +337,9 @@ def parse_parties() -> Dict[str, object]:
     section_order: List[str] = []
     seen_sections = set()
     sec_re = re.compile(r"^\s*//\s*=+\s*(.*?)\s*=+\s*//\s*$")
+    floor_re = re.compile(r"^(?:B\d+F|\d+F)$", re.I)
     head_re = re.compile(r"^\s*static const struct\s+(\w+)\s+(sParty_[A-Za-z0-9_]+)\[\]\s*=\s*\{\s*$")
+    current_parent = ""
 
     i = 0
     while i < len(lines):
@@ -338,7 +354,11 @@ def parse_parties() -> Dict[str, object]:
         if section_match:
             title = section_match.group(1).strip()
             if title:
-                current_section = title
+                if floor_re.match(title) and current_parent:
+                    current_section = f"{current_parent} {title}"
+                else:
+                    current_parent = title
+                    current_section = title
                 if current_section not in seen_sections:
                     section_order.append(current_section)
                     seen_sections.add(current_section)

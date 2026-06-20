@@ -98,6 +98,21 @@ h1 { margin: 0 0 8px 0; }
     letter-spacing: 1px;
     text-transform: uppercase;
 }
+.trainer-group-head {
+    grid-column: 1 / -1;
+    border-top: 2px solid var(--line);
+    margin-top: 4px;
+    padding: 10px 4px 2px;
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+.cards > .trainer-group-head:first-child {
+    border-top: none;
+    margin-top: 0;
+    padding-top: 2px;
+}
 .enc-columns {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -229,8 +244,8 @@ h1 { margin: 0 0 8px 0; }
     background-image: url("__TYPE_ICON_URL__");
   background-repeat: no-repeat;
 }
-.mon-body { padding: 6px; text-align: center; font-size: 30px; line-height: 1.25; }
-.mon-body .item { font-size: 28px; }
+.mon-body { padding: 6px; text-align: center; font-size: 26px; line-height: 1.25; }
+.mon-body .item { font-size: 20px; }
 .moves {
   border-top: 3px solid var(--line);
     background: var(--moves-bg);

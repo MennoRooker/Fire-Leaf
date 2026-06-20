@@ -1330,6 +1330,34 @@ can see the full maps, but I have to keep in mind that
 some maps have some random remnants of excess assets
 that I need to remove before adding them to the docs.
 
+I've opted for a big overview file where the player
+can find most of the info they need throughout the
+entire game. I have a structure in place with the 
+following:
+---------------
+/ Maps
+/ Colors
+x Wild Encounters
+/ Trainer Parties
+   x Names
+   x Sprites
+   x Levels
+   x Types
+   / Natures (+/-)
+   x Abilities
+   / Held Items
+   / Moves
+   / Move types (Right, HP)
+- Items
+- Shops
+/ Rematches
+   x Trainer data
+   - VS seeker icon
+   - Different colors
+
+
+
+
 TO DO:
 x Force SET mode
 x EV berries

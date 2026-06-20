@@ -1,6 +1,8 @@
 from __future__ import annotations
 
+import json
 import re
+from pathlib import Path
 from typing import Dict, List, Optional
 
 from .parsing import (
@@ -25,6 +27,7 @@ from .parsing import (
     parse_tileset_metatile_paths,
     parse_type_icon_specs,
     pretty_token,
+    resolve_tiles_png_path,
 )
 
 
@@ -61,6 +64,89 @@ SECTION_THEME_OVERRIDES: Dict[str, str] = {
 SECTION_MAP_TOKEN_OVERRIDES: Dict[str, str] = {
     "oak's lab": "PALLET_TOWN_PROFESSOR_OAKS_LAB",
 }
+
+OVERVIEW_DIR = Path(__file__).resolve().parent
+
+
+def load_section_overrides() -> Dict[str, object]:
+    path = OVERVIEW_DIR / "section_overrides.json"
+    if not path.exists():
+        return {"sections": {}, "merges": {}}
+    data = json.loads(path.read_text(encoding="utf-8"))
+    return {
+        "sections": data.get("sections", {}),
+        "merges": data.get("merges", {}),
+    }
+
+
+def apply_section_merges(
+    sections: Dict[str, List[Dict[str, object]]],
+    ordered_section_names: List[str],
+    merge_overrides: Dict[str, object],
+) -> tuple[Dict[str, List[Dict[str, object]]], List[str], Dict[str, List[Dict[str, object]]]]:
+    if not merge_overrides:
+        return sections, ordered_section_names, {}
+
+    merge_sources: set[str] = set()
+    names = list(ordered_section_names)
+    trainer_groups: Dict[str, List[Dict[str, object]]] = {}
+
+    for merge_name, merge_cfg in merge_overrides.items():
+        if not isinstance(merge_cfg, dict):
+            continue
+        sources = [str(s) for s in merge_cfg.get("sources", [])]
+        if not sources:
+            continue
+
+        source_labels = merge_cfg.get("sourceLabels")
+        if not isinstance(source_labels, list):
+            source_labels = []
+
+        merge_sources.update(sources)
+        groups: List[Dict[str, object]] = []
+        combined: List[Dict[str, object]] = []
+        for idx, source in enumerate(sources):
+            source_trainers = list(sections.get(source, []))
+            if idx < len(source_labels):
+                label = str(source_labels[idx])
+            elif source.startswith(f"{merge_name} "):
+                label = source[len(merge_name) + 1 :]
+            else:
+                label = source
+            groups.append({"label": label, "trainers": source_trainers})
+            combined.extend(source_trainers)
+
+        sections[merge_name] = combined
+        if len(groups) > 1:
+            trainer_groups[merge_name] = groups
+
+        insert_idx = len(names)
+        for source in sources:
+            if source in names:
+                insert_idx = min(insert_idx, names.index(source))
+        names = [n for n in names if n not in sources]
+        if merge_name in names:
+            names.remove(merge_name)
+        names.insert(insert_idx, merge_name)
+
+    for source in merge_sources:
+        sections.pop(source, None)
+
+    return sections, names, trainer_groups
+
+
+def lookup_map_record(map_token: str, map_by_token: Dict[str, Dict[str, str]]) -> Optional[Dict[str, str]]:
+    if map_token in map_by_token:
+        return map_by_token[map_token]
+
+    variants = {
+        map_token.replace("_", ""),
+        map_token.replace("SAFFRON_CITY_SILPH_CO", "SILPH_CO"),
+    }
+    for variant in variants:
+        if variant and variant in map_by_token:
+            return map_by_token[variant]
+    return None
 
 
 def slugify(name: str) -> str:
@@ -122,6 +208,10 @@ def resolve_section_theme(section_name: str) -> str:
 
 
 def build_model(section_filter: Optional[str]) -> Dict[str, object]:
+    overrides = load_section_overrides()
+    section_overrides: Dict[str, Dict[str, object]] = dict(overrides.get("sections", {}))
+    merge_overrides: Dict[str, object] = dict(overrides.get("merges", {}))
+
     trainers = parse_trainers()
     parties_data = parse_parties()
     parties = parties_data["parties"]
@@ -163,14 +253,39 @@ def build_model(section_filter: Optional[str]) -> Dict[str, object]:
             if norm:
                 map_by_norm_section.setdefault(norm, record)
 
+    def override_map_token(section_name: str) -> Optional[str]:
+        sect_cfg = section_overrides.get(section_name, {})
+        if isinstance(sect_cfg, dict) and sect_cfg.get("mapToken"):
+            return str(sect_cfg["mapToken"])
+        merge_cfg = merge_overrides.get(section_name, {})
+        if isinstance(merge_cfg, dict) and merge_cfg.get("mapToken"):
+            return str(merge_cfg["mapToken"])
+        return None
+
+    def override_encounters_map_token(section_name: str) -> Optional[str]:
+        sect_cfg = section_overrides.get(section_name, {})
+        if isinstance(sect_cfg, dict) and sect_cfg.get("encountersMapToken"):
+            return str(sect_cfg["encountersMapToken"])
+        return override_map_token(section_name)
+
     def resolve_section_map_record(section_name: str) -> Optional[Dict[str, str]]:
+        json_token = override_map_token(section_name)
+        if json_token:
+            record = lookup_map_record(json_token, map_by_token)
+            if record:
+                return record
+
         override = SECTION_MAP_TOKEN_OVERRIDES.get(section_name.strip().lower())
-        if override and override in map_by_token:
-            return map_by_token[override]
+        if override:
+            record = lookup_map_record(override, map_by_token)
+            if record:
+                return record
 
         encounter_token = encounter_map_by_section.get(section_name)
-        if encounter_token and encounter_token in map_by_token:
-            return map_by_token[encounter_token]
+        if encounter_token:
+            record = lookup_map_record(encounter_token, map_by_token)
+            if record:
+                return record
 
         section_key = normalize_for_match(section_name)
         if section_key in map_by_norm_section:
@@ -181,7 +296,7 @@ def build_model(section_filter: Optional[str]) -> Dict[str, object]:
         candidates: List[tuple[int, Dict[str, str]]] = []
         for record in map_records:
             map_norm = normalize_for_match(record["mapToken"])
-            if section_key and section_key in map_norm:
+            if section_key and (section_key in map_norm or map_norm in section_key):
                 candidates.append((len(map_norm), record))
 
         if candidates:
@@ -211,10 +326,12 @@ def build_model(section_filter: Optional[str]) -> Dict[str, object]:
 
         primary_metatiles = tileset_to_metatile_path(primary_tileset)
         secondary_metatiles = tileset_to_metatile_path(secondary_tileset)
-        if not (primary_metatiles and secondary_metatiles):
+        primary_tiles_png = resolve_tiles_png_path(primary_metatiles) if primary_metatiles else None
+        secondary_tiles_png = resolve_tiles_png_path(secondary_metatiles) if secondary_metatiles else None
+        if not (primary_metatiles and secondary_metatiles and primary_tiles_png and secondary_tiles_png):
             return None
 
-        return {
+        result: Dict[str, object] = {
             "mapId": map_record["mapId"],
             "mapName": map_record["mapName"],
             "mapToken": map_record["mapToken"],
@@ -225,14 +342,18 @@ def build_model(section_filter: Optional[str]) -> Dict[str, object]:
             "primary": {
                 "tileset": primary_tileset,
                 "metatilesPath": primary_metatiles,
-                "tilesPngPath": primary_metatiles.replace("metatiles.bin", "tiles.png"),
+                "tilesPngPath": primary_tiles_png,
             },
             "secondary": {
                 "tileset": secondary_tileset,
                 "metatilesPath": secondary_metatiles,
-                "tilesPngPath": secondary_metatiles.replace("metatiles.bin", "tiles.png"),
+                "tilesPngPath": secondary_tiles_png,
             },
         }
+        sect_cfg = section_overrides.get(section_name, {})
+        if isinstance(sect_cfg, dict) and sect_cfg.get("crop"):
+            result["crop"] = sect_cfg["crop"]
+        return result
 
     def trainer_pic_path(pic_token: str) -> str:
         idx = trainer_pic_ids.get(pic_token)
@@ -257,10 +378,22 @@ def build_model(section_filter: Optional[str]) -> Dict[str, object]:
         if resolve_section_theme(section_name).startswith("gym") or re.search(r"\bgym\b", section_name.lower()):
             return None
 
-        preferred_map_token = encounter_map_by_section.get(section_name)
+        preferred_map_token = override_encounters_map_token(section_name)
+        chosen = None
         if preferred_map_token:
-            chosen = wild_encounters["byMap"][preferred_map_token]
-        else:
+            if preferred_map_token in wild_encounters["byMap"]:
+                chosen = wild_encounters["byMap"][preferred_map_token]
+            else:
+                alt_token = preferred_map_token.replace("_", "")
+                if alt_token in wild_encounters["byMap"]:
+                    chosen = wild_encounters["byMap"][alt_token]
+
+        if chosen is None and encounter_map_by_section.get(section_name):
+            encounter_token = encounter_map_by_section.get(section_name)
+            if encounter_token in wild_encounters["byMap"]:
+                chosen = wild_encounters["byMap"][encounter_token]
+
+        if chosen is None:
             candidates: List[tuple[int, str]] = []
             for map_token in encounter_map_tokens:
                 map_token_norm = map_token.replace("_", "")
@@ -433,6 +566,8 @@ def build_model(section_filter: Optional[str]) -> Dict[str, object]:
             ordered_section_names.append(name)
             section_name_set.add(name)
 
+    sections, ordered_section_names, trainer_groups = apply_section_merges(sections, ordered_section_names, merge_overrides)
+
     return {
         "sections": [
             {
@@ -443,8 +578,10 @@ def build_model(section_filter: Optional[str]) -> Dict[str, object]:
                 "mapRender": build_map_render(name),
                 "encounters": get_section_encounters(name),
                 "trainers": sections[name],
+                "trainerGroups": trainer_groups.get(name, []),
             }
             for name in ordered_section_names
+            if name in sections and (not section_filter or section_filter.lower() == name.lower())
         ],
         "typeIcons": type_icon_specs,
     }

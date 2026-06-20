@@ -1,0 +1,54 @@
+{
+  "_readme": "Manual overrides for overview sections. Keys in 'sections' must match trainer_parties.h comment titles exactly (e.g. 'Silph Co. 2F' from parent+floor headers). mapToken is the MAP_* suffix from data/maps/*/map.json id field (e.g. MAP_SILPH_CO_2F -> SILPH_CO_2F). Tile images fall back to graphics/map_preview/<tileset>/tiles.png when missing from data/tilesets/. crop uses 0.0-1.0 fractions of layout width/height. merges combines multiple comment-sections into one overview section.",
+  "sections": {
+    "Route 10 North": {
+      "mapToken": "ROUTE10",
+      "crop": { "y0": 0.0, "y1": 0.4 }
+    },
+    "Route 10 Surf": {
+      "mapToken": "ROUTE10",
+      "crop": { "y0": 0.4, "y1": 0.6 }
+    },
+    "Route 10 South": {
+      "mapToken": "ROUTE10",
+      "crop": { "y0": 0.6, "y1": 1.0 }
+    },
+    "Silph Co. 2F": {
+      "mapToken": "SILPH_CO_2F"
+    },
+    "Silph Co. 3F": {
+      "mapToken": "SILPH_CO_3F"
+    },
+    "Silph Co. 4F": {
+      "mapToken": "SILPH_CO_4F"
+    },
+    "Silph Co. 5F": {
+      "mapToken": "SILPH_CO_5F"
+    },
+    "Silph Co. 6F": {
+      "mapToken": "SILPH_CO_6F"
+    },
+    "Silph Co. 7F": {
+      "mapToken": "SILPH_CO_7F"
+    },
+    "Silph Co. 8F": {
+      "mapToken": "SILPH_CO_8F"
+    },
+    "Silph Co. 9F": {
+      "mapToken": "SILPH_CO_9F"
+    },
+    "Silph Co. 10F": {
+      "mapToken": "SILPH_CO_10F"
+    },
+    "Silph Co. 11F": {
+      "mapToken": "SILPH_CO_11F"
+    }
+  },
+  "merges": {
+    "Route 15": {
+      "sources": ["Route 15 North", "Route 15 South"],
+      "sourceLabels": ["North", "South"],
+      "mapToken": "ROUTE15"
+    }
+  }
+}
