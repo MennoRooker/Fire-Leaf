@@ -46038,6 +46038,10 @@ h1 { margin: 0 0 8px 0; }
 (function () {
   "use strict";
 
+  const NUM_TILES_PRIMARY = 640;
+  const NUM_METATILES_PRIMARY = 640;
+  const NUM_PALS_PRIMARY = 7;
+
   function decodeBase64ToU16(base64Text) {
     const binary = atob(base64Text);
     const byteLen = binary.length;
@@ -46062,16 +46066,31 @@ h1 { margin: 0 0 8px 0; }
     for (const palB64 of palettesB64 || []) {
       const bytes = decodeBase64ToBytes(palB64);
       const bank = [];
-      for (let i = 0; i + 1 < bytes.length && bank.length < 16; i += 2) {
-        const bgr555 = bytes[i] | (bytes[i + 1] << 8);
-        const r5 = bgr555 & 0x1f;
-        const g5 = (bgr555 >> 5) & 0x1f;
-        const b5 = (bgr555 >> 10) & 0x1f;
-        bank.push([
-          (r5 << 3) | (r5 >> 2),
-          (g5 << 3) | (g5 >> 2),
-          (b5 << 3) | (b5 >> 2),
-        ]);
+      const text = new TextDecoder().decode(bytes);
+      if (text.startsWith("JASC-PAL")) {
+        const lines = text.split(/\r?\n/).map((line) => line.trim()).filter(Boolean);
+        for (let i = 3; i < lines.length && bank.length < 16; i += 1) {
+          const parts = lines[i].split(/\s+/);
+          if (parts.length >= 3) {
+            bank.push([
+              Math.min(255, parseInt(parts[0], 10) || 0),
+              Math.min(255, parseInt(parts[1], 10) || 0),
+              Math.min(255, parseInt(parts[2], 10) || 0),
+            ]);
+          }
+        }
+      } else {
+        for (let i = 0; i + 1 < bytes.length && bank.length < 16; i += 2) {
+          const bgr555 = bytes[i] | (bytes[i + 1] << 8);
+          const r5 = bgr555 & 0x1f;
+          const g5 = (bgr555 >> 5) & 0x1f;
+          const b5 = (bgr555 >> 10) & 0x1f;
+          bank.push([
+            (r5 << 3) | (r5 >> 2),
+            (g5 << 3) | (g5 >> 2),
+            (b5 << 3) | (b5 >> 2),
+          ]);
+        }
       }
       while (bank.length < 16) {
         bank.push([0, 0, 0]);
@@ -46095,26 +46114,25 @@ h1 { margin: 0 0 8px 0; }
     };
   }
 
-  function drawTile(outData, outW, tileIndices, tileTexW, tileRef, dx, dy) {
+  function paintTile(out, outW, outH, primaryTiles, secondaryTiles, primaryPalettes, secondaryPalettes, tileRef, dx, dy) {
     const tileId = tileRef & 0x3ff;
     const hFlip = (tileRef & 0x400) !== 0;
     const vFlip = (tileRef & 0x800) !== 0;
     const paletteBank = (tileRef >> 12) & 0xf;
-    const sx = (tileId % Math.floor(tileTexW / 8)) * 8;
-    const sy = Math.floor(tileId / Math.floor(tileTexW / 8)) * 8;
-    return { sx, sy, hFlip, vFlip, paletteBank };
-  }
-
-  function paintTile(out, outW, outH, tileIndices, tileTexW, paletteBanks, tileRef, dx, dy) {
-    const spec = drawTile(out, outW, tileIndices, tileTexW, tileRef, dx, dy);
-    const pal = paletteBanks[spec.paletteBank] || paletteBanks[0];
+    const tileSource = tileId < NUM_TILES_PRIMARY ? primaryTiles : secondaryTiles;
+    const localTileId = tileId < NUM_TILES_PRIMARY ? tileId : tileId - NUM_TILES_PRIMARY;
+    const tileTexW = tileSource.width;
+    const paletteBanks = paletteBank < NUM_PALS_PRIMARY ? primaryPalettes : secondaryPalettes;
+    const pal = paletteBanks[paletteBank] || paletteBanks[0];
+    const sx = (localTileId % Math.floor(tileTexW / 8)) * 8;
+    const sy = Math.floor(localTileId / Math.floor(tileTexW / 8)) * 8;
 
     for (let py = 0; py < 8; py += 1) {
       for (let px = 0; px < 8; px += 1) {
-        const srcX = spec.sx + (spec.hFlip ? 7 - px : px);
-        const srcY = spec.sy + (spec.vFlip ? 7 - py : py);
+        const srcX = sx + (hFlip ? 7 - px : px);
+        const srcY = sy + (vFlip ? 7 - py : py);
         const srcIdx = srcY * tileTexW + srcX;
-        const colorIndex = tileIndices[srcIdx] & 0xf;
+        const colorIndex = tileSource.pixels[srcIdx] & 0xf;
         if (colorIndex === 0) {
           continue;
         }
@@ -46133,19 +46151,19 @@ h1 { margin: 0 0 8px 0; }
     }
   }
 
-  function drawMetatile(out, outW, outH, metatileRefs, tileIndices, tileTexW, paletteBanks, blockX, blockY) {
+  function drawMetatile(out, outW, outH, metatileRefs, primaryTiles, secondaryTiles, primaryPalettes, secondaryPalettes, blockX, blockY) {
     const px = blockX * 16;
     const py = blockY * 16;
 
-    paintTile(out, outW, outH, tileIndices, tileTexW, paletteBanks, metatileRefs[0], px, py);
-    paintTile(out, outW, outH, tileIndices, tileTexW, paletteBanks, metatileRefs[1], px + 8, py);
-    paintTile(out, outW, outH, tileIndices, tileTexW, paletteBanks, metatileRefs[2], px, py + 8);
-    paintTile(out, outW, outH, tileIndices, tileTexW, paletteBanks, metatileRefs[3], px + 8, py + 8);
+    paintTile(out, outW, outH, primaryTiles, secondaryTiles, primaryPalettes, secondaryPalettes, metatileRefs[0], px, py);
+    paintTile(out, outW, outH, primaryTiles, secondaryTiles, primaryPalettes, secondaryPalettes, metatileRefs[1], px + 8, py);
+    paintTile(out, outW, outH, primaryTiles, secondaryTiles, primaryPalettes, secondaryPalettes, metatileRefs[2], px, py + 8);
+    paintTile(out, outW, outH, primaryTiles, secondaryTiles, primaryPalettes, secondaryPalettes, metatileRefs[3], px + 8, py + 8);
 
-    paintTile(out, outW, outH, tileIndices, tileTexW, paletteBanks, metatileRefs[4], px, py);
-    paintTile(out, outW, outH, tileIndices, tileTexW, paletteBanks, metatileRefs[5], px + 8, py);
-    paintTile(out, outW, outH, tileIndices, tileTexW, paletteBanks, metatileRefs[6], px, py + 8);
-    paintTile(out, outW, outH, tileIndices, tileTexW, paletteBanks, metatileRefs[7], px + 8, py + 8);
+    paintTile(out, outW, outH, primaryTiles, secondaryTiles, primaryPalettes, secondaryPalettes, metatileRefs[4], px, py);
+    paintTile(out, outW, outH, primaryTiles, secondaryTiles, primaryPalettes, secondaryPalettes, metatileRefs[5], px + 8, py);
+    paintTile(out, outW, outH, primaryTiles, secondaryTiles, primaryPalettes, secondaryPalettes, metatileRefs[6], px, py + 8);
+    paintTile(out, outW, outH, primaryTiles, secondaryTiles, primaryPalettes, secondaryPalettes, metatileRefs[7], px + 8, py + 8);
   }
 
   async function renderCanvas(canvas, payload) {
@@ -46163,7 +46181,6 @@ h1 { margin: 0 0 8px 0; }
     const primaryTiles = decodeTilePixelBuffer(payload.primaryTilePixels);
     const secondaryTiles = decodeTilePixelBuffer(payload.secondaryTilePixels);
 
-    const primaryMetatileCount = Math.floor(primaryMetatiles.length / 8);
     const secondaryMetatileCount = Math.floor(secondaryMetatiles.length / 8);
 
     const pixelWidth = width * 16;
@@ -46186,16 +46203,19 @@ h1 { margin: 0 0 8px 0; }
       const x = i % width;
       const y = Math.floor(i / width);
 
-      if (block < primaryMetatileCount) {
+      if (block < NUM_METATILES_PRIMARY) {
         const base = block * 8;
-        drawMetatile(out, pixelWidth, pixelHeight, primaryMetatiles.subarray(base, base + 8), primaryTiles.pixels, primaryTiles.width, primaryPalettes, x, y);
+        if (base + 8 > primaryMetatiles.length) {
+          continue;
+        }
+        drawMetatile(out, pixelWidth, pixelHeight, primaryMetatiles.subarray(base, base + 8), primaryTiles, secondaryTiles, primaryPalettes, secondaryPalettes, x, y);
       } else {
-        const secondaryBlock = block - primaryMetatileCount;
+        const secondaryBlock = block - NUM_METATILES_PRIMARY;
         if (secondaryBlock < 0 || secondaryBlock >= secondaryMetatileCount) {
           continue;
         }
         const base = secondaryBlock * 8;
-        drawMetatile(out, pixelWidth, pixelHeight, secondaryMetatiles.subarray(base, base + 8), secondaryTiles.pixels, secondaryTiles.width, secondaryPalettes, x, y);
+        drawMetatile(out, pixelWidth, pixelHeight, secondaryMetatiles.subarray(base, base + 8), primaryTiles, secondaryTiles, primaryPalettes, secondaryPalettes, x, y);
       }
     }
 

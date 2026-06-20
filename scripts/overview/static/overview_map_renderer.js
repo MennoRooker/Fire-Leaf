@@ -1,0 +1,239 @@
+(function () {
+  "use strict";
+
+  const NUM_TILES_PRIMARY = 640;
+  const NUM_METATILES_PRIMARY = 640;
+  const NUM_PALS_PRIMARY = 7;
+
+  function decodeBase64ToU16(base64Text) {
+    const binary = atob(base64Text);
+    const byteLen = binary.length;
+    const out = new Uint16Array(Math.floor(byteLen / 2));
+    for (let i = 0, j = 0; i + 1 < byteLen; i += 2, j += 1) {
+      out[j] = binary.charCodeAt(i) | (binary.charCodeAt(i + 1) << 8);
+    }
+    return out;
+  }
+
+  function decodeBase64ToBytes(base64Text) {
+    const binary = atob(base64Text);
+    const out = new Uint8Array(binary.length);
+    for (let i = 0; i < binary.length; i += 1) {
+      out[i] = binary.charCodeAt(i);
+    }
+    return out;
+  }
+
+  function decodePalettes(palettesB64) {
+    const banks = [];
+    for (const palB64 of palettesB64 || []) {
+      const bytes = decodeBase64ToBytes(palB64);
+      const bank = [];
+      const text = new TextDecoder().decode(bytes);
+      if (text.startsWith("JASC-PAL")) {
+        const lines = text.split(/\r?\n/).map((line) => line.trim()).filter(Boolean);
+        for (let i = 3; i < lines.length && bank.length < 16; i += 1) {
+          const parts = lines[i].split(/\s+/);
+          if (parts.length >= 3) {
+            bank.push([
+              Math.min(255, parseInt(parts[0], 10) || 0),
+              Math.min(255, parseInt(parts[1], 10) || 0),
+              Math.min(255, parseInt(parts[2], 10) || 0),
+            ]);
+          }
+        }
+      } else {
+        for (let i = 0; i + 1 < bytes.length && bank.length < 16; i += 2) {
+          const bgr555 = bytes[i] | (bytes[i + 1] << 8);
+          const r5 = bgr555 & 0x1f;
+          const g5 = (bgr555 >> 5) & 0x1f;
+          const b5 = (bgr555 >> 10) & 0x1f;
+          bank.push([
+            (r5 << 3) | (r5 >> 2),
+            (g5 << 3) | (g5 >> 2),
+            (b5 << 3) | (b5 >> 2),
+          ]);
+        }
+      }
+      while (bank.length < 16) {
+        bank.push([0, 0, 0]);
+      }
+      banks.push(bank);
+    }
+    while (banks.length < 16) {
+      banks.push(Array.from({ length: 16 }, () => [0, 0, 0]));
+    }
+    return banks;
+  }
+
+  function decodeTilePixelBuffer(tilePixelSpec) {
+    if (!tilePixelSpec || !tilePixelSpec.pixelsB64) {
+      throw new Error("Missing tile pixel buffer");
+    }
+    return {
+      width: tilePixelSpec.width | 0,
+      height: tilePixelSpec.height | 0,
+      pixels: decodeBase64ToBytes(tilePixelSpec.pixelsB64),
+    };
+  }
+
+  function paintTile(out, outW, outH, primaryTiles, secondaryTiles, primaryPalettes, secondaryPalettes, tileRef, dx, dy) {
+    const tileId = tileRef & 0x3ff;
+    const hFlip = (tileRef & 0x400) !== 0;
+    const vFlip = (tileRef & 0x800) !== 0;
+    const paletteBank = (tileRef >> 12) & 0xf;
+    const tileSource = tileId < NUM_TILES_PRIMARY ? primaryTiles : secondaryTiles;
+    const localTileId = tileId < NUM_TILES_PRIMARY ? tileId : tileId - NUM_TILES_PRIMARY;
+    const tileTexW = tileSource.width;
+    const paletteBanks = paletteBank < NUM_PALS_PRIMARY ? primaryPalettes : secondaryPalettes;
+    const pal = paletteBanks[paletteBank] || paletteBanks[0];
+    const sx = (localTileId % Math.floor(tileTexW / 8)) * 8;
+    const sy = Math.floor(localTileId / Math.floor(tileTexW / 8)) * 8;
+
+    for (let py = 0; py < 8; py += 1) {
+      for (let px = 0; px < 8; px += 1) {
+        const srcX = sx + (hFlip ? 7 - px : px);
+        const srcY = sy + (vFlip ? 7 - py : py);
+        const srcIdx = srcY * tileTexW + srcX;
+        const colorIndex = tileSource.pixels[srcIdx] & 0xf;
+        if (colorIndex === 0) {
+          continue;
+        }
+        const tx = dx + px;
+        const ty = dy + py;
+        if (tx < 0 || ty < 0 || tx >= outW || ty >= outH) {
+          continue;
+        }
+        const [r, g, b] = pal[colorIndex] || [0, 0, 0];
+        const di = (ty * outW + tx) * 4;
+        out[di] = r;
+        out[di + 1] = g;
+        out[di + 2] = b;
+        out[di + 3] = 255;
+      }
+    }
+  }
+
+  function drawMetatile(out, outW, outH, metatileRefs, primaryTiles, secondaryTiles, primaryPalettes, secondaryPalettes, blockX, blockY) {
+    const px = blockX * 16;
+    const py = blockY * 16;
+
+    paintTile(out, outW, outH, primaryTiles, secondaryTiles, primaryPalettes, secondaryPalettes, metatileRefs[0], px, py);
+    paintTile(out, outW, outH, primaryTiles, secondaryTiles, primaryPalettes, secondaryPalettes, metatileRefs[1], px + 8, py);
+    paintTile(out, outW, outH, primaryTiles, secondaryTiles, primaryPalettes, secondaryPalettes, metatileRefs[2], px, py + 8);
+    paintTile(out, outW, outH, primaryTiles, secondaryTiles, primaryPalettes, secondaryPalettes, metatileRefs[3], px + 8, py + 8);
+
+    paintTile(out, outW, outH, primaryTiles, secondaryTiles, primaryPalettes, secondaryPalettes, metatileRefs[4], px, py);
+    paintTile(out, outW, outH, primaryTiles, secondaryTiles, primaryPalettes, secondaryPalettes, metatileRefs[5], px + 8, py);
+    paintTile(out, outW, outH, primaryTiles, secondaryTiles, primaryPalettes, secondaryPalettes, metatileRefs[6], px, py + 8);
+    paintTile(out, outW, outH, primaryTiles, secondaryTiles, primaryPalettes, secondaryPalettes, metatileRefs[7], px + 8, py + 8);
+  }
+
+  async function renderCanvas(canvas, payload) {
+    const width = payload.width | 0;
+    const height = payload.height | 0;
+    if (width <= 0 || height <= 0) {
+      throw new Error("Invalid map dimensions");
+    }
+
+    const blockdata = decodeBase64ToU16(payload.blockdataB64);
+    const primaryMetatiles = decodeBase64ToU16(payload.primaryMetatilesB64);
+    const secondaryMetatiles = decodeBase64ToU16(payload.secondaryMetatilesB64);
+    const primaryPalettes = decodePalettes(payload.primaryPalettesB64 || []);
+    const secondaryPalettes = decodePalettes(payload.secondaryPalettesB64 || []);
+    const primaryTiles = decodeTilePixelBuffer(payload.primaryTilePixels);
+    const secondaryTiles = decodeTilePixelBuffer(payload.secondaryTilePixels);
+
+    const secondaryMetatileCount = Math.floor(secondaryMetatiles.length / 8);
+
+    const pixelWidth = width * 16;
+    const pixelHeight = height * 16;
+    canvas.width = pixelWidth;
+    canvas.height = pixelHeight;
+
+    const ctx = canvas.getContext("2d", { alpha: true, willReadFrequently: false });
+    if (!ctx) {
+      throw new Error("Could not get canvas context");
+    }
+    ctx.imageSmoothingEnabled = false;
+
+    const imageData = ctx.createImageData(pixelWidth, pixelHeight);
+    const out = imageData.data;
+
+    const blockCount = Math.min(blockdata.length, width * height);
+    for (let i = 0; i < blockCount; i += 1) {
+      const block = blockdata[i] & 0x3ff;
+      const x = i % width;
+      const y = Math.floor(i / width);
+
+      if (block < NUM_METATILES_PRIMARY) {
+        const base = block * 8;
+        if (base + 8 > primaryMetatiles.length) {
+          continue;
+        }
+        drawMetatile(out, pixelWidth, pixelHeight, primaryMetatiles.subarray(base, base + 8), primaryTiles, secondaryTiles, primaryPalettes, secondaryPalettes, x, y);
+      } else {
+        const secondaryBlock = block - NUM_METATILES_PRIMARY;
+        if (secondaryBlock < 0 || secondaryBlock >= secondaryMetatileCount) {
+          continue;
+        }
+        const base = secondaryBlock * 8;
+        drawMetatile(out, pixelWidth, pixelHeight, secondaryMetatiles.subarray(base, base + 8), primaryTiles, secondaryTiles, primaryPalettes, secondaryPalettes, x, y);
+      }
+    }
+
+    ctx.putImageData(imageData, 0, 0);
+  }
+
+  function showFallback(mapLeft, message) {
+    const fallback = mapLeft.querySelector(".map-fallback");
+    if (!fallback) {
+      return;
+    }
+    if (message) {
+      fallback.textContent = message;
+    }
+    mapLeft.classList.remove("map-ready");
+  }
+
+  async function init() {
+    const dataEl = document.getElementById("overview-map-data");
+    if (!dataEl || !dataEl.textContent) {
+      return;
+    }
+
+    let data;
+    try {
+      data = JSON.parse(dataEl.textContent);
+    } catch (_err) {
+      return;
+    }
+
+    const canvases = document.querySelectorAll(".map-canvas[data-map-key]");
+    for (const canvas of canvases) {
+      const key = canvas.getAttribute("data-map-key") || "";
+      const payload = data[key];
+      const mapLeft = canvas.closest(".map-left");
+      if (!mapLeft) {
+        continue;
+      }
+      if (!payload) {
+        showFallback(mapLeft, "No map data available yet");
+        continue;
+      }
+
+      try {
+        await renderCanvas(canvas, payload);
+        mapLeft.classList.add("map-ready");
+      } catch (_err) {
+        showFallback(mapLeft, "No map image yet");
+      }
+    }
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", init);
+  } else {
+    init();
+  }
+})();
