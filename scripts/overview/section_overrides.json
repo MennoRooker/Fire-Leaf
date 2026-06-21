@@ -6,15 +6,15 @@
     },
     "Route 10 North": {
       "mapToken": "ROUTE10",
-      "crop": { "y0": 0.0, "y1": 0.4 }
+      "crop": { "y0": 0.0, "y1": 0.38 }
     },
     "Route 10 Surf": {
       "mapToken": "ROUTE10",
-      "crop": { "y0": 0.4, "y1": 0.6 }
+      "crop": { "y0": 0.4, "y1": 0.63 }
     },
     "Route 10 South": {
       "mapToken": "ROUTE10",
-      "crop": { "y0": 0.6, "y1": 1.0 }
+      "crop": { "y0": 0.66, "y1": 1.0 }
     },
     "Silph Co. 2F": {
       "mapToken": "SILPH_CO_2F"

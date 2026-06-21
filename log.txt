@@ -1355,6 +1355,13 @@ x Wild Encounters
    - VS seeker icon
    - Different colors
 
+section overrides:
+- Oak's Lab 75%
+- Route 4 West/East
+- Cerulean Grunt
+- Remove Route 10 south's mons
+- Remove Route 10 surf's land mons
+
 
 
 

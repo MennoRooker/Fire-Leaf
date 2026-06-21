@@ -251,7 +251,7 @@
       scale = containerW / intrinsicW;
     }
 
-    scale = readMapScaleMax(canvas);
+    scale *= readMapScaleMax(canvas);
 
     if (!Number.isFinite(scale) || scale <= 0) {
       return;

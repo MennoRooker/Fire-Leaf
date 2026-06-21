@@ -78,8 +78,8 @@ h1 { margin: 0 0 8px 0; }
 }
 .map-canvas {
   display: none;
-  max-width: auto;
-  max-height: auto;
+  width: auto;
+  height: auto;
   image-rendering: pixelated;
 }
 .map-left.map-ready .map-canvas { display: block; }
