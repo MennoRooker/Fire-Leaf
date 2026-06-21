@@ -727,6 +727,21 @@ def build_model(section_filter: Optional[str]) -> Dict[str, object]:
 
     sections, ordered_section_names, trainer_groups = apply_section_merges(sections, ordered_section_names, merge_overrides)
 
+    def section_map_scale_max(section_name: str) -> Optional[float]:
+        sect_cfg = section_overrides.get(section_name, {})
+        if not isinstance(sect_cfg, dict):
+            return None
+        raw = sect_cfg.get("mapScaleMax")
+        if raw is None:
+            return None
+        try:
+            value = float(raw)
+        except (TypeError, ValueError):
+            return None
+        if value <= 0 or value > 1:
+            return None
+        return value
+
     return {
         "sections": [
             {
@@ -735,6 +750,7 @@ def build_model(section_filter: Optional[str]) -> Dict[str, object]:
                 "theme": resolve_section_theme(name),
                 "mapImage": f"docs/maps/{slugify(name)}.png",
                 "mapRender": build_map_render(name),
+                "mapScaleMax": section_map_scale_max(name),
                 "encounters": get_section_encounters(name),
                 "trainers": sections[name],
                 "trainerGroups": trainer_groups.get(name, []),

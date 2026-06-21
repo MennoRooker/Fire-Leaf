@@ -214,6 +214,74 @@
     mapLeft.classList.remove("map-ready");
   }
 
+  function readMapScaleMax(canvas) {
+    const raw = canvas.getAttribute("data-map-scale-max");
+    if (raw == null || raw == "" ) {
+      return 1;
+    }
+    const value = Number(raw);
+    if (!Number.isFinite(value) || value <= 0 || value > 1) {
+      return 1;
+    }
+    return value;
+  }
+
+  function fitCanvasToContainer(canvas, mapLeft) {
+    const intrinsicW = canvas.width;
+    const intrinsicH = canvas.height;
+    if (intrinsicW <= 0 || intrinsicH <= 0) {
+      return;
+    }
+
+    const mapPane = mapLeft.closest(".map-pane");
+    const hasEncounters = Boolean(mapPane && mapPane.querySelector(".encounters"));
+    const containerW = mapLeft.clientWidth;
+    if (containerW <= 0) {
+      return;
+    }
+
+    let scale;
+    if (hasEncounters) {
+      const containerH = mapLeft.clientHeight;
+      if (containerH <= 0) {
+        return;
+      }
+      scale = Math.min(containerW / intrinsicW, containerH / intrinsicH);
+    } else {
+      scale = containerW / intrinsicW;
+    }
+
+    scale = readMapScaleMax(canvas);
+
+    if (!Number.isFinite(scale) || scale <= 0) {
+      return;
+    }
+
+    canvas.style.width = `${Math.floor(intrinsicW * scale)}px`;
+    canvas.style.height = `${Math.floor(intrinsicH * scale)}px`;
+  }
+
+  function observeMapFit(canvas, mapLeft) {
+    const mapPane = mapLeft.closest(".map-pane");
+    const refit = () => {
+      if (!mapLeft.classList.contains("map-ready")) {
+        return;
+      }
+      fitCanvasToContainer(canvas, mapLeft);
+    };
+
+    if (typeof ResizeObserver === "undefined") {
+      window.addEventListener("resize", refit);
+      return;
+    }
+
+    const observer = new ResizeObserver(refit);
+    observer.observe(mapLeft);
+    if (mapPane) {
+      observer.observe(mapPane);
+    }
+  }
+
   async function init() {
     const dataEl = document.getElementById("overview-map-data");
     if (!dataEl || !dataEl.textContent) {
@@ -242,11 +310,22 @@
 
       try {
         await renderCanvas(canvas, payload);
+        fitCanvasToContainer(canvas, mapLeft);
         mapLeft.classList.add("map-ready");
+        observeMapFit(canvas, mapLeft);
       } catch (_err) {
         showFallback(mapLeft, "No map image yet");
       }
     }
+
+    requestAnimationFrame(() => {
+      for (const canvas of canvases) {
+        const mapLeft = canvas.closest(".map-left");
+        if (mapLeft && mapLeft.classList.contains("map-ready")) {
+          fitCanvasToContainer(canvas, mapLeft);
+        }
+      }
+    });
   }
 
   if (document.readyState === "loading") {

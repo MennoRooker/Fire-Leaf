@@ -192,6 +192,11 @@ def render_section(section: Dict[str, object], type_icons: Dict[str, Dict[str, i
     elif encounters and encounters.get("mode") == "single":
         pane_mode = "single"
 
+    map_scale_max = section.get("mapSacleMax")
+    map_scale_max_attr = ""
+    if map_scale_max is not None:
+        map_scale_max_attr = f" data-map-scale-max='{html.escape(str(map_scale_max))}'"
+
     return render_template(
         templates["section"],
         {
@@ -201,6 +206,7 @@ def render_section(section: Dict[str, object], type_icons: Dict[str, Dict[str, i
             "__PANE_MODE__": pane_mode,
             "__MAP_IMAGE__": html.escape(asset_url(str(section["mapImage"]))),
             "__MAP_KEY__": html.escape(str(section["slug"])),
+            "__MAP_SCALE_MAX_ATTR__": map_scale_max_attr,
             "__ENCOUNTERS_HTML__": render_encounters(encounters, asset_url, templates) if encounters else "",
             "__TRAINER_CARDS_HTML__": render_trainer_cards(section, type_icons, asset_url, templates),
         },
