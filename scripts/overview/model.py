@@ -2,8 +2,12 @@ from __future__ import annotations
 
 import json
 import re
+import sys
 from pathlib import Path
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Union
+
+SectionOrderEntry = Union[str, int]
+SectionOrderPlan = List[SectionOrderEntry]
 
 from .parsing import (
     ENCOUNTER_KIND_ORDER,
@@ -30,10 +34,6 @@ from .parsing import (
     resolve_tiles_png_path,
 )
 
-
-MANUAL_SECTION_INSERTS: List[tuple[str, List[str]]] = [
-    ("Oak's Lab", ["Route 1", "Viridian City"]),
-]
 
 SECTION_THEME_OVERRIDES: Dict[str, str] = {
     "pewter city": "city-pewter",
@@ -77,6 +77,95 @@ def load_section_overrides() -> Dict[str, object]:
         "sections": data.get("sections", {}),
         "merges": data.get("merges", {}),
     }
+
+
+def load_section_order_plan() -> SectionOrderPlan:
+    path = OVERVIEW_DIR / "section_order.json"
+    if not path.exists():
+        return []
+    data = json.loads(path.read_text(encoding="utf-8"))
+    raw_plan = data.get("plan", [])
+    if not isinstance(raw_plan, list):
+        print("Warning: section_order.json 'plan' must be an array.", file=sys.stderr)
+        return []
+
+    plan: SectionOrderPlan = []
+    for idx, entry in enumerate(raw_plan):
+        if isinstance(entry, str):
+            name = entry.strip()
+            if name:
+                plan.append(name)
+            continue
+        if isinstance(entry, int) and not isinstance(entry, bool):
+            if entry < 0:
+                print(f"Warning: section_order.json plan[{idx}] must be non-negative, got {entry}.", file=sys.stderr)
+                continue
+            if entry:
+                plan.append(entry)
+            continue
+        print(
+            f"Warning: section_order.json plan[{idx}] must be a string or integer, got {type(entry).__name__}.",
+            file=sys.stderr,
+        )
+    return plan
+
+
+def planned_section_names(plan: SectionOrderPlan) -> List[str]:
+    return [entry for entry in plan if isinstance(entry, str)]
+
+
+def apply_section_order_plan(
+    plan: SectionOrderPlan,
+    standard_order: List[str],
+    available_sections: set[str],
+) -> List[str]:
+    """Build section order from an explicit plan plus trainer_parties.h standard order."""
+    standard_queue = [name for name in standard_order if name in available_sections]
+    placed: set[str] = set()
+    result: List[str] = []
+    queue_idx = 0
+
+    def next_from_standard() -> Optional[str]:
+        nonlocal queue_idx
+        while queue_idx < len(standard_queue):
+            name = standard_queue[queue_idx]
+            queue_idx += 1
+            if name not in placed:
+                return name
+        return None
+
+    def place(name: str, source: str) -> None:
+        if name in placed:
+            print(f"Warning: section order plan repeats '{name}' ({source}); skipping duplicate.", file=sys.stderr)
+            return
+        if name not in available_sections:
+            print(f"Warning: section order plan references unknown section '{name}' ({source}); skipping.", file=sys.stderr)
+            return
+        result.append(name)
+        placed.add(name)
+
+    for idx, entry in enumerate(plan):
+        if isinstance(entry, int):
+            for _ in range(entry):
+                name = next_from_standard()
+                if name is None:
+                    print(
+                        f"Warning: section order plan[{idx}] requested {entry} standard sections, "
+                        "but the standard-order queue ran out early.",
+                        file=sys.stderr,
+                    )
+                    break
+                place(name, f"plan[{idx}] auto")
+            continue
+        place(entry, f"plan[{idx}]")
+
+    while True:
+        name = next_from_standard()
+        if name is None:
+            break
+        place(name, "remaining standard order")
+
+    return result
 
 
 def apply_section_merges(
@@ -600,10 +689,10 @@ def build_model(section_filter: Optional[str]) -> Dict[str, object]:
         sections.setdefault(section, []).append(trainer_obj)
         known_section_names.add(section)
 
-    for _, insert_names in MANUAL_SECTION_INSERTS:
-        for name in insert_names:
-            sections.setdefault(name, [])
-            known_section_names.add(name)
+    section_order_plan = load_section_order_plan()
+    for name in planned_section_names(section_order_plan):
+        sections.setdefault(name, [])
+        known_section_names.add(name)
 
     for map_token in encounter_map_tokens:
         normalized_token = normalize_map_token(map_token)
@@ -618,21 +707,14 @@ def build_model(section_filter: Optional[str]) -> Dict[str, object]:
         sections.setdefault(section_name, [])
         known_section_names.add(section_name)
 
-    ordered_section_names: List[str] = [name for name in party_section_order if name in sections]
-    for anchor_name, insert_names in MANUAL_SECTION_INSERTS:
-        if anchor_name not in ordered_section_names:
-            continue
-        insert_pos = ordered_section_names.index(anchor_name) + 1
-        for name in insert_names:
-            if name not in sections:
-                continue
-            if name in ordered_section_names:
-                old_idx = ordered_section_names.index(name)
-                ordered_section_names.pop(old_idx)
-                if old_idx < insert_pos:
-                    insert_pos -= 1
-            ordered_section_names.insert(insert_pos, name)
-            insert_pos += 1
+    if section_order_plan:
+        ordered_section_names = apply_section_order_plan(
+            section_order_plan,
+            party_section_order,
+            set(sections.keys()),
+        )
+    else:
+        ordered_section_names = [name for name in party_section_order if name in sections]
 
     section_name_set = set(ordered_section_names)
     for name in sections.keys():

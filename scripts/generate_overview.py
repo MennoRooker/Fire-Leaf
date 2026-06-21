@@ -12,6 +12,9 @@ Optional:
 
 Run with --section to specify 1 map section to generate.
 
+Section order (manual placement + standard-order runs):
+  scripts/overview/section_order.json
+
 Map display overrides (split routes, floor maps, merged sections):
   scripts/overview/section_overrides.json
 """

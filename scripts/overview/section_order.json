@@ -1,0 +1,13 @@
+{
+  "_readme": "Overview section order plan. Each string is a section title placed at that position (must match trainer_parties.h comment titles exactly, except manual-only sections like Oak's Lab). Each integer N pulls the next N sections from the standard order defined in trainer_parties.h that have not been placed yet. After the plan finishes, any remaining standard-order sections are appended automatically. Leave \"plan\" empty to use trainer_parties.h order unchanged.",
+  "plan": [
+    "Pallet Town",
+    "Oak's Lab",
+    "Route 1",
+    "Viridian City",
+    6,
+    "Route 4",
+    8,
+    "Vermilion City"
+  ]
+}
