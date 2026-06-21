@@ -136,8 +136,15 @@ def apply_section_merges(
 
 
 def lookup_map_record(map_token: str, map_by_token: Dict[str, Dict[str, str]]) -> Optional[Dict[str, str]]:
-    if map_token in map_by_token:
-        return map_by_token[map_token]
+    candidates = [
+        map_token,
+        normalize_map_token(map_token),
+        map_token.replace("_", ""),
+        normalize_map_token(map_token).replace("_", ""),
+    ]
+    for candidate in candidates:
+        if candidate and candidate in map_by_token:
+            return map_by_token[candidate]
 
     variants = {
         map_token.replace("_", ""),
@@ -158,11 +165,52 @@ def normalize_for_match(name: str) -> str:
     return slugify(name).upper().replace("_", "")
 
 
+def normalize_map_token(map_token: str) -> str:
+    """Insert underscores between letter/digit boundaries within each token segment."""
+    parts: List[str] = []
+    for raw in map_token.split("_"):
+        token = raw.strip()
+        if not token:
+            continue
+        expanded = re.sub(r"([A-Za-z])(\d)", r"\1_\2", token)
+        expanded = re.sub(r"(\d)([A-Za-z])", r"\1_\2", expanded)
+        parts.extend(part for part in expanded.split("_") if part)
+    return "_".join(parts)
+
+
+def build_section_name_registry(names: List[str]) -> Dict[str, str]:
+    registry: Dict[str, str] = {}
+    for name in names:
+        norm = normalize_for_match(name)
+        if norm:
+            registry.setdefault(norm, name)
+    return registry
+
+
+def resolve_canonical_section_name(name: str, registry: Dict[str, str]) -> str:
+    norm = normalize_for_match(name)
+    if norm and norm in registry:
+        return registry[norm]
+    return name
+
+
+def is_redundant_section_name(name: str, known_names: set[str]) -> bool:
+    norm = normalize_for_match(name)
+    if not norm:
+        return False
+    known_norms = {normalize_for_match(known) for known in known_names}
+    if norm in known_norms:
+        return True
+    prefix = f"{name} "
+    return any(known.startswith(prefix) for known in known_names)
+
+
 def camel_words(name: str) -> str:
     return re.sub(r"([a-z0-9])([A-Z])", r"\1 \2", name.replace("_", " ")).strip()
 
 
 def map_token_to_section_name(map_token: str) -> str:
+    map_token = normalize_map_token(map_token)
     parts: List[str] = []
     for raw in map_token.split("_"):
         token = raw.strip()
@@ -236,10 +284,15 @@ def build_model(section_filter: Optional[str]) -> Dict[str, object]:
     map_by_token = dict(map_layout_data["byToken"])
     metatile_paths_by_symbol = parse_tileset_metatile_paths()
     encounter_map_tokens = list(wild_encounters["byMap"].keys())
+    section_name_registry = build_section_name_registry(party_section_order)
     encounter_map_by_section: Dict[str, str] = {}
     for map_token in encounter_map_tokens:
-        section_name = map_token_to_section_name(map_token)
-        encounter_map_by_section.setdefault(section_name, map_token)
+        normalized_token = normalize_map_token(map_token)
+        section_name = resolve_canonical_section_name(
+            map_token_to_section_name(normalized_token),
+            section_name_registry,
+        )
+        encounter_map_by_section.setdefault(section_name, normalized_token)
 
     map_by_norm_section: Dict[str, Dict[str, str]] = {}
     for record in map_records:
@@ -369,6 +422,21 @@ def build_model(section_filter: Optional[str]) -> Dict[str, object]:
             return "graphics/pokemon/question_mark/front.png"
         return mon_sym_to_png.get(mon_front_syms[idx], "graphics/pokemon/question_mark/front.png")
 
+    def resolve_wild_encounter(map_token: Optional[str]) -> Optional[Dict[str, object]]:
+        if not map_token:
+            return None
+        by_map = wild_encounters["byMap"]
+        candidates = [
+            map_token,
+            normalize_map_token(map_token),
+            map_token.replace("_", ""),
+            normalize_map_token(map_token).replace("_", ""),
+        ]
+        for candidate in candidates:
+            if candidate and candidate in by_map:
+                return by_map[candidate]
+        return None
+
     def get_section_encounters(section_name: str) -> Optional[Dict[str, object]]:
         section_key_norm = normalize_for_match(section_name)
         if not section_key_norm:
@@ -379,24 +447,15 @@ def build_model(section_filter: Optional[str]) -> Dict[str, object]:
             return None
 
         preferred_map_token = override_encounters_map_token(section_name)
-        chosen = None
-        if preferred_map_token:
-            if preferred_map_token in wild_encounters["byMap"]:
-                chosen = wild_encounters["byMap"][preferred_map_token]
-            else:
-                alt_token = preferred_map_token.replace("_", "")
-                if alt_token in wild_encounters["byMap"]:
-                    chosen = wild_encounters["byMap"][alt_token]
+        chosen = resolve_wild_encounter(preferred_map_token)
 
         if chosen is None and encounter_map_by_section.get(section_name):
-            encounter_token = encounter_map_by_section.get(section_name)
-            if encounter_token in wild_encounters["byMap"]:
-                chosen = wild_encounters["byMap"][encounter_token]
+            chosen = resolve_wild_encounter(encounter_map_by_section.get(section_name))
 
         if chosen is None:
             candidates: List[tuple[int, str]] = []
             for map_token in encounter_map_tokens:
-                map_token_norm = map_token.replace("_", "")
+                map_token_norm = normalize_map_token(map_token).replace("_", "")
                 score = -1
                 if map_token_norm == section_key_norm:
                     score = 4
@@ -413,7 +472,11 @@ def build_model(section_filter: Optional[str]) -> Dict[str, object]:
                 return None
 
             candidates.sort(key=lambda x: (x[0], len(x[1])), reverse=True)
-            chosen = wild_encounters["byMap"][candidates[0][1]]
+            chosen = resolve_wild_encounter(candidates[0][1])
+
+        if chosen is None:
+            return None
+
         left_panels: List[Dict[str, object]] = []
         right_panels: List[Dict[str, object]] = []
 
@@ -475,17 +538,13 @@ def build_model(section_filter: Optional[str]) -> Dict[str, object]:
         }
 
     sections: Dict[str, List[Dict[str, object]]] = {}
-    for map_token in encounter_map_tokens:
-        section_name = map_token_to_section_name(map_token)
-        if section_filter and section_filter.lower() != section_name.lower():
-            continue
-        sections.setdefault(section_name, [])
+    known_section_names: set[str] = set()
 
     for trainer_id, trainer in trainers.items():
         party = parties.get(trainer["partyName"])
         if not party:
             continue
-        section = str(party["section"])
+        section = resolve_canonical_section_name(str(party["section"]), section_name_registry)
         if section_filter and section_filter.lower() != section.lower():
             continue
 
@@ -539,10 +598,25 @@ def build_model(section_filter: Optional[str]) -> Dict[str, object]:
             trainer_obj["mons"].append(mon_obj)
 
         sections.setdefault(section, []).append(trainer_obj)
+        known_section_names.add(section)
 
     for _, insert_names in MANUAL_SECTION_INSERTS:
         for name in insert_names:
             sections.setdefault(name, [])
+            known_section_names.add(name)
+
+    for map_token in encounter_map_tokens:
+        normalized_token = normalize_map_token(map_token)
+        section_name = resolve_canonical_section_name(
+            map_token_to_section_name(normalized_token),
+            section_name_registry,
+        )
+        if section_filter and section_filter.lower() != section_name.lower():
+            continue
+        if is_redundant_section_name(section_name, known_section_names):
+            continue
+        sections.setdefault(section_name, [])
+        known_section_names.add(section_name)
 
     ordered_section_names: List[str] = [name for name in party_section_order if name in sections]
     for anchor_name, insert_names in MANUAL_SECTION_INSERTS:
@@ -562,9 +636,12 @@ def build_model(section_filter: Optional[str]) -> Dict[str, object]:
 
     section_name_set = set(ordered_section_names)
     for name in sections.keys():
-        if name not in section_name_set:
-            ordered_section_names.append(name)
-            section_name_set.add(name)
+        if name in section_name_set:
+            continue
+        if is_redundant_section_name(name, section_name_set):
+            continue
+        ordered_section_names.append(name)
+        section_name_set.add(name)
 
     sections, ordered_section_names, trainer_groups = apply_section_merges(sections, ordered_section_names, merge_overrides)
 
