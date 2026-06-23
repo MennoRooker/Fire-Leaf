@@ -214,7 +214,31 @@
     mapLeft.classList.remove("map-ready");
   }
 
-  function readMapScaleMax(canvas) {
+  function getMapFullHeightPx() {
+    const raw = getComputedStyle(document.documentElement).getPropertyValue("--map-full-height").trim();
+    const value = parseFloat(raw);
+    if (Number.isFinite(value) && value > 0) {
+      return value;
+    }
+    return 900;
+  }
+
+  function isFullHeight(payload, canvas) {
+    if (payload && payload.fullHeight) {
+      return true;
+    }
+    const raw = canvas.getAttribute("data-map-full-height");
+    return raw === "true" || raw === "1";
+  }
+
+  function readMapScaleMax(canvas, payload) {
+    if (payload && payload.mapScaleMax != null) {
+      const fromPayload = Number(payload.mapScaleMax);
+      if (Number.isFinite(fromPayload) && fromPayload > 0 && fromPayload <= 1) {
+        return fromPayload;
+      }
+    }
+
     const raw = canvas.getAttribute("data-map-scale-max");
     if (raw == null || raw == "" ) {
       return 1;
@@ -226,7 +250,7 @@
     return value;
   }
 
-  function fitCanvasToContainer(canvas, mapLeft) {
+  function fitCanvasToContainer(canvas, mapLeft, payload) {
     const intrinsicW = canvas.width;
     const intrinsicH = canvas.height;
     if (intrinsicW <= 0 || intrinsicH <= 0) {
@@ -240,8 +264,20 @@
       return;
     }
 
+    const fullHeight = isFullHeight(payload, canvas);
+    const MapFullHeightPx = getMapFullHeightPx;
+
+    if (fullHeight) {
+      mapLeft.style.minHeight = `${MapFullHeightPx}px`;
+    } else {
+      mapLeft.style.minHeight = "";  
+    }
+
     let scale;
-    if (hasEncounters) {
+    if (fullHeight) {
+      scale = Math.min(containerW / intrinsicW, MapFullHeightPx / intrinsicH)
+    }
+    else if (hasEncounters) {
       const containerH = mapLeft.clientHeight;
       if (containerH <= 0) {
         return;
@@ -251,7 +287,7 @@
       scale = containerW / intrinsicW;
     }
 
-    scale *= readMapScaleMax(canvas);
+    scale *= readMapScaleMax(canvas, payload);
 
     if (!Number.isFinite(scale) || scale <= 0) {
       return;
@@ -261,13 +297,13 @@
     canvas.style.height = `${Math.floor(intrinsicH * scale)}px`;
   }
 
-  function observeMapFit(canvas, mapLeft) {
+  function observeMapFit(canvas, mapLeft, payload) {
     const mapPane = mapLeft.closest(".map-pane");
     const refit = () => {
       if (!mapLeft.classList.contains("map-ready")) {
         return;
       }
-      fitCanvasToContainer(canvas, mapLeft);
+      fitCanvasToContainer(canvas, mapLeft, payload);
     };
 
     if (typeof ResizeObserver === "undefined") {
@@ -310,9 +346,9 @@
 
       try {
         await renderCanvas(canvas, payload);
-        fitCanvasToContainer(canvas, mapLeft);
+        fitCanvasToContainer(canvas, mapLeft, payload);
         mapLeft.classList.add("map-ready");
-        observeMapFit(canvas, mapLeft);
+        observeMapFit(canvas, mapLeft, payload);
       } catch (_err) {
         showFallback(mapLeft, "No map image yet");
       }
@@ -320,9 +356,11 @@
 
     requestAnimationFrame(() => {
       for (const canvas of canvases) {
+        const key = canvas.getAttribute("data-map-key") || "";
+        const payload = data[key]
         const mapLeft = canvas.closest(".map-left");
         if (mapLeft && mapLeft.classList.contains("map-ready")) {
-          fitCanvasToContainer(canvas, mapLeft);
+          fitCanvasToContainer(canvas, mapLeft, payload);
         }
       }
     });

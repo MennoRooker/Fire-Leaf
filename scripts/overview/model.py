@@ -742,6 +742,12 @@ def build_model(section_filter: Optional[str]) -> Dict[str, object]:
             return None
         return value
 
+    def section_full_height(section_name: str) -> bool:
+        sect_cfg = section_overrides.get(section_name, {})
+        if not isinstance(sect_cfg, dict):
+            return False
+        return bool(sect_cfg.get("fullHeight"))
+
     return {
         "sections": [
             {
@@ -751,6 +757,7 @@ def build_model(section_filter: Optional[str]) -> Dict[str, object]:
                 "mapImage": f"docs/maps/{slugify(name)}.png",
                 "mapRender": build_map_render(name),
                 "mapScaleMax": section_map_scale_max(name),
+                "fullHeight": section_full_height(name),
                 "encounters": get_section_encounters(name),
                 "trainers": sections[name],
                 "trainerGroups": trainer_groups.get(name, []),

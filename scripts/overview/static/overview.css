@@ -4,6 +4,8 @@
   --ink: #1f1a16;
   --line: #5b5651;
   --accent: #b56f3a;
+  /* Max height of the encounter column: used to scale large maps up to full height */
+  --map-full-height: 900px;
 }
 body {
   margin: 0;

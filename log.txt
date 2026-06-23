@@ -1361,6 +1361,7 @@ section overrides:
 - Cerulean Grunt
 - Remove Route 10 south's mons
 - Remove Route 10 surf's land mons
+- Big maps fill to fishing + surf height
 
 
 

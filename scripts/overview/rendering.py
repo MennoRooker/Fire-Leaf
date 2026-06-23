@@ -197,6 +197,10 @@ def render_section(section: Dict[str, object], type_icons: Dict[str, Dict[str, i
     if map_scale_max is not None:
         map_scale_max_attr = f" data-map-scale-max='{html.escape(str(map_scale_max))}'"
 
+    full_height_attr = ""
+    if section.get("fullHeight"):
+        full_height_attr = " data-map-full-height='true'"
+
     return render_template(
         templates["section"],
         {
@@ -207,6 +211,7 @@ def render_section(section: Dict[str, object], type_icons: Dict[str, Dict[str, i
             "__MAP_IMAGE__": html.escape(asset_url(str(section["mapImage"]))),
             "__MAP_KEY__": html.escape(str(section["slug"])),
             "__MAP_SCALE_MAX_ATTR__": map_scale_max_attr,
+            "__MAP_FULL_HEIGHT_ATTR__": full_height_attr,
             "__ENCOUNTERS_HTML__": render_encounters(encounters, asset_url, templates) if encounters else "",
             "__TRAINER_CARDS_HTML__": render_trainer_cards(section, type_icons, asset_url, templates),
         },
@@ -315,6 +320,11 @@ def build_map_render_data(sections: List[Dict[str, object]], asset_url) -> Dict[
             crop = map_render.get("crop")
             if isinstance(crop, dict):
                 payload[section_key]["crop"] = crop
+            map_scale_max = section.get("mapScaleMax")
+            if map_scale_max is not None:
+                payload[section_key]["mapScaleMax"] = map_scale_max
+            if section.get("fullHeight"):
+                payload[section_key]["fullHeight"] = True
         except (FileNotFoundError, KeyError, OSError, ValueError, TypeError):
             continue
 
