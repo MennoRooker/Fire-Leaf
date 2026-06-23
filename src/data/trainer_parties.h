@@ -771,7 +771,7 @@ static const struct TrainerMonNoItemDefaultMoves sParty_LassRobin[] = {
 
 // ======================================================================================= //
 // ====================================== Mt. Moon ======================================= //
-// ======================================================================================= //
+// ========================================= 1F ========================================== //
 static const struct TrainerMonNoItemDefaultMoves sParty_BugCatcherKent[] = {
     {
         .iv = 0,
@@ -873,6 +873,7 @@ static const struct TrainerMonNoItemDefaultMoves sParty_HikerMarcos[] = {
     },
 };
 
+// ========================================= B2F ========================================= //
 static const struct TrainerMonNoItemDefaultMoves sParty_TeamRocketGrunt[] = {
     {
         .iv = 0,
@@ -1030,6 +1031,19 @@ static const struct TrainerMonNoItemCustomMoves sParty_RivalCeruleanCharmander[]
         .lvl = 18,
         .species = SPECIES_CHARMELEON,
         .moves = {MOVE_METAL_CLAW, MOVE_EMBER, MOVE_GROWL, MOVE_SCRATCH},
+    },
+};
+
+static const struct TrainerMonNoItemDefaultMoves sParty_TeamRocketGrunt5[] = {
+    {
+        .iv = 0,
+        .lvl = 20,
+        .species = SPECIES_NUZLEAF,
+    },
+    {
+        .iv = 0,
+        .lvl = 20,
+        .species = SPECIES_DROWZEE,
     },
 };
 
@@ -1434,6 +1448,7 @@ static const struct TrainerMonNoItemDefaultMoves sParty_LassHaley[] = {
     },
 };
 
+
 // ======================================================================================== //
 // ================================== Cerulean City Gym =================================== //
 // ======================================================================================== //
@@ -1481,22 +1496,6 @@ static const struct TrainerMonNoItemCustomMoves sParty_LeaderMisty[] = {
         .lvl = 23,
         .species = SPECIES_STARMIE,
         .moves = {MOVE_CONFUSION, MOVE_RECOVER, MOVE_RAPID_SPIN, MOVE_WATER_PULSE},
-    },
-};
-
-// ======================================================================================== //
-// ================================== Cerulean City East ================================== //
-// ======================================================================================== //
-static const struct TrainerMonNoItemDefaultMoves sParty_TeamRocketGrunt5[] = {
-    {
-        .iv = 0,
-        .lvl = 20,
-        .species = SPECIES_NUZLEAF,
-    },
-    {
-        .iv = 0,
-        .lvl = 20,
-        .species = SPECIES_DROWZEE,
     },
 };
 

@@ -7,6 +7,39 @@
     "Route 1": {
       "fullHeight": true
     },
+    "Route 2": {
+      "fullHeight": true
+    },
+    "Viridian Forest": {
+      "fullHeight": true
+    },
+    "Pewter City Gym": {
+      "mapScaleMax": 0.4
+    },
+    "Route 4 West": {
+      "mapToken": "ROUTE4",
+      "crop": { "x0": 0.0, "x1": 0.24 }
+    },
+    "Mt. Moon 1F": {
+      "fullHeight": true
+    },
+    "Mt. Moon B2F": {
+      "fullHeight": true
+    },
+    "Route 4 East": {
+      "mapToken": "ROUTE4",
+      "crop": { "x0": 0.25, "x1": 1.0 }
+    },
+    "Route 25": {
+      "mapToken": "ROUTE25",
+      "crop": { "x0": 0.0, "x1": 0.88, "y0": 0.0, "y1": 0.8 }
+    },
+    "Cerulean City Gym": {
+      "mapScaleMax": 0.4
+    },
+    "Route 5": {
+      "fullHeight": true
+    },
     "Route 10 North": {
       "mapToken": "ROUTE10",
       "crop": { "y0": 0.0, "y1": 0.38 }

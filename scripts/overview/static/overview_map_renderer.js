@@ -265,17 +265,17 @@
     }
 
     const fullHeight = isFullHeight(payload, canvas);
-    const MapFullHeightPx = getMapFullHeightPx;
+    const mapFullHeightPx = getMapFullHeightPx();
 
     if (fullHeight) {
-      mapLeft.style.minHeight = `${MapFullHeightPx}px`;
+      mapLeft.style.minHeight = `${mapFullHeightPx}px`;
     } else {
       mapLeft.style.minHeight = "";  
     }
 
     let scale;
     if (fullHeight) {
-      scale = Math.min(containerW / intrinsicW, MapFullHeightPx / intrinsicH)
+      scale = Math.min(containerW / intrinsicW, mapFullHeightPx / intrinsicH)
     }
     else if (hasEncounters) {
       const containerH = mapLeft.clientHeight;

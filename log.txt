@@ -1337,7 +1337,9 @@ following:
 ---------------
 / Maps
 / Colors
-x Wild Encounters
+/ Wild Encounters
+   - Turn off option
+   - Alternating grey (evens)
 / Trainer Parties
    x Names
    x Sprites
@@ -1350,15 +1352,20 @@ x Wild Encounters
    / Move types (Right, HP)
 - Items
 - Shops
+- Move tutors
 / Rematches
    x Trainer data
    - VS seeker icon
-   - Different colors
+        - Different colors
+	- Under trainer image
+- Show events
+- Map section fits map
 
 section overrides:
-- Oak's Lab 75%
-- Route 4 West/East
-- Cerulean Grunt
+x Oak's Lab 40%
+- Route 2 South/North
+x Route 4 West/East
+x Cerulean Grunt
 - Remove Route 10 south's mons
 - Remove Route 10 surf's land mons
 - Big maps fill to fishing + surf height
