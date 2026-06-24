@@ -74,9 +74,11 @@ def render_mon_card(mon: Dict[str, object], type_icons: Dict[str, Dict[str, int]
 
 def render_trainer_card(trainer: Dict[str, object], type_icons: Dict[str, Dict[str, int]], asset_url, templates: Dict[str, str]) -> str:
     mons_html = "".join(render_mon_card(mon, type_icons, asset_url, templates) for mon in trainer["mons"])
+    trainer_card_class = "trainer-card--major" if trainer.get("isMajor") else "trainer-card--compact"
     return render_template(
         templates["trainer_card"],
         {
+            "__TRAINER_CARD_CLASS__": trainer_card_class,
             "__TRAINER_SPRITE__": html.escape(asset_url(str(trainer["sprite"]))),
             "__TRAINER_NAME__": html.escape(str(trainer["name"])),
             "__TRAINER_CLASS__": html.escape(str(trainer["class"])),

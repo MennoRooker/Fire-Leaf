@@ -629,6 +629,20 @@ def build_model(section_filter: Optional[str]) -> Dict[str, object]:
     sections: Dict[str, List[Dict[str, object]]] = {}
     known_section_names: set[str] = set()
 
+    def is_major_trainer(trainer_id: str, trainer_class_token: str) -> bool:
+        token = trainer_class_token.upper()
+        trainer_key = trainer_id.upper()
+        return (
+            "LEADER" in token
+            or "ELITE_FOUR" in token
+            or "CHAMPION" in token
+            or "RIVAL" in token
+            or trainer_key.startswith("TRAINER_LEADER_")
+            or trainer_key.startswith("TRAINER_ELITE_FOUR_")
+            or trainer_key.startswith("TRAINER_CHAMPION_")
+            or trainer_key.startswith("TRAINER_RIVAL_")
+        )
+
     for trainer_id, trainer in trainers.items():
         party = parties.get(trainer["partyName"])
         if not party:
@@ -641,10 +655,13 @@ def build_model(section_filter: Optional[str]) -> Dict[str, object]:
         if trainer_id.startswith("TRAINER_RIVAL_") or trainer_name.upper() == "TERRY":
             trainer_name = "Rival"
 
+        trainer_class_token = str(trainer["trainerClass"])
+
         trainer_obj: Dict[str, object] = {
             "id": trainer_id,
             "name": trainer_name,
-            "class": trainer_class_names.get(trainer["trainerClass"], pretty_token(trainer["trainerClass"], "TRAINER_CLASS_")),
+            "class": trainer_class_names.get(trainer_class_token, pretty_token(trainer_class_token, "TRAINER_CLASS_")),
+            "isMajor": is_major_trainer(trainer_id, trainer_class_token),
             "sprite": trainer_pic_path(trainer["trainerPic"]),
             "partyMacro": trainer["partyMacro"],
             "mons": [],

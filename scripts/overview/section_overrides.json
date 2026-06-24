@@ -7,10 +7,16 @@
     "Route 1": {
       "fullHeight": true
     },
-    "Route 2": {
-      "fullHeight": true
+    "Route 2 South": {
+      "mapToken": "ROUTE2",
+      "crop": { "y0": 0.54, "y1": 1.0 }
     },
     "Viridian Forest": {
+      "fullHeight": true
+    },
+    "Route 2 North": {
+      "mapToken": "ROUTE2",
+      "crop": { "y0": 0, "y1": 0.54 },
       "fullHeight": true
     },
     "Pewter City Gym": {

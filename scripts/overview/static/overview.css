@@ -190,40 +190,99 @@ h1 { margin: 0 0 8px 0; }
 }
 .trainer-card {
   border: 3px solid var(--line);
-    background: var(--trainer-card-bg);
+  background: var(--trainer-card-bg);
 }
 .trainer-main {
   display: grid;
   grid-template-columns: 180px 1fr;
+  align-items: stretch;
 }
 .trainer-left {
-  border-right: 3px solid var(--line);
-    background: var(--trainer-left-bg);
+  background: var(--trainer-left-bg);
   text-align: center;
-  padding: 6px;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
 }
-.trainer-left img {
+.trainer-portrait {
+  background: var(--trainer-left-bg);
+  padding: 6px;
+  border-bottom: 3px solid var(--line);
+}
+.trainer-portrait img {
   width: 128px;
   height: 128px;
   image-rendering: pixelated;
 }
+.trainer-id {
+  padding: 6px;
+  background: var(--trainer-left-bg);
+  flex-grow: 0;
+  border-bottom: 3px solid var(--line);
+}
 .trainer-class { font-size: 13px; letter-spacing: 1px; }
 .trainer-name { font-weight: 800; font-size: 30px; line-height: 1.0; }
+
+.trainer-card--major .trainer-portrait {
+  border-bottom: none;
+}
+
+.trainer-card--major .trainer-id {
+  border-bottom: none;
+}
+
+.trainer-card--compact .trainer-portrait {
+  padding-top: 0px;
+}
+
+.trainer-card--compact {
+  border: none;
+  background: transparent;
+}
+
+.trainer-card--compact .trainer-name {
+  font-size: 19px;
+}
+
+.trainer-card--major .trainer-left {
+  background: var(--trainer-left-bg);
+  align-self: stretch;
+}
+
+.trainer-card--major .trainer-id {
+  background: var(--trainer-left-bg);
+  flex-grow: 1;
+}
+
+.trainer-card--compact .trainer-left {
+  background: var(--trainer-left-bg);
+  align-self: start;
+  border-top: 3px solid var(--line);
+  border-left: 3px solid var(--line);
+}
+
+.trainer-card--compact .trainer-id {
+  background: var(--map-left-bg);
+}
+
+.trainer-card--compact .mons {
+  border-top: 3px solid var(--line);
+  border-bottom: 3px solid var(--line);
+}
 .mons {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
 }
 .mon {
   border-left: 3px solid var(--line);
-  border-bottom: 3px solid var(--line);
-    background: var(--mon-bg);
+  background: var(--mon-bg);
 }
 .mons .mon:last-child {
-    border-right: 3px solid var(--line);
+  border-right: 3px solid var(--line);
 }
 .mon-head {
   border-bottom: 3px solid var(--line);
-    background: var(--mon-head-bg);
+  background: var(--mon-head-bg);
   text-align: center;
   padding: 4px;
 }
@@ -245,14 +304,14 @@ h1 { margin: 0 0 8px 0; }
   display: inline-block;
   transform: scale(1.5);
   image-rendering: pixelated;
-    background-image: url("__TYPE_ICON_URL__");
+  background-image: url("__TYPE_ICON_URL__");
   background-repeat: no-repeat;
 }
 .mon-body { padding: 6px; text-align: center; font-size: 26px; line-height: 1.25; }
 .mon-body .item { font-size: 20px; }
 .moves {
   border-top: 3px solid var(--line);
-    background: var(--moves-bg);
+  background: var(--moves-bg);
   padding: 4px 6px;
   font-size: 20px;
   line-height: 1.15;
