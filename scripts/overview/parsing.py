@@ -6,7 +6,7 @@ import json
 import re
 import sys
 from pathlib import Path
-from typing import Dict, List, Optional
+from typing import Any, Dict, List, Optional
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -379,6 +379,107 @@ def parse_map_layout_records() -> Dict[str, object]:
         by_token.setdefault(map_token, record)
 
     return {"records": records, "byToken": by_token}
+
+
+@lru_cache(maxsize=1)
+def parse_object_event_pic_symbol_to_png_path() -> Dict[str, str]:
+    text = read_text("src/data/object_events/object_event_graphics.h")
+    out: Dict[str, str] = {}
+    pattern = re.compile(r"const u(?:16|32)\s+(gObjectEventPic_[A-Za-z0-9_]+)\[\]\s*=\s*INCBIN_U(?:16|32)\(\"([^\"]+)\"\);")
+    for symbol, path in pattern.findall(text):
+        png_path = path
+        if png_path.endswith(".4bpp.lz"):
+            png_path = png_path[: -len(".4bpp.lz")] + ".png"
+        elif png_path.endswith(".4bpp"):
+            png_path = png_path[: -len(".4bpp")] + ".png"
+        else:
+            continue
+        out[symbol] = png_path
+    return out
+
+
+@lru_cache(maxsize=1)
+def parse_object_event_pic_tables() -> Dict[str, Dict[str, int | str]]:
+    text = read_text("src/data/object_events/object_event_pic_tables.h")
+    out: Dict[str, Dict[str, int | str]] = {}
+    table_re = re.compile(r"static const struct SpriteFrameImage\s+(sPicTable_[A-Za-z0-9_]+)\[\]\s*=\s*\{(.*?)\n\};", re.S)
+    first_frame_re = re.compile(r"overworld_frame\((gObjectEventPic_[A-Za-z0-9_]+),\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\)")
+
+    for table_symbol, body in table_re.findall(text):
+        frame_match = first_frame_re.search(body)
+        if not frame_match:
+            continue
+        pic_symbol, tiles_w_s, tiles_h_s, frame_idx_s = frame_match.groups()
+        out[table_symbol] = {
+            "picSymbol": pic_symbol,
+            "tilesW": int(tiles_w_s),
+            "tilesH": int(tiles_h_s),
+            "frame": int(frame_idx_s),
+        }
+    return out
+
+
+@lru_cache(maxsize=1)
+def parse_object_event_graphics_info_tables() -> Dict[str, Dict[str, int | str]]:
+    text = read_text("src/data/object_events/object_event_graphics_info.h")
+    out: Dict[str, Dict[str, int | str]] = {}
+    info_re = re.compile(r"const struct ObjectEventGraphicsInfo\s+(gObjectEventGraphicsInfo_[A-Za-z0-9_]+)\s*=\s*\{(.*?)\n\};", re.S)
+
+    for info_symbol, body in info_re.findall(text):
+        images_match = re.search(r"\.images\s*=\s*(sPicTable_[A-Za-z0-9_]+)", body)
+        width_match = re.search(r"\.width\s*=\s*(-?\d+)", body)
+        height_match = re.search(r"\.height\s*=\s*(-?\d+)", body)
+        if not images_match:
+            continue
+        out[info_symbol] = {
+            "picTable": images_match.group(1),
+            "width": int(width_match.group(1)) if width_match else 16,
+            "height": int(height_match.group(1)) if height_match else 16,
+        }
+    return out
+
+
+@lru_cache(maxsize=1)
+def parse_object_event_gfx_to_info_symbol() -> Dict[str, str]:
+    text = read_text("src/data/object_events/object_event_graphics_info_pointers.h")
+    out: Dict[str, str] = {}
+    pointer_re = re.compile(r"\[(OBJ_EVENT_GFX_[A-Z0-9_]+)\]\s*=\s*&\s*(gObjectEventGraphicsInfo_[A-Za-z0-9_]+)")
+    for gfx_token, info_symbol in pointer_re.findall(text):
+        out[gfx_token] = info_symbol
+    return out
+
+
+def parse_map_visible_object_events(map_json_rel_path: str) -> List[Dict[str, Any]]:
+    map_data = json.loads(read_text(map_json_rel_path))
+    out: List[Dict[str, Any]] = []
+
+    for event in map_data.get("object_events", []):
+        if not isinstance(event, dict):
+            continue
+        if str(event.get("type", "")) != "object":
+            continue
+
+        # Skip story/state-gated objects by default; these are often hidden by flags.
+        if str(event.get("flag", "0")) != "0":
+            continue
+
+        gfx_token = str(event.get("graphics_id", ""))
+        if not gfx_token:
+            continue
+
+        try:
+            x = int(event.get("x", 0))
+            y = int(event.get("y", 0))
+        except (TypeError, ValueError):
+            continue
+
+        out.append({
+            "graphicsId": gfx_token,
+            "x": x,
+            "y": y,
+        })
+
+    return out
 
 
 def parse_trainers() -> Dict[str, Dict[str, str]]:

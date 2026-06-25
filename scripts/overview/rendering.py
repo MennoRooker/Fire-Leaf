@@ -8,6 +8,14 @@ import os
 from pathlib import Path
 from typing import Dict, List
 
+from .parsing import (
+    parse_map_visible_object_events,
+    parse_object_event_gfx_to_info_symbol,
+    parse_object_event_graphics_info_tables,
+    parse_object_event_pic_symbol_to_png_path,
+    parse_object_event_pic_tables,
+)
+
 
 ROOT = Path(__file__).resolve().parents[2]
 OVERVIEW_SOURCE_DIR = Path(__file__).resolve().parent
@@ -305,6 +313,58 @@ def _read_indexed_png_pixels_base64(rel_path: str) -> Dict[str, object]:
     }
 
 
+def _build_map_object_overlay(map_render: Dict[str, object], asset_url) -> List[Dict[str, object]]:
+    map_json_path = str(map_render.get("mapJsonPath", ""))
+    if not map_json_path:
+        return []
+
+    gfx_to_info = parse_object_event_gfx_to_info_symbol()
+    info_tables = parse_object_event_graphics_info_tables()
+    pic_tables = parse_object_event_pic_tables()
+    pic_paths = parse_object_event_pic_symbol_to_png_path()
+
+    objects: List[Dict[str, object]] = []
+    for event in parse_map_visible_object_events(map_json_path):
+        gfx_token = str(event.get("graphicsId", ""))
+        info_symbol = gfx_to_info.get(gfx_token)
+        if not info_symbol:
+            continue
+
+        info = info_tables.get(info_symbol, {})
+        pic_table_symbol = str(info.get("picTable", ""))
+        frame_meta = pic_tables.get(pic_table_symbol, {})
+        pic_symbol = str(frame_meta.get("picSymbol", ""))
+        png_path = pic_paths.get(pic_symbol)
+        if not png_path:
+            continue
+
+        frame_tiles_w = int(frame_meta.get("tilesW", 2))
+        frame_tiles_h = int(frame_meta.get("tilesH", 2))
+        frame_w = max(8, frame_tiles_w * 8)
+        frame_h = max(8, frame_tiles_h * 8)
+        frame_idx = max(0, int(frame_meta.get("frame", 0)))
+
+        draw_w = max(8, int(info.get("width", frame_w)))
+        draw_h = max(8, int(info.get("height", frame_h)))
+
+        objects.append(
+            {
+                "x": int(event.get("x", 0)),
+                "y": int(event.get("y", 0)),
+                "spriteUrl": asset_url(png_path),
+                "frameX": frame_idx * frame_w,
+                "frameY": 0,
+                "frameW": frame_w,
+                "frameH": frame_h,
+                "drawW": draw_w,
+                "drawH": draw_h,
+            }
+        )
+
+    objects.sort(key=lambda obj: (int(obj.get("y", 0)), int(obj.get("x", 0))))
+    return objects
+
+
 def build_map_render_data(sections: List[Dict[str, object]], asset_url) -> Dict[str, Dict[str, object]]:
     payload: Dict[str, Dict[str, object]] = {}
     for section in sections:
@@ -337,6 +397,7 @@ def build_map_render_data(sections: List[Dict[str, object]], asset_url) -> Dict[
                 "secondaryPalettesB64": _read_tileset_palettes_base64(str(secondary["metatilesPath"]), str(secondary["tilesPngPath"])),
                 "primaryTilePixels": _read_indexed_png_pixels_base64(str(primary["tilesPngPath"])),
                 "secondaryTilePixels": _read_indexed_png_pixels_base64(str(secondary["tilesPngPath"])),
+                "objects": _build_map_object_overlay(map_render, asset_url),
             }
             crop = map_render.get("crop")
             if isinstance(crop, dict):

@@ -342,7 +342,7 @@ h1 { margin: 0 0 8px 0; }
   background-repeat: no-repeat;
 }
 .mon-body { padding: 6px; text-align: center; font-size: 20px; line-height: 1.25; }
-.mon-body .nature-effect { font-size: 0.78em; padding-bottom: 4px; }
+.mon-body .nature-effect { font-size: 0.75em; padding-bottom: 4px; }
 .mon-body .item { font-size: 20px; }
 .item-row {
   --item-icon-gap: 4px;

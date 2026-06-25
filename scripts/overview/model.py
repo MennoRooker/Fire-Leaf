@@ -503,6 +503,7 @@ def build_model(section_filter: Optional[str]) -> Dict[str, object]:
             "mapId": map_record["mapId"],
             "mapName": map_record["mapName"],
             "mapToken": map_record["mapToken"],
+            "mapJsonPath": map_record["mapJsonPath"],
             "layoutId": str(layout.get("id", "")),
             "width": int(layout.get("width", 0)),
             "height": int(layout.get("height", 0)),

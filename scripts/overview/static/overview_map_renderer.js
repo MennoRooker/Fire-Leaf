@@ -77,6 +77,61 @@
     };
   }
 
+  const objectSpriteImageCache = new Map();
+
+  function loadObjectSpriteImage(url) {
+    if (!url) {
+      return Promise.resolve(null);
+    }
+    if (objectSpriteImageCache.has(url)) {
+      return objectSpriteImageCache.get(url);
+    }
+
+    const imagePromise = new Promise((resolve) => {
+      const img = new Image();
+      img.onload = () => resolve(img);
+      img.onerror = () => resolve(null);
+      img.src = url;
+    });
+
+    objectSpriteImageCache.set(url, imagePromise);
+    return imagePromise;
+  }
+
+  async function drawObjectEvents(ctx, payload, xStart, yStart) {
+    const objects = Array.isArray(payload.objects) ? payload.objects : [];
+    if (!objects.length) {
+      return;
+    }
+
+    for (const object of objects) {
+      const url = String(object.spriteUrl || "");
+      const img = await loadObjectSpriteImage(url);
+      if (!img) {
+        continue;
+      }
+
+      const mapX = Number(object.x);
+      const mapY = Number(object.y);
+      if (!Number.isFinite(mapX) || !Number.isFinite(mapY)) {
+        continue;
+      }
+
+      const frameX = Number(object.frameX) || 0;
+      const frameY = Number(object.frameY) || 0;
+      const frameW = Number(object.frameW) || 16;
+      const frameH = Number(object.frameH) || 16;
+      const drawW = Number(object.drawW) || frameW;
+      const drawH = Number(object.drawH) || frameH;
+
+      const dx = Math.floor((mapX - xStart) * 16 + 8 - (drawW / 2));
+      const dy = Math.floor((mapY - yStart) * 16 + 16 - drawH);
+
+      // Event-object sprites are anchored near tile bottom center in-game.
+      ctx.drawImage(img, frameX, frameY, frameW, frameH, dx, dy, drawW, drawH);
+    }
+  }
+
   function paintTile(out, outW, outH, primaryTiles, secondaryTiles, primaryPalettes, secondaryPalettes, tileRef, dx, dy) {
     const tileId = tileRef & 0x3ff;
     const hFlip = (tileRef & 0x400) !== 0;
@@ -201,6 +256,7 @@
     }
 
     ctx.putImageData(imageData, 0, 0);
+    await drawObjectEvents(ctx, payload, xStart, yStart);
   }
 
   function showFallback(mapLeft, message) {

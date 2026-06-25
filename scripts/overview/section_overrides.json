@@ -54,6 +54,12 @@
       "mapToken": "ROUTE10",
       "crop": { "y0": 0.66, "y1": 1.0 }
     },
+    "Route 14": {
+      "fullHeight": true
+    },
+    "Route 17": {
+      "fullHeight": true
+    },
     "Route 19 Land": {
       "mapToken": "ROUTE19",
       "crop": { "y0": 0.0, "y1": 0.25 }
@@ -73,6 +79,9 @@
     "Route 20 West": {
       "mapToken": "ROUTE20",
       "crop": { "x0": 0.0, "x1": 0.55 }
+    },
+    "Fuchsia City Gym": {
+      "mapScaleMax": 0.4 
     },
     "Silph Co. 2F": {
       "mapToken": "SILPH_CO_2F"
@@ -103,6 +112,9 @@
     },
     "Silph Co. 11F": {
       "mapToken": "SILPH_CO_11F"
+    },
+    "Saffron City Gym": {
+      "mapScaleMax": 0.4 
     }
   },
   "merges": {
