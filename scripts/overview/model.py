@@ -15,11 +15,14 @@ from .parsing import (
     parse_define_ints,
     parse_firered_encounters,
     parse_item_names,
+    parse_item_icon_table,
+    parse_item_icon_symbol_to_paths,
     parse_layouts_by_id,
     parse_map_layout_records,
     parse_mon_symbol_to_png_path,
     parse_move_names,
     parse_move_types,
+    parse_nature_stat_modifiers,
     parse_ordered_species_front_symbols,
     parse_ordered_trainer_front_symbols,
     parse_parties,
@@ -357,8 +360,11 @@ def build_model(section_filter: Optional[str]) -> Dict[str, object]:
     move_names = parse_move_names()
     trainer_class_names = parse_trainer_class_names()
     move_types = parse_move_types()
+    nature_stat_modifiers = parse_nature_stat_modifiers()
     species_info = parse_species_info_types_and_abilities()
     item_names = parse_item_names()
+    item_icon_table = parse_item_icon_table()
+    item_icon_paths = parse_item_icon_symbol_to_paths()
     trainer_pic_ids = parse_define_ints("include/constants/trainers.h", "TRAINER_PIC_")
     species_ids = parse_define_ints("include/constants/species.h", "SPECIES_")
     trainer_front_syms = parse_ordered_trainer_front_symbols()
@@ -510,6 +516,28 @@ def build_model(section_filter: Optional[str]) -> Dict[str, object]:
         if idx is None or idx >= len(mon_front_syms):
             return "graphics/pokemon/question_mark/front.png"
         return mon_sym_to_png.get(mon_front_syms[idx], "graphics/pokemon/question_mark/front.png")
+
+    def format_nature_effect(nature_token: str) -> str:
+        mods = nature_stat_modifiers.get(nature_token)
+        if not mods:
+            return ""
+
+        stat_labels = ["atk", "def", "spd", "spatk", "spdef"]
+        raised = ""
+        lowered = ""
+        for idx, mod in enumerate(mods):
+            if mod > 0:
+                raised = stat_labels[idx]
+            elif mod < 0:
+                lowered = stat_labels[idx]
+
+        if not raised and not lowered:
+            return "(neutral)"
+        if raised and lowered:
+            return f"(+{raised}/-{lowered})"
+        if raised:
+            return f"(+{raised})"
+        return f"(-{lowered})"
 
     def resolve_wild_encounter(map_token: Optional[str]) -> Optional[Dict[str, object]]:
         if not map_token:
@@ -671,6 +699,7 @@ def build_model(section_filter: Optional[str]) -> Dict[str, object]:
             species_token = str(mon.get("species", "SPECIES_NONE"))
             sp_info = species_info.get(species_token, {"types": [], "abilities": []})
             ability_token = str(mon.get("ability", ""))
+            nature_token = str(mon.get("nature", ""))
             if not ability_token:
                 abilities = sp_info.get("abilities", [])
                 ability_token = str(abilities[0]) if abilities else ""
@@ -680,7 +709,8 @@ def build_model(section_filter: Optional[str]) -> Dict[str, object]:
                 "level": str(mon.get("lvl", "0")),
                 "sprite": species_front_path(species_token),
                 "types": list(sp_info.get("types", [])),
-                "nature": pretty_token(str(mon.get("nature", "")), "NATURE_") if mon.get("nature") else "-",
+                "nature": pretty_token(nature_token, "NATURE_") if nature_token else "-",
+                "natureEffect": format_nature_effect(nature_token) if nature_token else "",
                 "ability": pretty_token(ability_token, "ABILITY_") if ability_token else "-",
                 "itemToken": str(mon.get("heldItem", "ITEM_NONE")),
                 "moves": [],
@@ -689,9 +719,17 @@ def build_model(section_filter: Optional[str]) -> Dict[str, object]:
             item_token = mon_obj["itemToken"]
             if item_token == "ITEM_NONE":
                 mon_obj["itemName"] = "-"
+                mon_obj["itemIconPath"] = ""
+                mon_obj["itemPalettePath"] = ""
             else:
                 item_name = item_names.get(item_token, pretty_token(item_token, "ITEM_"))
                 mon_obj["itemName"] = "-" if item_name and set(item_name) == {"?"} else item_name
+
+                icon_entry = item_icon_table.get(item_token, {})
+                icon_symbol = str(icon_entry.get("iconSymbol", ""))
+                palette_symbol = str(icon_entry.get("paletteSymbol", ""))
+                mon_obj["itemIconPath"] = str(item_icon_paths.get("icons", {}).get(icon_symbol, ""))
+                mon_obj["itemPalettePath"] = str(item_icon_paths.get("palettes", {}).get(palette_symbol, ""))
 
             for move_token in mon.get("moves", []):
                 move_token = str(move_token)

@@ -57,6 +57,18 @@ def render_move_rows(moves: List[Dict[str, object]], type_icons: Dict[str, Dict[
 
 
 def render_mon_card(mon: Dict[str, object], type_icons: Dict[str, Dict[str, int]], asset_url, templates: Dict[str, str]) -> str:
+    nature_effect = str(mon.get("natureEffect", ""))
+    item_name = str(mon.get("itemName", "-"))
+    item_icon_html = ""
+    item_icon_path = str(mon.get("itemIconPath", ""))
+    item_palette_path = str(mon.get("itemPalettePath", ""))
+    if item_name != "-" and item_icon_path:
+        item_icon_html = (
+            f"<img class='item-icon' src='{html.escape(asset_url(item_icon_path))}' "
+            f"alt='{html.escape(item_name)}' title='{html.escape(item_name)}' "
+            f"data-item-palette='{html.escape(item_palette_path)}'>"
+        )
+
     return render_template(
         templates["mon_card"],
         {
@@ -65,8 +77,10 @@ def render_mon_card(mon: Dict[str, object], type_icons: Dict[str, Dict[str, int]
             "__LEVEL__": html.escape(str(mon["level"])),
             "__TYPE_ICONS__": render_type_icons_html(mon["types"], type_icons),
             "__NATURE__": html.escape(str(mon["nature"])),
+            "__NATURE_EFFECT__": html.escape(nature_effect),
             "__ABILITY__": html.escape(str(mon["ability"])),
-            "__ITEM_NAME__": html.escape(str(mon["itemName"])),
+            "__ITEM_NAME__": html.escape(item_name),
+            "__ITEM_ICON_HTML__": item_icon_html,
             "__MOVES_HTML__": render_move_rows(mon["moves"], type_icons, templates),
         },
     )
@@ -111,11 +125,13 @@ def render_encounter_panel(panel: Dict[str, object], asset_url, templates: Dict[
         fixed = {20: "rarity-very-low", 10: "rarity-low", 5: "rarity-mid", 4: "rarity-high", 1: "rarity-very-high"}
         return fixed.get(rarity, "rarity-other")
 
-    def render_slot_row(slot: Dict[str, object]) -> str:
+    def render_slot_row(slot: Dict[str, object], slot_row_index: int) -> str:
         rarity = int(slot.get("rarity", 0))
+        row_stripe_class = "enc-slot-even" if (slot_row_index + 1) % 2 == 0 else "enc-slot-odd"
         return render_template(
             templates["encounter_slot_row"],
             {
+                "__ROW_STRIPE_CLASS__": row_stripe_class,
                 "__RARITY_CLASS__": get_rarity_class(rarity),
                 "__RARITY__": html.escape(f"{rarity}%"),
                 "__SPRITE_URL__": html.escape(asset_url(str(slot["sprite"]))),
@@ -125,15 +141,18 @@ def render_encounter_panel(panel: Dict[str, object], asset_url, templates: Dict[
         )
 
     row_chunks = []
+    slot_row_index = 0
     rod_groups = panel.get("rodGroups")
     if rod_groups:
         for group in rod_groups:
             row_chunks.append(render_template(templates["rod_header_row"], {"__ICON_URL__": html.escape(asset_url(str(group.get("icon", "")))), "__GROUP_LABEL__": html.escape(str(group.get("label", "")))}))
             for slot in group.get("slots", []):
-                row_chunks.append(render_slot_row(slot))
+                row_chunks.append(render_slot_row(slot, slot_row_index))
+                slot_row_index += 1
     else:
         for slot in panel.get("slots", []):
-            row_chunks.append(render_slot_row(slot))
+            row_chunks.append(render_slot_row(slot, slot_row_index))
+            slot_row_index += 1
 
     return render_template(
         templates["encounter_panel"],

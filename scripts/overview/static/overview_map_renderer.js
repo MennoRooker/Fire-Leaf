@@ -250,6 +250,38 @@
     return value;
   }
 
+  function getAvailableMapWidth(mapLeft) {
+    const mapPane = mapLeft.closest(".map-pane");
+    if (!mapPane) {
+      return mapLeft.clientWidth;
+    }
+
+    const paneStyle = getComputedStyle(mapPane);
+    const paneWidth = mapPane.getBoundingClientRect().width;
+    const panePadding =
+      (parseFloat(paneStyle.paddingLeft) || 0) +
+      (parseFloat(paneStyle.paddingRight) || 0);
+    let availableWidth = paneWidth - panePadding;
+
+    const encounters = mapPane.querySelector(".encounters");
+    if (encounters) {
+      const encountersWidth = encounters.getBoundingClientRect().width;
+      const columnGap =
+        parseFloat(paneStyle.columnGap) ||
+        parseFloat(paneStyle.gap) ||
+        0;
+      availableWidth -= encountersWidth + columnGap;
+    }
+
+    const mapLeftStyle = getComputedStyle(mapLeft);
+    const borderWidth =
+      (parseFloat(mapLeftStyle.borderLeftWidth) || 0) +
+      (parseFloat(mapLeftStyle.borderRightWidth) || 0);
+    availableWidth -= borderWidth;
+
+    return Math.max(0, Math.floor(availableWidth));
+  }
+
   function fitCanvasToContainer(canvas, mapLeft, payload) {
     const intrinsicW = canvas.width;
     const intrinsicH = canvas.height;
@@ -259,7 +291,7 @@
 
     const mapPane = mapLeft.closest(".map-pane");
     const hasEncounters = Boolean(mapPane && mapPane.querySelector(".encounters"));
-    const containerW = mapLeft.clientWidth;
+    const containerW = getAvailableMapWidth(mapLeft);
     if (containerW <= 0) {
       return;
     }

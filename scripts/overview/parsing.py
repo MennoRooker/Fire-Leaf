@@ -65,6 +65,28 @@ def parse_define_ints(rel_path: str, prefix: str) -> Dict[str, int]:
     return out
 
 
+def parse_nature_stat_modifiers() -> Dict[str, List[int]]:
+    text = read_text("src/pokemon.c")
+    table_match = re.search(
+        r"static const s8 sNatureStatTable\[NUM_NATURES\]\[NUM_NATURE_STATS\]\s*=\s*\{(.*?)\n\};",
+        text,
+        re.S,
+    )
+    if not table_match:
+        return {}
+
+    body = table_match.group(1)
+    line_re = re.compile(
+        r"\[(NATURE_[A-Z0-9_]+)\]\s*=\s*\{\s*([+\-]?\d+)\s*,\s*([+\-]?\d+)\s*,\s*([+\-]?\d+)\s*,\s*([+\-]?\d+)\s*,\s*([+\-]?\d+)\s*\}",
+        re.M,
+    )
+
+    out: Dict[str, List[int]] = {}
+    for nature, a, b, c, d, e in line_re.findall(body):
+        out[nature] = [int(a), int(b), int(c), int(d), int(e)]
+    return out
+
+
 def parse_species_names() -> Dict[str, str]:
     text = read_text("src/data/text/species_names.h")
     out: Dict[str, str] = {}
@@ -144,6 +166,41 @@ def parse_item_names() -> Dict[str, str]:
         if item_id and english:
             out[item_id] = english
     return out
+
+
+def parse_item_icon_table() -> Dict[str, Dict[str, str]]:
+    text = read_text("src/data/item_icon_table.h")
+    out: Dict[str, Dict[str, str]] = {}
+    row_re = re.compile(
+        r"\[(ITEM_[A-Z0-9_]+)\]\s*=\s*\{\s*(gItemIcon_[A-Za-z0-9_]+)\s*,\s*(gItemIconPalette_[A-Za-z0-9_]+)\s*\}",
+        re.M,
+    )
+    for item_token, icon_symbol, palette_symbol in row_re.findall(text):
+        out[item_token] = {
+            "iconSymbol": icon_symbol,
+            "paletteSymbol": palette_symbol,
+        }
+    return out
+
+
+def parse_item_icon_symbol_to_paths() -> Dict[str, Dict[str, str]]:
+    text = read_text("src/data/graphics/items.h")
+    icon_path_by_symbol: Dict[str, str] = {}
+    palette_path_by_symbol: Dict[str, str] = {}
+
+    icon_re = re.compile(r"const u32\s+(gItemIcon_[A-Za-z0-9_]+)\[\]\s*=\s*INCBIN_U32\(\"([^\"]+)\"\);")
+    palette_re = re.compile(r"const u32\s+(gItemIconPalette_[A-Za-z0-9_]+)\[\]\s*=\s*INCBIN_U32\(\"([^\"]+)\"\);")
+
+    for symbol, path in icon_re.findall(text):
+        icon_path_by_symbol[symbol] = path.replace(".4bpp.lz", ".png")
+
+    for symbol, path in palette_re.findall(text):
+        palette_path_by_symbol[symbol] = path.replace(".gbapal.lz", ".pal")
+
+    return {
+        "icons": icon_path_by_symbol,
+        "palettes": palette_path_by_symbol,
+    }
 
 
 def parse_trainer_symbol_to_png_path() -> Dict[str, str]:
