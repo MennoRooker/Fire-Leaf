@@ -1360,6 +1360,7 @@ following:
 	- Under trainer image
 - Show events
 - Map section fits map
+- Route 5 wrap
 
 section overrides:
 x Oak's Lab 40%
@@ -1368,7 +1369,7 @@ x Route 4 West/East
 x Cerulean Grunt
 - Remove Route 10 south's mons
 - Remove Route 10 surf's land mons
-- Big maps fill to fishing + surf height
+x Big maps fill to fishing + surf height
 
 
 
