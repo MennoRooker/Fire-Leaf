@@ -11,6 +11,8 @@
   --ink: #1f1a16;
   --line: #5b5651;
   --accent: #b56f3a;
+  --compact-header-min-height: 174px;
+  --mon-sprite-section-height: 104px;
   /* Max height of the encounter column: used to scale large maps up to full height */
   --map-full-height: 900px;
 }
@@ -38,7 +40,7 @@ h1 { margin: 0 0 8px 0; }
     --enc-grid-line: #8f8f8f;
     --enc-th-bg: #dedede;
     --trainer-card-bg: #e4ddd4;
-    --trainer-left-bg: #e0d8ce;
+    --trainer-left-bg: #d2c4b4;
     --mon-bg: #f8f5ef;
     --mon-head-bg: #d2c4b4;
     --mon-body-bg: #f8f5ef;
@@ -248,7 +250,7 @@ h1 { margin: 0 0 8px 0; }
 }
 
 .trainer-card--compact .trainer-name {
-  font-size: 19px;
+  font-size: 20px;
 }
 
 .trainer-card--major .trainer-left {
@@ -266,16 +268,22 @@ h1 { margin: 0 0 8px 0; }
   align-self: start;
   border-top: 3px solid var(--line);
   border-left: 3px solid var(--line);
+  display: grid;
+  grid-template-rows: auto 1fr;
 }
 
 .trainer-card--compact .trainer-id {
   background: var(--map-left-bg);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .trainer-card--compact .mons {
   border-top: 3px solid var(--line);
   border-bottom: 3px solid var(--line);
 }
+
 .mons {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
@@ -289,27 +297,44 @@ h1 { margin: 0 0 8px 0; }
 }
 .mon-head {
   border-bottom: 3px solid var(--line);
-  background: var(--mon-head-bg);
+  background: linear-gradient(
+    to bottom,
+    var(--mon-head-bg) 0,
+    var(--mon-head-bg) var(--mon-sprite-section-height),
+    var(--line) var(--mon-sprite-section-height),
+    var(--line) calc(var(--mon-sprite-section-height) + 3px),
+    var(--moves-bg) calc(var(--mon-sprite-section-height) + 3px),
+    var(--moves-bg) 100%
+  );
   text-align: center;
-  padding: 4px;
+  padding: 8px 4px 2px;
 }
 .mon-head img {
+  display: block;
   width: 96px;
   height: 96px;
+  margin: 0 auto 4px;
   image-rendering: pixelated;
 }
-.mon-name { font-size: 30px; font-weight: 800; line-height: 1.0; }
-.lvl { font-size: 26px; font-weight: 800; margin-top: 0px; }
+.mon-name {
+  font-size: 28px;
+  font-weight: 800;
+  line-height: 1.0;
+  padding-top: 3px;
+}
+.lvl { font-size: 24px; font-weight: 800; margin-top: 0px; }
 .types {
   display: flex;
   justify-content: center;
   gap: 20px;
-  margin-top: 4px;
+  margin-top: 3px;
   min-height: 14px;
+  padding-bottom: 0;
 }
 .type-icon {
   display: inline-block;
-  transform: scale(1.5);
+  transform: scale(1.35);
+  transform-origin: center;
   image-rendering: pixelated;
   background-image: url("../graphics/interface/menu_info.png");
   background-repeat: no-repeat;
@@ -334,7 +359,7 @@ h1 { margin: 0 0 8px 0; }
     --enc-panel-bg: #f5f8ef;
     --enc-kind-bg: #dde8cb;
     --trainer-card-bg: #e5dccd;
-    --trainer-left-bg: #d8d2c0;
+    --trainer-left-bg: #d8ccb8;
     --mon-bg: #f7f2e8;
     --mon-head-bg: #d8ccb8;
     --moves-bg: #f3eee3;
@@ -352,7 +377,7 @@ h1 { margin: 0 0 8px 0; }
     --enc-grid-line: #6a8560;
     --enc-th-bg: #c2d7ba;
     --trainer-card-bg: #d4e1cf;
-    --trainer-left-bg: #bfd1b7;
+    --trainer-left-bg: #b7caaa;
     --mon-bg: #eef5e9;
     --mon-head-bg: #b7caaa;
     --moves-bg: #e9f1e3;
@@ -370,7 +395,7 @@ h1 { margin: 0 0 8px 0; }
     --enc-grid-line: #7e756c;
     --enc-th-bg: #d1c4b7;
     --trainer-card-bg: #dbd2c8;
-    --trainer-left-bg: #c9bcad;
+    --trainer-left-bg: #c3b5a6;
     --mon-bg: #f2ece5;
     --mon-head-bg: #c3b5a6;
     --moves-bg: #eee6dd;
@@ -385,7 +410,7 @@ h1 { margin: 0 0 8px 0; }
     --enc-panel-bg: #f5f2ec;
     --enc-kind-bg: #dad4c9;
     --trainer-card-bg: #e3ddd3;
-    --trainer-left-bg: #d3ccbf;
+    --trainer-left-bg: #d0c5b5;
     --mon-bg: #f7f3ec;
     --mon-head-bg: #d0c5b5;
     --moves-bg: #f2ede4;
@@ -400,7 +425,7 @@ h1 { margin: 0 0 8px 0; }
     --enc-panel-bg: #f4f4f4;
     --enc-kind-bg: #e2e2e2;
     --trainer-card-bg: #e4ddd4;
-    --trainer-left-bg: #e0d8ce;
+    --trainer-left-bg: #d2c4b4;
     --mon-bg: #f8f5ef;
     --mon-head-bg: #d2c4b4;
     --moves-bg: #f6f2eb;
@@ -432,7 +457,7 @@ h1 { margin: 0 0 8px 0; }
     --enc-grid-line: #4f7494;
     --enc-th-bg: #b6cde3;
     --trainer-card-bg: #cbdae8;
-    --trainer-left-bg: #c0d4e7;
+    --trainer-left-bg: #3f84c2;
     --mon-bg: #e9f0f7;
     --mon-head-bg: #3f84c2;
     --moves-bg: #e5edf5;
@@ -461,7 +486,7 @@ h1 { margin: 0 0 8px 0; }
     --enc-panel-bg: #f7eee6;
     --enc-kind-bg: #ecd2bf;
     --trainer-card-bg: #e8d7c8;
-    --trainer-left-bg: #dfc8b2;
+    --trainer-left-bg: #e1b894;
     --mon-bg: #f7efe7;
     --mon-head-bg: #e1b894;
     --moves-bg: #f3e8de;
@@ -490,7 +515,7 @@ h1 { margin: 0 0 8px 0; }
     --enc-panel-bg: #f1f6ee;
     --enc-kind-bg: #cfe1c6;
     --trainer-card-bg: #d7e3d1;
-    --trainer-left-bg: #c6d8be;
+    --trainer-left-bg: #aec7a2;
     --mon-bg: #eef4ea;
     --mon-head-bg: #aec7a2;
     --moves-bg: #e8f0e2;
@@ -519,7 +544,7 @@ h1 { margin: 0 0 8px 0; }
     --enc-panel-bg: #f7eff7;
     --enc-kind-bg: #e2c9e1;
     --trainer-card-bg: #e3d3e2;
-    --trainer-left-bg: #d8c2d7;
+    --trainer-left-bg: #ccadd0;
     --mon-bg: #f5edf5;
     --mon-head-bg: #ccadd0;
     --moves-bg: #f1e8f1;
@@ -548,7 +573,7 @@ h1 { margin: 0 0 8px 0; }
     --enc-panel-bg: #fbf5e8;
     --enc-kind-bg: #eddcae;
     --trainer-card-bg: #ebdec0;
-    --trainer-left-bg: #e1cf9f;
+    --trainer-left-bg: #e1ca87;
     --mon-bg: #f9f4e4;
     --mon-head-bg: #e1ca87;
     --moves-bg: #f5eed8;
@@ -577,7 +602,7 @@ h1 { margin: 0 0 8px 0; }
     --enc-panel-bg: #eef5ec;
     --enc-kind-bg: #c8dcc1;
     --trainer-card-bg: #d2e0ce;
-    --trainer-left-bg: #bdd2b7;
+    --trainer-left-bg: #abc6a0;
     --mon-bg: #edf4ea;
     --mon-head-bg: #abc6a0;
     --moves-bg: #e6efe3;
@@ -606,7 +631,7 @@ h1 { margin: 0 0 8px 0; }
     --enc-panel-bg: #f8ece8;
     --enc-kind-bg: #e8c7bc;
     --trainer-card-bg: #e7d2ca;
-    --trainer-left-bg: #dabeb3;
+    --trainer-left-bg: #d8a897;
     --mon-bg: #f6ece9;
     --mon-head-bg: #d8a897;
     --moves-bg: #f2e4de;
