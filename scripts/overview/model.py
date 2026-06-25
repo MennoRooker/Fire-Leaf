@@ -12,16 +12,19 @@ SectionOrderPlan = List[SectionOrderEntry]
 from .parsing import (
     ENCOUNTER_KIND_ORDER,
     ENCOUNTER_KIND_TITLES,
+    parse_charmap_single_byte_table,
     parse_define_ints,
     parse_firered_encounters,
     parse_item_names,
     parse_item_icon_table,
     parse_item_icon_symbol_to_paths,
+    parse_level_up_learnsets_by_species,
     parse_layouts_by_id,
     parse_map_layout_records,
     parse_mon_symbol_to_png_path,
     parse_move_names,
     parse_move_types,
+    parse_nature_constants,
     parse_nature_stat_modifiers,
     parse_ordered_species_front_symbols,
     parse_ordered_trainer_front_symbols,
@@ -360,7 +363,10 @@ def build_model(section_filter: Optional[str]) -> Dict[str, object]:
     move_names = parse_move_names()
     trainer_class_names = parse_trainer_class_names()
     move_types = parse_move_types()
+    nature_constants = parse_nature_constants()
     nature_stat_modifiers = parse_nature_stat_modifiers()
+    level_up_learnsets = parse_level_up_learnsets_by_species()
+    charmap_single_byte = parse_charmap_single_byte_table()
     species_info = parse_species_info_types_and_abilities()
     item_names = parse_item_names()
     item_icon_table = parse_item_icon_table()
@@ -440,15 +446,29 @@ def build_model(section_filter: Optional[str]) -> Dict[str, object]:
             return map_by_norm_section[section_key]
 
         # Fallback for manually titled sections that are only partial map names.
-        # We pick the shortest matching map candidate to reduce false positives.
+        # Prefer the most specific (longest) compatible token and avoid
+        # numeric prefix collisions like ROUTE1 matching ROUTE19.
         candidates: List[tuple[int, Dict[str, str]]] = []
         for record in map_records:
             map_norm = normalize_for_match(record["mapToken"])
-            if section_key and (section_key in map_norm or map_norm in section_key):
+            if not section_key:
+                continue
+
+            if section_key.startswith(map_norm) and len(section_key) > len(map_norm):
+                next_ch = section_key[len(map_norm)]
+                if next_ch.isdigit():
+                    continue
+
+            if map_norm.startswith(section_key) and len(map_norm) > len(section_key):
+                next_ch = map_norm[len(section_key)]
+                if next_ch.isdigit():
+                    continue
+
+            if section_key in map_norm or map_norm in section_key:
                 candidates.append((len(map_norm), record))
 
         if candidates:
-            candidates.sort(key=lambda x: x[0])
+            candidates.sort(key=lambda x: x[0], reverse=True)
             return candidates[0][1]
 
         return None
@@ -538,6 +558,30 @@ def build_model(section_filter: Optional[str]) -> Dict[str, object]:
         if raised:
             return f"(+{raised})"
         return f"(-{lowered})"
+
+    def encode_string_for_name_hash(text: str) -> int:
+        total = 0
+        for ch in text:
+            total = (total + charmap_single_byte.get(ch, ord(ch) & 0xFF)) & 0xFFFFFFFF
+        return total
+
+    def level_up_default_moves(species_token: str, level: int) -> List[str]:
+        entries = level_up_learnsets.get(species_token, [])
+        learned: List[str] = []
+        for entry in entries:
+            move_level = int(entry.get("level", 0))
+            if move_level > level:
+                continue
+            move_token = str(entry.get("move", ""))
+            if not move_token or move_token == "MOVE_NONE":
+                continue
+            if move_token in learned:
+                continue
+            if len(learned) < 4:
+                learned.append(move_token)
+            else:
+                learned = learned[1:] + [move_token]
+        return learned
 
     def resolve_wild_encounter(map_token: Optional[str]) -> Optional[Dict[str, object]]:
         if not map_token:
@@ -695,18 +739,66 @@ def build_model(section_filter: Optional[str]) -> Dict[str, object]:
             "mons": [],
         }
 
+        party_macro = str(trainer.get("partyMacro", ""))
+        has_custom_moves = "CUSTOM_MOVES" in party_macro
+        has_nature_ability = "NATURE_ABILITY" in party_macro
+
+        # Matches CreateNPCTrainerParty personality pre-seed rules for default trainer data.
+        if bool(trainer.get("doubleBattle")):
+            generated_personality_base = 0x80
+        elif bool(trainer.get("isFemale")):
+            generated_personality_base = 0x78
+        else:
+            generated_personality_base = 0x88
+
+        generated_name_hash = 0
+        trainer_name_hash_text = str(trainer.get("trainerName", ""))
+
         for mon in party["mons"]:
             species_token = str(mon.get("species", "SPECIES_NONE"))
+            level_s = str(mon.get("lvl", "0"))
+            try:
+                mon_level = int(level_s, 10)
+            except ValueError:
+                mon_level = 0
+
             sp_info = species_info.get(species_token, {"types": [], "abilities": []})
             ability_token = str(mon.get("ability", ""))
             nature_token = str(mon.get("nature", ""))
+
+            if nature_token.isdigit():
+                nature_token = nature_constants.get(int(nature_token), "")
+
+            if not has_nature_ability:
+                generated_name_hash = (generated_name_hash + encode_string_for_name_hash(trainer_name_hash_text)) & 0xFFFFFFFF
+                generated_name_hash = (generated_name_hash + encode_string_for_name_hash(species_names.get(species_token, ""))) & 0xFFFFFFFF
+                generated_personality = (generated_personality_base + ((generated_name_hash << 8) & 0xFFFFFFFF)) & 0xFFFFFFFF
+                generated_nature = nature_constants.get(generated_personality % 25, "")
+                if not nature_token:
+                    nature_token = generated_nature
+
             if not ability_token:
                 abilities = sp_info.get("abilities", [])
-                ability_token = str(abilities[0]) if abilities else ""
+                ability_slot_raw = str(mon.get("abilitySlot", "")).strip()
+                ability_index = 0
+                if ability_slot_raw.isdigit():
+                    ability_index = int(ability_slot_raw)
+
+                if ability_index == 1 and len(abilities) > 1 and str(abilities[1]) and str(abilities[1]) != "ABILITY_NONE":
+                    ability_token = str(abilities[1])
+                elif abilities and str(abilities[0]) and str(abilities[0]) != "ABILITY_NONE":
+                    ability_token = str(abilities[0])
+                elif len(abilities) > 1 and str(abilities[1]) and str(abilities[1]) != "ABILITY_NONE":
+                    ability_token = str(abilities[1])
+
+            move_tokens = [str(move) for move in mon.get("moves", []) if str(move)]
+            if not move_tokens and not has_custom_moves:
+                move_tokens = level_up_default_moves(species_token, mon_level)
+
             mon_obj: Dict[str, object] = {
                 "speciesToken": species_token,
                 "speciesName": species_names.get(species_token, pretty_token(species_token, "SPECIES_")),
-                "level": str(mon.get("lvl", "0")),
+                "level": level_s,
                 "sprite": species_front_path(species_token),
                 "types": list(sp_info.get("types", [])),
                 "nature": pretty_token(nature_token, "NATURE_") if nature_token else "-",
@@ -731,8 +823,7 @@ def build_model(section_filter: Optional[str]) -> Dict[str, object]:
                 mon_obj["itemIconPath"] = str(item_icon_paths.get("icons", {}).get(icon_symbol, ""))
                 mon_obj["itemPalettePath"] = str(item_icon_paths.get("palettes", {}).get(palette_symbol, ""))
 
-            for move_token in mon.get("moves", []):
-                move_token = str(move_token)
+            for move_token in move_tokens:
                 mon_obj["moves"].append({
                     "token": move_token,
                     "name": move_names.get(move_token, pretty_token(move_token, "MOVE_")),

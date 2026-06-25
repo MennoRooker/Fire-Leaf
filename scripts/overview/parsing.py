@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import ast
 from functools import lru_cache
 import json
 import re
@@ -87,6 +88,16 @@ def parse_nature_stat_modifiers() -> Dict[str, List[int]]:
     return out
 
 
+def parse_nature_constants() -> Dict[int, str]:
+    text = read_text("include/constants/pokemon.h")
+    out: Dict[int, str] = {}
+    for token, value_s in re.findall(r"^\s*#define\s+(NATURE_[A-Z0-9_]+)\s+(\d+)\s*$", text, flags=re.M):
+        if token == "NUM_NATURES":
+            continue
+        out[int(value_s)] = token
+    return out
+
+
 def parse_species_names() -> Dict[str, str]:
     text = read_text("src/data/text/species_names.h")
     out: Dict[str, str] = {}
@@ -100,6 +111,50 @@ def parse_move_names() -> Dict[str, str]:
     out: Dict[str, str] = {}
     for key, name in re.findall(r"\[(MOVE_[A-Z0-9_]+)\]\s*=\s*_(\"[^\"]*\")", text):
         out[key] = strip_macro_string(f"_({name})")
+    return out
+
+
+@lru_cache(maxsize=1)
+def parse_level_up_learnsets_by_species() -> Dict[str, List[Dict[str, object]]]:
+    learnsets_text = read_text("src/data/pokemon/level_up_learnsets.h")
+    pointers_text = read_text("src/data/pokemon/level_up_learnset_pointers.h")
+
+    moves_by_symbol: Dict[str, List[Dict[str, object]]] = {}
+    learnset_re = re.compile(r"static const u16\s+(s[A-Za-z0-9_]+)\[\]\s*=\s*\{(.*?)\n\};", re.S)
+    move_re = re.compile(r"LEVEL_UP_MOVE\(\s*(\d+)\s*,\s*(MOVE_[A-Z0-9_]+)\s*\)")
+
+    for symbol, body in learnset_re.findall(learnsets_text):
+        moves: List[Dict[str, object]] = []
+        for lvl_s, move_token in move_re.findall(body):
+            moves.append({"level": int(lvl_s), "move": move_token})
+        moves_by_symbol[symbol] = moves
+
+    out: Dict[str, List[Dict[str, object]]] = {}
+    ptr_re = re.compile(r"\[(SPECIES_[A-Z0-9_]+)\]\s*=\s*(s[A-Za-z0-9_]+)")
+    for species_token, symbol in ptr_re.findall(pointers_text):
+        out[species_token] = list(moves_by_symbol.get(symbol, []))
+
+    return out
+
+
+@lru_cache(maxsize=1)
+def parse_charmap_single_byte_table() -> Dict[str, int]:
+    text = read_text("charmap.txt")
+    out: Dict[str, int] = {}
+    line_re = re.compile(r"^\s*('(?:\\.|[^'])*')\s*=\s*([0-9A-Fa-f]{2})\s*$")
+
+    for line in text.splitlines():
+        m = line_re.match(line)
+        if not m:
+            continue
+        quoted, byte_hex = m.groups()
+        try:
+            ch = ast.literal_eval(quoted)
+        except (SyntaxError, ValueError):
+            continue
+        if isinstance(ch, str) and len(ch) == 1 and ch not in out:
+            out[ch] = int(byte_hex, 16)
+
     return out
 
 
@@ -334,13 +389,19 @@ def parse_trainers() -> Dict[str, Dict[str, str]]:
         cls = re.search(r"\.trainerClass\s*=\s*(TRAINER_CLASS_[A-Z0-9_]+)", body)
         pic = re.search(r"\.trainerPic\s*=\s*(TRAINER_PIC_[A-Z0-9_]+)", body)
         name = re.search(r"\.trainerName\s*=\s*_\(\"([^\"]*)\"\)", body)
+        encounter = re.search(r"\.encounterMusic_gender\s*=\s*([^,\n]+)", body)
+        double_battle = re.search(r"\.doubleBattle\s*=\s*(TRUE|FALSE)", body)
         party = re.search(r"\.party\s*=\s*([A-Z0-9_]+)\((sParty_[A-Za-z0-9_]+)\)", body)
         if not party:
             continue
+        encounter_expr = encounter.group(1).strip() if encounter else ""
         out[trainer_id] = {
             "trainerClass": cls.group(1) if cls else "TRAINER_CLASS_NONE",
             "trainerPic": pic.group(1) if pic else "TRAINER_PIC_YOUNGSTER",
             "trainerName": name.group(1) if name else "",
+            "encounterMusicGender": encounter_expr,
+            "isFemale": "F_TRAINER_FEMALE" in encounter_expr,
+            "doubleBattle": bool(double_battle and double_battle.group(1) == "TRUE"),
             "partyMacro": party.group(1),
             "partyName": party.group(2),
         }
@@ -366,7 +427,7 @@ def extract_top_level_brace_blocks(text: str) -> List[str]:
 
 def parse_party_mon(mon_block: str) -> Dict[str, object]:
     out: Dict[str, object] = {}
-    for key in ("iv", "lvl", "species", "heldItem", "nature", "ability"):
+    for key in ("iv", "lvl", "species", "heldItem", "nature", "ability", "abilitySlot"):
         match = re.search(rf"\.{key}\s*=\s*([^,\n]+)", mon_block)
         if match:
             out[key] = match.group(1).strip()

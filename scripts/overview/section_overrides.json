@@ -50,13 +50,29 @@
       "mapToken": "ROUTE10",
       "crop": { "y0": 0.0, "y1": 0.38 }
     },
+    "Route 10 South": {
+      "mapToken": "ROUTE10",
+      "crop": { "y0": 0.66, "y1": 1.0 }
+    },
+    "Route 19 Land": {
+      "mapToken": "ROUTE19",
+      "crop": { "y0": 0.0, "y1": 0.25 }
+    },
     "Route 10 Surf": {
       "mapToken": "ROUTE10",
       "crop": { "y0": 0.4, "y1": 0.63 }
     },
-    "Route 10 South": {
-      "mapToken": "ROUTE10",
-      "crop": { "y0": 0.66, "y1": 1.0 }
+    "Route 19 Water": {
+      "mapToken": "ROUTE19",
+      "crop": { "y0": 0.25, "y1": 1.0 }
+    },
+    "Route 20 East": {
+      "mapToken": "ROUTE20",
+      "crop": { "x0": 0.57, "x1": 1.0 }
+    },
+    "Route 20 West": {
+      "mapToken": "ROUTE20",
+      "crop": { "x0": 0.0, "x1": 0.55 }
     },
     "Silph Co. 2F": {
       "mapToken": "SILPH_CO_2F"
