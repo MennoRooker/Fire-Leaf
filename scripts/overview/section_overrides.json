@@ -46,16 +46,47 @@
     "Route 5": {
       "fullHeight": true
     },
+    "Vermilion City Gym": {
+      "mapScaleMax": 0.4
+    },
     "Route 10 North": {
       "mapToken": "ROUTE10",
       "crop": { "y0": 0.0, "y1": 0.38 }
+    },
+    "Rock Tunnel 1F": {
+      "fullHeight": true
     },
     "Route 10 South": {
       "mapToken": "ROUTE10",
       "crop": { "y0": 0.66, "y1": 1.0 }
     },
+    "Route 12 North": {
+      "mapToken": "ROUTE12",
+      "crop": { "y0": 0.0, "y1": 0.60 }
+    },
+    "Route 16 East": {
+      "mapToken": "ROUTE16",
+      "crop": { "x0": 0.45, "x1": 1.0 }
+    },
+    "Game Corner": {
+      "mapToken": "CELADON_CITY_GAME_CORNER"
+    },
+    "Celadon City Gym": {
+      "mapScaleMax": 0.4
+    },
+    "Saffron City Dojo": {
+      "mapScaleMax": 0.4
+    },
+    "Route 12 South": {
+      "mapToken": "ROUTE12",
+      "crop": { "y0": 0.60, "y1": 1.0 }
+    },
     "Route 14": {
       "fullHeight": true
+    },
+    "Route 16 West": {
+      "mapToken": "ROUTE16",
+      "crop": { "x0": 0.0, "x1": 0.45 }
     },
     "Route 17": {
       "fullHeight": true
@@ -115,6 +146,34 @@
     },
     "Saffron City Gym": {
       "mapScaleMax": 0.4 
+    },
+    "Cinnabar Island Gym": {
+      "mapScaleMax": 0.4
+    },
+    "Viridian City Gym": {
+      "mapScaleMax": 0.4
+    },
+    "Victory Road 1F": {
+      "crop": { "x0": 0.0, "x1": 0.50 }
+    },
+    "E4-1": {
+      "mapToken": "POKEMON_LEAGUE_LORELEIS_ROOM",
+      "mapScaleMax": 0.4
+    },
+    "E4-2": {
+      "mapToken": "POKEMON_LEAGUE_BRUNOS_ROOM",
+      "mapScaleMax": 0.4
+    },
+    "E4-3": {
+      "mapToken": "POKEMON_LEAGUE_AGATHAS_ROOM",
+      "mapScaleMax": 0.4
+    },
+    "E4-4": {
+      "mapToken": "POKEMON_LEAGUE_LANCES_ROOM",
+      "mapScaleMax": 0.4
+    },
+    "CHAMPION": {
+      "mapScaleMax": 0.4
     }
   },
   "merges": {
