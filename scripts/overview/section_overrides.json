@@ -64,6 +64,24 @@
       "mapToken": "ROUTE12",
       "crop": { "y0": 0.0, "y1": 0.60 }
     },
+    "Pokémon Tower 2F": {
+      "mapToken": "POKEMON_TOWER_2F"
+    },
+    "Pokémon Tower 3F": {
+      "mapToken": "POKEMON_TOWER_3F"
+    },
+    "Pokémon Tower 4F": {
+      "mapToken": "POKEMON_TOWER_4F"
+    },
+    "Pokémon Tower 5F": {
+      "mapToken": "POKEMON_TOWER_5F"
+    },
+    "Pokémon Tower 6F": {
+      "mapToken": "POKEMON_TOWER_6F"
+    },
+    "Pokémon Tower 7F": {
+      "mapToken": "POKEMON_TOWER_7F"
+    },
     "Route 16 East": {
       "mapToken": "ROUTE16",
       "crop": { "x0": 0.45, "x1": 1.0 }
@@ -94,22 +112,6 @@
     "Route 19 Land": {
       "mapToken": "ROUTE19",
       "crop": { "y0": 0.0, "y1": 0.25 }
-    },
-    "Route 10 Surf": {
-      "mapToken": "ROUTE10",
-      "crop": { "y0": 0.4, "y1": 0.63 }
-    },
-    "Route 19 Water": {
-      "mapToken": "ROUTE19",
-      "crop": { "y0": 0.25, "y1": 1.0 }
-    },
-    "Route 20 East": {
-      "mapToken": "ROUTE20",
-      "crop": { "x0": 0.57, "x1": 1.0 }
-    },
-    "Route 20 West": {
-      "mapToken": "ROUTE20",
-      "crop": { "x0": 0.0, "x1": 0.55 }
     },
     "Fuchsia City Gym": {
       "mapScaleMax": 0.4 
@@ -146,6 +148,38 @@
     },
     "Saffron City Gym": {
       "mapScaleMax": 0.4 
+    },
+    "Route 10 Surf": {
+      "mapToken": "ROUTE10",
+      "crop": { "y0": 0.4, "y1": 0.63 }
+    },
+    "Route 19 Water": {
+      "mapToken": "ROUTE19",
+      "crop": { "y0": 0.25, "y1": 1.0 }
+    },
+    "Route 20 East": {
+      "mapToken": "ROUTE20",
+      "crop": { "x0": 0.57, "x1": 1.0 }
+    },
+    "Route 20 West": {
+      "mapToken": "ROUTE20",
+      "crop": { "x0": 0.0, "x1": 0.55 }
+    },
+    "Pokémon Mansion 1F": {
+      "mapToken": "POKEMON_MANSION_1F",
+      "fullHeight": true
+    },
+    "Pokémon Mansion 2F": {
+      "mapToken": "POKEMON_MANSION_2F",
+      "fullHeight": true
+    },
+    "Pokémon Mansion 3F": {
+      "mapToken": "POKEMON_MANSION_3F",
+      "fullHeight": true
+    },
+    "Pokémon Mansion B1F": {
+      "mapToken": "POKEMON_MANSION_B1F",
+      "fullHeight": true
     },
     "Cinnabar Island Gym": {
       "mapScaleMax": 0.4

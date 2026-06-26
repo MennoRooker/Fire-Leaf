@@ -3468,7 +3468,7 @@ static const struct TrainerMonNoItemDefaultMoves sParty_YoungCoupleGiaJesRematch
 
 // ======================================================================================= //
 // ==================================== Pokémon Tower ==================================== //
-// ======================================================================================= //
+// ========================================= 2F ========================================== //
 static const struct TrainerMonItemCustomMovesNatureAbility sParty_RivalPokemonTowerSquirtle[] = {
     {
         .iv = 20,
@@ -3613,6 +3613,7 @@ static const struct TrainerMonItemCustomMovesNatureAbility sParty_RivalPokemonTo
     },
 };
 
+// ========================================= 3F ========================================== //
 static const struct TrainerMonItemCustomMovesNatureAbility sParty_ChannelerHope[] = {
     {
         .iv = 5,
@@ -3634,6 +3635,7 @@ static const struct TrainerMonItemCustomMovesNatureAbility sParty_ChannelerHope[
     },
 };
 
+// ========================================= 4F ========================================== //
 static const struct TrainerMonItemCustomMovesNatureAbility sParty_ChannelerLaurel[] = {
     {
         .iv = 5,
@@ -3685,6 +3687,7 @@ static const struct TrainerMonItemCustomMovesNatureAbility sParty_ChannelerJody[
     },
 };
 
+// ========================================= 5F ========================================== //
 static const struct TrainerMonItemCustomMovesNatureAbility sParty_ChannelerRuth[] = {
     {
         .iv = 5,
@@ -3715,6 +3718,7 @@ static const struct TrainerMonItemCustomMovesNatureAbility sParty_ChannelerRuth[
     },
 };
 
+// ========================================= 6F ========================================== //
 static const struct TrainerMonItemCustomMovesNatureAbility sParty_ChannelerAngelica[] = {
     {
         .iv = 5,
@@ -3787,6 +3791,7 @@ static const struct TrainerMonItemCustomMovesNatureAbility sParty_ChannelerEmili
     },
 };
 
+// ========================================= 7F ========================================== //
 static const struct TrainerMonNoItemDefaultMoves sParty_TeamRocketGrunt19[] = {
     {
         .iv = 10,
@@ -7460,7 +7465,7 @@ static const struct TrainerMonNoItemDefaultMoves sParty_PicnickerIrene[] = {
 
 // ======================================================================================= //
 // =================================== Pokémon Mansion =================================== //
-// ======================================================================================= //
+// ========================================== 1F ========================================= //
 static const struct TrainerMonNoItemDefaultMoves sParty_YoungsterJohnson[] = {
     {
         .iv = 15,
@@ -7479,6 +7484,20 @@ static const struct TrainerMonNoItemDefaultMoves sParty_YoungsterJohnson[] = {
     },
 };
 
+static const struct TrainerMonNoItemDefaultMoves sParty_ScientistTed[] = {
+    {
+        .iv = 15,
+        .lvl = 49,
+        .species = SPECIES_ELECTRODE,
+    },
+    {
+        .iv = 15,
+        .lvl = 49,
+        .species = SPECIES_WEEZING,
+    },
+};
+
+// ========================================== 2F ========================================= //
 static const struct TrainerMonNoItemDefaultMoves sParty_BurglarArnie[] = {
     {
         .iv = 15,
@@ -7492,6 +7511,7 @@ static const struct TrainerMonNoItemDefaultMoves sParty_BurglarArnie[] = {
     },
 };
 
+// ========================================== 3F ========================================= //
 static const struct TrainerMonNoItemDefaultMoves sParty_BurglarSimon[] = {
     {
         .iv = 15,
@@ -7518,19 +7538,7 @@ static const struct TrainerMonNoItemDefaultMoves sParty_ScientistBraydon[] = {
     },
 };
 
-static const struct TrainerMonNoItemDefaultMoves sParty_ScientistTed[] = {
-    {
-        .iv = 15,
-        .lvl = 49,
-        .species = SPECIES_ELECTRODE,
-    },
-    {
-        .iv = 15,
-        .lvl = 49,
-        .species = SPECIES_WEEZING,
-    },
-};
-
+// ========================================= B1F ========================================= //
 static const struct TrainerMonNoItemDefaultMoves sParty_BurglarLewis[] = {
     {
         .iv = 15,

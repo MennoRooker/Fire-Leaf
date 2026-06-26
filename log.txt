@@ -1340,16 +1340,16 @@ following:
 / Wild Encounters
    - Turn off option
    - Alternating grey (evens)
-/ Trainer Parties
+x Trainer Parties
    x Names
    x Sprites
    x Levels
    x Types
-   / Natures (+/-)
+   x Natures (+/-)
    x Abilities
-   / Held Items
-   / Moves
-   / Move types (Right, HP)
+   x Held Items
+   x Moves
+   x Move types (Right, HP)
 - Items
 - Shops
 - Move tutors
@@ -1359,15 +1359,18 @@ following:
         - Different colors
 	- Under trainer image
 - Show events
-- Map section fits map
-- Route 5 wrap
+/ Map section fits map
+   - Route 5, Mt. Moon & Rock Tunnel
+- Route 14 Gen 4 mons
+- Silph Co. floors
 
 section overrides:
 x Oak's Lab 40%
 - Route 2 South/North
 x Route 4 West/East
 x Cerulean Grunt
-- Remove Route 10 south's mons
+- Remove Route 4 West mons
+- Remove Route 10 South mons
 - Remove Route 10 surf's land mons
 x Big maps fill to fishing + surf height
 
