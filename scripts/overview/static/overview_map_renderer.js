@@ -355,11 +355,7 @@
     const fullHeight = isFullHeight(payload, canvas);
     const mapFullHeightPx = getMapFullHeightPx();
 
-    if (fullHeight) {
-      mapLeft.style.minHeight = `${mapFullHeightPx}px`;
-    } else {
-      mapLeft.style.minHeight = "";  
-    }
+    mapLeft.style.minHeight = "";
 
     let scale;
     if (fullHeight) {

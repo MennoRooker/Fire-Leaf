@@ -1935,8 +1935,8 @@ static const struct TrainerMonNoItemDefaultMoves sParty_GamerDirk[] = {
 };
 
 // ======================================================================================= //
-// ======================================= S.S. Anne ===================================== //
-// ======================================================================================= //
+// ====================================== S.S. Anne ====================================== //
+// ========================================= 1F ========================================== //
 static const struct TrainerMonNoItemDefaultMoves sParty_GentlemanHenderson[] = {
     {
         .iv = 3,
@@ -1984,6 +1984,15 @@ static const struct TrainerMonNoItemDefaultMoves sParty_YoungsterTyler[] = {
     },
 };
 
+// ========================================= B1F ========================================= //
+static const struct TrainerMonNoItemDefaultMoves sParty_SailorPhillip[] = {
+    {
+        .iv = 3,
+        .lvl = 20,
+        .species = SPECIES_MACHOP,
+    },
+};
+
 static const struct TrainerMonNoItemDefaultMoves sParty_FishermanBarny[] = {
     {
         .iv = 3,
@@ -1999,14 +2008,6 @@ static const struct TrainerMonNoItemDefaultMoves sParty_FishermanBarny[] = {
         .iv = 3,
         .lvl = 18,
         .species = SPECIES_SHELLDER,
-    },
-};
-
-static const struct TrainerMonNoItemDefaultMoves sParty_SailorPhillip[] = {
-    {
-        .iv = 3,
-        .lvl = 20,
-        .species = SPECIES_MACHOP,
     },
 };
 
@@ -2067,6 +2068,7 @@ static const struct TrainerMonNoItemDefaultMoves sParty_SailorLeonard[] = {
     },
 };
 
+// ======================================== Deck ========================================= //
 static const struct TrainerMonNoItemDefaultMoves sParty_SailorTrevor[] = {
     {
         .iv = 3,
@@ -2093,6 +2095,7 @@ static const struct TrainerMonNoItemDefaultMoves sParty_SailorEdmond[] = {
     },
 };
 
+// ========================================= 2F ========================================== //
 static const struct TrainerMonNoItemDefaultMoves sParty_FishermanDale[] = {
     {
         .iv = 3,

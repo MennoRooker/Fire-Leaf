@@ -287,8 +287,8 @@ def _palettes_from_indexed_png(rel_path: str) -> List[str]:
     return out
 
 
-def _read_tileset_palettes_base64(metatiles_rel_path: str, tiles_png_path: str) -> List[str]:
-    palettes_dir = (ROOT / metatiles_rel_path).parent / "palettes"
+def _read_tileset_palettes_base64(tiles_png_path: str) -> List[str]:
+    palettes_dir = (ROOT / tiles_png_path).parent / "palettes"
     if palettes_dir.is_dir() and (palettes_dir / "00.pal").is_file():
         out: List[str] = []
         for idx in range(16):
@@ -393,8 +393,8 @@ def build_map_render_data(sections: List[Dict[str, object]], asset_url) -> Dict[
                 "secondaryMetatilesB64": _read_base64(str(secondary["metatilesPath"])),
                 "primaryTilesUrl": asset_url(str(primary["tilesPngPath"])),
                 "secondaryTilesUrl": asset_url(str(secondary["tilesPngPath"])),
-                "primaryPalettesB64": _read_tileset_palettes_base64(str(primary["metatilesPath"]), str(primary["tilesPngPath"])),
-                "secondaryPalettesB64": _read_tileset_palettes_base64(str(secondary["metatilesPath"]), str(secondary["tilesPngPath"])),
+                "primaryPalettesB64": _read_tileset_palettes_base64(str(primary["tilesPngPath"])),
+                "secondaryPalettesB64": _read_tileset_palettes_base64(str(secondary["tilesPngPath"])),
                 "primaryTilePixels": _read_indexed_png_pixels_base64(str(primary["tilesPngPath"])),
                 "secondaryTilePixels": _read_indexed_png_pixels_base64(str(secondary["tilesPngPath"])),
                 "objects": _build_map_object_overlay(map_render, asset_url),

@@ -25,6 +25,58 @@ def resolve_tiles_png_path(metatiles_rel_path: str) -> Optional[str]:
 
     return None
 
+
+@lru_cache(maxsize=1)
+def parse_tileset_tiles_png_paths() -> Dict[str, str]:
+   """Map gTileset_* symbols to the tiles.png used at runtime (via headers.h + graphics.h)."""
+   headers_text = read_text("src/data/tilesets/headers.h")
+   graphics_text = read_text("src/data/tilesets/graphics.h")
+
+
+   tiles_symbol_to_png: Dict[str, str] = {}
+   for tiles_symbol, bin_path in re.findall(
+       r"const u32\s+(gTilesetTiles_[A-Za-z0-9_]+)\[\]\s*=\s*INCBIN_U32\(\"([^\"]+)\"\);",
+       graphics_text,
+   ):
+       png_path = re.sub(r"\.4bpp(?:\.lz)?$", ".png", bin_path)
+       tiles_symbol_to_png[tiles_symbol] = png_path
+
+
+   out: Dict[str, str] = {}
+   header_re = re.compile(
+       r"const struct Tileset\s+(gTileset_[A-Za-z0-9_]+)\s*=\s*\{(.*?)\};",
+       re.S,
+   )
+   tiles_ref_re = re.compile(r"\.tiles\s*=\s*(gTilesetTiles_[A-Za-z0-9_]+)")
+
+
+   for match in header_re.finditer(headers_text):
+       tileset_symbol = match.group(1)
+       tiles_ref = tiles_ref_re.search(match.group(2))
+       if not tiles_ref:
+           continue
+       png_path = tiles_symbol_to_png.get(tiles_ref.group(1))
+       if png_path:
+           out[tileset_symbol] = png_path
+
+
+   return out
+
+
+def resolve_tileset_tiles_png_path(tileset_symbol: str, metatiles_rel_path: Optional[str] = None) -> Optional[str]:
+   """Resolve tiles.png for a tileset symbol, following shared tile sources from headers.h."""
+   mapped = parse_tileset_tiles_png_paths().get(tileset_symbol)
+   if mapped and (ROOT / mapped).is_file():
+       return mapped
+
+
+   if metatiles_rel_path:
+       return resolve_tiles_png_path(metatiles_rel_path)
+
+
+   return None
+
+
 ENCOUNTER_KIND_ORDER = [
     "land_mons",
     "rock_smash_mons",

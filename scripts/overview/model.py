@@ -35,9 +35,9 @@ from .parsing import (
     parse_trainer_symbol_to_png_path,
     parse_trainers,
     parse_tileset_metatile_paths,
+    resolve_tileset_tiles_png_path,
     parse_type_icon_specs,
-    pretty_token,
-    resolve_tiles_png_path,
+    pretty_token
 )
 
 
@@ -494,8 +494,16 @@ def build_model(section_filter: Optional[str]) -> Dict[str, object]:
 
         primary_metatiles = tileset_to_metatile_path(primary_tileset)
         secondary_metatiles = tileset_to_metatile_path(secondary_tileset)
-        primary_tiles_png = resolve_tiles_png_path(primary_metatiles) if primary_metatiles else None
-        secondary_tiles_png = resolve_tiles_png_path(secondary_metatiles) if secondary_metatiles else None
+        primary_tiles_png = (
+            resolve_tileset_tiles_png_path(primary_tileset, primary_metatiles) 
+            if primary_metatiles 
+            else None
+        )
+        secondary_tiles_png = (
+            resolve_tileset_tiles_png_path(secondary_tileset, secondary_metatiles) 
+            if secondary_metatiles 
+            else None
+        )
         if not (primary_metatiles and secondary_metatiles and primary_tiles_png and secondary_tiles_png):
             return None
 
@@ -599,7 +607,11 @@ def build_model(section_filter: Optional[str]) -> Dict[str, object]:
                 return by_map[candidate]
         return None
 
-    def get_section_encounters(section_name: str) -> Optional[Dict[str, object]]:
+    def get_section_encounters(section_name: str, hidden_kinds: Optional[set] = None) -> Optional[Dict[str, object]]:
+        hidden_kinds = hidden_kinds or set()
+        if hidden_kinds.issuperset(ENCOUNTER_KIND_ORDER):
+            return None
+        
         section_key_norm = normalize_for_match(section_name)
         if not section_key_norm:
             return None
@@ -643,6 +655,8 @@ def build_model(section_filter: Optional[str]) -> Dict[str, object]:
         right_panels: List[Dict[str, object]] = []
 
         for encounter_kind in ENCOUNTER_KIND_ORDER:
+            if encounter_kind in hidden_kinds:
+                continue
             kind_data = chosen.get("types", {}).get(encounter_kind)
             if not kind_data:
                 continue
@@ -715,8 +729,15 @@ def build_model(section_filter: Optional[str]) -> Dict[str, object]:
             or trainer_key.startswith("TRAINER_CHAMPION_")
             or trainer_key.startswith("TRAINER_RIVAL_")
         )
+    
+    # Persist the order of trainers as in trainer_parties.h
+    party_order_index = {name: idx for idx, name in enumerate(parties.keys())}
+    ordered_trainers = sorted(
+        trainers.items(),
+        key=lambda kv: party_order_index.get(kv[1]["partyName"], len(party_order_index))
+    )
 
-    for trainer_id, trainer in trainers.items():
+    for trainer_id, trainer in ordered_trainers:
         party = parties.get(trainer["partyName"])
         if not party:
             continue
@@ -894,6 +915,18 @@ def build_model(section_filter: Optional[str]) -> Dict[str, object]:
         if not isinstance(sect_cfg, dict):
             return False
         return bool(sect_cfg.get("fullHeight"))
+    
+    def section_hidden_encounter_kinds(section_name: str) -> set:
+        sect_cfg = section_overrides.get(section_name, {})
+        if not isinstance(sect_cfg, dict):
+            return set()
+        raw = sect_cfg.get("hideEncounters")
+        if raw is True:
+            return set(ENCOUNTER_KIND_ORDER)
+        if isinstance(raw, (list, tuple)):
+            valid = set(ENCOUNTER_KIND_ORDER)
+            return {str(item) for item in raw if str(item) in valid}
+        return set()
 
     return {
         "sections": [
@@ -905,7 +938,7 @@ def build_model(section_filter: Optional[str]) -> Dict[str, object]:
                 "mapRender": build_map_render(name),
                 "mapScaleMax": section_map_scale_max(name),
                 "fullHeight": section_full_height(name),
-                "encounters": get_section_encounters(name),
+                "encounters": get_section_encounters(name, section_hidden_encounter_kinds(name)),
                 "trainers": sections[name],
                 "trainerGroups": trainer_groups.get(name, []),
             }
