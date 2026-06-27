@@ -1362,17 +1362,11 @@ x Trainer Parties
 / Map section fits map
    - Route 5, Mt. Moon & Rock Tunnel
 - Route 14 Gen 4 mons
-- Silph Co. floors
-
-section overrides:
-x Oak's Lab 40%
-- Route 2 South/North
-x Route 4 West/East
-x Cerulean Grunt
-- Remove Route 4 West mons
-- Remove Route 10 South mons
-- Remove Route 10 surf's land mons
-x Big maps fill to fishing + surf height
+x Silph Co. floors
+- Indigo Plateau
+- Champion Rematch
+- Remove duplicates
+- Seperate trainer cards 
 
 
 

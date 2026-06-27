@@ -61,10 +61,10 @@ SECTION_THEME_OVERRIDES: Dict[str, str] = {
     "cinnabar gym": "gym-cinnabar",
     "vermillion city gym": "gym-vermilion",
     # Elite Four
-    "e4-1": "e4-lorelei",
-    "e4-2": "e4-bruno",
-    "e4-3": "e4-agatha",
-    "e4-4": "e4-lance",
+    "lorelei": "e4-lorelei",
+    "bruno": "e4-bruno",
+    "agatha": "e4-agatha",
+    "lance": "e4-lance",
 }
 
 SECTION_MAP_TOKEN_OVERRIDES: Dict[str, str] = {

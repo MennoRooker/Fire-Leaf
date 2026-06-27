@@ -171,11 +171,14 @@
     },
     "Route 20 East": {
       "mapToken": "ROUTE20",
-      "crop": { "x0": 0.57, "x1": 1.0 }
+      "crop": { "x0": 0.43, "x1": 1.0 }
+    },
+    "Route 21 South": {
+      "hideEncounters": ["land_mons"]
     },
     "Route 20 West": {
       "mapToken": "ROUTE20",
-      "crop": { "x0": 0.0, "x1": 0.55 }
+      "crop": { "x0": 0.0, "x1": 0.68 }
     },
     "Pokémon Mansion 1F": {
       "mapToken": "POKEMON_MANSION_1F",
@@ -196,32 +199,55 @@
     "Cinnabar Island Gym": {
       "mapScaleMax": 0.4
     },
-    "Kindle Road": {
-      "mapToken": "ONE_ISLAND_KINDLE_ROAD"
+    "Kindle Road South": {
+      "mapToken": "ONE_ISLAND_KINDLE_ROAD",
+      "crop": { "y0": 0.56, "y1": 1.0 }
+    },
+    "Kindle Road North": {
+      "mapToken": "ONE_ISLAND_KINDLE_ROAD",
+      "crop": { "y0": 0.0, "y1": 0.56 },
+      "hideEncounters": ["land_mons", "rock_smash_mons"]
     },
     "Mt. Ember": {
       "mapToken": "MT_EMBER_EXTERIOR"
     },
+    "Mt. Ember Path": {
+      "mapToken": "MT_EMBER_SUMMIT_PATH_2F"
+    },
+    "Cape Brink": {
+      "mapToken": "TWO_ISLAND_CAPE_BRINK"
+    },
+    "Three Island": {
+      "hideEncounters": true,
+      "mapScaleMax": 0.4
+    },
     "Viridian City Gym": {
       "mapScaleMax": 0.4
+    },
+    "Route 23": {
+      "crop": { "y0": 0.17, "y1": 0.97 }
     },
     "Victory Road 1F": {
       "crop": { "x0": 0.0, "x1": 0.50 }
     },
-    "E4-1": {
+    "Indigo Plateau": {
+      "mapToken": "INDIGO_PLATEAU_EXTERIOR"
+    },
+    "LORELEI": {
       "mapToken": "POKEMON_LEAGUE_LORELEIS_ROOM",
       "mapScaleMax": 0.4
     },
-    "E4-2": {
+    "BRUNO": {
       "mapToken": "POKEMON_LEAGUE_BRUNOS_ROOM",
       "mapScaleMax": 0.4
     },
-    "E4-3": {
+    "AGATHA": {
       "mapToken": "POKEMON_LEAGUE_AGATHAS_ROOM",
       "mapScaleMax": 0.4
     },
-    "E4-4": {
+    "LANCE": {
       "mapToken": "POKEMON_LEAGUE_LANCES_ROOM",
+      "crop": { "x0": 0.0, "x1": 0.44, "y0": 0.15, "y1": 0.65 },
       "mapScaleMax": 0.4
     },
     "CHAMPION": {
