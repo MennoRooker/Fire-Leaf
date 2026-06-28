@@ -110,6 +110,9 @@ def render_mon_card(mon: Dict[str, object], type_icons: Dict[str, Dict[str, int]
 def render_trainer_card(trainer: Dict[str, object], type_icons: Dict[str, Dict[str, int]], asset_url, templates: Dict[str, str]) -> str:
     mons_html = "".join(render_mon_card(mon, type_icons, asset_url, templates) for mon in trainer["mons"])
     trainer_card_class = "trainer-card--major" if trainer.get("isMajor") else "trainer-card--compact"
+    trainer_theme = str(trainer.get("theme", "default")).strip().lower()
+    if trainer_theme and trainer_theme != "default":
+        trainer_card_class = f"{trainer_card_class} trainer-theme-{trainer_theme}"
     return render_template(
         templates["trainer_card"],
         {
@@ -228,6 +231,11 @@ def render_trainer_cards(
 
 def render_section(section: Dict[str, object], type_icons: Dict[str, Dict[str, int]], asset_url, templates: Dict[str, str]) -> str:
     encounters = section.get("encounters")
+    trainer_cards_html = render_trainer_cards(section, type_icons, asset_url, templates)
+    trainer_section_html = ""
+    if trainer_cards_html.strip():
+        trainer_section_html = f"<div class='cards'>{trainer_cards_html}</div>"
+
     pane_mode = "map-only"
     if encounters and encounters.get("mode") == "dual":
         pane_mode = "dual"
@@ -255,7 +263,7 @@ def render_section(section: Dict[str, object], type_icons: Dict[str, Dict[str, i
             "__MAP_SCALE_MAX_ATTR__": map_scale_max_attr,
             "__MAP_FULL_HEIGHT_ATTR__": full_height_attr,
             "__ENCOUNTERS_HTML__": render_encounters(encounters, asset_url, templates) if encounters else "",
-            "__TRAINER_CARDS_HTML__": render_trainer_cards(section, type_icons, asset_url, templates),
+            "__TRAINER_SECTION_HTML__": trainer_section_html,
         },
     )
 

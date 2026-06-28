@@ -206,6 +206,7 @@ h1 { margin: 0 0 8px 0; }
 .trainer-main {
   display: grid;
   grid-template-columns: 180px 1fr;
+  column-gap: 4px;
   align-items: stretch;
 }
 .trainer-left {
@@ -227,7 +228,7 @@ h1 { margin: 0 0 8px 0; }
 }
 .trainer-id {
   padding: 6px;
-  background: var(--trainer-left-bg);
+  background: var(--trainer-tag-bg, var(--trainer-left-bg));
   flex-grow: 0;
   border-bottom: 3px solid var(--line);
 }
@@ -251,6 +252,11 @@ h1 { margin: 0 0 8px 0; }
   background: transparent;
 }
 
+.trainer-card--major {
+  border: none;
+  background: transparent;
+}
+
 .trainer-card--compact .trainer-name {
   font-size: 20px;
 }
@@ -258,43 +264,48 @@ h1 { margin: 0 0 8px 0; }
 .trainer-card--major .trainer-left {
   background: var(--trainer-left-bg);
   align-self: stretch;
+  border: 3px solid var(--line);
 }
 
 .trainer-card--major .trainer-id {
-  background: var(--trainer-left-bg);
+  background: var(--trainer-tag-bg, var(--trainer-left-bg));
   flex-grow: 1;
 }
 
 .trainer-card--compact .trainer-left {
   background: var(--trainer-left-bg);
   align-self: start;
-  border-top: 3px solid var(--line);
-  border-left: 3px solid var(--line);
+  border: 3px solid var(--line);
   display: grid;
   grid-template-rows: auto 1fr;
 }
 
 .trainer-card--compact .trainer-id {
-  background: var(--map-left-bg);
+  background: var(--trainer-tag-bg, var(--trainer-left-bg));
   display: flex;
   flex-direction: column;
   justify-content: center;
+  border-bottom: none;
 }
 
+.trainer-card--major .mons,
 .trainer-card--compact .mons {
-  border-top: 3px solid var(--line);
-  border-bottom: 3px solid var(--line);
+  border: 3px solid var(--line);
 }
 
 .mons {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  grid-template-columns: repeat(6, minmax(0, 1fr));
 }
 .mon {
   border-left: 3px solid var(--line);
   background: var(--mon-bg);
+  min-width: 0;
 }
-.mons .mon:last-child {
+.mons .mon:first-child {
+  border-left: none;
+}
+.mons .mon:last-child:not(:nth-child(6n)) {
   border-right: 3px solid var(--line);
 }
 .mon-head {
@@ -341,9 +352,17 @@ h1 { margin: 0 0 8px 0; }
   background-image: url("__TYPE_ICON_URL__");
   background-repeat: no-repeat;
 }
-.mon-body { padding: 6px; text-align: center; font-size: 20px; line-height: 1.25; }
-.mon-body .nature-effect { font-size: 0.75em; padding-bottom: 4px; }
-.mon-body .item { font-size: 20px; }
+.mon-body {
+  padding: 6px;
+  text-align: center;
+  font-size: 20px;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+.mon-body > div { min-width: 0; }
+.mon-body .nature-line { font-size: 0.92em; line-height: 1.15; }
+.mon-body .nature-effect { font-size: 0.75em; padding-bottom: 4px; white-space: normal; }
+.mon-body .item { font-size: 18px; }
 .item-row {
   --item-icon-gap: 4px;
   --item-icon-right-pad: 4px;
@@ -397,18 +416,156 @@ h1 { margin: 0 0 8px 0; }
 }
 
 .section[data-theme='route'] {
-    --section-bg: #f1ead8;
-    --section-head-bg: #d6ccb4;
-    --map-pane-bg: #e4dcc8;
-    --map-left-bg: #d6ceb8;
-    --enc-bg: #eef3e4;
-    --enc-panel-bg: #f5f8ef;
-    --enc-kind-bg: #dde8cb;
-    --trainer-card-bg: #e5dccd;
-    --trainer-left-bg: #d8ccb8;
-    --mon-bg: #f7f2e8;
-    --mon-head-bg: #d8ccb8;
-    --moves-bg: #f3eee3;
+  --section-bg: #edf0c8;
+  --section-head-bg: #b8bd4a;
+  --map-pane-bg: #e5e8b6;
+  --map-left-bg: #dbe09f;
+  --enc-bg: #f0f3d4;
+  --enc-panel-bg: #f7f8e8;
+  --enc-kind-bg: #dee5a9;
+  --trainer-card-bg: #e3ddd3;
+  --trainer-left-bg: #d0c5b5;
+  --mon-bg: #f7f3ec;
+  --mon-head-bg: #d0c5b5;
+  --moves-bg: #f2ede4;
+}
+
+.section[data-theme='route'] .cards {
+  background: #f5f2ec;
+}
+
+.section[data-theme='route-water'] {
+  --section-bg: #dceaf6;
+  --section-head-bg: #3f84c2;
+  --section-head-color: #ffffff;
+  --map-pane-bg: #cfe0f0;
+  --map-left-bg: #bcd3e8;
+  --enc-bg: #deedf8;
+  --enc-panel-bg: #edf5fb;
+  --enc-kind-bg: #c8ddf0;
+  --trainer-card-bg: #e3ddd3;
+  --trainer-left-bg: #d0c5b5;
+  --mon-bg: #f7f3ec;
+  --mon-head-bg: #d0c5b5;
+  --moves-bg: #f2ede4;
+}
+
+.section[data-theme='route-water'] .cards {
+  background: #f5f2ec;
+}
+
+/* Swimmer and Tuber trainers get aquatic card accents outside gym sections. */
+.section:not([data-theme^='gym']) .trainer-card.trainer-theme-swimmer {
+  --trainer-card-bg: #d3e5f8;
+  --trainer-left-bg: #3f84c2;
+  --trainer-tag-bg: #b8d7f2;
+  --mon-bg: #ebf3fb;
+  --mon-head-bg: #4f93cd;
+  --moves-bg: #e2eef9;
+}
+
+.section:not([data-theme^='gym']) .trainer-card.trainer-theme-psychic {
+  --trainer-card-bg: #ebdcf8;
+  --trainer-left-bg: #8758bc;
+  --trainer-tag-bg: #d8b9ee;
+  --mon-bg: #f4ecfb;
+  --mon-head-bg: #986bc8;
+  --moves-bg: #eee2f8;
+}
+
+.section:not([data-theme^='gym']) .trainer-card.trainer-theme-camper {
+  --trainer-card-bg: #e4e6c6;
+  --trainer-left-bg: #889a4a;
+  --trainer-tag-bg: #c8d497;
+  --mon-bg: #f2f3e1;
+  --mon-head-bg: #96a85a;
+  --moves-bg: #eaedd2;
+}
+
+.section:not([data-theme^='gym']) .trainer-card.trainer-theme-thug {
+  --trainer-card-bg: #cbc6c9;
+  --trainer-left-bg: #4a4a52;
+  --trainer-tag-bg: #b6b3bb;
+  --mon-bg: #ddd8db;
+  --mon-head-bg: #585862;
+  --moves-bg: #d4ced2;
+}
+
+.section:not([data-theme^='gym']) .trainer-card.trainer-theme-fighter {
+  --trainer-card-bg: #f1d9cc;
+  --trainer-left-bg: #9a4d34;
+  --trainer-tag-bg: #dfb59f;
+  --mon-bg: #f8ebe3;
+  --mon-head-bg: #ab6044;
+  --moves-bg: #f3e1d6;
+}
+
+.section:not([data-theme^='gym']) .trainer-card.trainer-theme-bug {
+  --trainer-card-bg: #deebc8;
+  --trainer-left-bg: #6d8f3f;
+  --trainer-tag-bg: #b9d194;
+  --mon-bg: #edf5df;
+  --mon-head-bg: #7ea14e;
+  --moves-bg: #e6f0d3;
+}
+
+.section:not([data-theme^='gym']) .trainer-card.trainer-theme-kid {
+  --trainer-card-bg: #eadfce;
+  --trainer-left-bg: #b8956d;
+  --trainer-tag-bg: #d8c2a2;
+  --mon-bg: #f7f1e8;
+  --mon-head-bg: #c6a277;
+  --moves-bg: #f2e9dc;
+}
+
+.section:not([data-theme^='gym']) .trainer-card.trainer-theme-gentleman {
+  --trainer-card-bg: #daccb7;
+  --trainer-left-bg: #92714f;
+  --trainer-tag-bg: #c1a07b;
+  --mon-bg: #f0e8de;
+  --mon-head-bg: #a5825d;
+  --moves-bg: #e8ddcf;
+}
+
+.section:not([data-theme^='gym']) .trainer-card.trainer-theme-hiker {
+  --trainer-card-bg: #d4c2ae;
+  --trainer-left-bg: #6b4f3a;
+  --trainer-tag-bg: #9e7a5b;
+  --mon-bg: #ece1d6;
+  --mon-head-bg: #806148;
+  --moves-bg: #e2d4c6;
+}
+
+.section:not([data-theme^='gym']) .trainer-card.trainer-theme-beauty {
+  --trainer-card-bg: #f1d4e5;
+  --trainer-left-bg: #c56da0;
+  --trainer-tag-bg: #e2a9c8;
+  --mon-bg: #f9e9f2;
+  --mon-head-bg: #d184b1;
+  --moves-bg: #f4ddea;
+}
+
+.section:not([data-theme^='gym']) .trainer-card.trainer-theme-biker {
+  --trainer-card-bg: #daccf2;
+  --trainer-left-bg: #6a48a8;
+  --trainer-tag-bg: #ab92d6;
+  --mon-bg: #eee7fa;
+  --mon-head-bg: #8063b8;
+  --moves-bg: #e4daf6;
+}
+
+.section:not([data-theme^='gym']) .trainer-card.trainer-theme-birdkeeper {
+  --trainer-card-bg: #d8edf3;
+  --trainer-left-bg: #4e8da8;
+  --trainer-tag-bg: #b8d7a2;
+  --mon-bg: #edf8fb;
+  --mon-head-bg: #70aecd;
+  --moves-bg: #e2f2f7;
+}
+
+/* Gym tags should be lighter than the gym trainer body color. */
+.section[data-theme^='gym'] .trainer-card {
+  --trainer-tag-bg: color-mix(in srgb, var(--trainer-left-bg) 55%, #ffffff 45%);
 }
 
 .section[data-theme='forest'] {
@@ -502,11 +659,15 @@ h1 { margin: 0 0 8px 0; }
     --enc-line: #3f6484;
     --enc-grid-line: #4f7494;
     --enc-th-bg: #b6cde3;
-    --trainer-card-bg: #cbdae8;
-    --trainer-left-bg: #3f84c2;
-    --mon-bg: #e9f0f7;
-    --mon-head-bg: #3f84c2;
-    --moves-bg: #e5edf5;
+    --trainer-card-bg: #e3ddd3;
+    --trainer-left-bg: #d0c5b5;
+    --mon-bg: #f7f3ec;
+    --mon-head-bg: #d0c5b5;
+    --moves-bg: #f2ede4;
+  }
+
+  .section[data-theme='city-cerulean'] .cards {
+    background: #f5f2ec;
 }
 
 /* Water/Misty — vivid ocean blue */

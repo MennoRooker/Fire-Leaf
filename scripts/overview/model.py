@@ -43,23 +43,22 @@ from .parsing import (
 
 SECTION_THEME_OVERRIDES: Dict[str, str] = {
     "pewter city": "city-pewter",
+    "pewter city gym": "gym-pewter",
     "cerulean city": "city-cerulean",
+    "cerulean city gym": "gym-cerulean",
     "vermilion city": "city-vermilion",
+    "vermillion city gym": "gym-vermilion",
     "celadon city": "city-celadon",
+    "celadon city gym": "gym-celadon",
+    "saffron city dojo": "city-cinnabar",
     "fuchsia city": "city-fuchsia",
     "saffron city": "city-saffron",
     "viridian city": "city-viridian",
     "cinnabar island": "city-cinnabar",
-    "pewter city gym": "gym-pewter",
-    "cerulean city gym": "gym-cerulean",
-    "vermilion city gym": "gym-vermilion",
-    "celadon city gym": "gym-celadon",
+    "cinnabar island gym": "gym-cinnabar",
     "fuchsia city gym": "gym-fuchsia",
     "saffron city gym": "gym-saffron",
     "viridian city gym": "gym-viridian",
-    "cinnabar island gym": "gym-cinnabar",
-    "cinnabar gym": "gym-cinnabar",
-    "vermillion city gym": "gym-vermilion",
     # Elite Four
     "lorelei": "e4-lorelei",
     "bruno": "e4-bruno",
@@ -325,6 +324,19 @@ def resolve_section_theme(section_name: str) -> str:
     key = section_name.strip().lower()
     if key in SECTION_THEME_OVERRIDES:
         return SECTION_THEME_OVERRIDES[key]
+
+    if key in {
+        "route 19 water",
+        "route 20 east",
+        "route 20 west",
+        "route 21 north",
+        "route 21 south",
+    }:
+        return "route-water"
+
+    if "safari zone" in key:
+        return "forest"
+
     if "forest" in key:
         return "forest"
 
@@ -729,6 +741,55 @@ def build_model(section_filter: Optional[str]) -> Dict[str, object]:
             or trainer_key.startswith("TRAINER_CHAMPION_")
             or trainer_key.startswith("TRAINER_RIVAL_")
         )
+
+    def resolve_trainer_theme(trainer_class_token: str) -> str:
+        token = trainer_class_token.upper()
+        token_parts = set(token.split("_"))
+
+        def has_any_part(*parts: str) -> bool:
+            return any(part in token_parts for part in parts)
+
+        if has_any_part("YOUNGSTER", "LASS", "TWINS"):
+            return "kid"
+        if has_any_part("GENTLEMAN", "GAMER"):
+            return "gentleman"
+        if has_any_part("HIKER"):
+            return "hiker"
+        if has_any_part("BEAUTY"):
+            return "beauty"
+        if has_any_part("BIKER"):
+            return "biker"
+        if has_any_part("BIRD", "KEEPER"):
+            return "birdkeeper"
+        if has_any_part("SWIMMER", "TUBER", "TRIATHLETE", "FISHERMAN", "SAILOR") or (
+            has_any_part("SIS") and has_any_part("BRO")
+        ):
+            return "swimmer"
+        if has_any_part("PSYCHIC", "CHANNELER") or (
+            has_any_part("HEX") and has_any_part("MANIAC")
+        ):
+            return "psychic"
+        if has_any_part("PICNICKER", "CAMPER") or (
+            has_any_part("AROMA") and has_any_part("LADY")
+        ) or (
+            has_any_part("RUIN") and has_any_part("MANIAC")
+        ):
+            return "camper"
+        if has_any_part("ROCKET", "SCIENTIST", "BURGLAR", "BOSS"):
+            return "thug"
+        if has_any_part("CRUSH", "TAMER", "NINJA") or (
+            has_any_part("BLACK") and has_any_part("BELT")
+        ) or (
+            has_any_part("BATTLE") and has_any_part("GIRL")
+        ) or (
+            has_any_part("CUE") and has_any_part("BALL")
+        ):
+            return "fighter"
+        if has_any_part("RANGER") or (
+            has_any_part("BUG") and (has_any_part("CATCHER") or has_any_part("MANIAC"))
+        ):
+            return "bug"
+        return "default"
     
     # Persist the order of trainers as in trainer_parties.h
     party_order_index = {name: idx for idx, name in enumerate(parties.keys())}
@@ -755,6 +816,7 @@ def build_model(section_filter: Optional[str]) -> Dict[str, object]:
             "id": trainer_id,
             "name": trainer_name,
             "class": trainer_class_names.get(trainer_class_token, pretty_token(trainer_class_token, "TRAINER_CLASS_")),
+            "theme": resolve_trainer_theme(trainer_class_token),
             "isMajor": is_major_trainer(trainer_id, trainer_class_token),
             "sprite": trainer_pic_path(trainer["trainerPic"]),
             "partyMacro": trainer["partyMacro"],
