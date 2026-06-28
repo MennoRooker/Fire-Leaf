@@ -28,54 +28,47 @@ def resolve_tiles_png_path(metatiles_rel_path: str) -> Optional[str]:
 
 @lru_cache(maxsize=1)
 def parse_tileset_tiles_png_paths() -> Dict[str, str]:
-   """Map gTileset_* symbols to the tiles.png used at runtime (via headers.h + graphics.h)."""
-   headers_text = read_text("src/data/tilesets/headers.h")
-   graphics_text = read_text("src/data/tilesets/graphics.h")
+    """Map gTileset_* symbols to the tiles.png used at runtime (via headers.h + graphics.h)."""
+    headers_text = read_text("src/data/tilesets/headers.h")
+    graphics_text = read_text("src/data/tilesets/graphics.h")
 
+    tiles_symbol_to_png: Dict[str, str] = {}
+    for tiles_symbol, bin_path in re.findall(
+        r"const u32\s+(gTilesetTiles_[A-Za-z0-9_]+)\[\]\s*=\s*INCBIN_U32\(\"([^\"]+)\"\);",
+        graphics_text,
+    ):
+        png_path = re.sub(r"\.4bpp(?:\.lz)?$", ".png", bin_path)
+        tiles_symbol_to_png[tiles_symbol] = png_path
 
-   tiles_symbol_to_png: Dict[str, str] = {}
-   for tiles_symbol, bin_path in re.findall(
-       r"const u32\s+(gTilesetTiles_[A-Za-z0-9_]+)\[\]\s*=\s*INCBIN_U32\(\"([^\"]+)\"\);",
-       graphics_text,
-   ):
-       png_path = re.sub(r"\.4bpp(?:\.lz)?$", ".png", bin_path)
-       tiles_symbol_to_png[tiles_symbol] = png_path
+    out: Dict[str, str] = {}
+    header_re = re.compile(
+        r"const struct Tileset\s+(gTileset_[A-Za-z0-9_]+)\s*=\s*\{(.*?)\};",
+        re.S,
+    )
+    tiles_ref_re = re.compile(r"\.tiles\s*=\s*(gTilesetTiles_[A-Za-z0-9_]+)")
 
+    for match in header_re.finditer(headers_text):
+        tileset_symbol = match.group(1)
+        tiles_ref = tiles_ref_re.search(match.group(2))
+        if not tiles_ref:
+            continue
+        png_path = tiles_symbol_to_png.get(tiles_ref.group(1))
+        if png_path:
+            out[tileset_symbol] = png_path
 
-   out: Dict[str, str] = {}
-   header_re = re.compile(
-       r"const struct Tileset\s+(gTileset_[A-Za-z0-9_]+)\s*=\s*\{(.*?)\};",
-       re.S,
-   )
-   tiles_ref_re = re.compile(r"\.tiles\s*=\s*(gTilesetTiles_[A-Za-z0-9_]+)")
-
-
-   for match in header_re.finditer(headers_text):
-       tileset_symbol = match.group(1)
-       tiles_ref = tiles_ref_re.search(match.group(2))
-       if not tiles_ref:
-           continue
-       png_path = tiles_symbol_to_png.get(tiles_ref.group(1))
-       if png_path:
-           out[tileset_symbol] = png_path
-
-
-   return out
+    return out
 
 
 def resolve_tileset_tiles_png_path(tileset_symbol: str, metatiles_rel_path: Optional[str] = None) -> Optional[str]:
-   """Resolve tiles.png for a tileset symbol, following shared tile sources from headers.h."""
-   mapped = parse_tileset_tiles_png_paths().get(tileset_symbol)
-   if mapped and (ROOT / mapped).is_file():
-       return mapped
+    """Resolve tiles.png for a tileset symbol, following shared tile sources from headers.h."""
+    mapped = parse_tileset_tiles_png_paths().get(tileset_symbol)
+    if mapped and (ROOT / mapped).is_file():
+        return mapped
 
+    if metatiles_rel_path:
+        return resolve_tiles_png_path(metatiles_rel_path)
 
-   if metatiles_rel_path:
-       return resolve_tiles_png_path(metatiles_rel_path)
-
-
-   return None
-
+    return None
 
 ENCOUNTER_KIND_ORDER = [
     "land_mons",
@@ -451,43 +444,77 @@ def parse_object_event_pic_symbol_to_png_path() -> Dict[str, str]:
 
 
 @lru_cache(maxsize=1)
-def parse_object_event_pic_tables() -> Dict[str, Dict[str, int | str]]:
+def parse_object_event_pic_tables() -> Dict[str, Dict[str, Any]]:
     text = read_text("src/data/object_events/object_event_pic_tables.h")
-    out: Dict[str, Dict[str, int | str]] = {}
+    out: Dict[str, Dict[str, Any]] = {}
     table_re = re.compile(r"static const struct SpriteFrameImage\s+(sPicTable_[A-Za-z0-9_]+)\[\]\s*=\s*\{(.*?)\n\};", re.S)
-    first_frame_re = re.compile(r"overworld_frame\((gObjectEventPic_[A-Za-z0-9_]+),\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\)")
+    frame_re = re.compile(r"overworld_frame\((gObjectEventPic_[A-Za-z0-9_]+),\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\)")
 
     for table_symbol, body in table_re.findall(text):
-        frame_match = first_frame_re.search(body)
-        if not frame_match:
+        frames = frame_re.findall(body)
+        if not frames:
             continue
-        pic_symbol, tiles_w_s, tiles_h_s, frame_idx_s = frame_match.groups()
+        pic_symbol, tiles_w_s, tiles_h_s, frame_idx_s = frames[0]
+        # Each pic-table entry maps an animation frame index to a source frame
+        # in the sprite sheet (the 4th overworld_frame() argument). Standard NPC
+        # sheets are laid out as a horizontal strip, so frameX == sourceFrame * frameW.
         out[table_symbol] = {
             "picSymbol": pic_symbol,
             "tilesW": int(tiles_w_s),
             "tilesH": int(tiles_h_s),
             "frame": int(frame_idx_s),
+            "sourceFrames": [int(entry[3]) for entry in frames],
+            "frameCount": len(frames),
         }
     return out
 
 
 @lru_cache(maxsize=1)
-def parse_object_event_graphics_info_tables() -> Dict[str, Dict[str, int | str]]:
+def parse_object_event_graphics_info_tables() -> Dict[str, Dict[str, Any]]:
     text = read_text("src/data/object_events/object_event_graphics_info.h")
-    out: Dict[str, Dict[str, int | str]] = {}
+    out: Dict[str, Dict[str, Any]] = {}
     info_re = re.compile(r"const struct ObjectEventGraphicsInfo\s+(gObjectEventGraphicsInfo_[A-Za-z0-9_]+)\s*=\s*\{(.*?)\n\};", re.S)
 
     for info_symbol, body in info_re.findall(text):
         images_match = re.search(r"\.images\s*=\s*(sPicTable_[A-Za-z0-9_]+)", body)
         width_match = re.search(r"\.width\s*=\s*(-?\d+)", body)
         height_match = re.search(r"\.height\s*=\s*(-?\d+)", body)
+        inanimate_match = re.search(r"\.inanimate\s*=\s*(TRUE|FALSE)", body)
         if not images_match:
             continue
         out[info_symbol] = {
             "picTable": images_match.group(1),
             "width": int(width_match.group(1)) if width_match else 16,
             "height": int(height_match.group(1)) if height_match else 16,
+            # Inanimate objects (trees, rocks, boulders, item balls, ...) never
+            # turn to face a direction; their extra frames are interaction
+            # animations, so they must always render frame 0.
+            "inanimate": bool(inanimate_match and inanimate_match.group(1) == "TRUE"),
         }
+    return out
+
+
+@lru_cache(maxsize=1)
+def parse_initial_movement_facing_directions() -> Dict[str, str]:
+    """Map MOVEMENT_TYPE_* to the DIR_* an object faces when first placed.
+
+    Mirrors gInitialMovementTypeFacingDirections[] in src/event_object_movement.c,
+    which is what porymap uses to orient event sprites in the map editor.
+    """
+    text = read_text("src/event_object_movement.c")
+    table_match = re.search(
+        r"gInitialMovementTypeFacingDirections\s*\[[^\]]*\]\s*=\s*\{(.*?)\n\};",
+        text,
+        re.S,
+    )
+    out: Dict[str, str] = {}
+    if not table_match:
+        return out
+    for movement_type, direction in re.findall(
+        r"\[(MOVEMENT_TYPE_[A-Z0-9_]+)\]\s*=\s*(DIR_[A-Z]+)",
+        table_match.group(1),
+    ):
+        out[movement_type] = direction
     return out
 
 
@@ -501,18 +528,21 @@ def parse_object_event_gfx_to_info_symbol() -> Dict[str, str]:
     return out
 
 
-def parse_map_visible_object_events(map_json_rel_path: str) -> List[Dict[str, Any]]:
+def parse_map_object_events(map_json_rel_path: str) -> List[Dict[str, Any]]:
+    """Return every object event placed on a map (matching porymap's view).
+
+    Flag-gated events (the Route 22 rival, hidden Team Rocket grunts, cuttable
+    trees, rock-smash rocks, strength boulders, ...) are intentionally kept here
+    even though the game hides them behind flags during normal play.
+    """
     map_data = json.loads(read_text(map_json_rel_path))
     out: List[Dict[str, Any]] = []
+    seen: set = set()
 
     for event in map_data.get("object_events", []):
         if not isinstance(event, dict):
             continue
         if str(event.get("type", "")) != "object":
-            continue
-
-        # Skip story/state-gated objects by default; these are often hidden by flags.
-        if str(event.get("flag", "0")) != "0":
             continue
 
         gfx_token = str(event.get("graphics_id", ""))
@@ -525,10 +555,17 @@ def parse_map_visible_object_events(map_json_rel_path: str) -> List[Dict[str, An
         except (TypeError, ValueError):
             continue
 
+        movement_type = str(event.get("movement_type", ""))
+        dedupe_key = (gfx_token, x, y, movement_type)
+        if dedupe_key in seen:
+            continue
+        seen.add(dedupe_key)
+
         out.append({
             "graphicsId": gfx_token,
             "x": x,
             "y": y,
+            "movementType": movement_type,
         })
 
     return out

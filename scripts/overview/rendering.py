@@ -9,12 +9,25 @@ from pathlib import Path
 from typing import Dict, List
 
 from .parsing import (
-    parse_map_visible_object_events,
+    parse_initial_movement_facing_directions,
+    parse_map_object_events,
     parse_object_event_gfx_to_info_symbol,
     parse_object_event_graphics_info_tables,
     parse_object_event_pic_symbol_to_png_path,
     parse_object_event_pic_tables,
 )
+
+
+# Animation-frame index (into a pic table) used to render each facing
+# direction, plus whether the frame is horizontally flipped. Mirrors the
+# standard object-event anim tables: south=0, north=1, west=2, east=2 flipped.
+FACE_DIRECTION_FRAME = {
+    "DIR_NONE": (0, False),
+    "DIR_SOUTH": (0, False),
+    "DIR_NORTH": (1, False),
+    "DIR_WEST": (2, False),
+    "DIR_EAST": (2, True),
+}
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -322,9 +335,10 @@ def _build_map_object_overlay(map_render: Dict[str, object], asset_url) -> List[
     info_tables = parse_object_event_graphics_info_tables()
     pic_tables = parse_object_event_pic_tables()
     pic_paths = parse_object_event_pic_symbol_to_png_path()
+    movement_facing = parse_initial_movement_facing_directions()
 
     objects: List[Dict[str, object]] = []
-    for event in parse_map_visible_object_events(map_json_path):
+    for event in parse_map_object_events(map_json_path):
         gfx_token = str(event.get("graphicsId", ""))
         info_symbol = gfx_to_info.get(gfx_token)
         if not info_symbol:
@@ -342,7 +356,17 @@ def _build_map_object_overlay(map_render: Dict[str, object], asset_url) -> List[
         frame_tiles_h = int(frame_meta.get("tilesH", 2))
         frame_w = max(8, frame_tiles_w * 8)
         frame_h = max(8, frame_tiles_h * 8)
-        frame_idx = max(0, int(frame_meta.get("frame", 0)))
+
+        source_frames = frame_meta.get("sourceFrames") or [int(frame_meta.get("frame", 0))]
+
+        # Orient the sprite the way porymap does: derive the facing direction
+        # from the event's movement type, then pick the matching anim frame.
+        direction = movement_facing.get(str(event.get("movementType", "")), "DIR_SOUTH")
+        anim_index, flip = FACE_DIRECTION_FRAME.get(direction, (0, False))
+        if bool(info.get("inanimate")) or anim_index >= len(source_frames):
+            anim_index, flip = 0, False
+
+        source_frame = max(0, int(source_frames[anim_index]))
 
         draw_w = max(8, int(info.get("width", frame_w)))
         draw_h = max(8, int(info.get("height", frame_h)))
@@ -352,12 +376,13 @@ def _build_map_object_overlay(map_render: Dict[str, object], asset_url) -> List[
                 "x": int(event.get("x", 0)),
                 "y": int(event.get("y", 0)),
                 "spriteUrl": asset_url(png_path),
-                "frameX": frame_idx * frame_w,
+                "frameX": source_frame * frame_w,
                 "frameY": 0,
                 "frameW": frame_w,
                 "frameH": frame_h,
                 "drawW": draw_w,
                 "drawH": draw_h,
+                "flip": flip,
             }
         )
 

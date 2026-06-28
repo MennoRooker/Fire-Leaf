@@ -128,7 +128,17 @@
       const dy = Math.floor((mapY - yStart) * 16 + 16 - drawH);
 
       // Event-object sprites are anchored near tile bottom center in-game.
-      ctx.drawImage(img, frameX, frameY, frameW, frameH, dx, dy, drawW, drawH);
+      // East-facing sprites reuse the west frame mirrored horizontally, just
+      // like the standard object-event anim tables.
+      if (object.flip) {
+        ctx.save();
+        ctx.translate(dx + drawW, dy);
+        ctx.scale(-1, 1);
+        ctx.drawImage(img, frameX, frameY, frameW, frameH, 0, 0, drawW, drawH);
+        ctx.restore();
+      } else {
+        ctx.drawImage(img, frameX, frameY, frameW, frameH, dx, dy, drawW, drawH);
+      }
     }
   }
 
@@ -355,6 +365,10 @@
     const fullHeight = isFullHeight(payload, canvas);
     const mapFullHeightPx = getMapFullHeightPx();
 
+    // Never force the container to a fixed height. fullHeight only raises the
+    // ceiling the map may scale up to (mapFullHeightPx); the border still
+    // shrink-wraps the scaled canvas, so maps limited by width stop short of
+    // 900px instead of leaving vertical gaps.
     mapLeft.style.minHeight = "";
 
     let scale;

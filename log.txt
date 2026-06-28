@@ -1366,7 +1366,10 @@ x Silph Co. floors
 - Indigo Plateau
 - Champion Rematch
 - Remove duplicates
-- Seperate trainer cards 
+- Seperate trainer cards
+- Trainer theme colors
+- Gym overrides trainer color
+- Boss fight name color
 
 
 

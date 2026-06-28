@@ -61,10 +61,12 @@
     },
     "Route 10 South": {
       "mapToken": "ROUTE10",
-      "crop": { "y0": 0.66, "y1": 1.0 }
+      "crop": { "y0": 0.66, "y1": 1.0 },
+      "hideEncounters": true,
+      "mapScaleMax": 0.5
     },
     "Lavender Town": {
-      "mapScaleMax": 0.8
+      "mapScaleMax": 0.7
     },
     "Route 12 North": {
       "mapToken": "ROUTE12",
@@ -72,7 +74,31 @@
       "hideEncounters": ["land_mons"]
     },
     "Pokémon Tower 2F": {
-      "mapToken": "POKEMON_TOWER_2F"
+      "mapToken": "POKEMON_TOWER_2F",
+      "mapScaleMax": 0.6
+    },
+    "Route 16 East": {
+      "mapToken": "ROUTE16",
+      "crop": { "x0": 0.45, "x1": 1.0 }
+    },
+    "Game Corner": {
+      "mapToken": "CELADON_CITY_GAME_CORNER",
+      "mapScaleMax": 0.6
+    },
+    "Rocket Hideout B1F": {
+      "mapScaleMax": 0.8
+    },
+    "Rocket Hideout B2F": {
+      "mapScaleMax": 0.8
+    },
+    "Rocket Hideout B3F": {
+      "mapScaleMax": 0.8
+    },
+    "Rocket Hideout B4F": {
+      "mapScaleMax": 0.8
+    },
+    "Celadon City Gym": {
+      "mapScaleMax": 0.4
     },
     "Pokémon Tower 3F": {
       "mapToken": "POKEMON_TOWER_3F"
@@ -88,17 +114,6 @@
     },
     "Pokémon Tower 7F": {
       "mapToken": "POKEMON_TOWER_7F"
-    },
-    "Route 16 East": {
-      "mapToken": "ROUTE16",
-      "crop": { "x0": 0.45, "x1": 1.0 }
-    },
-    "Game Corner": {
-      "mapToken": "CELADON_CITY_GAME_CORNER",
-      "mapScaleMax": 0.7
-    },
-    "Celadon City Gym": {
-      "mapScaleMax": 0.4
     },
     "Saffron City Dojo": {
       "mapScaleMax": 0.4
@@ -127,39 +142,47 @@
       "mapScaleMax": 0.4 
     },
     "Silph Co. 2F": {
-      "mapToken": "SILPH_CO_2F"
+      "mapToken": "SILPH_CO_2F",
+      "mapScaleMax": 0.8
     },
     "Silph Co. 3F": {
-      "mapToken": "SILPH_CO_3F"
+      "mapToken": "SILPH_CO_3F",
+      "mapScaleMax": 0.8
     },
     "Silph Co. 4F": {
-      "mapToken": "SILPH_CO_4F"
+      "mapToken": "SILPH_CO_4F",
+      "mapScaleMax": 0.8
     },
     "Silph Co. 5F": {
-      "mapToken": "SILPH_CO_5F"
+      "mapToken": "SILPH_CO_5F",
+      "mapScaleMax": 0.8
     },
     "Silph Co. 6F": {
-      "mapToken": "SILPH_CO_6F"
+      "mapToken": "SILPH_CO_6F",
+      "mapScaleMax": 0.7
     },
     "Silph Co. 7F": {
-      "mapToken": "SILPH_CO_7F"
+      "mapToken": "SILPH_CO_7F",
+      "mapScaleMax": 0.7
     },
     "Silph Co. 8F": {
-      "mapToken": "SILPH_CO_8F"
+      "mapToken": "SILPH_CO_8F",
+      "mapScaleMax": 0.7
     },
     "Silph Co. 9F": {
-      "mapToken": "SILPH_CO_9F"
+      "mapToken": "SILPH_CO_9F",
+      "mapScaleMax": 0.7
     },
     "Silph Co. 10F": {
       "mapToken": "SILPH_CO_10F",
-      "mapScaleMax": 0.6
+      "mapScaleMax": 0.45
     },
     "Silph Co. 11F": {
       "mapToken": "SILPH_CO_11F",
-      "mapScaleMax": 0.6
+      "mapScaleMax": 0.45
     },
     "Saffron City Gym": {
-      "mapScaleMax": 0.4 
+      "mapScaleMax": 0.55
     },
     "Route 10 Surf": {
       "mapToken": "ROUTE10",
@@ -205,7 +228,7 @@
     },
     "Kindle Road North": {
       "mapToken": "ONE_ISLAND_KINDLE_ROAD",
-      "crop": { "y0": 0.0, "y1": 0.56 },
+      "crop": { "y0": 0.0, "y1": 0.54 },
       "hideEncounters": ["land_mons", "rock_smash_mons"]
     },
     "Mt. Ember": {
@@ -215,14 +238,18 @@
       "mapToken": "MT_EMBER_SUMMIT_PATH_2F"
     },
     "Cape Brink": {
-      "mapToken": "TWO_ISLAND_CAPE_BRINK"
+      "mapToken": "TWO_ISLAND_CAPE_BRINK",
+      "crop": { "y0": 0.3, "y1": 1.0 }
+    },
+    "Three Island Port": {
+      "crop": { "x0": 0.10, "x1": 0.9 }
     },
     "Three Island": {
       "hideEncounters": true,
-      "mapScaleMax": 0.4
+      "mapScaleMax": 0.5
     },
     "Viridian City Gym": {
-      "mapScaleMax": 0.4
+      "mapScaleMax": 0.5
     },
     "Route 23": {
       "crop": { "y0": 0.17, "y1": 0.97 }

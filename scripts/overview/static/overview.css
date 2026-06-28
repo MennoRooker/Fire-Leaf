@@ -493,7 +493,7 @@ h1 { margin: 0 0 8px 0; }
 
 .section[data-theme='city-cerulean'] {
     --section-bg: #d3deea;
-    --section-head-bg: #3f84c2;
+    --section-head-bg: #007ba7;
     --map-pane-bg: #c3d3e3;
     --map-left-bg: #adc3d9;
     --enc-bg: #d8e5f2;
@@ -524,8 +524,8 @@ h1 { margin: 0 0 8px 0; }
 }
 
 .section[data-theme='city-vermilion'] {
-    --section-bg: #efe0d3;
-    --section-head-bg: #d98749;
+    --section-bg: #e8d7c8;
+    --section-head-bg: #ff3b2d;
     --map-pane-bg: #e5d0be;
     --map-left-bg: #ddc2ab;
     --enc-bg: #f2e6db;
