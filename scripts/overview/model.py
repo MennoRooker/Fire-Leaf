@@ -47,11 +47,12 @@ SECTION_THEME_OVERRIDES: Dict[str, str] = {
     "cerulean city": "city-cerulean",
     "cerulean city gym": "gym-cerulean",
     "vermilion city": "city-vermilion",
-    "vermillion city gym": "gym-vermilion",
+    "vermilion city gym": "gym-vermilion",
     "celadon city": "city-celadon",
     "celadon city gym": "gym-celadon",
     "saffron city dojo": "city-cinnabar",
     "fuchsia city": "city-fuchsia",
+    "lavender town": "city-lavender",
     "saffron city": "city-saffron",
     "viridian city": "city-viridian",
     "cinnabar island": "city-cinnabar",
@@ -59,11 +60,12 @@ SECTION_THEME_OVERRIDES: Dict[str, str] = {
     "fuchsia city gym": "gym-fuchsia",
     "saffron city gym": "gym-saffron",
     "viridian city gym": "gym-viridian",
-    # Elite Four
+    # League
     "lorelei": "e4-lorelei",
     "bruno": "e4-bruno",
     "agatha": "e4-agatha",
     "lance": "e4-lance",
+    "champion": "champion",
 }
 
 SECTION_MAP_TOKEN_OVERRIDES: Dict[str, str] = {
@@ -325,7 +327,21 @@ def resolve_section_theme(section_name: str) -> str:
     if key in SECTION_THEME_OVERRIDES:
         return SECTION_THEME_OVERRIDES[key]
 
+    if "pokémon tower" in key:
+        return "tower-ghost"
+
+    if "seafoam" in key:
+        return "ice"
+    
     if key in {
+        "treasure beach",
+        "kindle road south",
+        "kindle road north"
+    }:
+        return "route"
+
+    if key in {
+        "route 12 north",
         "route 19 water",
         "route 20 east",
         "route 20 west",
@@ -339,6 +355,9 @@ def resolve_section_theme(section_name: str) -> str:
 
     if "forest" in key:
         return "forest"
+    
+    if "pallet" in key:
+        return "forest"
 
     cave_markers = (
         "cave",
@@ -349,7 +368,6 @@ def resolve_section_theme(section_name: str) -> str:
         "victory road",
         "hideout",
         "rocket hideout",
-        "pokemon tower",
     )
     if any(marker in key for marker in cave_markers):
         return "cave"
@@ -732,40 +750,56 @@ def build_model(section_filter: Optional[str]) -> Dict[str, object]:
         token = trainer_class_token.upper()
         trainer_key = trainer_id.upper()
         return (
+            trainer_key == "TRAINER_BLACK_BELT_KOICHI"
+            or
             "LEADER" in token
             or "ELITE_FOUR" in token
             or "CHAMPION" in token
             or "RIVAL" in token
+            or "BOSS" in token
             or trainer_key.startswith("TRAINER_LEADER_")
             or trainer_key.startswith("TRAINER_ELITE_FOUR_")
             or trainer_key.startswith("TRAINER_CHAMPION_")
             or trainer_key.startswith("TRAINER_RIVAL_")
+            or trainer_key.startswith("TRAINER_BOSS_")
         )
 
-    def resolve_trainer_theme(trainer_class_token: str) -> str:
+    def resolve_trainer_theme(trainer_class_token: str, trainer_id: str) -> str:
+        trainer_key = trainer_id.upper()
+        if "GIOVANNI" in trainer_key:
+            return "thug"
+
         token = trainer_class_token.upper()
         token_parts = set(token.split("_"))
 
         def has_any_part(*parts: str) -> bool:
             return any(part in token_parts for part in parts)
 
+        if has_any_part("RIVAL", "CHAMPION"):
+            return "rival"
         if has_any_part("YOUNGSTER", "LASS", "TWINS"):
             return "kid"
         if has_any_part("GENTLEMAN", "GAMER"):
             return "gentleman"
         if has_any_part("HIKER"):
             return "hiker"
-        if has_any_part("BEAUTY"):
+        if has_any_part("BEAUTY", "LADY", "BREEDER", "PAINTER"):
             return "beauty"
-        if has_any_part("BIKER"):
-            return "biker"
-        if has_any_part("BIRD", "KEEPER"):
+        if has_any_part("BIKER", "NERD", "ENGINEER", "POKEMANIAC", "SCIENTIST"):
+            return "maniac"
+        if has_any_part("ROCKER"):
+            return "rocker"
+        if has_any_part("COUPLE"):
+            return "couple"
+        if has_any_part("COOLTRAINER"):
+            return "cooltrainer"
+        if has_any_part("BIRDKEEPER") or has_any_part("BIRD", "KEEPER"):
             return "birdkeeper"
         if has_any_part("SWIMMER", "TUBER", "TRIATHLETE", "FISHERMAN", "SAILOR") or (
             has_any_part("SIS") and has_any_part("BRO")
         ):
             return "swimmer"
-        if has_any_part("PSYCHIC", "CHANNELER") or (
+        if has_any_part("PSYCHIC", "CHANNELER", "JUGGLER") or (
             has_any_part("HEX") and has_any_part("MANIAC")
         ):
             return "psychic"
@@ -775,7 +809,7 @@ def build_model(section_filter: Optional[str]) -> Dict[str, object]:
             has_any_part("RUIN") and has_any_part("MANIAC")
         ):
             return "camper"
-        if has_any_part("ROCKET", "SCIENTIST", "BURGLAR", "BOSS"):
+        if has_any_part("ROCKET", "BURGLAR"):
             return "thug"
         if has_any_part("CRUSH", "TAMER", "NINJA") or (
             has_any_part("BLACK") and has_any_part("BELT")
@@ -816,7 +850,7 @@ def build_model(section_filter: Optional[str]) -> Dict[str, object]:
             "id": trainer_id,
             "name": trainer_name,
             "class": trainer_class_names.get(trainer_class_token, pretty_token(trainer_class_token, "TRAINER_CLASS_")),
-            "theme": resolve_trainer_theme(trainer_class_token),
+            "theme": resolve_trainer_theme(trainer_class_token, trainer_id),
             "isMajor": is_major_trainer(trainer_id, trainer_class_token),
             "sprite": trainer_pic_path(trainer["trainerPic"]),
             "partyMacro": trainer["partyMacro"],

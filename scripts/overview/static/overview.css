@@ -268,8 +268,9 @@ h1 { margin: 0 0 8px 0; }
 }
 
 .trainer-card--major .trainer-id {
-  background: var(--trainer-tag-bg, var(--trainer-left-bg));
+  background: var(--trainer-left-bg);
   flex-grow: 1;
+  color: #fff;
 }
 
 .trainer-card--compact .trainer-left {
@@ -369,6 +370,7 @@ h1 { margin: 0 0 8px 0; }
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
+  min-height: 24px;
   column-gap: var(--item-icon-gap);
   padding-right: var(--item-icon-right-pad);
 }
@@ -510,20 +512,20 @@ h1 { margin: 0 0 8px 0; }
 }
 
 .section:not([data-theme^='gym']) .trainer-card.trainer-theme-kid {
-  --trainer-card-bg: #eadfce;
-  --trainer-left-bg: #b8956d;
-  --trainer-tag-bg: #d8c2a2;
-  --mon-bg: #f7f1e8;
-  --mon-head-bg: #c6a277;
-  --moves-bg: #f2e9dc;
+  --trainer-card-bg: #f7e8be;
+  --trainer-left-bg: #d9a64a;
+  --trainer-tag-bg: #edc978;
+  --mon-bg: #fdf3d9;
+  --mon-head-bg: #e3b55a;
+  --moves-bg: #f8eaca;
 }
 
 .section:not([data-theme^='gym']) .trainer-card.trainer-theme-gentleman {
   --trainer-card-bg: #daccb7;
-  --trainer-left-bg: #92714f;
-  --trainer-tag-bg: #c1a07b;
+  --trainer-left-bg: #ba9775;
+  --trainer-tag-bg: #e5ccaf;
   --mon-bg: #f0e8de;
-  --mon-head-bg: #a5825d;
+  --mon-head-bg: #ba9775;
   --moves-bg: #e8ddcf;
 }
 
@@ -545,22 +547,58 @@ h1 { margin: 0 0 8px 0; }
   --moves-bg: #f4ddea;
 }
 
-.section:not([data-theme^='gym']) .trainer-card.trainer-theme-biker {
-  --trainer-card-bg: #daccf2;
-  --trainer-left-bg: #6a48a8;
-  --trainer-tag-bg: #ab92d6;
-  --mon-bg: #eee7fa;
-  --mon-head-bg: #8063b8;
-  --moves-bg: #e4daf6;
+.section:not([data-theme^='gym']) .trainer-card.trainer-theme-maniac {
+  --trainer-card-bg: #c9ccda;
+  --trainer-left-bg: #5f9caf;
+  --trainer-tag-bg: #97bfd0;
+  --mon-bg: #d4d6e3;
+  --mon-head-bg: #71a9bc;
+  --moves-bg: #c7cbd9;
+}
+
+.section:not([data-theme^='gym']) .trainer-card.trainer-theme-rocker {
+  --trainer-card-bg: #e9dfbe;
+  --trainer-left-bg: #d8d54a;
+  --trainer-tag-bg: #e6d67b;
+  --mon-bg: #f3ecd3;
+  --mon-head-bg: #ddd043;
+  --moves-bg: #ebe1c0;
+}
+
+.section:not([data-theme^='gym']) .trainer-card.trainer-theme-couple {
+  --trainer-card-bg: #f9516c;
+  --trainer-left-bg: #f9516c;
+  --trainer-tag-bg: #ec8bae;
+  --mon-bg: #ebd1e9;
+  --mon-head-bg: #f9516c;
+  --moves-bg: #ebd1e9;
+}
+
+.section:not([data-theme^='gym']) .trainer-card.trainer-theme-cooltrainer {
+  --trainer-card-bg: #d9b6b5;
+  --trainer-left-bg: #f18682;
+  --trainer-tag-bg: #ebbebd;
+  --mon-bg: #f0cdcc;
+  --mon-head-bg: #f18682;
+  --moves-bg: #f0cdcc;
 }
 
 .section:not([data-theme^='gym']) .trainer-card.trainer-theme-birdkeeper {
-  --trainer-card-bg: #d8edf3;
-  --trainer-left-bg: #4e8da8;
-  --trainer-tag-bg: #b8d7a2;
-  --mon-bg: #edf8fb;
-  --mon-head-bg: #70aecd;
-  --moves-bg: #e2f2f7;
+  --trainer-card-bg: #dcebf3;
+  --trainer-left-bg: #7fa6bf;
+  --trainer-tag-bg: #b7d2e2;
+  --mon-bg: #edf6fb;
+  --mon-head-bg: #95bad2;
+  --moves-bg: #e4f0f7;
+}
+
+.section:not([data-theme^='gym']) .trainer-card.trainer-theme-rival {
+  --trainer-card-bg: #f2e3b8;
+  --trainer-left-bg: #c9a441;
+  --trainer-tag-bg: #e3cb83;
+  --mon-bg: #f8f0d6;
+  --mon-head-bg: #d2b457;
+  --moves-bg: #f3e7c3;
 }
 
 /* Gym tags should be lighter than the gym trainer body color. */
@@ -570,7 +608,7 @@ h1 { margin: 0 0 8px 0; }
 
 .section[data-theme='forest'] {
     --section-bg: #d8e5d2;
-    --section-head-bg: #b2c9aa;
+    --section-head-bg: #3d712c;
     --map-pane-bg: #c4d7bc;
     --map-left-bg: #b8cbaa;
     --enc-bg: #dbe9d3;
@@ -743,18 +781,54 @@ h1 { margin: 0 0 8px 0; }
 }
 
 .section[data-theme='city-fuchsia'] {
-    --section-bg: #eadbea;
-    --section-head-bg: #b16cab;
-    --map-pane-bg: #dec9de;
-    --map-left-bg: #d2b8d1;
-    --enc-bg: #efe3ef;
-    --enc-panel-bg: #f7eff7;
-    --enc-kind-bg: #e2c9e1;
-    --trainer-card-bg: #e3d3e2;
-    --trainer-left-bg: #ccadd0;
-    --mon-bg: #f5edf5;
-    --mon-head-bg: #ccadd0;
-    --moves-bg: #f1e8f1;
+  --section-head-color: #ffffff;
+  --section-bg: #f7d8f3;
+  --section-head-bg: #ff00ff;
+  --map-pane-bg: #efbfe8;
+  --map-left-bg: #e8a9de;
+  --enc-bg: #f9e4f6;
+  --enc-panel-bg: #fdf0fb;
+  --enc-kind-bg: #efc4e8;
+  --trainer-card-bg: #efccea;
+  --trainer-left-bg: #d67dcb;
+  --mon-bg: #fbe8f8;
+  --mon-head-bg: #d67dcb;
+  --moves-bg: #f6dbf1;
+}
+
+.section[data-theme='city-lavender'] {
+  --section-head-color: #ffffff;
+  --section-bg: #e9def7;
+  --section-head-bg: #9c7ac9;
+  --map-pane-bg: #ddd0f0;
+  --map-left-bg: #cfc0e7;
+  --enc-bg: #eee6fa;
+  --enc-panel-bg: #f6f1fd;
+  --enc-kind-bg: #dbcdeb;
+  --trainer-card-bg: #e2d7f0;
+  --trainer-left-bg: #b9a3da;
+  --mon-bg: #f4eefb;
+  --mon-head-bg: #b9a3da;
+  --moves-bg: #ece3f7;
+}
+
+.section[data-theme='tower-ghost'] {
+  --section-head-color: #f6f0ff;
+  --section-bg: #d9d1e8;
+  --section-head-bg: #5f4f81;
+  --map-pane-bg: #c7bfd9;
+  --map-left-bg: #b7aecb;
+  --enc-bg: #dfd8ec;
+  --enc-panel-bg: #e9e4f3;
+  --enc-kind-bg: #c8bfd9;
+  --enc-line: #5a5370;
+  --enc-grid-line: #6a627e;
+  --enc-th-bg: #c2b9d4;
+  --trainer-card-bg: #d3cbdf;
+  --trainer-left-bg: #9f91bb;
+  --mon-bg: #e8e2f2;
+  --mon-head-bg: #9f91bb;
+  --moves-bg: #ddd4ea;
 }
 
 /* Poison/Koga — deep toxic purple */
@@ -914,6 +988,37 @@ h1 { margin: 0 0 8px 0; }
     --mon-head-bg: #3820a8;
     --moves-bg: #e8e0f4;
 }
+
+/* Champion */
+.section[data-theme='champion'] {
+    --section-head-color: #ffffff;
+    --section-bg: #e3cb83;
+    --section-head-bg: #c9a441;
+    --map-pane-bg: #e3cb83;
+    --map-left-bg: #e3cb83;
+    --trainer-card-bg: #e3cb83;
+    --trainer-left-bg: #e3cb83;
+    --mon-bg: #eee8f8;
+    --mon-head-bg: #3820a8;
+    --moves-bg: #e8e0f4;
+}
+
+/* Seafoam islands */
+.section[data-theme='ice'] {
+    --section-head-color: #ffffff;
+    --section-bg: #deedf7;
+    --section-head-bg: #5ea3cc;
+    --map-pane-bg: #cfe4f2;
+    --map-left-bg: #bdd9ea;
+    --enc-bg: #e4f1f9;
+    --enc-panel-bg: #f0f8fc;
+    --enc-kind-bg: #cee4f2;
+    --trainer-card-bg: #dbeaf4;
+    --trainer-left-bg: #5ea3cc;
+    --mon-bg: #edf6fb;
+    --mon-head-bg: #5ea3cc;
+    --moves-bg: #e4f1f9;
+  }
 
 @media (max-width: 1200px) {
     .map-pane {

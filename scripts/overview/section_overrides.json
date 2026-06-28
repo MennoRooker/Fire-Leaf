@@ -25,7 +25,8 @@
     "Route 4 West": {
       "mapToken": "ROUTE4",
       "crop": { "x0": 0.0, "x1": 0.24 },
-      "hideEncounters": true
+      "hideEncounters": true,
+      "mapScaleMax": 0.6
     },
     "Mt. Moon 1F": {
       "fullHeight": true
