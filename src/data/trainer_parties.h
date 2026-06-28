@@ -9609,9 +9609,9 @@ static const struct TrainerMonItemCustomMovesNatureAbility sParty_ChampionFirstC
 
 
 
-
-
-
+// ======================================================================================= //
+// ====================================== UNSORTED ======================================= //
+// ======================================================================================= //
 static const struct TrainerMonNoItemDefaultMoves sParty_CueBallChase[] = {
     {
         .iv = 15,

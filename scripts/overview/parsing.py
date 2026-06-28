@@ -645,7 +645,7 @@ def parse_parties() -> Dict[str, object]:
     section_order: List[str] = []
     seen_sections = set()
     sec_re = re.compile(r"^\s*//\s*=+\s*(.*?)\s*=+\s*//\s*$")
-    floor_re = re.compile(r"^(?:B\d+F|\d+F)$", re.I)
+    floor_re = re.compile(r"^(?:B\d+F|\d+F|Deck)$", re.I)
     head_re = re.compile(r"^\s*static const struct\s+(\w+)\s+(sParty_[A-Za-z0-9_]+)\[\]\s*=\s*\{\s*$")
     current_parent = ""
 

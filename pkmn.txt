@@ -269,6 +269,14 @@ atk:	115 -> 135
 - SUICUNE
 spatk:	90 -> 110
 
+- LUGIA
+spatk:	90 -> 110
+PSYCHIC/FLYING -> WATER/FLYING
+
+- HO-OH
+spatk:	110-> 115
+spd:	90 -> 105
+
 - TREECKO
 Overgrow -> Overgrow/Lightning Rod
 

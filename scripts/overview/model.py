@@ -301,6 +301,84 @@ def is_redundant_section_name(name: str, known_names: set[str]) -> bool:
     return any(known.startswith(prefix) for known in known_names)
 
 
+def should_skip_encounter_section(section_name: str, known_names: set[str]) -> bool:
+    """Determine if an encounter-generated section should be skipped as redundant.
+    
+    This handles the specific cases where map encounters create duplicate section
+    names that should be filtered because they're already covered by trainer sections.
+    """
+    name_lower = section_name.lower()
+    
+    # Diglett's Cave is already covered by trainer section
+    if "diglett" in name_lower and "cave" in name_lower:
+        return True
+    
+    # Pokémon Mansion floors are already covered by trainer sections
+    if "pokémon mansion" in name_lower or "pokemon mansion" in name_lower:
+        return True
+    
+    # Pokémon Tower floors are already covered by dedicated Pokémon Tower sections
+    if re.search(r"pokémon\s*tower\s+\d+\s*f", name_lower) or re.search(r"pokemon\s*tower\s+\d+\s*f", name_lower):
+        return True
+    
+    # Mt. Ember variants are already covered by Mt. Ember, Mt. Ember Path, Mt. Ember Summit
+    if re.search(r"mt\.?\s*ember", name_lower):
+        if "mt. ember" not in {n.lower() for n in known_names}:
+            # Only skip if "Mt. Ember" already exists in known sections
+            pass
+        elif section_name.lower() not in {"mt. ember", "mt. ember path", "mt. ember summit"}:
+            # Skip variants like "Mt. Ember Exterior", "Mt. Ember Entrance", etc.
+            return True
+    
+    # Four Island Icefall Cave - all variants should be skipped
+    # User wants only specific Icefall Cave entry if any
+    if "icefall cave" in name_lower and ("four island" in name_lower or "entrance" in name_lower):
+        return True
+    
+    # Five Island Lost Cave - all variants should be skipped
+    # User wants only specific Lost Cave entry if any  
+    if "lost cave" in name_lower and ("five island" in name_lower or "room" in name_lower):
+        return True
+    
+    # Island-prefixed versions should be skipped if the non-prefixed versions exist
+    # (or versions without the island prefix but with directional/positional suffixes)
+    island_prefixes = [
+        "one island ",
+        "two island ",
+        "three island ",
+    ]
+    for prefix in island_prefixes:
+        if name_lower.startswith(prefix):
+            base_name = name_lower[len(prefix):]
+            known_names_lower = {n.lower() for n in known_names}
+            
+            # Check for exact match of base name
+            if base_name in known_names_lower:
+                return True
+            
+            # Check for base name with directional suffixes (North, South, East, West, etc.)
+            directional_terms = ["north", "south", "east", "west", "upper", "lower", "left", "right", "inner", "outer"]
+            for term in directional_terms:
+                if any(f"{base_name} {term}" in n.lower() or f"{term} {base_name}" in n.lower() for n in known_names_lower):
+                    return True
+            
+            # For specific cases like "One Island Kindle Road" matching both "Kindle Road North" and "Kindle Road South"
+            if base_name.startswith("kindle") and any("kindle road" in n.lower() for n in known_names_lower):
+                return True
+            
+            if base_name == "bond bridge" and any("bond bridge" in n.lower() for n in known_names_lower):
+                return True
+    
+    # Berry Forest variants - filter out if base exists
+    if "berry forest" in name_lower:
+        if any("berry forest" in n.lower() for n in known_names):
+            # Only keep the plain "Berry Forest", skip variants
+            if section_name.lower() != "berry forest":
+                return True
+    
+    return False
+
+
 def camel_words(name: str) -> str:
     return re.sub(r"([a-z0-9])([A-Z])", r"\1 \2", name.replace("_", " ")).strip()
 
@@ -308,17 +386,37 @@ def camel_words(name: str) -> str:
 def map_token_to_section_name(map_token: str) -> str:
     map_token = normalize_map_token(map_token)
     parts: List[str] = []
+    floor_parts: List[str] = []  # Accumulate floor letters/digits
+    
     for raw in map_token.split("_"):
         token = raw.strip()
         if not token:
             continue
         upper = token.upper()
-        if re.fullmatch(r"B\d+F|\d+F", upper):
-            parts.append(upper)
-        elif len(upper) <= 2 and upper.isalpha():
-            parts.append(upper)
+        
+        # Handle floor formatting: collect B, digits, and F without spaces
+        if len(upper) == 1 and upper in ("B", "F"):
+            floor_parts.append(upper)
+        elif upper.isdigit():
+            floor_parts.append(upper)
         else:
-            parts.append(upper[:1] + upper[1:].lower())
+            # If we have accumulated floor parts, join them without spaces
+            if floor_parts:
+                parts.append("".join(floor_parts))
+                floor_parts = []
+            
+            # Process non-floor tokens
+            if re.fullmatch(r"B\d+F|\d+F", upper):
+                parts.append(upper)
+            elif len(upper) <= 2 and upper.isalpha():
+                parts.append(upper)
+            else:
+                parts.append(upper[:1] + upper[1:].lower())
+    
+    # Flush any remaining floor parts
+    if floor_parts:
+        parts.append("".join(floor_parts))
+    
     return " ".join(parts) or pretty_token(map_token, "")
 
 
@@ -839,6 +937,13 @@ def build_model(section_filter: Optional[str]) -> Dict[str, object]:
         section = resolve_canonical_section_name(str(party["section"]), section_name_registry)
         if section_filter and section_filter.lower() != section.lower():
             continue
+        
+        # Skip duplicate/redundant sections
+        sections_to_skip = {
+            "Digletts Cave",  # Duplicate of Diglett's Cave
+        }
+        if section in sections_to_skip:
+            continue
 
         trainer_name = trainer["trainerName"].strip() or trainer_id.replace("TRAINER_", "").replace("_", " ").title()
         if trainer_id.startswith("TRAINER_RIVAL_") or trainer_name.upper() == "TERRY":
@@ -967,6 +1072,8 @@ def build_model(section_filter: Optional[str]) -> Dict[str, object]:
         if section_filter and section_filter.lower() != section_name.lower():
             continue
         if is_redundant_section_name(section_name, known_section_names):
+            continue
+        if should_skip_encounter_section(section_name, known_section_names):
             continue
         sections.setdefault(section_name, [])
         known_section_names.add(section_name)

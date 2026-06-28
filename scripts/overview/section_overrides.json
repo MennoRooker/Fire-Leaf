@@ -50,6 +50,10 @@
     "Diglett's Cave": {
       "mapToken": "DIGLETTS_CAVE_B1F"
     },
+    "S.S. Anne Exterior": {
+      "mapToken": "SSANNE_EXTERIOR",
+      "crop": { "x0": 0.35, "x1": 0.58, "y0": 0.0, "y1": 0.55 }
+    },
     "Vermilion City Gym": {
       "mapScaleMax": 0.4
     },
