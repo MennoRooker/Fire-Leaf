@@ -301,6 +301,19 @@ h1 { margin: 0 0 8px 0; }
 .mons .mon:last-child:not(:nth-child(6n)) {
   border-right: 3px solid var(--line);
 }
+
+/* For short parties, keep card widths unchanged and hide only empty-slot borders. */
+.trainer-card--party-trim.trainer-card--major .mons,
+.trainer-card--party-trim.trainer-card--compact .mons {
+  border-top: none;
+  border-right: none;
+  border-bottom: none;
+}
+
+.trainer-card--party-trim .mon {
+  border-top: 3px solid var(--line);
+  border-bottom: 3px solid var(--line);
+}
 .mon-head {
   border-bottom: 3px solid var(--line);
   background: linear-gradient(

@@ -416,7 +416,26 @@
     }
   }
 
+  function markShortTrainerParties() {
+    const cards = document.querySelectorAll(".trainer-card");
+    for (const card of cards) {
+      const mons = card.querySelector(".mons");
+      if (!mons) {
+        continue;
+      }
+
+      const monCount = mons.querySelectorAll(":scope > .mon").length;
+      if (monCount > 0 && monCount < 6) {
+        card.classList.add("trainer-card--party-trim");
+      } else {
+        card.classList.remove("trainer-card--party-trim");
+      }
+    }
+  }
+
   async function init() {
+    markShortTrainerParties();
+
     const dataEl = document.getElementById("overview-map-data");
     if (!dataEl || !dataEl.textContent) {
       return;
