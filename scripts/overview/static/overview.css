@@ -24,20 +24,13 @@ h1 { margin: 0 0 8px 0; }
 .section {
     --section-bg: #efe9e0;
     --section-head-bg: #ddd2c4;
-    --map-pane-bg: #d8d0c4;
     --map-left-bg: #cfc7bb;
-    --enc-bg: #efefef;
-    --enc-panel-bg: #f4f4f4;
-    --enc-kind-bg: #e2e2e2;
     --enc-line: #908a83;
     --enc-grid-line: #8f8f8f;
-    --enc-th-bg: #dedede;
     --trainer-card-bg: #e4ddd4;
-    --trainer-left-bg: #d2c4b4;
-    --mon-bg: #f8f5ef;
-    --mon-head-bg: #d2c4b4;
-    --mon-body-bg: #f8f5ef;
-    --moves-bg: #f6f2eb;
+    --trainer-sprite-bg: #d2c4b4;
+    --mon-sprite-bg: #d2c4b4;
+    --mon-data-bg: #f6f2eb;
   border: 3px solid var(--line);
     background: var(--section-bg);
   margin: 16px 0 30px;
@@ -53,7 +46,6 @@ h1 { margin: 0 0 8px 0; }
 }
 .map-pane {
     min-height: 120px;
-    background: var(--map-pane-bg);
     display: grid;
     align-items: stretch;
   padding: 10px;
@@ -210,14 +202,14 @@ h1 { margin: 0 0 8px 0; }
   align-items: stretch;
 }
 .trainer-left {
-  background: var(--trainer-left-bg);
+  background: var(--trainer-sprite-bg);
   text-align: center;
   padding: 0;
   display: flex;
   flex-direction: column;
 }
 .trainer-portrait {
-  background: var(--trainer-left-bg);
+  background: var(--trainer-sprite-bg);
   padding: 6px;
   border-bottom: 3px solid var(--line);
 }
@@ -228,7 +220,7 @@ h1 { margin: 0 0 8px 0; }
 }
 .trainer-id {
   padding: 6px;
-  background: var(--trainer-tag-bg, var(--trainer-left-bg));
+  background: var(--trainer-tag-bg, var(--trainer-sprite-bg));
   flex-grow: 0;
   border-bottom: 3px solid var(--line);
 }
@@ -262,19 +254,19 @@ h1 { margin: 0 0 8px 0; }
 }
 
 .trainer-card--major .trainer-left {
-  background: var(--trainer-left-bg);
+  background: var(--trainer-sprite-bg);
   align-self: stretch;
   border: 3px solid var(--line);
 }
 
 .trainer-card--major .trainer-id {
-  background: var(--trainer-left-bg);
+  background: var(--trainer-sprite-bg);
   flex-grow: 1;
   color: #fff;
 }
 
 .trainer-card--compact .trainer-left {
-  background: var(--trainer-left-bg);
+  background: var(--trainer-sprite-bg);
   align-self: start;
   border: 3px solid var(--line);
   display: grid;
@@ -282,7 +274,7 @@ h1 { margin: 0 0 8px 0; }
 }
 
 .trainer-card--compact .trainer-id {
-  background: var(--trainer-tag-bg, var(--trainer-left-bg));
+  background: var(--trainer-tag-bg, var(--trainer-sprite-bg));
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -300,7 +292,7 @@ h1 { margin: 0 0 8px 0; }
 }
 .mon {
   border-left: 3px solid var(--line);
-  background: var(--mon-bg);
+  background: var(--mon-data-bg);
   min-width: 0;
 }
 .mons .mon:first-child {
@@ -313,12 +305,12 @@ h1 { margin: 0 0 8px 0; }
   border-bottom: 3px solid var(--line);
   background: linear-gradient(
     to bottom,
-    var(--mon-head-bg) 0,
-    var(--mon-head-bg) var(--mon-sprite-section-height),
+    var(--mon-sprite-bg) 0,
+    var(--mon-sprite-bg) var(--mon-sprite-section-height),
     var(--line) var(--mon-sprite-section-height),
     var(--line) calc(var(--mon-sprite-section-height) + 3px),
-    var(--moves-bg) calc(var(--mon-sprite-section-height) + 3px),
-    var(--moves-bg) 100%
+    var(--mon-data-bg) calc(var(--mon-sprite-section-height) + 3px),
+    var(--mon-data-bg) 100%
   );
   text-align: center;
   padding: 8px 5px 3px;
@@ -354,6 +346,7 @@ h1 { margin: 0 0 8px 0; }
   background-repeat: no-repeat;
 }
 .mon-body {
+  background: var(--mon-data-bg);
   padding: 6px;
   text-align: center;
   font-size: 20px;
@@ -391,7 +384,7 @@ h1 { margin: 0 0 8px 0; }
 
 .moves {
   border-top: 3px solid var(--line);
-  background: var(--moves-bg);
+  background: var(--mon-data-bg);
   padding: 4px 6px;
   font-size: 18px;
   line-height: 1.15;
@@ -417,19 +410,149 @@ h1 { margin: 0 0 8px 0; }
   justify-self: end;
 }
 
+/* Swimmer and Tuber trainers get aquatic card accents outside gym sections. */
+.section:not([data-theme^='gym']) .trainer-card.trainer-theme-swimmer {
+  --trainer-card-bg: #d3e5f8;
+  --trainer-sprite-bg: #3f84c2;
+  --trainer-tag-bg: #b8d7f2;
+  --mon-sprite-bg: #4f93cd;
+  --mon-data-bg: #e2eef9;
+}
+
+.section:not([data-theme^='gym']) .trainer-card.trainer-theme-psychic {
+  --trainer-card-bg: #ebdcf8;
+  --trainer-sprite-bg: #8758bc;
+  --trainer-tag-bg: #d8b9ee;
+  --mon-sprite-bg: #986bc8;
+  --mon-data-bg: #eee2f8;
+}
+
+.section:not([data-theme^='gym']) .trainer-card.trainer-theme-camper {
+  --trainer-card-bg: #e4e6c6;
+  --trainer-sprite-bg: #889a4a;
+  --trainer-tag-bg: #c8d497;
+  --mon-sprite-bg: #96a85a;
+  --mon-data-bg: #eaedd2;
+}
+
+.section:not([data-theme^='gym']) .trainer-card.trainer-theme-thug {
+  --trainer-card-bg: #cbc6c9;
+  --trainer-sprite-bg: #4a4a52;
+  --trainer-tag-bg: #b6b3bb;
+  --mon-sprite-bg: #585862;
+  --mon-data-bg: #d4ced2;
+}
+
+.section:not([data-theme^='gym']) .trainer-card.trainer-theme-fighter {
+  --trainer-card-bg: #f1d9cc;
+  --trainer-sprite-bg: #9a4d34;
+  --trainer-tag-bg: #dfb59f;
+  --mon-sprite-bg: #ab6044;
+  --mon-data-bg: #f3e1d6;
+}
+
+.section:not([data-theme^='gym']) .trainer-card.trainer-theme-bug {
+  --trainer-card-bg: #deebc8;
+  --trainer-sprite-bg: #6d8f3f;
+  --trainer-tag-bg: #b9d194;
+  --mon-sprite-bg: #7ea14e;
+  --mon-data-bg: #e6f0d3;
+}
+
+.section:not([data-theme^='gym']) .trainer-card.trainer-theme-kid {
+  --trainer-card-bg: #f7e8be;
+  --trainer-sprite-bg: #d9a64a;
+  --trainer-tag-bg: #edc978;
+  --mon-sprite-bg: #e3b55a;
+  --mon-data-bg: #f8eaca;
+}
+
+.section:not([data-theme^='gym']) .trainer-card.trainer-theme-gentleman {
+  --trainer-card-bg: #daccb7;
+  --trainer-sprite-bg: #ba9775;
+  --trainer-tag-bg: #e5ccaf;
+  --mon-sprite-bg: #ba9775;
+  --mon-data-bg: #e8ddcf;
+}
+
+.section:not([data-theme^='gym']) .trainer-card.trainer-theme-hiker {
+  --trainer-card-bg: #d4c2ae;
+  --trainer-sprite-bg: #6b4f3a;
+  --trainer-tag-bg: #9e7a5b;
+  --mon-sprite-bg: #806148;
+  --mon-data-bg: #e2d4c6;
+}
+
+.section:not([data-theme^='gym']) .trainer-card.trainer-theme-beauty {
+  --trainer-card-bg: #f1d4e5;
+  --trainer-sprite-bg: #c56da0;
+  --trainer-tag-bg: #e2a9c8;
+  --mon-sprite-bg: #d184b1;
+  --mon-data-bg: #f4ddea;
+}
+
+.section:not([data-theme^='gym']) .trainer-card.trainer-theme-maniac {
+  --trainer-card-bg: #c9ccda;
+  --trainer-sprite-bg: #5f9caf;
+  --trainer-tag-bg: #97bfd0;
+  --mon-sprite-bg: #71a9bc;
+  --mon-data-bg: #c7cbd9;
+}
+
+.section:not([data-theme^='gym']) .trainer-card.trainer-theme-rocker {
+  --trainer-card-bg: #e9dfbe;
+  --trainer-sprite-bg: #d8d54a;
+  --trainer-tag-bg: #e6d67b;
+  --mon-sprite-bg: #ddd043;
+  --mon-data-bg: #ebe1c0;
+}
+
+.section:not([data-theme^='gym']) .trainer-card.trainer-theme-couple {
+  --trainer-card-bg: #f9516c;
+  --trainer-sprite-bg: #f9516c;
+  --trainer-tag-bg: #ec8bae;
+  --mon-sprite-bg: #f9516c;
+  --mon-data-bg: #ebd1e9;
+}
+
+.section:not([data-theme^='gym']) .trainer-card.trainer-theme-cooltrainer {
+  --trainer-card-bg: #d9b6b5;
+  --trainer-sprite-bg: #f18682;
+  --trainer-tag-bg: #ebbebd;
+  --mon-sprite-bg: #f18682;
+  --mon-data-bg: #f0cdcc;
+}
+
+.section:not([data-theme^='gym']) .trainer-card.trainer-theme-birdkeeper {
+  --trainer-card-bg: #dcebf3;
+  --trainer-sprite-bg: #7fa6bf;
+  --trainer-tag-bg: #b7d2e2;
+  --mon-sprite-bg: #95bad2;
+  --mon-data-bg: #e4f0f7;
+}
+
+.section:not([data-theme^='gym']) .trainer-card.trainer-theme-rival {
+  --trainer-card-bg: #f2e3b8;
+  --trainer-sprite-bg: #c9a441;
+  --trainer-tag-bg: #e3cb83;
+  --mon-sprite-bg: #d2b457;
+  --mon-data-bg: #f3e7c3;
+}
+
+/* Gym tags should be lighter than the gym trainer body color. */
+.section[data-theme^='gym'] .trainer-card {
+  --trainer-tag-bg: color-mix(in srgb, var(--trainer-sprite-bg) 55%, #ffffff 45%);
+}
+
 .section[data-theme='route'] {
+  --section-head-color: #edf0c8;
   --section-bg: #edf0c8;
   --section-head-bg: #b8bd4a;
-  --map-pane-bg: #e5e8b6;
   --map-left-bg: #dbe09f;
-  --enc-bg: #f0f3d4;
-  --enc-panel-bg: #f7f8e8;
-  --enc-kind-bg: #dee5a9;
   --trainer-card-bg: #e3ddd3;
-  --trainer-left-bg: #d0c5b5;
-  --mon-bg: #f7f3ec;
-  --mon-head-bg: #d0c5b5;
-  --moves-bg: #f2ede4;
+  --trainer-sprite-bg: #d0c5b5;
+  --mon-sprite-bg: #d0c5b5;
+  --mon-data-bg: #f2ede4;
 }
 
 .section[data-theme='route'] .cards {
@@ -439,586 +562,409 @@ h1 { margin: 0 0 8px 0; }
 .section[data-theme='route-water'] {
   --section-bg: #dceaf6;
   --section-head-bg: #3f84c2;
-  --section-head-color: #ffffff;
-  --map-pane-bg: #cfe0f0;
+  --section-head-color: #dceaf6;
   --map-left-bg: #bcd3e8;
-  --enc-bg: #deedf8;
-  --enc-panel-bg: #edf5fb;
-  --enc-kind-bg: #c8ddf0;
-  --trainer-card-bg: #e3ddd3;
-  --trainer-left-bg: #d0c5b5;
-  --mon-bg: #f7f3ec;
-  --mon-head-bg: #d0c5b5;
-  --moves-bg: #f2ede4;
 }
 
 .section[data-theme='route-water'] .cards {
   background: #f5f2ec;
 }
 
-/* Swimmer and Tuber trainers get aquatic card accents outside gym sections. */
-.section:not([data-theme^='gym']) .trainer-card.trainer-theme-swimmer {
-  --trainer-card-bg: #d3e5f8;
-  --trainer-left-bg: #3f84c2;
-  --trainer-tag-bg: #b8d7f2;
-  --mon-bg: #ebf3fb;
-  --mon-head-bg: #4f93cd;
-  --moves-bg: #e2eef9;
-}
-
-.section:not([data-theme^='gym']) .trainer-card.trainer-theme-psychic {
-  --trainer-card-bg: #ebdcf8;
-  --trainer-left-bg: #8758bc;
-  --trainer-tag-bg: #d8b9ee;
-  --mon-bg: #f4ecfb;
-  --mon-head-bg: #986bc8;
-  --moves-bg: #eee2f8;
-}
-
-.section:not([data-theme^='gym']) .trainer-card.trainer-theme-camper {
-  --trainer-card-bg: #e4e6c6;
-  --trainer-left-bg: #889a4a;
-  --trainer-tag-bg: #c8d497;
-  --mon-bg: #f2f3e1;
-  --mon-head-bg: #96a85a;
-  --moves-bg: #eaedd2;
-}
-
-.section:not([data-theme^='gym']) .trainer-card.trainer-theme-thug {
-  --trainer-card-bg: #cbc6c9;
-  --trainer-left-bg: #4a4a52;
-  --trainer-tag-bg: #b6b3bb;
-  --mon-bg: #ddd8db;
-  --mon-head-bg: #585862;
-  --moves-bg: #d4ced2;
-}
-
-.section:not([data-theme^='gym']) .trainer-card.trainer-theme-fighter {
-  --trainer-card-bg: #f1d9cc;
-  --trainer-left-bg: #9a4d34;
-  --trainer-tag-bg: #dfb59f;
-  --mon-bg: #f8ebe3;
-  --mon-head-bg: #ab6044;
-  --moves-bg: #f3e1d6;
-}
-
-.section:not([data-theme^='gym']) .trainer-card.trainer-theme-bug {
-  --trainer-card-bg: #deebc8;
-  --trainer-left-bg: #6d8f3f;
-  --trainer-tag-bg: #b9d194;
-  --mon-bg: #edf5df;
-  --mon-head-bg: #7ea14e;
-  --moves-bg: #e6f0d3;
-}
-
-.section:not([data-theme^='gym']) .trainer-card.trainer-theme-kid {
-  --trainer-card-bg: #f7e8be;
-  --trainer-left-bg: #d9a64a;
-  --trainer-tag-bg: #edc978;
-  --mon-bg: #fdf3d9;
-  --mon-head-bg: #e3b55a;
-  --moves-bg: #f8eaca;
-}
-
-.section:not([data-theme^='gym']) .trainer-card.trainer-theme-gentleman {
-  --trainer-card-bg: #daccb7;
-  --trainer-left-bg: #ba9775;
-  --trainer-tag-bg: #e5ccaf;
-  --mon-bg: #f0e8de;
-  --mon-head-bg: #ba9775;
-  --moves-bg: #e8ddcf;
-}
-
-.section:not([data-theme^='gym']) .trainer-card.trainer-theme-hiker {
-  --trainer-card-bg: #d4c2ae;
-  --trainer-left-bg: #6b4f3a;
-  --trainer-tag-bg: #9e7a5b;
-  --mon-bg: #ece1d6;
-  --mon-head-bg: #806148;
-  --moves-bg: #e2d4c6;
-}
-
-.section:not([data-theme^='gym']) .trainer-card.trainer-theme-beauty {
-  --trainer-card-bg: #f1d4e5;
-  --trainer-left-bg: #c56da0;
-  --trainer-tag-bg: #e2a9c8;
-  --mon-bg: #f9e9f2;
-  --mon-head-bg: #d184b1;
-  --moves-bg: #f4ddea;
-}
-
-.section:not([data-theme^='gym']) .trainer-card.trainer-theme-maniac {
-  --trainer-card-bg: #c9ccda;
-  --trainer-left-bg: #5f9caf;
-  --trainer-tag-bg: #97bfd0;
-  --mon-bg: #d4d6e3;
-  --mon-head-bg: #71a9bc;
-  --moves-bg: #c7cbd9;
-}
-
-.section:not([data-theme^='gym']) .trainer-card.trainer-theme-rocker {
-  --trainer-card-bg: #e9dfbe;
-  --trainer-left-bg: #d8d54a;
-  --trainer-tag-bg: #e6d67b;
-  --mon-bg: #f3ecd3;
-  --mon-head-bg: #ddd043;
-  --moves-bg: #ebe1c0;
-}
-
-.section:not([data-theme^='gym']) .trainer-card.trainer-theme-couple {
-  --trainer-card-bg: #f9516c;
-  --trainer-left-bg: #f9516c;
-  --trainer-tag-bg: #ec8bae;
-  --mon-bg: #ebd1e9;
-  --mon-head-bg: #f9516c;
-  --moves-bg: #ebd1e9;
-}
-
-.section:not([data-theme^='gym']) .trainer-card.trainer-theme-cooltrainer {
-  --trainer-card-bg: #d9b6b5;
-  --trainer-left-bg: #f18682;
-  --trainer-tag-bg: #ebbebd;
-  --mon-bg: #f0cdcc;
-  --mon-head-bg: #f18682;
-  --moves-bg: #f0cdcc;
-}
-
-.section:not([data-theme^='gym']) .trainer-card.trainer-theme-birdkeeper {
-  --trainer-card-bg: #dcebf3;
-  --trainer-left-bg: #7fa6bf;
-  --trainer-tag-bg: #b7d2e2;
-  --mon-bg: #edf6fb;
-  --mon-head-bg: #95bad2;
-  --moves-bg: #e4f0f7;
-}
-
-.section:not([data-theme^='gym']) .trainer-card.trainer-theme-rival {
-  --trainer-card-bg: #f2e3b8;
-  --trainer-left-bg: #c9a441;
-  --trainer-tag-bg: #e3cb83;
-  --mon-bg: #f8f0d6;
-  --mon-head-bg: #d2b457;
-  --moves-bg: #f3e7c3;
-}
-
-/* Gym tags should be lighter than the gym trainer body color. */
-.section[data-theme^='gym'] .trainer-card {
-  --trainer-tag-bg: color-mix(in srgb, var(--trainer-left-bg) 55%, #ffffff 45%);
-}
-
 .section[data-theme='forest'] {
-    --section-bg: #d8e5d2;
-    --section-head-bg: #3d712c;
-    --map-pane-bg: #c4d7bc;
-    --map-left-bg: #b8cbaa;
-    --enc-bg: #dbe9d3;
-    --enc-panel-bg: #edf4e8;
-    --enc-kind-bg: #cadfc0;
-    --enc-line: #5d7852;
-    --enc-grid-line: #6a8560;
-    --enc-th-bg: #c2d7ba;
-    --trainer-card-bg: #d4e1cf;
-    --trainer-left-bg: #b7caaa;
-    --mon-bg: #eef5e9;
-    --mon-head-bg: #b7caaa;
-    --moves-bg: #e9f1e3;
+  --section-head-color: #d8e5d2;
+  --section-bg: #d8e5d2;
+  --section-head-bg: #3d712c;
+  --map-left-bg: #b8cbaa;
+  --enc-line: #5d7852;
+  --enc-grid-line: #6a8560;
 }
 
 .section[data-theme='cave'] {
-    --section-bg: #e0d8ce;
-    --section-head-bg: #c2b5a7;
-    --map-pane-bg: #cec4b8;
-    --map-left-bg: #bbb0a2;
-    --enc-bg: #e6dfd6;
-    --enc-panel-bg: #f0eae1;
-    --enc-kind-bg: #d4c9bc;
-    --enc-line: #6f665e;
-    --enc-grid-line: #7e756c;
-    --enc-th-bg: #d1c4b7;
-    --trainer-card-bg: #dbd2c8;
-    --trainer-left-bg: #c3b5a6;
-    --mon-bg: #f2ece5;
-    --mon-head-bg: #c3b5a6;
-    --moves-bg: #eee6dd;
+  --section-bg: #e0d8ce;
+  --section-head-bg: #c2b5a7;
+  --map-left-bg: #bbb0a2;
+  --enc-line: #6f665e;
+  --enc-grid-line: #7e756c;
+  --trainer-card-bg: #dbd2c8;
+  --trainer-sprite-bg: #c3b5a6;
+  --mon-sprite-bg: #c3b5a6;
+  --mon-data-bg: #eee6dd;
 }
 
+.section[data-theme='moon'] {
+  --section-head-color: #f6eecf;
+  --section-bg: #e2d3a2;
+  --section-head-bg: #7f4f56;
+  --map-left-bg: #c6b98e;
+  --enc-line: #7d6b4f;
+  --enc-grid-line: #8c7a5d;
+  --trainer-card-bg: #d8c8a0;
+  --trainer-sprite-bg: #b39d82;
+  --mon-sprite-bg: #b39d82;
+  --mon-data-bg: #eadfc2;
+}
+
+.section[data-theme='diglett-cave'] {
+  --section-head-color: #f1eec8;
+  --section-bg: #d8d59e;
+  --section-head-bg: #6b5f41;
+  --map-left-bg: #c6c48f;
+  --enc-line: #6f6a4a;
+  --enc-grid-line: #817b58;
+  --trainer-card-bg: #d6d19a;
+  --trainer-sprite-bg: #9d8d61;
+  --mon-sprite-bg: #9d8d61;
+  --mon-data-bg: #e4dfb0;
+}
+
+.section[data-theme='rock-tunnel'] {
+  --section-head-color: #f0f4f8;
+  --section-bg: #d6dde0;
+  --section-head-bg: #5f6f78;
+  --map-left-bg: #c3cdd0;
+  --enc-line: #66767d;
+  --enc-grid-line: #77868d;
+  --trainer-card-bg: #d2dadd;
+  --trainer-sprite-bg: #8ea0a8;
+  --mon-sprite-bg: #8ea0a8;
+  --mon-data-bg: #e5ecef;
+}
+
+.section[data-theme='mansion'] {
+  --section-head-color: #f7f1d8;
+  --section-bg: #ead5b8;
+  --section-head-bg: #925b4c;
+  --map-left-bg: #d8c09f;
+  --enc-line: #8a6d4f;
+  --enc-grid-line: #9c7f61;
+  --trainer-card-bg: #e0c6a8;
+  --trainer-sprite-bg: #b7886d;
+  --mon-sprite-bg: #b7886d;
+  --mon-data-bg: #f0e0cb;
+}
+
+.section[data-theme='islands'] {
+  --section-head-color: #f4fff8;
+  --section-bg: #c8efe0;
+  --section-head-bg: #4e8b7a;
+  --map-left-bg: #b5e1d1;
+  --enc-line: #4f7f73;
+  --enc-grid-line: #5f9184;
+  --trainer-card-bg: #d2efe5;
+  --trainer-sprite-bg: #6ba595;
+  --mon-sprite-bg: #6ba595;
+  --mon-data-bg: #e6f7f0;
+}
+
+.section[data-theme='ember'] {
+  --section-head-color: #fff0ef;
+  --section-bg: #d5a3a0;
+  --section-head-bg: #7d2f2f;
+  --map-left-bg: #be8e8c;
+  --enc-line: #7c4747;
+  --enc-grid-line: #8f5959;
+  --trainer-card-bg: #d8acab;
+  --trainer-sprite-bg: #9c5958;
+  --mon-sprite-bg: #9c5958;
+  --mon-data-bg: #e9cbca;
+}
+
+.section[data-theme='victory-road'] {
+  --section-head-color: #f4ebdf;
+  --section-bg: #e3ccb9;
+  --section-head-bg: #7a5f4f;
+  --map-left-bg: #d5baa3;
+  --enc-line: #7e6655;
+  --enc-grid-line: #907666;
+  --trainer-card-bg: #e0c4ad;
+  --trainer-sprite-bg: #9f826d;
+  --mon-sprite-bg: #9f826d;
+  --mon-data-bg: #eedac8;
+}
+
+.section[data-theme='cerulean-cave'] {
+  --section-head-color: #eff8f5;
+  --section-bg: #c3ddd2;
+  --section-head-bg: #4d766c;
+  --map-left-bg: #aaccbf;
+  --enc-line: #4f786f;
+  --enc-grid-line: #5f8b82;
+  --trainer-card-bg: #cde5dc;
+  --trainer-sprite-bg: #6e9b90;
+  --mon-sprite-bg: #6e9b90;
+  --mon-data-bg: #e1f1eb;
+}
+
+/* Seafoam islands */
+.section[data-theme='ice'] {
+  --section-head-color: #ffffff;
+  --section-bg: #deedf7;
+  --section-head-bg: #5ea3cc;
+  --map-left-bg: #bdd9ea;
+  }
+
 .section[data-theme='city-generic'] {
-    --section-bg: #e9e6df;
-    --section-head-bg: #ccc6bb;
-    --map-pane-bg: #d7d2c7;
-    --map-left-bg: #c8c2b6;
-    --enc-bg: #ece9e2;
-    --enc-panel-bg: #f5f2ec;
-    --enc-kind-bg: #dad4c9;
-    --trainer-card-bg: #e3ddd3;
-    --trainer-left-bg: #d0c5b5;
-    --mon-bg: #f7f3ec;
-    --mon-head-bg: #d0c5b5;
-    --moves-bg: #f2ede4;
+  --section-bg: #e9e6df;
+  --section-head-bg: #ccc6bb;
+  --map-left-bg: #c8c2b6;
+  --trainer-card-bg: #e3ddd3;
+  --trainer-sprite-bg: #d0c5b5;
+  --mon-sprite-bg: #d0c5b5;
+  --mon-data-bg: #f2ede4;
+}
+
+.section[data-theme='city-viridian'] {
+  --section-head-color: #d8e8d7;
+  --section-bg: #d8e8d7;
+  --section-head-bg: #6f9a64;
+  --map-left-bg: #b8cfb3;
 }
 
 .section[data-theme='city-pewter'] {
-    --section-bg: #efe9e0;
-    --section-head-bg: #ddd2c4;
-    --map-pane-bg: #d8d0c4;
-    --map-left-bg: #cfc7bb;
-    --enc-bg: #efefef;
-    --enc-panel-bg: #f4f4f4;
-    --enc-kind-bg: #e2e2e2;
-    --trainer-card-bg: #e4ddd4;
-    --trainer-left-bg: #d2c4b4;
-    --mon-bg: #f8f5ef;
-    --mon-head-bg: #d2c4b4;
-    --moves-bg: #f6f2eb;
+  --section-bg: #efe9e0;
+  --section-head-bg: #ddd2c4;
+  --map-left-bg: #cfc7bb;
+  --trainer-card-bg: #e4ddd4;
+  --trainer-sprite-bg: #d2c4b4;
+  --mon-sprite-bg: #d2c4b4;
+  --mon-data-bg: #f6f2eb;
 }
 
 /* Rock/Brock — stone brown */
 .section[data-theme='gym-pewter'] {
-    --section-head-color: #f8f4ee;
-    --section-bg: #f0e8dc;
-    --section-head-bg: #8c7a68;
-    --map-pane-bg: #e8dece;
-    --map-left-bg: #d8ccb8;
-    --trainer-card-bg: #e8ddd0;
-    --trainer-left-bg: #8c7a68;
-    --mon-bg: #f8f4ee;
-    --mon-head-bg: #8c7a68;
-    --moves-bg: #f4eee6;
+  --section-head-color: #f8f4ee;
+  --section-bg: #f0e8dc;
+  --section-head-bg: #8c7a68;
+  --map-left-bg: #d8ccb8;
+  --trainer-card-bg: #e8ddd0;
+  --trainer-sprite-bg: #8c7a68;
+  --mon-sprite-bg: #8c7a68;
+  --mon-data-bg: #f4eee6;
 }
 
 .section[data-theme='city-cerulean'] {
+    --section-head-color: #d3deea;
     --section-bg: #d3deea;
     --section-head-bg: #007ba7;
-    --map-pane-bg: #c3d3e3;
     --map-left-bg: #adc3d9;
-    --enc-bg: #d8e5f2;
-    --enc-panel-bg: #e9f1f8;
-    --enc-kind-bg: #b9d1e9;
     --enc-line: #3f6484;
     --enc-grid-line: #4f7494;
-    --enc-th-bg: #b6cde3;
-    --trainer-card-bg: #e3ddd3;
-    --trainer-left-bg: #d0c5b5;
-    --mon-bg: #f7f3ec;
-    --mon-head-bg: #d0c5b5;
-    --moves-bg: #f2ede4;
   }
-
-  .section[data-theme='city-cerulean'] .cards {
-    background: #f5f2ec;
-}
 
 /* Water/Misty — vivid ocean blue */
 .section[data-theme='gym-cerulean'] {
     --section-head-color: #ffffff;
     --section-bg: #ccdff8;
     --section-head-bg: #3883c8;
-    --map-pane-bg: #bcd4f0;
     --map-left-bg: #a8c8e8;
     --trainer-card-bg: #c0d8f0;
-    --trainer-left-bg: #3883c8;
-    --mon-bg: #e2f0f8;
-    --mon-head-bg: #3883c8;
-    --moves-bg: #d8ecf8;
+    --trainer-sprite-bg: #3883c8;
+    --mon-sprite-bg: #3883c8;
+    --mon-data-bg: #d8ecf8;
 }
 
 .section[data-theme='city-vermilion'] {
-    --section-bg: #e8d7c8;
-    --section-head-bg: #ff3b2d;
-    --map-pane-bg: #e5d0be;
-    --map-left-bg: #ddc2ab;
-    --enc-bg: #f2e6db;
-    --enc-panel-bg: #f7eee6;
-    --enc-kind-bg: #ecd2bf;
-    --trainer-card-bg: #e8d7c8;
-    --trainer-left-bg: #e1b894;
-    --mon-bg: #f7efe7;
-    --mon-head-bg: #e1b894;
-    --moves-bg: #f3e8de;
+  --section-head-color: #ebb7b4;
+  --section-bg: #ebb7b4;
+  --section-head-bg: #ff3b2d;
+  --map-left-bg: #ddc2ab;
 }
 
 /* Electric/Surge — vivid gold-yellow */
 .section[data-theme='gym-vermilion'] {
-    --section-head-color: #ffffff;
-    --section-bg: #fff8c8;
-    --section-head-bg: #f4dc26;
-    --map-pane-bg: #f8eeaa;
-    --map-left-bg: #f0e294;
-    --trainer-card-bg: #f8eec4;
-    --trainer-left-bg: #f4dc26;
-    --mon-bg: #fffce0;
-    --mon-head-bg: #f4dc26;
-    --moves-bg: #faf4cc;
+  --section-head-color: #ffffff;
+  --section-bg: #fff8c8;
+  --section-head-bg: #f4dc26;
+  --map-left-bg: #f0e294;
+  --trainer-card-bg: #f8eec4;
+  --trainer-sprite-bg: #f4dc26;
+  --mon-sprite-bg: #f4dc26;
+  --mon-data-bg: #faf4cc;
 }
 
 .section[data-theme='city-celadon'] {
-    --section-bg: #dde8d8;
-    --section-head-bg: #7ea96d;
-    --map-pane-bg: #cfddca;
-    --map-left-bg: #c1d0bb;
-    --enc-bg: #e4eedf;
-    --enc-panel-bg: #f1f6ee;
-    --enc-kind-bg: #cfe1c6;
-    --trainer-card-bg: #d7e3d1;
-    --trainer-left-bg: #aec7a2;
-    --mon-bg: #eef4ea;
-    --mon-head-bg: #aec7a2;
-    --moves-bg: #e8f0e2;
+  --section-bg: #dde8d8;
+  --section-head-bg: #7ea96d;
+  --map-left-bg: #c1d0bb;
 }
 
 /* Grass/Erika — vivid forest green */
 .section[data-theme='gym-celadon'] {
-    --section-head-color: #ffffff;
-    --section-bg: #d4f0cc;
-    --section-head-bg: #3a8830;
-    --map-pane-bg: #c4e8bc;
-    --map-left-bg: #b0dcaa;
-    --trainer-card-bg: #c8e4bc;
-    --trainer-left-bg: #3a8830;
-    --mon-bg: #e8f8e4;
-    --mon-head-bg: #3a8830;
-    --moves-bg: #daf4d4;
+  --section-head-color: #ffffff;
+  --section-bg: #d4f0cc;
+  --section-head-bg: #3a8830;
+  --map-left-bg: #b0dcaa;
+  --trainer-card-bg: #c8e4bc;
+  --trainer-sprite-bg: #3a8830;
+  --mon-sprite-bg: #3a8830;
+  --mon-data-bg: #daf4d4;
 }
 
 .section[data-theme='city-fuchsia'] {
   --section-head-color: #ffffff;
   --section-bg: #f7d8f3;
   --section-head-bg: #ff00ff;
-  --map-pane-bg: #efbfe8;
   --map-left-bg: #e8a9de;
-  --enc-bg: #f9e4f6;
-  --enc-panel-bg: #fdf0fb;
-  --enc-kind-bg: #efc4e8;
-  --trainer-card-bg: #efccea;
-  --trainer-left-bg: #d67dcb;
-  --mon-bg: #fbe8f8;
-  --mon-head-bg: #d67dcb;
-  --moves-bg: #f6dbf1;
 }
 
 .section[data-theme='city-lavender'] {
   --section-head-color: #ffffff;
   --section-bg: #e9def7;
   --section-head-bg: #9c7ac9;
-  --map-pane-bg: #ddd0f0;
   --map-left-bg: #cfc0e7;
-  --enc-bg: #eee6fa;
-  --enc-panel-bg: #f6f1fd;
-  --enc-kind-bg: #dbcdeb;
-  --trainer-card-bg: #e2d7f0;
-  --trainer-left-bg: #b9a3da;
-  --mon-bg: #f4eefb;
-  --mon-head-bg: #b9a3da;
-  --moves-bg: #ece3f7;
 }
 
 .section[data-theme='tower-ghost'] {
   --section-head-color: #f6f0ff;
   --section-bg: #d9d1e8;
   --section-head-bg: #5f4f81;
-  --map-pane-bg: #c7bfd9;
   --map-left-bg: #b7aecb;
-  --enc-bg: #dfd8ec;
-  --enc-panel-bg: #e9e4f3;
-  --enc-kind-bg: #c8bfd9;
   --enc-line: #5a5370;
   --enc-grid-line: #6a627e;
-  --enc-th-bg: #c2b9d4;
   --trainer-card-bg: #d3cbdf;
-  --trainer-left-bg: #9f91bb;
-  --mon-bg: #e8e2f2;
-  --mon-head-bg: #9f91bb;
-  --moves-bg: #ddd4ea;
+  --trainer-sprite-bg: #9f91bb;
+  --mon-sprite-bg: #9f91bb;
+  --mon-data-bg: #ddd4ea;
 }
 
 /* Poison/Koga — deep toxic purple */
 .section[data-theme='gym-fuchsia'] {
-    --section-head-color: #ffffff;
-    --section-bg: #f0dcf4;
-    --section-head-bg: #7030a8;
-    --map-pane-bg: #e8ceec;
-    --map-left-bg: #dcbce4;
-    --trainer-card-bg: #ecd4f0;
-    --trainer-left-bg: #7030a8;
-    --mon-bg: #f8eef8;
-    --mon-head-bg: #7030a8;
-    --moves-bg: #f4e8f8;
+  --section-head-color: #ffffff;
+  --section-bg: #f0dcf4;
+  --section-head-bg: #7030a8;
+  --map-left-bg: #dcbce4;
+  --trainer-card-bg: #ecd4f0;
+  --trainer-sprite-bg: #7030a8;
+  --mon-sprite-bg: #7030a8;
+  --mon-data-bg: #f4e8f8;
 }
 
 .section[data-theme='city-saffron'] {
-    --section-bg: #f0e6c9;
-    --section-head-bg: #ceac4a;
-    --map-pane-bg: #e7d9b7;
-    --map-left-bg: #dfcc9d;
-    --enc-bg: #f5edd8;
-    --enc-panel-bg: #fbf5e8;
-    --enc-kind-bg: #eddcae;
-    --trainer-card-bg: #ebdec0;
-    --trainer-left-bg: #e1ca87;
-    --mon-bg: #f9f4e4;
-    --mon-head-bg: #e1ca87;
-    --moves-bg: #f5eed8;
+  --section-bg: #f0e6c9;
+  --section-head-bg: #ceac4a;
+  --map-left-bg: #dfcc9d;
+  --trainer-card-bg: #ebdec0;
+  --trainer-sprite-bg: #e1ca87;
+  --mon-sprite-bg: #e1ca87;
+  --mon-data-bg: #f5eed8;
 }
 
 /* Psychic/Sabrina — vivid hot magenta */
 .section[data-theme='gym-saffron'] {
-    --section-head-color: #ffffff;
-    --section-bg: #f8d8f0;
-    --section-head-bg: #c02090;
-    --map-pane-bg: #f0c8e8;
-    --map-left-bg: #e8b8de;
-    --trainer-card-bg: #f0ccec;
-    --trainer-left-bg: #c02090;
-    --mon-bg: #fceef8;
-    --mon-head-bg: #c02090;
-    --moves-bg: #f8e4f4;
-}
-
-.section[data-theme='city-viridian'] {
-    --section-bg: #d8e8d7;
-    --section-head-bg: #6f9a64;
-    --map-pane-bg: #c7dbc3;
-    --map-left-bg: #b8cfb3;
-    --enc-bg: #deebdb;
-    --enc-panel-bg: #eef5ec;
-    --enc-kind-bg: #c8dcc1;
-    --trainer-card-bg: #d2e0ce;
-    --trainer-left-bg: #abc6a0;
-    --mon-bg: #edf4ea;
-    --mon-head-bg: #abc6a0;
-    --moves-bg: #e6efe3;
+  --section-head-color: #ffffff;
+  --section-bg: #f8d8f0;
+  --section-head-bg: #c02090;
+  --map-left-bg: #e8b8de;
+  --trainer-card-bg: #f0ccec;
+  --trainer-sprite-bg: #c02090;
+  --mon-sprite-bg: #c02090;
+  --mon-data-bg: #f8e4f4;
 }
 
 /* Ground/Giovanni — earthy desert brown */
 .section[data-theme='gym-viridian'] {
-    --section-head-color: #f8f0e4;
-    --section-bg: #f0e4cc;
-    --section-head-bg: #806038;
-    --map-pane-bg: #e8d8b8;
-    --map-left-bg: #dccaa0;
-    --trainer-card-bg: #e8d8b4;
-    --trainer-left-bg: #806038;
-    --mon-bg: #f8f0e0;
-    --mon-head-bg: #806038;
-    --moves-bg: #f4ecca;
+  --section-head-color: #f8f0e4;
+  --section-bg: #f0e4cc;
+  --section-head-bg: #806038;
+  --map-left-bg: #dccaa0;
+  --trainer-card-bg: #e8d8b4;
+  --trainer-sprite-bg: #806038;
+  --mon-sprite-bg: #806038;
+  --mon-data-bg: #f4ecca;
 }
 
 .section[data-theme='city-cinnabar'] {
-    --section-bg: #edd9d2;
-    --section-head-bg: #c06049;
-    --map-pane-bg: #e2c6bc;
-    --map-left-bg: #d8b4a7;
-    --enc-bg: #f1e0da;
-    --enc-panel-bg: #f8ece8;
-    --enc-kind-bg: #e8c7bc;
-    --trainer-card-bg: #e7d2ca;
-    --trainer-left-bg: #d8a897;
-    --mon-bg: #f6ece9;
-    --mon-head-bg: #d8a897;
-    --moves-bg: #f2e4de;
+  --section-bg: #edd9d2;
+  --section-head-bg: #c06049;
+  --map-left-bg: #d8b4a7;
+  --trainer-card-bg: #e7d2ca;
+  --trainer-sprite-bg: #d8a897;
+  --mon-sprite-bg: #d8a897;
+  --mon-data-bg: #f2e4de;
 }
 
 /* Fire/Blaine — vivid crimson red */
 .section[data-theme='gym-cinnabar'] {
-    --section-head-color: #ffffff;
-    --section-bg: #f8dcd0;
-    --section-head-bg: #b82020;
-    --map-pane-bg: #f0ccc0;
-    --map-left-bg: #e8bcb0;
-    --trainer-card-bg: #f0d0c4;
-    --trainer-left-bg: #b82020;
-    --mon-bg: #faeae4;
-    --mon-head-bg: #b82020;
-    --moves-bg: #f8e4dc;
+  --section-head-color: #ffffff;
+  --section-bg: #f8dcd0;
+  --section-head-bg: #b82020;
+  --map-left-bg: #e8bcb0;
+  --trainer-card-bg: #f0d0c4;
+  --trainer-sprite-bg: #b82020;
+  --mon-sprite-bg: #b82020;
+  --mon-data-bg: #f8e4dc;
 }
 
 
 /* Ice/Lorelei */
 .section[data-theme='e4-lorelei'] {
-    --section-head-color: #ffffff;
-    --section-bg: #d8f0f8;
-    --section-head-bg: #1898c8;
-    --map-pane-bg: #c8e8f4;
-    --map-left-bg: #b8dcec;
-    --trainer-card-bg: #cce8f4;
-    --trainer-left-bg: #1898c8;
-    --mon-bg: #e8f8fc;
-    --mon-head-bg: #1898c8;
-    --moves-bg: #d4ecf8;
+  --section-head-color: #ffffff;
+  --section-bg: #d8f0f8;
+  --section-head-bg: #1898c8;
+  --map-left-bg: #b8dcec;
+  --trainer-card-bg: #cce8f4;
+  --trainer-sprite-bg: #1898c8;
+  --mon-sprite-bg: #1898c8;
+  --mon-data-bg: #d4ecf8;
 }
 
 /* Fighting/Bruno */
 .section[data-theme='e4-bruno'] {
-    --section-head-color: #ffffff;
-    --section-bg: #f8dcd8;
-    --section-head-bg: #982018;
-    --map-pane-bg: #f0ccc8;
-    --map-left-bg: #e8bcb8;
-    --trainer-card-bg: #f0d0c8;
-    --trainer-left-bg: #982018;
-    --mon-bg: #faeae8;
-    --mon-head-bg: #982018;
-    --moves-bg: #f8e4e0;
+  --section-head-color: #ffffff;
+  --section-bg: #f8dcd8;
+  --section-head-bg: #982018;
+  --map-left-bg: #e8bcb8;
+  --trainer-card-bg: #f0d0c8;
+  --trainer-sprite-bg: #982018;
+  --mon-sprite-bg: #982018;
+  --mon-data-bg: #f8e4e0;
 }
 
 /* Ghost/Agatha */
 .section[data-theme='e4-agatha'] {
-    --section-head-color: #ffffff;
-    --section-bg: #ecdaf4;
-    --section-head-bg: #6838a0;
-    --map-pane-bg: #e4ceee;
-    --map-left-bg: #d8bce4;
-    --trainer-card-bg: #e8d2f0;
-    --trainer-left-bg: #6838a0;
-    --mon-bg: #f6eef8;
-    --mon-head-bg: #6838a0;
-    --moves-bg: #f0e6f6;
+  --section-head-color: #f6f0ff;
+  --section-bg: #e2d8ee;
+  --section-head-bg: #625186;
+  --map-left-bg: #c4b8d5;
+  --enc-line: #5d5672;
+  --enc-grid-line: #6d6581;
+  --trainer-card-bg: #d9cee6;
+  --trainer-sprite-bg: #625186;
+  --mon-sprite-bg: #625186;
+  --mon-data-bg: #e3d8ef;
+}
+
+/* Indigo Plateau exterior uses the classic Agatha-like lavender palette (map-only section). */
+.section[data-theme='indigo-plateau'] {
+  --section-head-color: #ffffff;
+  --section-bg: #ecdaf4;
+  --section-head-bg: #6838a0;
+  --map-left-bg: #d8bce4;
 }
 
 /* Dragon/Lance */
 .section[data-theme='e4-lance'] {
-    --section-head-color: #ffffff;
-    --section-bg: #dcd0f0;
-    --section-head-bg: #3820a8;
-    --map-pane-bg: #d0c4e8;
-    --map-left-bg: #c4b4e0;
-    --trainer-card-bg: #d4c8ec;
-    --trainer-left-bg: #3820a8;
-    --mon-bg: #eee8f8;
-    --mon-head-bg: #3820a8;
-    --moves-bg: #e8e0f4;
+  --section-head-color: #ffffff;
+  --section-bg: #dcd0f0;
+  --section-head-bg: #3820a8;
+  --map-left-bg: #c4b4e0;
+  --trainer-card-bg: #d4c8ec;
+  --trainer-sprite-bg: #3820a8;
+  --mon-sprite-bg: #3820a8;
+  --mon-data-bg: #f4e0e0;
 }
 
 /* Champion */
 .section[data-theme='champion'] {
-    --section-head-color: #ffffff;
-    --section-bg: #e3cb83;
-    --section-head-bg: #c9a441;
-    --map-pane-bg: #e3cb83;
-    --map-left-bg: #e3cb83;
-    --trainer-card-bg: #e3cb83;
-    --trainer-left-bg: #e3cb83;
-    --mon-bg: #eee8f8;
-    --mon-head-bg: #3820a8;
-    --moves-bg: #e8e0f4;
+  --section-head-color: #ffffff;
+  --section-bg: #e3cb83;
+  --section-head-bg: #c9a441;
+  --map-left-bg: #e3cb83;
+  --trainer-card-bg: #e3cb83;
+  --trainer-sprite-bg: #e3cb83;
+  --mon-sprite-bg: #3820a8;
+  --mon-data-bg: #e8e0f4;
 }
-
-/* Seafoam islands */
-.section[data-theme='ice'] {
-    --section-head-color: #ffffff;
-    --section-bg: #deedf7;
-    --section-head-bg: #5ea3cc;
-    --map-pane-bg: #cfe4f2;
-    --map-left-bg: #bdd9ea;
-    --enc-bg: #e4f1f9;
-    --enc-panel-bg: #f0f8fc;
-    --enc-kind-bg: #cee4f2;
-    --trainer-card-bg: #dbeaf4;
-    --trainer-left-bg: #5ea3cc;
-    --mon-bg: #edf6fb;
-    --mon-head-bg: #5ea3cc;
-    --moves-bg: #e4f1f9;
-  }
 
 @media (max-width: 1200px) {
     .map-pane {

@@ -57,6 +57,7 @@ SECTION_THEME_OVERRIDES: Dict[str, str] = {
     "viridian city": "city-viridian",
     "cinnabar island": "city-cinnabar",
     "cinnabar island gym": "gym-cinnabar",
+    "indigo plateau": "indigo-plateau",
     "fuchsia city gym": "gym-fuchsia",
     "saffron city gym": "gym-saffron",
     "viridian city gym": "gym-viridian",
@@ -425,9 +426,44 @@ def resolve_section_theme(section_name: str) -> str:
     if key in SECTION_THEME_OVERRIDES:
         return SECTION_THEME_OVERRIDES[key]
 
+    if "mt. moon" in key or "mt moon" in key:
+        return "moon"
+
+    if "diglett" in key and "cave" in key:
+        return "diglett-cave"
+
+    if "rock tunnel" in key:
+        return "rock-tunnel"
+
+    if "pokémon mansion" in key or "pokemon mansion" in key:
+        return "mansion"
+
+    if key.startswith((
+        "one island",
+        "two island",
+        "three island",
+        "four island",
+        "five island",
+        "six island",
+        "seven island",
+    )):
+        return "islands"
+
+    if "mt. ember" in key or "mt ember" in key:
+        return "ember"
+
+    if "victory road" in key:
+        return "victory-road"
+
+    if "cerulean cave" in key:
+        return "cerulean-cave"
+
     if "pokémon tower" in key:
         return "tower-ghost"
 
+    if "s.s. anne" in key:
+        return "route-water"
+    
     if "seafoam" in key:
         return "ice"
     

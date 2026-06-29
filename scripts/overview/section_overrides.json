@@ -47,7 +47,7 @@
     "Route 5": {
       "fullHeight": true
     },
-    "Diglett's Cave": {
+    "Diglett Cave": {
       "mapToken": "DIGLETTS_CAVE_B1F"
     },
     "S.S. Anne Exterior": {
@@ -263,7 +263,8 @@
       "crop": { "x0": 0.0, "x1": 0.50 }
     },
     "Indigo Plateau": {
-      "mapToken": "INDIGO_PLATEAU_EXTERIOR"
+      "mapToken": "INDIGO_PLATEAU_EXTERIOR",
+      "mapScaleMax": 0.7
     },
     "LORELEI": {
       "mapToken": "POKEMON_LEAGUE_LORELEIS_ROOM",

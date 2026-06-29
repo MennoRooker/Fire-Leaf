@@ -539,7 +539,7 @@ def parse_map_object_events(map_json_rel_path: str) -> List[Dict[str, Any]]:
     out: List[Dict[str, Any]] = []
     seen: set = set()
 
-    for event in map_data.get("object_events", []):
+    for idx, event in enumerate(map_data.get("object_events", []), start=1):
         if not isinstance(event, dict):
             continue
         if str(event.get("type", "")) != "object":
@@ -562,6 +562,8 @@ def parse_map_object_events(map_json_rel_path: str) -> List[Dict[str, Any]]:
         seen.add(dedupe_key)
 
         out.append({
+            "objectId": idx,
+            "localId": str(event.get("local_id", "")),
             "graphicsId": gfx_token,
             "x": x,
             "y": y,

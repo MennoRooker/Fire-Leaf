@@ -441,6 +441,18 @@ def _build_map_object_overlay(map_render: Dict[str, object], asset_url) -> List[
 
     objects: List[Dict[str, object]] = []
     for event in parse_map_object_events(map_json_path):
+        # Hide the Seagallop boat on Cinnabar Island (object ID 4 in map.json)
+        if map_json_path == "data/maps/CinnabarIsland/map.json" and int(event.get("objectId", 0)) == 4:
+            continue
+        
+        # Hide Oak and Rival from Indigo Plateau (object IDs 1 & 2 in map.json)
+        if map_json_path == "data/maps/IndigoPlateau_Exterior/map.json" and (int(event.get("objectId", 0)) == 1 or int(event.get("objectId", 0)) == 2):
+            continue
+
+        # Hide Oak Seagallop from the Champion Room (object ID 2 in map.json)
+        if map_json_path == "data/maps/PokemonLeague_ChampionsRoom/map.json" and int(event.get("objectId", 0)) == 2:
+            continue   
+
         gfx_token = str(event.get("graphicsId", ""))
         info_symbol = gfx_to_info.get(gfx_token)
         if not info_symbol:
@@ -456,8 +468,8 @@ def _build_map_object_overlay(map_render: Dict[str, object], asset_url) -> List[
 
         frame_tiles_w = int(frame_meta.get("tilesW", 2))
         frame_tiles_h = int(frame_meta.get("tilesH", 2))
-        frame_w = max(8, frame_tiles_w * 8)
-        frame_h = max(8, frame_tiles_h * 8)
+        table_frame_w = max(8, frame_tiles_w * 8)
+        table_frame_h = max(8, frame_tiles_h * 8)
 
         source_frames = frame_meta.get("sourceFrames") or [int(frame_meta.get("frame", 0))]
 
@@ -470,8 +482,14 @@ def _build_map_object_overlay(map_render: Dict[str, object], asset_url) -> List[
 
         source_frame = max(0, int(source_frames[anim_index]))
 
-        draw_w = max(8, int(info.get("width", frame_w)))
-        draw_h = max(8, int(info.get("height", frame_h)))
+        draw_w = max(8, int(info.get("width", table_frame_w)))
+        draw_h = max(8, int(info.get("height", table_frame_h)))
+
+        # Use graphics-info dimensions as the source frame size. Pic-table tile
+        # sizes can be layout-oriented (subsprite packing) and may not match the
+        # actual sprite sheet frame dimensions for large objects like ships.
+        frame_w = draw_w
+        frame_h = draw_h
 
         objects.append(
             {
