@@ -4,9 +4,11 @@ import base64
 import html
 import importlib
 import json
+import mimetypes
 import os
+import re
 from pathlib import Path
-from typing import Dict, List
+from typing import Dict, List, Set
 
 from .parsing import (
     parse_initial_movement_facing_directions,
@@ -32,6 +34,100 @@ FACE_DIRECTION_FRAME = {
 
 ROOT = Path(__file__).resolve().parents[2]
 OVERVIEW_SOURCE_DIR = Path(__file__).resolve().parent
+
+
+class AssetResolver:
+    def __init__(self, output_dir: Path, embed_assets: bool) -> None:
+        self.output_dir = output_dir
+        self.embed_assets = embed_assets
+        self._cache: Dict[str, str] = {}
+        self._embedded_paths: Set[str] = set()
+        self._missing_assets: Set[str] = set()
+        self._embedded_bytes = 0
+
+    def resolve(self, rel_path: str) -> str:
+        normalized = rel_path.replace("\\", "/").strip()
+        if not normalized:
+            return ""
+
+        cached = self._cache.get(normalized)
+        if cached is not None:
+            return cached
+
+        if self.embed_assets:
+            resolved = self._data_url_for(normalized)
+        else:
+            resolved = os.path.relpath(ROOT / normalized, self.output_dir).replace("\\", "/")
+
+        self._cache[normalized] = resolved
+        return resolved
+
+    def _data_url_for(self, rel_path: str) -> str:
+        raw_path = ROOT / rel_path
+        actual_path = raw_path
+        if not raw_path.is_file():
+            fallback_rel = self._fallback_for(rel_path)
+            if not fallback_rel:
+                raise FileNotFoundError(f"Missing asset: {rel_path}")
+            fallback_path = ROOT / fallback_rel
+            if not fallback_path.is_file():
+                raise FileNotFoundError(
+                    f"Missing asset and fallback: {rel_path} -> {fallback_rel}"
+                )
+            self._missing_assets.add(rel_path)
+            actual_path = fallback_path
+
+        raw = actual_path.read_bytes()
+        mime_type, _ = mimetypes.guess_type(rel_path)
+        if not mime_type:
+            mime_type = "application/octet-stream"
+        payload = base64.b64encode(raw).decode("ascii")
+        self._embedded_paths.add(rel_path)
+        self._embedded_bytes += len(raw)
+        return f"data:{mime_type};base64,{payload}"
+
+    def _fallback_for(self, rel_path: str) -> str:
+        if rel_path.startswith("graphics/pokemon/"):
+            return "graphics/pokemon/question_mark/circled/front.png"
+        if rel_path.startswith("graphics/trainers/"):
+            return "graphics/trainers/front_pics/youngster_front_pic.png"
+        if rel_path.startswith("graphics/items/icons/"):
+            return "graphics/items/icons/poke_ball.png"
+        if rel_path.startswith("graphics/interface/"):
+            return "graphics/interface/menu_info.png"
+        return ""
+
+    def stats(self) -> Dict[str, int]:
+        return {
+            "uniqueEmbeddedAssets": len(self._embedded_paths),
+            "embeddedBytes": self._embedded_bytes,
+            "missingAssets": len(self._missing_assets),
+        }
+
+
+def _find_external_asset_refs(html_text: str) -> List[str]:
+    refs: Set[str] = set()
+
+    attr_pattern = re.compile(r"(?:src|href)=['\"]([^'\"]+)['\"]")
+    css_pattern = re.compile(r"url\((['\"]?)([^)'\"]+)\1\)")
+    graphics_pattern = re.compile(r"(?:\.\./)?graphics/[A-Za-z0-9_./-]+")
+
+    for match in attr_pattern.finditer(html_text):
+        raw = match.group(1).strip()
+        if not raw or raw.startswith(("data:", "http://", "https://", "#", "javascript:")):
+            continue
+        refs.add(raw)
+
+    for match in css_pattern.finditer(html_text):
+        raw = match.group(2).strip()
+        if not raw or raw.startswith(("data:", "http://", "https://", "#")):
+            continue
+        refs.add(raw)
+
+    for match in graphics_pattern.finditer(html_text):
+        refs.add(match.group(0))
+
+    return sorted(refs)
 
 
 def read_overview_source(*parts: str) -> str:
@@ -82,12 +178,10 @@ def render_mon_card(mon: Dict[str, object], type_icons: Dict[str, Dict[str, int]
     item_name = str(mon.get("itemName", "-"))
     item_icon_html = ""
     item_icon_path = str(mon.get("itemIconPath", ""))
-    item_palette_path = str(mon.get("itemPalettePath", ""))
     if item_name != "-" and item_icon_path:
         item_icon_html = (
             f"<img class='item-icon' src='{html.escape(asset_url(item_icon_path))}' "
-            f"alt='{html.escape(item_name)}' title='{html.escape(item_name)}' "
-            f"data-item-palette='{html.escape(item_palette_path)}'>"
+            f"alt='{html.escape(item_name)}' title='{html.escape(item_name)}'>"
         )
 
     return render_template(
@@ -258,7 +352,7 @@ def render_section(section: Dict[str, object], type_icons: Dict[str, Dict[str, i
             "__SECTION_NAME__": html.escape(str(section["name"])),
             "__TRAINER_COUNT__": str(len(section["trainers"])),
             "__PANE_MODE__": pane_mode,
-            "__MAP_IMAGE__": html.escape(asset_url(str(section["mapImage"]))),
+            "__MAP_IMAGE__": "",
             "__MAP_KEY__": html.escape(str(section["slug"])),
             "__MAP_SCALE_MAX_ATTR__": map_scale_max_attr,
             "__MAP_FULL_HEIGHT_ATTR__": full_height_attr,
@@ -446,11 +540,12 @@ def build_map_render_data(sections: List[Dict[str, object]], asset_url) -> Dict[
     return payload
 
 
-def render_html(model: Dict[str, object], out_path: Path) -> None:
+def render_html(model: Dict[str, object], out_path: Path, embed_assets: bool = True) -> Dict[str, int]:
     output_dir = out_path.parent
+    asset_resolver = AssetResolver(output_dir=output_dir, embed_assets=embed_assets)
 
     def asset_url(rel_path: str) -> str:
-        return os.path.relpath(ROOT / rel_path, output_dir).replace("\\", "/")
+        return asset_resolver.resolve(rel_path)
 
     templates = {
         "main_template": read_overview_source("templates", "main_template.html"),
@@ -475,5 +570,20 @@ def render_html(model: Dict[str, object], out_path: Path) -> None:
     page_html = page_html.replace("__MAP_RENDER_DATA_BLOCK__", f"<script id='overview-map-data' type='application/json'>{map_render_data_json}</script>")
     page_html = page_html.replace("__SCRIPT_BLOCK__", f"<script>\n{map_render_script}\n</script>")
 
+    if embed_assets:
+        external_refs = _find_external_asset_refs(page_html)
+        if external_refs:
+            preview = ", ".join(external_refs[:8])
+            if len(external_refs) > 8:
+                preview += ", ..."
+            raise RuntimeError(
+                "Generated overview still contains external asset references: "
+                f"{preview}"
+            )
+
     out_path.parent.mkdir(parents=True, exist_ok=True)
     out_path.write_text(page_html, encoding="utf-8")
+
+    stats = asset_resolver.stats()
+    stats["htmlBytes"] = len(page_html.encode("utf-8"))
+    return stats

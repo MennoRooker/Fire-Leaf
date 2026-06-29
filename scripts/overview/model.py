@@ -671,8 +671,8 @@ def build_model(section_filter: Optional[str]) -> Dict[str, object]:
             return "graphics/pokemon/castform/normal/front.png"
         idx = species_ids.get(species_token)
         if idx is None or idx >= len(mon_front_syms):
-            return "graphics/pokemon/question_mark/front.png"
-        return mon_sym_to_png.get(mon_front_syms[idx], "graphics/pokemon/question_mark/front.png")
+            return "graphics/pokemon/question_mark/circled/front.png"
+        return mon_sym_to_png.get(mon_front_syms[idx], "graphics/pokemon/question_mark/circled/front.png")
 
     def format_nature_effect(nature_token: str) -> str:
         mods = nature_stat_modifiers.get(nature_token)

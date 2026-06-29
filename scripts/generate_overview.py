@@ -44,14 +44,25 @@ render_html = overview_rendering.render_html
 def main() -> None:
     parser = argparse.ArgumentParser(description="Generate overview HTML")
     parser.add_argument("--section", help="Only render one section title (case-insensitive)")
+    parser.add_argument(
+        "--asset-mode",
+        choices=["embedded", "relative"],
+        default="embedded",
+        help="Asset URL mode for output HTML (default: embedded).",
+    )
     args = parser.parse_args()
 
     model = build_model(args.section)
     out_path = ROOT / "docs" / "OVERVIEW.html"
-    render_html(model, out_path)
+    embed_assets = args.asset_mode == "embedded"
+    stats = render_html(model, out_path, embed_assets=embed_assets)
 
     print(f"Wrote: {out_path}")
     print(f"Sections rendered: {len(model['sections'])}")
+    if embed_assets:
+        print(f"Embedded assets: {stats['uniqueEmbeddedAssets']}")
+        print(f"Embedded bytes: {stats['embeddedBytes']}")
+    print(f"HTML size (bytes): {stats['htmlBytes']}")
 
 
 if __name__ == "__main__":
