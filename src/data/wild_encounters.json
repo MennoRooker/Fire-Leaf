@@ -19479,13 +19479,13 @@
               },
               {
                 "min_level": 30,
-                "max_level": 35,
+                "max_level": 40,
                 "species": "SPECIES_MANTINE"
               },
               {
                 "min_level": 35,
-                "max_level": 40,
-                "species": "SPECIES_LANTURN"
+                "max_level": 39,
+                "species": "SPECIES_WAILMER"
               }
             ]
           },
@@ -19568,13 +19568,13 @@
               },
               {
                 "min_level": 30,
-                "max_level": 35,
+                "max_level": 40,
                 "species": "SPECIES_MANTINE"
               },
               {
                 "min_level": 35,
-                "max_level": 40,
-                "species": "SPECIES_LANTURN"
+                "max_level": 39,
+                "species": "SPECIES_WAILMER"
               }
             ]
           },
@@ -19652,18 +19652,18 @@
               },
               {
                 "min_level": 30,
-                "max_level": 35,
+                "max_level": 40,
                 "species": "SPECIES_TENTACRUEL"
               },
               {
-                "min_level": 30,
-                "max_level": 35,
-                "species": "SPECIES_MANTINE"
+                "min_level": 35,
+                "max_level": 39,
+                "species": "SPECIES_WAILMER"
               },
               {
                 "min_level": 35,
                 "max_level": 40,
-                "species": "SPECIES_DEWGONG"
+                "species": "SPECIES_MANTINE"
               }
             ]
           },
@@ -19741,18 +19741,18 @@
               },
               {
                 "min_level": 30,
-                "max_level": 35,
+                "max_level": 40,
                 "species": "SPECIES_TENTACRUEL"
               },
               {
-                "min_level": 30,
-                "max_level": 35,
-                "species": "SPECIES_MANTINE"
+                "min_level": 35,
+                "max_level": 39,
+                "species": "SPECIES_WAILMER"
               },
               {
                 "min_level": 35,
                 "max_level": 40,
-                "species": "SPECIES_DEWGONG"
+                "species": "SPECIES_MANTINE"
               }
             ]
           },
@@ -19895,12 +19895,12 @@
               },
               {
                 "min_level": 30,
-                "max_level": 35,
+                "max_level": 40,
                 "species": "SPECIES_TENTACRUEL"
               },
               {
                 "min_level": 30,
-                "max_level": 35,
+                "max_level": 40,
                 "species": "SPECIES_MANTINE"
               },
               {
@@ -20049,12 +20049,12 @@
               },
               {
                 "min_level": 30,
-                "max_level": 35,
+                "max_level": 40,
                 "species": "SPECIES_TENTACRUEL"
               },
               {
                 "min_level": 30,
-                "max_level": 35,
+                "max_level": 40,
                 "species": "SPECIES_MANTINE"
               },
               {
@@ -20203,12 +20203,12 @@
               },
               {
                 "min_level": 30,
-                "max_level": 35,
+                "max_level": 40,
                 "species": "SPECIES_TENTACRUEL"
               },
               {
                 "min_level": 30,
-                "max_level": 35,
+                "max_level": 40,
                 "species": "SPECIES_MANTINE"
               },
               {
@@ -20357,12 +20357,12 @@
               },
               {
                 "min_level": 30,
-                "max_level": 35,
+                "max_level": 40,
                 "species": "SPECIES_TENTACRUEL"
               },
               {
                 "min_level": 30,
-                "max_level": 35,
+                "max_level": 40,
                 "species": "SPECIES_MANTINE"
               },
               {
