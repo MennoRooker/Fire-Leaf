@@ -207,6 +207,18 @@ def render_trainer_card(trainer: Dict[str, object], type_icons: Dict[str, Dict[s
     trainer_theme = str(trainer.get("theme", "default")).strip().lower()
     if trainer_theme and trainer_theme != "default":
         trainer_card_class = f"{trainer_card_class} trainer-theme-{trainer_theme}"
+
+    player_picked_html = ""
+    picked_name = str(trainer.get("playerPickedName", "")).strip()
+    picked_sprite = str(trainer.get("playerPickedSprite", "")).strip()
+    if picked_name and picked_sprite:
+        player_picked_html = (
+            "<div class='trainer-picked'>"
+            "<div class='trainer-picked-label'>You picked</div>"
+            f"<img src='{html.escape(asset_url(picked_sprite))}' alt='You picked {html.escape(picked_name)}' title='You picked {html.escape(picked_name)}'>"
+            "</div>"
+        )
+
     return render_template(
         templates["trainer_card"],
         {
@@ -214,6 +226,7 @@ def render_trainer_card(trainer: Dict[str, object], type_icons: Dict[str, Dict[s
             "__TRAINER_SPRITE__": html.escape(asset_url(str(trainer["sprite"]))),
             "__TRAINER_NAME__": html.escape(str(trainer["name"])),
             "__TRAINER_CLASS__": html.escape(str(trainer["class"])),
+            "__PLAYER_PICKED_HTML__": player_picked_html,
             "__MONS_HTML__": mons_html,
         },
     )
@@ -336,7 +349,7 @@ def render_section(section: Dict[str, object], type_icons: Dict[str, Dict[str, i
     elif encounters and encounters.get("mode") == "single":
         pane_mode = "single"
 
-    map_scale_max = section.get("mapSacleMax")
+    map_scale_max = section.get("mapScaleMax")
     map_scale_max_attr = ""
     if map_scale_max is not None:
         map_scale_max_attr = f" data-map-scale-max='{html.escape(str(map_scale_max))}'"
@@ -344,6 +357,13 @@ def render_section(section: Dict[str, object], type_icons: Dict[str, Dict[str, i
     full_height_attr = ""
     if section.get("fullHeight"):
         full_height_attr = " data-map-full-height='true'"
+
+    stretched_height_attr = ""
+    stretched_height = section.get("stretchedHeight")
+    if stretched_height is not None:
+        stretched_height_attr = (
+            f" data-map-stretched-height='{html.escape(str(stretched_height))}'"
+        )
 
     return render_template(
         templates["section"],
@@ -356,6 +376,7 @@ def render_section(section: Dict[str, object], type_icons: Dict[str, Dict[str, i
             "__MAP_KEY__": html.escape(str(section["slug"])),
             "__MAP_SCALE_MAX_ATTR__": map_scale_max_attr,
             "__MAP_FULL_HEIGHT_ATTR__": full_height_attr,
+            "__MAP_STRETCHED_HEIGHT_ATTR__": stretched_height_attr,
             "__ENCOUNTERS_HTML__": render_encounters(encounters, asset_url, templates) if encounters else "",
             "__TRAINER_SECTION_HTML__": trainer_section_html,
         },
@@ -444,6 +465,14 @@ def _build_map_object_overlay(map_render: Dict[str, object], asset_url) -> List[
         # Hide the Seagallop boat on Cinnabar Island (object ID 4 in map.json)
         if map_json_path == "data/maps/CinnabarIsland/map.json" and int(event.get("objectId", 0)) == 4:
             continue
+
+        # Hide item balls from legendary bird locations
+        if map_json_path == "data/maps/SeafoamIslands_B4F/map.json" and int(event.get("objectId", 0)) == 5:
+            continue
+        if map_json_path == "data/maps/MtEmber_Summit/map.json" and int(event.get("objectId", 0)) == 6:
+            continue
+        if map_json_path == "data/maps/PowerPlant/map.json" and int(event.get("objectId", 0)) == 9:
+            continue
         
         # Hide Oak and Rival from Indigo Plateau (object IDs 1 & 2 in map.json)
         if map_json_path == "data/maps/IndigoPlateau_Exterior/map.json" and (int(event.get("objectId", 0)) == 1 or int(event.get("objectId", 0)) == 2):
@@ -451,7 +480,7 @@ def _build_map_object_overlay(map_render: Dict[str, object], asset_url) -> List[
 
         # Hide Oak Seagallop from the Champion Room (object ID 2 in map.json)
         if map_json_path == "data/maps/PokemonLeague_ChampionsRoom/map.json" and int(event.get("objectId", 0)) == 2:
-            continue   
+            continue
 
         gfx_token = str(event.get("graphicsId", ""))
         info_symbol = gfx_to_info.get(gfx_token)
@@ -552,6 +581,9 @@ def build_map_render_data(sections: List[Dict[str, object]], asset_url) -> Dict[
                 payload[section_key]["mapScaleMax"] = map_scale_max
             if section.get("fullHeight"):
                 payload[section_key]["fullHeight"] = True
+            stretched_height = section.get("stretchedHeight")
+            if stretched_height is not None:
+                payload[section_key]["stretchedHeight"] = stretched_height
         except (FileNotFoundError, KeyError, OSError, ValueError, TypeError):
             continue
 

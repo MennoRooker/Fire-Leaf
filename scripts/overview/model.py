@@ -438,7 +438,7 @@ def resolve_section_theme(section_name: str) -> str:
     if "pokémon mansion" in key or "pokemon mansion" in key:
         return "mansion"
 
-    if key.startswith((
+    if key in {
         "one island",
         "two island",
         "three island",
@@ -446,7 +446,7 @@ def resolve_section_theme(section_name: str) -> str:
         "five island",
         "six island",
         "seven island",
-    )):
+    }:
         return "islands"
 
     if "mt. ember" in key or "mt ember" in key:
@@ -470,13 +470,16 @@ def resolve_section_theme(section_name: str) -> str:
     if key in {
         "treasure beach",
         "kindle road south",
-        "kindle road north"
+        "kindle road north",
+        "cape brink",
+        "three island port",
+        "bond bridge",
     }:
         return "route"
 
     if key in {
         "route 12 north",
-        "route 19 water",
+        "route 19",
         "route 20 east",
         "route 20 west",
         "route 21 north",
@@ -512,6 +515,17 @@ def resolve_section_theme(section_name: str) -> str:
     if any(token in key for token in ("city", "town", "island")):
         return "city-generic"
     return "default"
+
+
+def infer_player_starter_from_rival_party(party_name: str) -> Optional[str]:
+    party = party_name.lower()
+    if "charmander" in party:
+        return "SPECIES_BULBASAUR"
+    if "squirtle" in party:
+        return "SPECIES_CHARMANDER"
+    if "bulbasaur" in party:
+        return "SPECIES_SQUIRTLE"
+    return None
 
 
 def build_model(section_filter: Optional[str]) -> Dict[str, object]:
@@ -998,6 +1012,18 @@ def build_model(section_filter: Optional[str]) -> Dict[str, object]:
             "mons": [],
         }
 
+        # Rival teams encode the rival's starter in the party name.
+        # Show the player's chosen starter instead.
+        player_starter_token = None
+        if trainer_name == "Rival":
+            player_starter_token = infer_player_starter_from_rival_party(str(trainer.get("partyName", "")))
+        if player_starter_token:
+            trainer_obj["playerPickedName"] = species_names.get(
+                player_starter_token,
+                pretty_token(player_starter_token, "SPECIES_"),
+            )
+            trainer_obj["playerPickedSprite"] = species_front_path(player_starter_token)
+
         party_macro = str(trainer.get("partyMacro", ""))
         has_custom_moves = "CUSTOM_MOVES" in party_macro
         has_nature_ability = "NATURE_ABILITY" in party_macro
@@ -1155,6 +1181,23 @@ def build_model(section_filter: Optional[str]) -> Dict[str, object]:
             return False
         return bool(sect_cfg.get("fullHeight"))
     
+    def section_stretched_height(section_name: str) -> Optional[float]:
+        sect_cfg = section_overrides.get(section_name, {})
+        if not isinstance(sect_cfg, dict):
+            return None
+        raw = sect_cfg.get("stretchedHeight")
+        if raw is None:
+            return None
+        if isinstance(raw, bool):
+            return 2.0 if raw else None
+        try:
+            value = float(raw)
+        except (TypeError, ValueError):
+            return None
+        if value <= 0:
+            return None
+        return value
+    
     def section_hidden_encounter_kinds(section_name: str) -> set:
         sect_cfg = section_overrides.get(section_name, {})
         if not isinstance(sect_cfg, dict):
@@ -1177,6 +1220,7 @@ def build_model(section_filter: Optional[str]) -> Dict[str, object]:
                 "mapRender": build_map_render(name),
                 "mapScaleMax": section_map_scale_max(name),
                 "fullHeight": section_full_height(name),
+                "stretchedHeight": section_stretched_height(name),
                 "encounters": get_section_encounters(name, section_hidden_encounter_kinds(name)),
                 "trainers": sections[name],
                 "trainerGroups": trainer_groups.get(name, []),

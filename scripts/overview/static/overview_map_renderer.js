@@ -297,6 +297,31 @@
     return raw === "true" || raw === "1";
   }
 
+  function readStretchedHeightMultiplier(payload, canvas) {
+    if (payload && payload.stretchedHeight != null) {
+      if (payload.stretchedHeight === true) {
+        return 2;
+      }
+      const fromPayload = Number(payload.stretchedHeight);
+      if (Number.isFinite(fromPayload) && fromPayload > 0) {
+        return fromPayload;
+      }
+    }
+
+    const raw = canvas.getAttribute("data-map-stretched-height");
+    if (raw == null || raw === "") {
+      return null;
+    }
+    if (raw === "true" || raw === "1") {
+      return 2;
+    }
+    const fromAttr = Number(raw);
+    if (Number.isFinite(fromAttr) && fromAttr > 0) {
+      return fromAttr;
+    }
+    return null;
+  }
+
   function readMapScaleMax(canvas, payload) {
     if (payload && payload.mapScaleMax != null) {
       const fromPayload = Number(payload.mapScaleMax);
@@ -363,6 +388,7 @@
     }
 
     const fullHeight = isFullHeight(payload, canvas);
+    const stretchedHeightMultiplier = readStretchedHeightMultiplier(payload, canvas);
     const mapFullHeightPx = getMapFullHeightPx();
 
     // Never force the container to a fixed height. fullHeight only raises the
@@ -372,7 +398,11 @@
     mapLeft.style.minHeight = "";
 
     let scale;
-    if (fullHeight) {
+    if (stretchedHeightMultiplier != null) {
+      const stretchedHeightPx = mapFullHeightPx * stretchedHeightMultiplier;
+      scale = Math.min(containerW / intrinsicW, stretchedHeightPx / intrinsicH)
+    }
+    else if (fullHeight) {
       scale = Math.min(containerW / intrinsicW, mapFullHeightPx / intrinsicH)
     }
     else if (hasEncounters) {

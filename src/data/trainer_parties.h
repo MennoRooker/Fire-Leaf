@@ -5681,41 +5681,6 @@ static const struct TrainerMonNoItemDefaultMoves sParty_BirdKeeperRamiro[] = {
 
 
 // ======================================================================================= //
-// ==================================== Route 19 Land ==================================== //
-// ======================================================================================= //
-static const struct TrainerMonNoItemDefaultMoves sParty_SwimmerMaleRichard[] = {
-    {
-        .iv = 10,
-        .lvl = 37,
-        .species = SPECIES_TENTACRUEL,
-    },
-    {
-        .iv = 10,
-        .lvl = 37,
-        .species = SPECIES_CLOYSTER,
-    },
-};
-
-static const struct TrainerMonNoItemDefaultMoves sParty_SwimmerMaleReece[] = {
-    {
-        .iv = 10,
-        .lvl = 35,
-        .species = SPECIES_STARYU,
-    },
-    {
-        .iv = 10,
-        .lvl = 35,
-        .species = SPECIES_SEADRA,
-    },
-    {
-        .iv = 10,
-        .lvl = 35,
-        .species = SPECIES_SEAKING,
-    },
-};
-
-
-// ======================================================================================= //
 // =================================== Fuchsia City Gym ================================== //
 // ======================================================================================= //
 static const struct TrainerMonNoItemDefaultMoves sParty_JugglerKayden[] = {
@@ -6828,8 +6793,39 @@ static const struct TrainerMonNoItemDefaultMoves sParty_PokemaniacMarkRematchAft
 
 
 // ======================================================================================= //
-// ==================================== Route 19 Water =================================== //
+// ======================================= Route 19 ====================================== //
 // ======================================================================================= //
+static const struct TrainerMonNoItemDefaultMoves sParty_SwimmerMaleRichard[] = {
+    {
+        .iv = 10,
+        .lvl = 37,
+        .species = SPECIES_TENTACRUEL,
+    },
+    {
+        .iv = 10,
+        .lvl = 37,
+        .species = SPECIES_CLOYSTER,
+    },
+};
+
+static const struct TrainerMonNoItemDefaultMoves sParty_SwimmerMaleReece[] = {
+    {
+        .iv = 10,
+        .lvl = 35,
+        .species = SPECIES_STARYU,
+    },
+    {
+        .iv = 10,
+        .lvl = 35,
+        .species = SPECIES_SEADRA,
+    },
+    {
+        .iv = 10,
+        .lvl = 35,
+        .species = SPECIES_SEAKING,
+    },
+};
+
 static const struct TrainerMonNoItemDefaultMoves sParty_SwimmerMaleTony[] = {
     {
         .iv = 15,

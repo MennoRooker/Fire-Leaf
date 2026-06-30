@@ -8,6 +8,7 @@
   --mon-sprite-section-height: 104px;
   /* Max height of the encounter column: used to scale large maps up to full height */
   --map-full-height: 900px;
+  --map-stretched-height: 1800px;
 }
 body {
   margin: 0;
@@ -263,6 +264,31 @@ h1 { margin: 0 0 8px 0; }
   background: var(--trainer-sprite-bg);
   flex-grow: 1;
   color: #fff;
+}
+
+.trainer-picked {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  padding: 6px 4px 8px;
+  background: var(--trainer-sprite-bg);
+}
+
+.trainer-picked-label {
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  line-height: 1;
+}
+
+.trainer-picked img {
+  width: 100px;
+  height: 100px;
+  image-rendering: pixelated;
 }
 
 .trainer-card--compact .trainer-left {
