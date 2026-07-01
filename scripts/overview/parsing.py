@@ -295,7 +295,7 @@ def parse_item_icon_symbol_to_paths() -> Dict[str, Dict[str, str]]:
         icon_path_by_symbol[symbol] = path.replace(".4bpp.lz", ".png")
 
     for symbol, path in palette_re.findall(text):
-        palette_path_by_symbol[symbol] = path.replace(".gbapal.lz", ".pal")
+        palette_path_by_symbol[symbol] = path
 
     return {
         "icons": icon_path_by_symbol,
@@ -424,6 +424,125 @@ def parse_map_layout_records() -> Dict[str, object]:
         by_token.setdefault(map_token, record)
 
     return {"records": records, "byToken": by_token}
+
+
+def _item_script_suffix_to_token(script_name: str, item_name_lookup: Dict[str, str]) -> Optional[str]:
+    suffix_match = re.search(r"EventScript_Item([A-Za-z0-9_]+)$", script_name)
+    if not suffix_match:
+        return None
+
+    suffix = suffix_match.group(1).strip()
+    if not suffix:
+        return None
+
+    compact = re.sub(r"[^A-Za-z0-9]", "", suffix).upper()
+    if not compact:
+        return None
+
+    if compact.startswith("TM") and compact[2:].isdigit():
+        token = f"ITEM_{compact}"
+        return token if token in item_name_lookup.values() else None
+    if compact.startswith("HM") and compact[2:].isdigit():
+        token = f"ITEM_{compact}"
+        return token if token in item_name_lookup.values() else None
+
+    return item_name_lookup.get(compact)
+
+
+@lru_cache(maxsize=1)
+def parse_map_items_by_map() -> Dict[str, List[Dict[str, object]]]:
+    """Parse item-ball and hidden-item pickups from data/maps/*/map.json."""
+    item_names = parse_item_names()
+    item_lookup = {re.sub(r"[^A-Za-z0-9]", "", token[5:]).upper(): token for token in item_names}
+    out: Dict[str, List[Dict[str, object]]] = {}
+
+    for map_json in sorted((ROOT / "data" / "maps").glob("*/map.json")):
+        data = json.loads(map_json.read_text(encoding="utf-8"))
+        map_id = str(data.get("id", "")).strip()
+        if not map_id.startswith("MAP_"):
+            continue
+
+        map_token = map_id[4:]
+        map_items: List[Dict[str, object]] = []
+        seen: set[tuple[object, ...]] = set()
+
+        for event in data.get("bg_events", []):
+            if not isinstance(event, dict) or str(event.get("type", "")) != "hidden_item":
+                continue
+            item_token = str(event.get("item", "")).strip()
+            if not item_token or item_token == "ITEM_NONE":
+                continue
+
+            quantity = int(event.get("quantity", 1) or 1)
+            hidden_key = (
+                "hidden_item",
+                item_token,
+                int(event.get("x", 0)),
+                int(event.get("y", 0)),
+                int(event.get("elevation", 0)),
+                str(event.get("flag", "")),
+            )
+            if hidden_key in seen:
+                continue
+            seen.add(hidden_key)
+            if item_token not in item_names:
+                continue
+
+            map_items.append(
+                {
+                    "itemToken": item_token,
+                    "quantity": quantity,
+                    "isHidden": True,
+                    "x": int(event.get("x", 0)),
+                    "y": int(event.get("y", 0)),
+                    "elevation": int(event.get("elevation", 0)),
+                    "flag": str(event.get("flag", "")),
+                    "script": "",
+                }
+            )
+
+        for event in data.get("object_events", []):
+            if not isinstance(event, dict):
+                continue
+            if str(event.get("type", "")) != "object":
+                continue
+            if str(event.get("graphics_id", "")) != "OBJ_EVENT_GFX_ITEM_BALL":
+                continue
+
+            item_token = _item_script_suffix_to_token(str(event.get("script", "")), item_lookup)
+            if not item_token or item_token not in item_names:
+                continue
+
+            visible_key = (
+                "item_ball",
+                item_token,
+                int(event.get("x", 0)),
+                int(event.get("y", 0)),
+                int(event.get("elevation", 0)),
+                str(event.get("flag", "")),
+                str(event.get("script", "")),
+            )
+            if visible_key in seen:
+                continue
+            seen.add(visible_key)
+
+            map_items.append(
+                {
+                    "itemToken": item_token,
+                    "quantity": 1,
+                    "isHidden": False,
+                    "x": int(event.get("x", 0)),
+                    "y": int(event.get("y", 0)),
+                    "elevation": int(event.get("elevation", 0)),
+                    "flag": str(event.get("flag", "")),
+                    "script": str(event.get("script", "")),
+                }
+            )
+
+        if map_items:
+            out[map_token] = map_items
+
+    return out
 
 
 @lru_cache(maxsize=1)

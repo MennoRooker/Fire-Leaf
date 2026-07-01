@@ -21,6 +21,7 @@ from .parsing import (
     parse_level_up_learnsets_by_species,
     parse_layouts_by_id,
     parse_map_layout_records,
+    parse_map_items_by_map,
     parse_mon_symbol_to_png_path,
     parse_move_names,
     parse_move_types,
@@ -549,6 +550,7 @@ def build_model(section_filter: Optional[str]) -> Dict[str, object]:
     item_names = parse_item_names()
     item_icon_table = parse_item_icon_table()
     item_icon_paths = parse_item_icon_symbol_to_paths()
+    map_items_by_token = parse_map_items_by_map()
     trainer_pic_ids = parse_define_ints("include/constants/trainers.h", "TRAINER_PIC_")
     species_ids = parse_define_ints("include/constants/species.h", "SPECIES_")
     trainer_front_syms = parse_ordered_trainer_front_symbols()
@@ -1160,6 +1162,120 @@ def build_model(section_filter: Optional[str]) -> Dict[str, object]:
 
     sections, ordered_section_names, trainer_groups = apply_section_merges(sections, ordered_section_names, merge_overrides)
 
+    def get_item_name(item_token: str) -> str:
+        item_name = item_names.get(item_token, pretty_token(item_token, "ITEM_"))
+        return "-" if item_name and set(item_name) == {"?"} else item_name
+
+    def get_item_icon_path(item_token: str) -> str:
+        icon_entry = item_icon_table.get(item_token, {})
+        icon_symbol = str(icon_entry.get("iconSymbol", ""))
+        return str(item_icon_paths.get("icons", {}).get(icon_symbol, "graphics/items/icons/poke_ball.png"))
+
+    def get_item_palette_path(item_token: str) -> str:
+        palette_entry = item_icon_table.get(item_token, {})
+        palette_symbol = str(palette_entry.get("paletteSymbol", ""))
+        return str(item_icon_paths.get("palettes", {}).get(palette_symbol, ""))
+
+    def aggregate_item_entries(raw_items: List[Dict[str, object]]) -> List[Dict[str, object]]:
+        grouped: Dict[tuple[str, bool], Dict[str, object]] = {}
+        for raw_item in raw_items:
+            item_token = str(raw_item.get("itemToken", "")).strip()
+            if not item_token:
+                continue
+            is_hidden = bool(raw_item.get("isHidden"))
+            key = (item_token, is_hidden)
+            entry = grouped.get(key)
+            if not entry:
+                entry = {
+                    "itemToken": item_token,
+                    "itemName": get_item_name(item_token),
+                    "iconPath": get_item_icon_path(item_token),
+                    "palettePath": get_item_palette_path(item_token),
+                    "count": 0,
+                    "isHidden": is_hidden,
+                }
+                grouped[key] = entry
+            increment = raw_item.get("count")
+            if increment is None:
+                increment = raw_item.get("quantity", 1)
+            entry["count"] = int(entry.get("count", 0)) + int(increment or 1)
+
+        items = list(grouped.values())
+        items.sort(key=lambda item: (bool(item.get("isHidden")), str(item.get("itemName", "")).lower(), str(item.get("itemToken", ""))))
+        return items
+
+    def collect_section_items(section_name: str) -> List[Dict[str, object]]:
+        map_record = resolve_section_map_record(section_name)
+        if not map_record:
+            return []
+
+        map_token = str(map_record.get("mapToken", ""))
+        if not map_token:
+            return []
+
+        return aggregate_item_entries(map_items_by_token.get(map_token, []))
+
+    def section_hidden_encounter_kinds(section_name: str) -> set:
+        sect_cfg = section_overrides.get(section_name, {})
+        if not isinstance(sect_cfg, dict):
+            return set()
+        raw = sect_cfg.get("hideEncounters")
+        if raw is True:
+            return set(ENCOUNTER_KIND_ORDER)
+        if isinstance(raw, (list, tuple)):
+            valid = set(ENCOUNTER_KIND_ORDER)
+            return {str(item) for item in raw if str(item) in valid}
+        return set()
+
+    def section_hidden_items(section_name: str) -> tuple[bool, set[int]]:
+        sect_cfg = section_overrides.get(section_name, {})
+        if not isinstance(sect_cfg, dict):
+            return False, set()
+        raw = sect_cfg.get("hideItems")
+        if raw is True:
+            return True, set()
+        if isinstance(raw, (list, tuple)):
+            indices: set[int] = set()
+            for item in raw:
+                if isinstance(item, bool):
+                    continue
+                try:
+                    index = int(item)
+                except (TypeError, ValueError):
+                    continue
+                if index >= 0:
+                    indices.add(index)
+            return False, indices
+        return False, set()
+
+    def apply_hidden_items(items: List[Dict[str, object]], hide_all: bool, hidden_indices: set[int]) -> List[Dict[str, object]]:
+        if hide_all:
+            return []
+        if not items or not hidden_indices:
+            return items
+        return [item for idx, item in enumerate(items) if idx not in hidden_indices]
+
+    section_items_by_name: Dict[str, List[Dict[str, object]]] = {}
+    for name in ordered_section_names:
+        hide_all_items, hidden_item_indices = section_hidden_items(name)
+        if name in merge_overrides:
+            merge_cfg = merge_overrides.get(name, {})
+            if isinstance(merge_cfg, dict):
+                combined_items: List[Dict[str, object]] = []
+                for source in [str(s) for s in merge_cfg.get("sources", [])]:
+                    combined_items.extend(collect_section_items(source))
+                section_items_by_name[name] = apply_hidden_items(
+                    aggregate_item_entries(combined_items),
+                    hide_all_items,
+                    hidden_item_indices,
+                )
+                continue
+        section_items_by_name[name] = apply_hidden_items(
+            collect_section_items(name),
+            hide_all_items,
+            hidden_item_indices,
+        )
+
     def section_map_scale_max(section_name: str) -> Optional[float]:
         sect_cfg = section_overrides.get(section_name, {})
         if not isinstance(sect_cfg, dict):
@@ -1197,18 +1313,6 @@ def build_model(section_filter: Optional[str]) -> Dict[str, object]:
         if value <= 0:
             return None
         return value
-    
-    def section_hidden_encounter_kinds(section_name: str) -> set:
-        sect_cfg = section_overrides.get(section_name, {})
-        if not isinstance(sect_cfg, dict):
-            return set()
-        raw = sect_cfg.get("hideEncounters")
-        if raw is True:
-            return set(ENCOUNTER_KIND_ORDER)
-        if isinstance(raw, (list, tuple)):
-            valid = set(ENCOUNTER_KIND_ORDER)
-            return {str(item) for item in raw if str(item) in valid}
-        return set()
 
     return {
         "sections": [
@@ -1222,6 +1326,7 @@ def build_model(section_filter: Optional[str]) -> Dict[str, object]:
                 "fullHeight": section_full_height(name),
                 "stretchedHeight": section_stretched_height(name),
                 "encounters": get_section_encounters(name, section_hidden_encounter_kinds(name)),
+                "items": section_items_by_name.get(name, []),
                 "trainers": sections[name],
                 "trainerGroups": trainer_groups.get(name, []),
             }

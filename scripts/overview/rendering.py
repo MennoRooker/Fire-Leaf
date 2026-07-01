@@ -7,8 +7,11 @@ import json
 import mimetypes
 import os
 import re
+from io import BytesIO
 from pathlib import Path
 from typing import Dict, List, Set
+
+from PIL import Image
 
 from .parsing import (
     parse_initial_movement_facing_directions,
@@ -34,6 +37,59 @@ FACE_DIRECTION_FRAME = {
 
 ROOT = Path(__file__).resolve().parents[2]
 OVERVIEW_SOURCE_DIR = Path(__file__).resolve().parent
+
+
+def _read_palette_bytes(palette_path: Path) -> bytes:
+    if palette_path.suffix == ".lz":
+        sibling_candidates = [palette_path.with_suffix(""), palette_path.with_suffix(".pal")]
+        for sibling in sibling_candidates:
+            if sibling.is_file():
+                return sibling.read_bytes()
+    return palette_path.read_bytes()
+
+
+def _gba_palette_to_rgb_bytes(palette_bytes: bytes) -> bytes:
+    colors: List[int] = []
+    for offset in range(0, min(len(palette_bytes), 32), 2):
+        value = palette_bytes[offset] | (palette_bytes[offset + 1] << 8)
+        red = (value & 0x1F) * 8
+        green = ((value >> 5) & 0x1F) * 8
+        blue = ((value >> 10) & 0x1F) * 8
+        colors.extend([red, green, blue])
+    while len(colors) < 768:
+        colors.extend([0, 0, 0])
+    return bytes(colors)
+
+
+def _item_icon_data_url(icon_path: str, palette_path: str = "") -> str:
+    icon_file = ROOT / icon_path
+    if not icon_file.is_file():
+        return ""
+
+    if not palette_path:
+        return _data_url_for_file(icon_file, icon_path)
+
+    palette_file = ROOT / palette_path
+    if not palette_file.is_file():
+        return _data_url_for_file(icon_file, icon_path)
+
+    image = Image.open(icon_file)
+    if image.mode != "P":
+        image = image.convert("P")
+    image.putpalette(_gba_palette_to_rgb_bytes(_read_palette_bytes(palette_file)))
+    buffer = BytesIO()
+    image.save(buffer, format="PNG")
+    payload = base64.b64encode(buffer.getvalue()).decode("ascii")
+    return f"data:image/png;base64,{payload}"
+
+
+def _data_url_for_file(file_path: Path, rel_path: str) -> str:
+    raw = file_path.read_bytes()
+    mime_type, _ = mimetypes.guess_type(rel_path)
+    if not mime_type:
+        mime_type = "application/octet-stream"
+    payload = base64.b64encode(raw).decode("ascii")
+    return f"data:{mime_type};base64,{payload}"
 
 
 class AssetResolver:
@@ -173,14 +229,23 @@ def render_move_rows(moves: List[Dict[str, object]], type_icons: Dict[str, Dict[
     return "".join(rows)
 
 
+def render_item_icon(icon_path: str, palette_path: str, asset_url) -> str:
+    if not icon_path:
+        return ""
+    if palette_path:
+        return _item_icon_data_url(icon_path, palette_path)
+    return asset_url(icon_path)
+
+
 def render_mon_card(mon: Dict[str, object], type_icons: Dict[str, Dict[str, int]], asset_url, templates: Dict[str, str]) -> str:
     nature_effect = str(mon.get("natureEffect", ""))
     item_name = str(mon.get("itemName", "-"))
     item_icon_html = ""
     item_icon_path = str(mon.get("itemIconPath", ""))
+    item_palette_path = str(mon.get("itemPalettePath", ""))
     if item_name != "-" and item_icon_path:
         item_icon_html = (
-            f"<img class='item-icon' src='{html.escape(asset_url(item_icon_path))}' "
+            f"<img class='item-icon' src='{html.escape(render_item_icon(item_icon_path, item_palette_path, asset_url))}' "
             f"alt='{html.escape(item_name)}' title='{html.escape(item_name)}'>"
         )
 
@@ -336,12 +401,56 @@ def render_trainer_cards(
     return "".join(render_trainer_card(trainer, type_icons, asset_url, templates) for trainer in section["trainers"])
 
 
+def render_items_panel(items: List[Dict[str, object]], has_trainers: bool, asset_url, templates: Dict[str, str]) -> str:
+    if not items:
+        return ""
+
+    item_row_template = templates["items_row"]
+    rows: List[str] = []
+    for item in items:
+        count = int(item.get("count", 1) or 1)
+        count_html = f"<span class='items-count'>x{count}</span>" if count > 1 else ""
+        hidden_html = "<span class='items-hidden'>[hidden]</span>" if item.get("isHidden") else ""
+        entry_class = "item-entry--hidden" if item.get("isHidden") else ""
+        icon_path = str(item.get("iconPath", ""))
+        palette_path = str(item.get("palettePath", ""))
+        rows.append(
+            render_template(
+                item_row_template,
+                {
+                    "__ITEM_ENTRY_CLASS__": entry_class,
+                    "__ITEM_ICON__": html.escape(render_item_icon(icon_path, palette_path, asset_url)),
+                    "__ITEM_NAME__": html.escape(str(item.get("itemName", "-"))),
+                    "__ITEM_COUNT__": count_html,
+                    "__ITEM_HIDDEN__": hidden_html,
+                },
+            )
+        )
+
+    panel_class = "items-panel--with-trainers" if has_trainers else "items-panel--terminal"
+    return render_template(
+        templates["items_panel"],
+        {
+            "__ITEM_PANEL_CLASS__": panel_class,
+            "__ITEM_ROWS__": "".join(rows),
+        },
+    )
+
+
 def render_section(section: Dict[str, object], type_icons: Dict[str, Dict[str, int]], asset_url, templates: Dict[str, str]) -> str:
     encounters = section.get("encounters")
+    items = section.get("items")
     trainer_cards_html = render_trainer_cards(section, type_icons, asset_url, templates)
     trainer_section_html = ""
+    section_class = "section"
     if trainer_cards_html.strip():
         trainer_section_html = f"<div class='cards'>{trainer_cards_html}</div>"
+    else:
+        section_class = "section section--no-trainers"
+
+    items_html = ""
+    if items:
+        items_html = render_items_panel(items, bool(trainer_cards_html.strip()), asset_url, templates)
 
     pane_mode = "map-only"
     if encounters and encounters.get("mode") == "dual":
@@ -368,6 +477,7 @@ def render_section(section: Dict[str, object], type_icons: Dict[str, Dict[str, i
     return render_template(
         templates["section"],
         {
+            "__SECTION_CLASS__": section_class,
             "__SECTION_THEME__": html.escape(str(section.get("theme", "default"))),
             "__SECTION_NAME__": html.escape(str(section["name"])),
             "__TRAINER_COUNT__": str(len(section["trainers"])),
@@ -378,6 +488,7 @@ def render_section(section: Dict[str, object], type_icons: Dict[str, Dict[str, i
             "__MAP_FULL_HEIGHT_ATTR__": full_height_attr,
             "__MAP_STRETCHED_HEIGHT_ATTR__": stretched_height_attr,
             "__ENCOUNTERS_HTML__": render_encounters(encounters, asset_url, templates) if encounters else "",
+            "__ITEMS_HTML__": items_html,
             "__TRAINER_SECTION_HTML__": trainer_section_html,
         },
     )
@@ -606,6 +717,8 @@ def render_html(model: Dict[str, object], out_path: Path, embed_assets: bool = T
         "encounter_panel": read_overview_source("templates", "encounter_panel.html"),
         "encounter_slot_row": read_overview_source("templates", "encounter_slot_row.html"),
         "rod_header_row": read_overview_source("templates", "rod_header_row.html"),
+        "items_panel": read_overview_source("templates", "items_panel.html"),
+        "items_row": read_overview_source("templates", "items_row.html"),
     }
 
     css = read_overview_source("static", "overview.css")
