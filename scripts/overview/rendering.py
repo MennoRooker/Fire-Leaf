@@ -40,6 +40,13 @@ ROOT = Path(__file__).resolve().parents[2]
 OVERVIEW_SOURCE_DIR = Path(__file__).resolve().parent
 
 VS_SEEKER_ICON_PATH = "graphics/items/icons/vs_seeker.png"
+VS_SEEKER_PALETTE_PATH = "graphics/items/icon_palettes/vs_seeker.pal"
+VS_SEEKER_STAGE_PALETTE_PATHS = {
+    1: "graphics/items/icon_palettes/vs_seeker_stage_red.pal",
+    2: "graphics/items/icon_palettes/vs_seeker_stage_green.pal",
+    3: "graphics/items/icon_palettes/vs_seeker_stage_pink.pal",
+    4: "graphics/items/icon_palettes/vs_seeker_stage_purple.pal",
+}
 
 
 def _read_palette_bytes(palette_path: Path) -> bytes:
@@ -52,6 +59,19 @@ def _read_palette_bytes(palette_path: Path) -> bytes:
 
 
 def _gba_palette_to_rgb_bytes(palette_bytes: bytes) -> bytes:
+    if palette_bytes.startswith(b"JASC-PAL"):
+        text = palette_bytes.decode("ascii", errors="ignore").splitlines()
+        if len(text) >= 4 and text[0].strip() == "JASC-PAL":
+            colors: List[int] = []
+            for line in text[3:19]:
+                parts = line.split()
+                if len(parts) != 3:
+                    continue
+                colors.extend([int(parts[0]), int(parts[1]), int(parts[2])])
+            while len(colors) < 768:
+                colors.extend([0, 0, 0])
+            return bytes(colors)
+
     colors: List[int] = []
     for offset in range(0, min(len(palette_bytes), 32), 2):
         value = palette_bytes[offset] | (palette_bytes[offset + 1] << 8)
@@ -80,13 +100,28 @@ def _item_icon_data_url(icon_path: str, palette_path: str = "") -> str:
     if image.mode != "P":
         image = image.convert("P")
     image.putpalette(_gba_palette_to_rgb_bytes(_read_palette_bytes(palette_file)))
+    image = image.convert("RGBA")
     buffer = BytesIO()
     image.save(buffer, format="PNG")
     payload = base64.b64encode(buffer.getvalue()).decode("ascii")
     return f"data:image/png;base64,{payload}"
 
 
+@lru_cache(maxsize=8)
+def _vs_seeker_icon_data_url_for_stage(stage: int) -> str:
+    if stage >= 5:
+        return _item_icon_data_url(VS_SEEKER_ICON_PATH, VS_SEEKER_PALETTE_PATH)
+
+    palette_path = VS_SEEKER_STAGE_PALETTE_PATHS.get(stage)
+    if not palette_path:
+        return _item_icon_data_url(VS_SEEKER_ICON_PATH, VS_SEEKER_PALETTE_PATH)
+
+    return _item_icon_data_url(VS_SEEKER_ICON_PATH, palette_path)
+
+
 def _vs_seeker_icon_url_for_stage(stage: int, asset_url) -> str:
+    if stage >= 1:
+        return _vs_seeker_icon_data_url_for_stage(stage)
     return asset_url(VS_SEEKER_ICON_PATH)
 
 

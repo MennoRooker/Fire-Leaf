@@ -81,8 +81,8 @@ REMATCH_CHECKPOINT_BY_STAGE: Dict[int, str] = {
     1: "getting VS Seeker",
     2: "reaching Celadon City",
     3: "reaching Fuchsia City",
-    4: "beating Elite Four",
-    5: "post-game unlock",
+    4: "becoming Champion",
+    5: "delivering the Sapphire",
 }
 
 
