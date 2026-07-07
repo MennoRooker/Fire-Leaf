@@ -1337,20 +1337,9 @@ following:
 ---------------
 / Maps
 / Colors
-/ Wild Encounters
-   - Turn off option
-   - Alternating grey (evens)
+x Wild Encounters
 x Trainer Parties
-   x Names
-   x Sprites
-   x Levels
-   x Types
-   x Natures (+/-)
-   x Abilities
-   x Held Items
-   x Moves
-   x Move types (Right, HP)
-- Items
+/ Items
 - Shops
 - Move tutors
 / Rematches
@@ -1358,20 +1347,8 @@ x Trainer Parties
    - VS seeker icon
         - Different colors
 	- Under trainer image
-- Show events
-/ Map section fits map
-   - Route 5, Mt. Moon & Rock Tunnel
+x Show events
 - Route 14 Gen 4 mons
-x Silph Co. floors
-- Indigo Plateau
-- Champion Rematch
-- Remove duplicates
-- Seperate trainer cards
-- Trainer theme colors
-- Gym overrides trainer color
-- Boss fight name color
-- Fix Bugsy and boats
-- hideObjects [i]/true
 
 
 

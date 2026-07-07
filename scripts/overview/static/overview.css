@@ -305,6 +305,21 @@ h1 { margin: 0 0 8px 0; }
 .trainer-class { font-size: 13px; letter-spacing: 1px; }
 .trainer-name { font-weight: 800; font-size: 30px; line-height: 1.0; }
 
+.trainer-rematch {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 6px;
+  padding-top: 6px;
+  border-top: 2px solid color-mix(in srgb, var(--line) 75%, #ffffff 25%);
+}
+
+.trainer-rematch-icon {
+  width: 28px;
+  height: 28px;
+  image-rendering: pixelated;
+}
+
 .trainer-card--major .trainer-portrait {
   border-bottom: none;
 }
@@ -341,6 +356,10 @@ h1 { margin: 0 0 8px 0; }
   background: var(--trainer-sprite-bg);
   flex-grow: 1;
   color: #fff;
+}
+
+.trainer-card--major .trainer-rematch {
+  border-top-color: color-mix(in srgb, #ffffff 55%, var(--trainer-sprite-bg) 45%);
 }
 
 .trainer-picked {

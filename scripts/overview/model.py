@@ -35,6 +35,7 @@ from .parsing import (
     parse_trainer_class_names,
     parse_trainer_symbol_to_png_path,
     parse_trainers,
+    parse_vs_seeker_rematch_stages,
     parse_tileset_metatile_paths,
     resolve_tileset_tiles_png_path,
     parse_type_icon_specs,
@@ -75,6 +76,14 @@ SECTION_MAP_TOKEN_OVERRIDES: Dict[str, str] = {
 }
 
 OVERVIEW_DIR = Path(__file__).resolve().parent
+
+REMATCH_CHECKPOINT_BY_STAGE: Dict[int, str] = {
+    1: "getting VS Seeker",
+    2: "reaching Celadon City",
+    3: "reaching Fuchsia City",
+    4: "beating Elite Four",
+    5: "post-game unlock",
+}
 
 
 def load_section_overrides() -> Dict[str, object]:
@@ -548,6 +557,7 @@ def build_model(section_filter: Optional[str]) -> Dict[str, object]:
     charmap_single_byte = parse_charmap_single_byte_table()
     species_info = parse_species_info_types_and_abilities()
     item_names = parse_item_names()
+    rematch_stage_by_trainer = parse_vs_seeker_rematch_stages()
     item_icon_table = parse_item_icon_table()
     item_icon_paths = parse_item_icon_symbol_to_paths()
     map_items_by_token = parse_map_items_by_map()
@@ -1011,8 +1021,18 @@ def build_model(section_filter: Optional[str]) -> Dict[str, object]:
             "isMajor": is_major_trainer(trainer_id, trainer_class_token),
             "sprite": trainer_pic_path(trainer["trainerPic"]),
             "partyMacro": trainer["partyMacro"],
+            "isRematchCard": False,
+            "rematchStage": 0,
+            "rematchCheckpointText": "",
             "mons": [],
         }
+
+        rematch_stage = int(rematch_stage_by_trainer.get(trainer_id, 0))
+        if rematch_stage:
+            checkpoint = REMATCH_CHECKPOINT_BY_STAGE.get(rematch_stage, "reaching the next VS Seeker checkpoint")
+            trainer_obj["isRematchCard"] = True
+            trainer_obj["rematchStage"] = rematch_stage
+            trainer_obj["rematchCheckpointText"] = f"Rematch after {checkpoint}"
 
         # Rival teams encode the rival's starter in the party name.
         # Show the player's chosen starter instead.

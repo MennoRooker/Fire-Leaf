@@ -719,6 +719,49 @@ def parse_trainers() -> Dict[str, Dict[str, str]]:
     return out
 
 
+@lru_cache(maxsize=1)
+def parse_vs_seeker_rematch_stages() -> Dict[str, int]:
+    """Map rematch trainer ids to VS Seeker unlock stage (1..5).
+
+    Stage indices match IsRematchStageUnlocked() in src/vs_seeker.c:
+      1: got VS Seeker
+      2: reached Celadon City
+      3: reached Fuchsia City
+      4: game clear
+      5: post-game link unlock
+    """
+    text = read_text("src/vs_seeker.c")
+    table_match = re.search(
+        r"static const struct RematchData sRematches\[\]\s*=\s*\{(.*?)\n\};",
+        text,
+        re.S,
+    )
+    if not table_match:
+        return {}
+
+    body = table_match.group(1)
+    rematch_stage_by_trainer: Dict[str, int] = {}
+
+    entry_re = re.compile(r"\{\s*\{([^{}]*)\}\s*,\s*MAP\([^)]*\)\s*\}", re.S)
+    for trainer_list_raw in entry_re.findall(body):
+        slots = [token.strip() for token in trainer_list_raw.split(",") if token.strip()]
+        if len(slots) <= 1:
+            continue
+
+        base_trainer_id = slots[0]
+
+        for stage, trainer_id in enumerate(slots[1:], start=1):
+            if trainer_id == "SKIP":
+                continue
+            if not trainer_id.startswith("TRAINER_"):
+                continue
+            if trainer_id == base_trainer_id:
+                continue
+            rematch_stage_by_trainer.setdefault(trainer_id, stage)
+
+    return rematch_stage_by_trainer
+
+
 def extract_top_level_brace_blocks(text: str) -> List[str]:
     blocks: List[str] = []
     depth = 0
