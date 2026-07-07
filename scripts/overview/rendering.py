@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import base64
-import colorsys
 from functools import lru_cache
 import html
 import importlib
@@ -41,16 +40,6 @@ ROOT = Path(__file__).resolve().parents[2]
 OVERVIEW_SOURCE_DIR = Path(__file__).resolve().parent
 
 VS_SEEKER_ICON_PATH = "graphics/items/icons/vs_seeker.png"
-VS_SEEKER_PALETTE_PATH = "graphics/items/icon_palettes/vs_seeker.pal"
-
-# Stage hues mirror the in-game rematch icon progression.
-# 1: red, 2: green, 3: pink, 4: purple, 5: default blue
-VS_SEEKER_STAGE_TARGET_HUE = {
-    1: 0.00,
-    2: 0.33,
-    3: 0.92,
-    4: 0.76,
-}
 
 
 def _read_palette_bytes(palette_path: Path) -> bytes:
@@ -75,50 +64,6 @@ def _gba_palette_to_rgb_bytes(palette_bytes: bytes) -> bytes:
     return bytes(colors)
 
 
-def _is_neutral_or_extreme(r: int, g: int, b: int) -> bool:
-    # Preserve black/white and near-grayscale tones.
-    if max(r, g, b) <= 24:
-        return True
-    if min(r, g, b) >= 232:
-        return True
-    return max(r, g, b) - min(r, g, b) <= 14
-
-
-def _is_blue_dominant(r: int, g: int, b: int) -> bool:
-    if _is_neutral_or_extreme(r, g, b):
-        return False
-    # Recolor only shades where blue is clearly above red/green.
-    return b >= 56 and b >= r + 18 and b >= g + 18
-
-
-def _remap_blue_to_stage_hue(r: int, g: int, b: int, stage: int) -> tuple[int, int, int]:
-    target_hue = VS_SEEKER_STAGE_TARGET_HUE.get(stage)
-    if target_hue is None:
-        return (r, g, b)
-
-    h, s, v = colorsys.rgb_to_hsv(r / 255.0, g / 255.0, b / 255.0)
-    # Keep original brightness, while ensuring enough saturation for readability.
-    new_s = max(s, 0.58)
-    nr, ng, nb = colorsys.hsv_to_rgb(target_hue, min(1.0, new_s), v)
-    return (int(round(nr * 255)), int(round(ng * 255)), int(round(nb * 255)))
-
-
-def _recolor_vs_seeker_palette_rgb_bytes(stage: int, palette_bytes: bytes) -> bytes:
-    rgb_bytes = bytearray(_gba_palette_to_rgb_bytes(palette_bytes))
-    # VS Seeker uses a 16-color icon palette; recolor those slots only.
-    for offset in range(0, 16 * 3, 3):
-        r = rgb_bytes[offset]
-        g = rgb_bytes[offset + 1]
-        b = rgb_bytes[offset + 2]
-        if not _is_blue_dominant(r, g, b):
-            continue
-        nr, ng, nb = _remap_blue_to_stage_hue(r, g, b, stage)
-        rgb_bytes[offset] = nr
-        rgb_bytes[offset + 1] = ng
-        rgb_bytes[offset + 2] = nb
-    return bytes(rgb_bytes)
-
-
 def _item_icon_data_url(icon_path: str, palette_path: str = "") -> str:
     icon_file = ROOT / icon_path
     if not icon_file.is_file():
@@ -141,35 +86,7 @@ def _item_icon_data_url(icon_path: str, palette_path: str = "") -> str:
     return f"data:image/png;base64,{payload}"
 
 
-@lru_cache(maxsize=8)
-def _vs_seeker_icon_data_url_for_stage(stage: int) -> str:
-    # Stage 5 should keep the original blue VS Seeker icon.
-    if stage >= 5:
-        return _item_icon_data_url(VS_SEEKER_ICON_PATH, VS_SEEKER_PALETTE_PATH)
-
-    if stage not in VS_SEEKER_STAGE_TARGET_HUE:
-        return _item_icon_data_url(VS_SEEKER_ICON_PATH, VS_SEEKER_PALETTE_PATH)
-
-    icon_file = ROOT / VS_SEEKER_ICON_PATH
-    palette_file = ROOT / VS_SEEKER_PALETTE_PATH
-    if not icon_file.is_file() or not palette_file.is_file():
-        return ""
-
-    image = Image.open(icon_file)
-    if image.mode != "P":
-        image = image.convert("P")
-    palette_rgb = _recolor_vs_seeker_palette_rgb_bytes(stage, _read_palette_bytes(palette_file))
-    image.putpalette(palette_rgb)
-
-    buffer = BytesIO()
-    image.save(buffer, format="PNG")
-    payload = base64.b64encode(buffer.getvalue()).decode("ascii")
-    return f"data:image/png;base64,{payload}"
-
-
 def _vs_seeker_icon_url_for_stage(stage: int, asset_url) -> str:
-    if stage >= 1:
-        return _vs_seeker_icon_data_url_for_stage(stage)
     return asset_url(VS_SEEKER_ICON_PATH)
 
 

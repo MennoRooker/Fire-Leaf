@@ -1126,9 +1126,12 @@ def build_model(section_filter: Optional[str]) -> Dict[str, object]:
 
                 icon_entry = item_icon_table.get(item_token, {})
                 icon_symbol = str(icon_entry.get("iconSymbol", ""))
-                palette_symbol = str(icon_entry.get("paletteSymbol", ""))
                 mon_obj["itemIconPath"] = str(item_icon_paths.get("icons", {}).get(icon_symbol, ""))
-                mon_obj["itemPalettePath"] = str(item_icon_paths.get("palettes", {}).get(palette_symbol, ""))
+                if item_token == "ITEM_VS_SEEKER":
+                    mon_obj["itemPalettePath"] = ""
+                else:
+                    palette_symbol = str(icon_entry.get("paletteSymbol", ""))
+                    mon_obj["itemPalettePath"] = str(item_icon_paths.get("palettes", {}).get(palette_symbol, ""))
 
             for move_token in move_tokens:
                 mon_obj["moves"].append({
@@ -1192,6 +1195,8 @@ def build_model(section_filter: Optional[str]) -> Dict[str, object]:
         return str(item_icon_paths.get("icons", {}).get(icon_symbol, "graphics/items/icons/poke_ball.png"))
 
     def get_item_palette_path(item_token: str) -> str:
+        if item_token == "ITEM_VS_SEEKER":
+            return ""
         palette_entry = item_icon_table.get(item_token, {})
         palette_symbol = str(palette_entry.get("paletteSymbol", ""))
         return str(item_icon_paths.get("palettes", {}).get(palette_symbol, ""))
