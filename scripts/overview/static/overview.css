@@ -395,11 +395,28 @@ h1 { margin: 0 0 8px 0; }
   grid-template-rows: auto 1fr;
 }
 
+.trainer-card--compact .trainer-rematch {
+  position: absolute;
+  right: 6px;
+  bottom: 8px;
+  transform: none;
+  margin-top: 0;
+  padding-top: 0;
+  border-top: none;
+  z-index: 2;
+}
+
+.trainer-card--compact .trainer-rematch-icon {
+  width: 28px;
+  height: 28px;
+}
+
 .trainer-card--compact .trainer-id {
   background: var(--trainer-tag-bg, var(--trainer-sprite-bg));
   display: flex;
   flex-direction: column;
   justify-content: center;
+  position: relative;
   border-bottom: none;
 }
 
@@ -498,7 +515,6 @@ h1 { margin: 0 0 8px 0; }
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
-  min-height: 24px;
   column-gap: var(--item-icon-gap);
   padding-right: var(--item-icon-right-pad);
 }
@@ -520,7 +536,7 @@ h1 { margin: 0 0 8px 0; }
 .moves {
   border-top: 3px solid var(--line);
   background: var(--mon-data-bg);
-  padding: 4px 6px;
+  padding: 0 6px 4px;
   font-size: 18px;
   line-height: 1.15;
 }

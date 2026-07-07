@@ -321,7 +321,7 @@ def render_trainer_card(trainer: Dict[str, object], type_icons: Dict[str, Dict[s
     if picked_name and picked_sprite:
         player_picked_html = (
             "<div class='trainer-picked'>"
-            "<div class='trainer-picked-label'>You picked</div>"
+            "<div class='trainer-picked-label'>You picked:</div>"
             f"<img src='{html.escape(asset_url(picked_sprite))}' alt='You picked {html.escape(picked_name)}' title='You picked {html.escape(picked_name)}'>"
             "</div>"
         )
@@ -337,7 +337,6 @@ def render_trainer_card(trainer: Dict[str, object], type_icons: Dict[str, Dict[s
             f"<img class='trainer-rematch-icon' src='{rematch_icon_url}' alt='VS Seeker rematch icon'>"
             "</div>"
         )
-
     return render_template(
         templates["trainer_card"],
         {

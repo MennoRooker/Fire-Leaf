@@ -51,7 +51,8 @@
       "fullHeight": true
     },
     "Diglett Cave": {
-      "mapToken": "DIGLETTS_CAVE_B1F"
+      "mapToken": "DIGLETTS_CAVE_B1F",
+      "fullHeight": true
     },
     "S.S. Anne Exterior": {
       "mapToken": "SSANNE_EXTERIOR",
@@ -62,7 +63,8 @@
     },
     "Route 10 North": {
       "mapToken": "ROUTE10",
-      "crop": { "y0": 0.0, "y1": 0.38 }
+      "crop": { "y0": 0.0, "y1": 0.38 },
+      "hideItems": [2, 3]
     },
     "Rock Tunnel 1F": {
       "fullHeight": true
@@ -71,7 +73,8 @@
       "mapToken": "ROUTE10",
       "crop": { "y0": 0.66, "y1": 1.0 },
       "hideEncounters": true,
-      "mapScaleMax": 0.5
+      "mapScaleMax": 0.5,
+      "hideItems": [0, 1, 2, 4]
     },
     "Lavender Town": {
       "mapScaleMax": 0.7
@@ -190,7 +193,8 @@
     },
     "Route 10 Surf": {
       "mapToken": "ROUTE10",
-      "crop": { "y0": 0.4, "y1": 0.63 }
+      "crop": { "y0": 0.4, "y1": 0.63 },
+      "hideItems": [0, 1, 3, 4]
     },
     "Power Plant": {
       "fullHeight": true
