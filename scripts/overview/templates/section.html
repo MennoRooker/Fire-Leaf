@@ -1,5 +1,9 @@
 <section class='__SECTION_CLASS__' data-theme='__SECTION_THEME__'>
-<div class='section-head'><strong>__SECTION_NAME__</strong></div>
+<div class='section-head'>
+<strong class='section-head-title'>__SECTION_NAME__</strong>
+<button type='button' class='section-collapse-toggle' aria-expanded='true' aria-controls='__SECTION_CONTENT_ID__' aria-label='Collapse __SECTION_NAME__'>▾</button>
+</div>
+<div class='section-content' id='__SECTION_CONTENT_ID__'>
 <div class='map-pane map-pane--__PANE_MODE__'>
 <div class='map-left'>
 <canvas class='map-canvas' data-map-key='__MAP_KEY__'__MAP_SCALE_MAX_ATTR____MAP_FULL_HEIGHT_ATTR____MAP_STRETCHED_HEIGHT_ATTR__ aria-label='Map for __SECTION_NAME__'></canvas>
@@ -9,4 +13,5 @@ __ENCOUNTERS_HTML__
 </div>
 __ITEMS_HTML__
 __TRAINER_SECTION_HTML__
+</div>
 </section>

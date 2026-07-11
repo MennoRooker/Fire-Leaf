@@ -4,6 +4,7 @@
   const NUM_TILES_PRIMARY = 640;
   const NUM_METATILES_PRIMARY = 640;
   const NUM_PALS_PRIMARY = 7;
+  let activeStarterToken = "";
 
   function decodeBase64ToU16(base64Text) {
     const binary = atob(base64Text);
@@ -463,8 +464,109 @@
     }
   }
 
+  function applyTrainerFilters() {
+    const rematchToggle = document.getElementById("show-rematches-toggle");
+    const showRematches = rematchToggle ? rematchToggle.checked : true;
+    const cards = document.querySelectorAll(".trainer-card");
+
+    for (const card of cards) {
+      let hidden = false;
+      const isRematchCard = card.getAttribute("data-is-rematch") === "1";
+      const inStarterScope = card.getAttribute("data-starter-filter-scope") === "1";
+      const playerStarter = card.getAttribute("data-player-starter") || "";
+
+      if (!showRematches && isRematchCard) {
+        hidden = true;
+      }
+
+      if (!hidden && activeStarterToken && inStarterScope && playerStarter !== activeStarterToken) {
+        hidden = true;
+      }
+
+      card.classList.toggle("trainer-card--hidden-by-controls", hidden);
+    }
+  }
+
+  function syncStarterFilterCheckboxes() {
+    const toggles = document.querySelectorAll(".starter-filter-toggle");
+    for (const toggle of toggles) {
+      const token = toggle.getAttribute("data-starter-token") || "";
+      const shouldBeChecked = token !== "" && token === activeStarterToken;
+      if (toggle.checked !== shouldBeChecked) {
+        toggle.checked = shouldBeChecked;
+      }
+    }
+  }
+
+  function setupOverviewControls() {
+    const rematchToggle = document.getElementById("show-rematches-toggle");
+    if (rematchToggle) {
+      rematchToggle.addEventListener("change", applyTrainerFilters);
+    }
+
+    const starterToggles = document.querySelectorAll(".starter-filter-toggle");
+    for (const toggle of starterToggles) {
+      toggle.addEventListener("change", () => {
+        const token = toggle.getAttribute("data-starter-token") || "";
+
+        if (!token) {
+          activeStarterToken = "";
+        } else if (toggle.checked) {
+          activeStarterToken = token;
+        } else if (activeStarterToken === token) {
+          activeStarterToken = "";
+        }
+
+        syncStarterFilterCheckboxes();
+        applyTrainerFilters();
+      });
+    }
+
+    syncStarterFilterCheckboxes();
+    applyTrainerFilters();
+  }
+
+  function refitSectionMaps(section, mapData) {
+    const canvases = section.querySelectorAll(".map-canvas[data-map-key]");
+    for (const canvas of canvases) {
+      const key = canvas.getAttribute("data-map-key") || "";
+      const payload = mapData[key];
+      const mapLeft = canvas.closest(".map-left");
+      if (!payload || !mapLeft || !mapLeft.classList.contains("map-ready")) {
+        continue;
+      }
+      fitCanvasToContainer(canvas, mapLeft, payload);
+    }
+  }
+
+  function setupSectionCollapseControls(mapData) {
+    const toggles = document.querySelectorAll(".section-collapse-toggle");
+    for (const toggle of toggles) {
+      toggle.addEventListener("click", () => {
+        const contentId = toggle.getAttribute("aria-controls") || "";
+        if (!contentId) {
+          return;
+        }
+        const content = document.getElementById(contentId);
+        if (!content) {
+          return;
+        }
+        const isExpanded = toggle.getAttribute("aria-expanded") === "true";
+        const nextExpanded = !isExpanded;
+        toggle.setAttribute("aria-expanded", nextExpanded ? "true" : "false");
+        content.hidden = !nextExpanded;
+
+        const section = toggle.closest(".section");
+        if (nextExpanded && section) {
+          requestAnimationFrame(() => refitSectionMaps(section, mapData));
+        }
+      });
+    }
+  }
+
   async function init() {
     markShortTrainerParties();
+    setupOverviewControls();
 
     const dataEl = document.getElementById("overview-map-data");
     if (!dataEl || !dataEl.textContent) {
@@ -511,6 +613,8 @@
         }
       }
     });
+
+    setupSectionCollapseControls(data);
   }
 
   if (document.readyState === "loading") {

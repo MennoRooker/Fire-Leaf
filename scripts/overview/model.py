@@ -538,6 +538,17 @@ def infer_player_starter_from_rival_party(party_name: str) -> Optional[str]:
     return None
 
 
+def is_starter_variant_trainer(trainer_id: str, trainer_name: str) -> bool:
+    trainer_id_upper = trainer_id.upper()
+    trainer_name_upper = trainer_name.upper()
+    return (
+        trainer_id_upper.startswith("TRAINER_RIVAL_")
+        or trainer_id_upper.startswith("TRAINER_CHAMPION_")
+        or trainer_name_upper == "RIVAL"
+        or trainer_name_upper == "CHAMPION"
+    )
+
+
 def build_model(section_filter: Optional[str]) -> Dict[str, object]:
     overrides = load_section_overrides()
     section_overrides: Dict[str, Dict[str, object]] = dict(overrides.get("sections", {}))
@@ -1024,6 +1035,8 @@ def build_model(section_filter: Optional[str]) -> Dict[str, object]:
             "isRematchCard": False,
             "rematchStage": 0,
             "rematchCheckpointText": "",
+            "starterFilterScope": False,
+            "playerStarterToken": "",
             "mons": [],
         }
 
@@ -1037,9 +1050,11 @@ def build_model(section_filter: Optional[str]) -> Dict[str, object]:
         # Rival teams encode the rival's starter in the party name.
         # Show the player's chosen starter instead.
         player_starter_token = None
-        if trainer_name == "Rival":
+        if is_starter_variant_trainer(trainer_id, trainer_name):
             player_starter_token = infer_player_starter_from_rival_party(str(trainer.get("partyName", "")))
         if player_starter_token:
+            trainer_obj["starterFilterScope"] = True
+            trainer_obj["playerStarterToken"] = player_starter_token
             trainer_obj["playerPickedName"] = species_names.get(
                 player_starter_token,
                 pretty_token(player_starter_token, "SPECIES_"),
