@@ -5,6 +5,8 @@
   const NUM_METATILES_PRIMARY = 640;
   const NUM_PALS_PRIMARY = 7;
   let activeStarterToken = "";
+  let collapseAllPinned = false;
+  let suppressCollapseAllToggleChange = false;
 
   function decodeBase64ToU16(base64Text) {
     const binary = atob(base64Text);
@@ -526,6 +528,94 @@
     applyTrainerFilters();
   }
 
+  function getSectionCollapseToggles() {
+    return Array.from(document.querySelectorAll(".section-collapse-toggle"));
+  }
+
+  function updateCollapseAllToggleState() {
+    const collapseAllToggle = document.getElementById("collapse-all-sections-toggle");
+    if (!collapseAllToggle) {
+      return;
+    }
+
+    const sectionToggles = getSectionCollapseToggles();
+    if (!sectionToggles.length) {
+      suppressCollapseAllToggleChange = true;
+      collapseAllToggle.checked = false;
+      suppressCollapseAllToggleChange = false;
+      collapseAllPinned = false;
+      return;
+    }
+
+    let expandedCount = 0;
+    for (const toggle of sectionToggles) {
+      if (toggle.getAttribute("aria-expanded") === "true") {
+        expandedCount += 1;
+      }
+    }
+
+    const allCollapsed = expandedCount === 0;
+    const allExpanded = expandedCount === sectionToggles.length;
+
+    if (allCollapsed) {
+      collapseAllPinned = true;
+    } else if (allExpanded) {
+      collapseAllPinned = false;
+    }
+
+    suppressCollapseAllToggleChange = true;
+    collapseAllToggle.checked = collapseAllPinned;
+    suppressCollapseAllToggleChange = false;
+  }
+
+  function setAllSectionsExpanded(expanded, mapData) {
+    const sectionToggles = getSectionCollapseToggles();
+    for (const toggle of sectionToggles) {
+      const contentId = toggle.getAttribute("aria-controls") || "";
+      if (!contentId) {
+        continue;
+      }
+      const content = document.getElementById(contentId);
+      if (!content) {
+        continue;
+      }
+
+      toggle.setAttribute("aria-expanded", expanded ? "true" : "false");
+      content.hidden = !expanded;
+
+      if (expanded) {
+        const section = toggle.closest(".section");
+        if (section) {
+          requestAnimationFrame(() => refitSectionMaps(section, mapData));
+        }
+      }
+    }
+
+    updateCollapseAllToggleState();
+  }
+
+  function setupCollapseAllControl(mapData) {
+    const collapseAllToggle = document.getElementById("collapse-all-sections-toggle");
+    if (!collapseAllToggle) {
+      return;
+    }
+
+    collapseAllToggle.addEventListener("change", () => {
+      if (suppressCollapseAllToggleChange) {
+        return;
+      }
+
+      collapseAllPinned = collapseAllToggle.checked;
+      if (collapseAllToggle.checked) {
+        setAllSectionsExpanded(false, mapData);
+      } else {
+        setAllSectionsExpanded(true, mapData);
+      }
+    });
+
+    updateCollapseAllToggleState();
+  }
+
   function refitSectionMaps(section, mapData) {
     const canvases = section.querySelectorAll(".map-canvas[data-map-key]");
     for (const canvas of canvases) {
@@ -560,8 +650,12 @@
         if (nextExpanded && section) {
           requestAnimationFrame(() => refitSectionMaps(section, mapData));
         }
+
+        updateCollapseAllToggleState();
       });
     }
+
+    setupCollapseAllControl(mapData);
   }
 
   async function init() {

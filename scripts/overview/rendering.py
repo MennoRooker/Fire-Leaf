@@ -559,7 +559,8 @@ def render_sections_html(sections: List[Dict[str, object]], type_icons: Dict[str
     return "\n".join(render_section(section, type_icons, asset_url, templates) for section in sections)
 
 
-def render_overview_controls() -> str:
+def render_overview_controls(asset_url) -> str:
+    title_screen_url = html.escape(asset_url("docs/screenshots/title_screen.png"), quote=True)
     icon_stage_1 = html.escape(_vs_seeker_icon_data_url_for_stage(1), quote=True)
     icon_stage_2 = html.escape(_vs_seeker_icon_data_url_for_stage(2), quote=True)
     icon_stage_3 = html.escape(_vs_seeker_icon_data_url_for_stage(3), quote=True)
@@ -569,6 +570,7 @@ def render_overview_controls() -> str:
     return (
         "<div class='overview-top-panel' aria-label='Overview intro and controls'>"
         "<section class='overview-intro'>"
+        f"<img class='overview-intro-image' src='{title_screen_url}' alt='Pokemon FireRed title screen'>"
         "<h2 class='overview-intro-title'>How To Use This Overview</h2>"
         "<ul class='overview-intro-list'>"
         "<li>Sections are ordered from first encounter to last in a normal playthrough progression.</li>"
@@ -576,14 +578,26 @@ def render_overview_controls() -> str:
         "<li>Use the controls below to hide rematches or focus rival/champion variant fights by starter choice.</li>"
         "</ul>"
         "</section>"
+        "<section class='overview-side-panels' aria-label='Item and VS Seeker references'>"
+        "<section class='items-legend' aria-label='Items legend'>"
+        "<h3 class='items-legend-title'>Items Reference</h3>"
+        "<p class='items-legend-help'>The Items panel shows two pickup types: item balls (with the Poke Ball icon) and hidden items that are not visible on the map.</p>"
+        "</section>"
+        "<section class='vs-seeker-legend' aria-label='VS Seeker icon legend'>"
+        "<h3 class='vs-seeker-legend-title'>Rematches</h3>"
+        "<p class='vs-seeker-legend-desc'>Rematches work a little bit differently from rematches in vanilla Fire Red. Rematches cannot be repeated indefinitely, and the player has to take 1500 steps after beating a trainer to be able to fight them again. Different colored icons are displayed based on how tough the rematch is and at what stage the rematch is unlocked.</p>"
+        "<p class='vs-seeker-legend-help'>VS Seeker stages:</p>"
+        "<ul class='vs-seeker-legend-list'>"
+        f"<li class='vs-seeker-legend-item'><img class='vs-seeker-legend-icon' src='{icon_stage_1}' alt='Initial stage icon'><span class='vs-seeker-legend-label'>Initial</span><span class='vs-seeker-legend-meaning'>Available after obtaining the VS Seeker.</span></li>"
+        f"<li class='vs-seeker-legend-item'><img class='vs-seeker-legend-icon' src='{icon_stage_2}' alt='Celadon stage icon'><span class='vs-seeker-legend-label'>Celadon</span><span class='vs-seeker-legend-meaning'>Available after reaching Celadon City.</span></li>"
+        f"<li class='vs-seeker-legend-item'><img class='vs-seeker-legend-icon' src='{icon_stage_3}' alt='Fuchsia stage icon'><span class='vs-seeker-legend-label'>Fuchsia</span><span class='vs-seeker-legend-meaning'>Available after reaching Fuchsia City.</span></li>"
+        f"<li class='vs-seeker-legend-item'><img class='vs-seeker-legend-icon' src='{icon_stage_4}' alt='Champion stage icon'><span class='vs-seeker-legend-label'>Champion</span><span class='vs-seeker-legend-meaning'>Available after becoming Champion.</span></li>"
+        f"<li class='vs-seeker-legend-item'><img class='vs-seeker-legend-icon' src='{icon_stage_5}' alt='Sapphire stage icon'><span class='vs-seeker-legend-label'>Sapphire</span><span class='vs-seeker-legend-meaning'>Available after delivering the Sapphire.</span></li>"
+        "</ul>"
+        "<p class='vs-seeker-legend-footnote'>You can toggle on/off rematches in this overview by selecting &quot;Show rematches&quot; below.</p>"
+        "</section>"
+        "</section>"
         "<section class='overview-controls' aria-label='Overview filters and options'>"
-        "<div class='overview-control-group'>"
-        "<h3 class='overview-control-title'>Rematch Cards</h3>"
-        "<div class='overview-control-row'>"
-        "<label><input id='show-rematches-toggle' class='overview-toggle-input' type='checkbox' checked>Show rematches</label>"
-        "</div>"
-        "<p class='overview-control-help'>Turn this off to hide all rematch trainer cards and keep only first-time fights visible.</p>"
-        "</div>"
         "<div class='overview-control-group'>"
         "<h3 class='overview-control-title'>Starter Filter</h3>"
         "<div class='overview-control-row starter-filter-list'>"
@@ -591,18 +605,19 @@ def render_overview_controls() -> str:
         "<label><input type='checkbox' class='overview-toggle-input starter-filter-toggle' data-starter-token='SPECIES_CHARMANDER'>Charmander</label>"
         "<label><input type='checkbox' class='overview-toggle-input starter-filter-toggle' data-starter-token='SPECIES_SQUIRTLE'>Squirtle</label>"
         "</div>"
-        "<p class='overview-control-help'>Only one starter can be active at a time. Click the active starter again to clear and show all variants.</p>"
         "</div>"
-        "</section>"
-        "<section class='vs-seeker-legend' aria-label='VS Seeker icon legend'>"
-        "<p class='vs-seeker-legend-help'>VS Seeker icon colors indicate rematch stage progression:</p>"
-        "<ul class='vs-seeker-legend-list'>"
-        f"<li class='vs-seeker-legend-item'><img class='vs-seeker-legend-icon' src='{icon_stage_1}' alt='Stage 1 red icon'><span class='vs-seeker-legend-label'>Stage 1 (Red)</span><span class='vs-seeker-legend-meaning'>Initial rematch tier.</span></li>"
-        f"<li class='vs-seeker-legend-item'><img class='vs-seeker-legend-icon' src='{icon_stage_2}' alt='Stage 2 green icon'><span class='vs-seeker-legend-label'>Stage 2 (Green)</span><span class='vs-seeker-legend-meaning'>Second rematch tier.</span></li>"
-        f"<li class='vs-seeker-legend-item'><img class='vs-seeker-legend-icon' src='{icon_stage_3}' alt='Stage 3 pink icon'><span class='vs-seeker-legend-label'>Stage 3 (Pink)</span><span class='vs-seeker-legend-meaning'>Mid-game rematch expansion.</span></li>"
-        f"<li class='vs-seeker-legend-item'><img class='vs-seeker-legend-icon' src='{icon_stage_4}' alt='Stage 4 purple icon'><span class='vs-seeker-legend-label'>Stage 4 (Purple)</span><span class='vs-seeker-legend-meaning'>Late-game rematch expansion.</span></li>"
-        f"<li class='vs-seeker-legend-item'><img class='vs-seeker-legend-icon' src='{icon_stage_5}' alt='Stage 5 blue postgame icon'><span class='vs-seeker-legend-label'>Stage 5 (Blue/Postgame)</span><span class='vs-seeker-legend-meaning'>Final postgame rematch tier.</span></li>"
-        "</ul>"
+        "<div class='overview-control-group'>"
+        "<h3 class='overview-control-title'>Section View</h3>"
+        "<div class='overview-control-row'>"
+        "<label><input id='collapse-all-sections-toggle' class='overview-toggle-input' type='checkbox'>Collapse all sections</label>"
+        "</div>"
+        "</div>"
+        "<div class='overview-control-group'>"
+        "<h3 class='overview-control-title'>Rematch Cards</h3>"
+        "<div class='overview-control-row'>"
+        "<label><input id='show-rematches-toggle' class='overview-toggle-input' type='checkbox' checked>Show rematches</label>"
+        "</div>"
+        "</div>"
         "</section>"
         "</div>"
     )
@@ -839,7 +854,7 @@ def render_html(model: Dict[str, object], out_path: Path, embed_assets: bool = T
     map_render_script = read_overview_source("static", "overview_map_renderer.js")
     page_html = templates["main_template"]
     page_html = page_html.replace("__STYLE_BLOCK__", f"<style>\n{css}\n</style>")
-    page_html = page_html.replace("__CONTROLS_HTML__", render_overview_controls())
+    page_html = page_html.replace("__CONTROLS_HTML__", render_overview_controls(asset_url))
     page_html = page_html.replace("__SECTIONS_HTML__", render_sections_html(model["sections"], model["typeIcons"], asset_url, templates))
     page_html = page_html.replace("__MAP_RENDER_DATA_BLOCK__", f"<script id='overview-map-data' type='application/json'>{map_render_data_json}</script>")
     page_html = page_html.replace("__SCRIPT_BLOCK__", f"<script>\n{map_render_script}\n</script>")
