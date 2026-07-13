@@ -62,7 +62,7 @@ def main() -> None:
     if embed_assets:
         print(f"Embedded assets: {stats['uniqueEmbeddedAssets']}")
         print(f"Embedded bytes: {stats['embeddedBytes']}")
-    print(f"HTML size (bytes): {stats['htmlBytes']}")
+        print(f"HTML size (bytes): {stats['htmlBytes']}")
 
 
 if __name__ == "__main__":

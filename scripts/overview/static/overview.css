@@ -75,7 +75,7 @@ h1 { margin: 0 0 8px 0; }
 }
 
 .overview-intro-copy {
-  max-width: 980px;
+  max-width: 1180px;
   margin: 0 auto;
   text-align: center;
 }
@@ -94,17 +94,6 @@ h1 { margin: 0 0 8px 0; }
   font-size: 0.93rem;
   line-height: 1.45;
   color: #8d2b1b;
-}
-
-.overview-intro-list {
-  margin: 0 auto;
-  padding-left: 1.15rem;
-  display: grid;
-  gap: 0.26rem;
-  color: #7b2f1f;
-  text-align: left;
-  width: fit-content;
-  max-width: min(100%, 720px);
 }
 
 .overview-controls {
