@@ -53,14 +53,31 @@ h1 { margin: 0 0 8px 0; }
   padding: 0.9rem 1rem;
 }
 
+.overview-intro-brand {
+  margin: 0 0 0.7rem;
+  text-align: center;
+  font-size: 2.5rem;
+  line-height: 1.05;
+  font-weight: 900;
+  letter-spacing: 0.05em;
+  color: #9c2515;
+  text-shadow: 0 1px 0 rgba(255, 245, 240, 0.75);
+}
+
 .overview-intro-image {
   display: block;
   width: min(100%, 720px);
   height: auto;
-  margin: 0 0 0.85rem;
+  margin: 0 auto 0.85rem;
   border-radius: 12px;
   border: 1px solid #e36a45;
   box-shadow: 0 8px 20px rgba(153, 41, 18, 0.16);
+}
+
+.overview-intro-copy {
+  max-width: 980px;
+  margin: 0 auto;
+  text-align: center;
 }
 
 .overview-intro-title {
@@ -72,12 +89,22 @@ h1 { margin: 0 0 8px 0; }
   color: #8d2a18;
 }
 
+.overview-intro-lead {
+  margin: 0 0 0.55rem;
+  font-size: 0.93rem;
+  line-height: 1.45;
+  color: #8d2b1b;
+}
+
 .overview-intro-list {
-  margin: 0;
+  margin: 0 auto;
   padding-left: 1.15rem;
   display: grid;
   gap: 0.26rem;
   color: #7b2f1f;
+  text-align: left;
+  width: fit-content;
+  max-width: min(100%, 720px);
 }
 
 .overview-controls {
@@ -212,6 +239,16 @@ h1 { margin: 0 0 8px 0; }
   border: 1px solid #e67856;
   border-radius: 14px;
   padding: 0.78rem 0.9rem 0.85rem;
+  display: grid;
+  gap: 0.58rem;
+  align-content: start;
+}
+
+.overview-reference-block {
+  background: rgba(255, 251, 248, 0.56);
+  border: 1px solid #ebaf97;
+  border-radius: 10px;
+  padding: 0.52rem 0.62rem 0.58rem;
 }
 
 .items-legend-title {
@@ -1464,8 +1501,15 @@ h1 { margin: 0 0 8px 0; }
     margin-bottom: 0.7rem;
     border-radius: 10px;
   }
+  .overview-intro-brand {
+    font-size: 1.3rem;
+    margin-bottom: 0.58rem;
+  }
   .overview-intro-title {
     font-size: 1rem;
+  }
+  .overview-intro-lead {
+    font-size: 0.88rem;
   }
   .overview-control-title {
     font-size: 0.85rem;
