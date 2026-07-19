@@ -61,12 +61,10 @@ Keen Eye -> Keen Eye/Own Tempo
 - SPEAROW
 def:	30 -> 40
 spdef:	31 -> 41
-NORMAL/FLYING -> FLYING
 
 - FEAROW
 hp:	65 -> 75
 atk:	90 -> 95
-NORMAL/FLYING -> FLYING
 
 - ARBOK
 POISON -> POISON/DARK

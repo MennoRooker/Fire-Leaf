@@ -35,13 +35,13 @@ Route2_Text_BugsyHasGivenRepel::
 
 Route2_Text_BugsySaysGoodbye::
     .string "Well now that you're prepared to\n"
-    .string "travel, you should visit Johto when\p"
-    .string "you get the chance. It's just WEST\n"
-    .string "of the Kanto region.\p"
-    .string "It's very beautiful and there are\n"
-    .string "strong trainers there.\p"
-    .string "If you visit my GYM I'll give you \n"
-    .string "that battle I promised you earlier.\p"
+    .string "travel, you should get going and\l"
+    .string "become stronger.\p"
+    .string "Maybe by the time we meet again\n"
+    .string "you'll be ready to battle some of\l"
+    .string "the best trainers in the world.\p"
+    .string "In the meantime I will also be\n"
+    .string "developing my teams and skills.\p"
     .string "Good luck on your adventure.\n"
     .string "I'll see you around.$"
 

@@ -354,7 +354,7 @@
 #define TRAINER_BOSS_GIOVANNI_ROCKET_HIDEOUT                    348
 #define TRAINER_BOSS_GIOVANNI_SILPH_CO                          349
 #define TRAINER_LEADER_GIOVANNI                                 350
-#define TRAINER_TEAM_ROCKET_GRUNT                               351
+#define TRAINER_TEAM_ROCKET_GRUNT_1                             351
 #define TRAINER_TEAM_ROCKET_GRUNT_2                             352
 #define TRAINER_TEAM_ROCKET_GRUNT_3                             353
 #define TRAINER_TEAM_ROCKET_GRUNT_4                             354

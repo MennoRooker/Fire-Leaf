@@ -29,6 +29,6 @@ Route2_ViridianForest_NorthEntrance_Text_BugsyGreeting::
     .string "I came to Kanto to catch cool\p"
     .string "BUG POKéMON.\p"
     .string "If you help me find my NET I promise\n"
-    .string "to battle you some day.\p"
+    .string "to reward you for it.\p"
     .string "Follow me!$"
 
