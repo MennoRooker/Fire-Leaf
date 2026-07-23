@@ -1335,7 +1335,7 @@ can find most of the info they need throughout the
 entire game. I have a structure in place with the 
 following:
 ---------------
-/ Maps
+x Maps
 / Colors
 x Wild Encounters
 x Trainer Parties
@@ -1349,6 +1349,7 @@ x Trainer Parties
 	- Under trainer image
 x Show events
 - Route 14 Gen 4 mons
+- Local storage
 
 
 
@@ -1392,7 +1393,8 @@ x HP beeping
 x Victory Road FLY checkpoint
 x Balancing
 x Title screen
-- Documentation
+x No badge boosts
+/ Documentation
 ---------------------------------------
 - Clean up
 - Add Fairy type
@@ -1481,6 +1483,7 @@ x Super Luck
 x Wind Rider 
 x Technician 
 x Solid Rock
+/ No guard
 - Regenerator
 - Sheer force (Nidoking, ...)
 - Magic Bounce (Espeon)

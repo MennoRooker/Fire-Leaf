@@ -105,11 +105,11 @@ Route7_EventScript_TeamRocketArgues::
 	msgbox Route7_Text_Jessie3
 	applymovement LOCALID_JAMES, Route7_Movement_LooksRight
 	waitmovement 0
+	textcolor NPC_TEXT_COLOR_MALE
 	msgbox Route7_Text_James3
 	applymovement LOCALID_JAMES, Route7_Movement_LooksDown
 	applymovement LOCALID_JESSIE, Route7_Movement_LooksDown
 	waitmovement 0
-	textcolor NPC_TEXT_COLOR_MALE
 	msgbox Route7_Text_James4
 	applymovement LOCALID_CAMERA, Route7_Movement_CameraPanUp1
 	waitmovement 0

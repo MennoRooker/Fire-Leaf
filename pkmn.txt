@@ -437,11 +437,14 @@ spatk:	100-> 120
 atk:	75 -> 85
 spd:	50 -> 60
 
+- KYOGRE
+hp:	100-> 110
+spatk:	150-> 160
+
 - GROUDON
+hp:	100-> 110
+atk:	150-> 160
 GROUND -> GROUND/FIRE
 
 - RAYQUAZA
-def:	90 -> 85
-spatk:	150-> 140
-spdef:	90 -> 85
 spd:	95 -> 115
