@@ -4040,7 +4040,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
     [SPECIES_OMASTAR] =
     {
         .baseHP = 70,
-        .baseAttack = 60,
+        .baseAttack = 80,
         .baseDefense = 125,
         .baseSpAttack = 115,
         .baseSpDefense = 70,
@@ -4102,7 +4102,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .baseDefense = 105,
         .baseSpAttack = 65,
         .baseSpDefense = 70,
-        .baseSpeed = 80,
+        .baseSpeed = 100,
         .types = {TYPE_ROCK, TYPE_WATER},
         .catchRate = 45,
         .expYield = 201,
@@ -10591,8 +10591,8 @@ const struct SpeciesInfo gSpeciesInfo[] =
     {
         .baseHP = 86,
         .baseAttack = 81,
-        .baseDefense = 97,
-        .baseSpAttack = 91,
+        .baseDefense = 102,
+        .baseSpAttack = 96,
         .baseSpDefense = 107,
         .baseSpeed = 43,
         .types = {TYPE_ROCK, TYPE_GRASS},
@@ -10647,7 +10647,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
     },
     [SPECIES_ARMALDO] =
     {
-        .baseHP = 75,
+        .baseHP = 85,
         .baseAttack = 125,
         .baseDefense = 100,
         .baseSpAttack = 70,

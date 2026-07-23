@@ -1350,6 +1350,8 @@ x Trainer Parties
 x Show events
 - Route 14 Gen 4 mons
 - Local storage
+- Hidden Power
+- Back to full party cards
 
 
 
@@ -1366,7 +1368,6 @@ x All TMs in stores
 x No Ethers
 x No X items
 x Early Running Shoes
-x Instant National Dex
 x Sitrus berry 25% HP
 x Weather defense boosts
 x Gen 6 type mechanics

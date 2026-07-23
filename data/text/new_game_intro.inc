@@ -168,7 +168,7 @@ gPikachuIntro_Text_Page1::
     .string "\n"
     .string "This is not intended to be a high-\n"
     .string "difficulty ROM hack, though it is \n"
-    .string "significantly harder than the vanilla\n"
+    .string "still harder than the vanilla\n"
     .string "version of Fire Red.$"
 
 gPikachuIntro_Text_Page2::
@@ -182,8 +182,8 @@ gPikachuIntro_Text_Page2::
 
 gPikachuIntro_Text_Page3::
     .string "HMs do not need to be taught to any\n"
-    .string "of your POKéMON.\n"
-    .string "\n"
+    .string "of your POKéMON. Badge boosts are\n"
+    .string "turned off.\n"
     .string "For more insight into the changes\n"
     .string "made in this ROM hack, consult\n"
     .string "the accompanying documentation.\n"

@@ -91,7 +91,8 @@
     },
     "Route 16 East": {
       "mapToken": "ROUTE16",
-      "crop": { "x0": 0.45, "x1": 1.0 }
+      "crop": { "x0": 0.45, "x1": 1.0 },
+      "hideItems": [0]
     },
     "Game Corner": {
       "mapToken": "CELADON_CITY_GAME_CORNER",
@@ -141,7 +142,8 @@
       "mapToken": "ROUTE16",
       "crop": { "x0": 0.0, "x1": 0.45 },
       "hideEncounters": true,
-      "mapScaleMax": 0.6
+      "mapScaleMax": 0.6,
+      "hideItems": [1]
     },
     "Route 17": {
       "stretchedHeight": 3.0
