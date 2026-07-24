@@ -1272,6 +1272,59 @@ def build_model(section_filter: Optional[str]) -> Dict[str, object]:
         items.sort(key=lambda item: (bool(item.get("isHidden")), str(item.get("itemName", "")).lower(), str(item.get("itemToken", ""))))
         return items
 
+    def aggregate_merged_item_entries(raw_items: List[Dict[str, object]]) -> List[Dict[str, object]]:
+        grouped: Dict[tuple[str, bool], Dict[str, object]] = {}
+        manual_index = 0
+        for raw_item in raw_items:
+            item_token = str(raw_item.get("itemToken", "")).strip()
+            explicit_name = str(raw_item.get("itemName", "")).strip()
+            explicit_icon_path = str(raw_item.get("iconPath", "")).strip()
+            explicit_palette_path = str(raw_item.get("palettePath", "")).strip()
+
+            if not item_token and not explicit_name:
+                continue
+            is_hidden = bool(raw_item.get("isHidden"))
+
+            if item_token:
+                key = (item_token, is_hidden)
+            else:
+                manual_index += 1
+                key = (f"__MANUAL_{manual_index}__", is_hidden)
+
+            entry = grouped.get(key)
+            if not entry:
+                resolved_name = explicit_name
+                resolved_icon = explicit_icon_path
+                resolved_palette = explicit_palette_path
+
+                if item_token:
+                    resolved_name = resolved_name or get_item_name(item_token)
+                    resolved_icon = resolved_icon or get_item_icon_path(item_token)
+                    resolved_palette = resolved_palette or get_item_palette_path(item_token)
+
+                entry = {
+                    "itemToken": item_token,
+                    "itemName": resolved_name or "-",
+                    "iconPath": resolved_icon or ("graphics/items/icons/poke_ball.png" if item_token else ""),
+                    "palettePath": resolved_palette,
+                    "count": 0,
+                    "isHidden": is_hidden,
+                }
+                grouped[key] = entry
+
+            increment = raw_item.get("count")
+            if increment is None:
+                increment = raw_item.get("quantity", 1)
+            increment_int = int(increment or 1)
+            if item_token:
+                entry["count"] = max(int(entry.get("count", 0)), increment_int)
+            else:
+                entry["count"] = int(entry.get("count", 0)) + increment_int
+
+        items = list(grouped.values())
+        items.sort(key=lambda item: (bool(item.get("isHidden")), str(item.get("itemName", "")).lower(), str(item.get("itemToken", ""))))
+        return items
+
     def collect_items_for_map_token(map_token: str) -> List[Dict[str, object]]:
         normalized_map_token = normalize_map_token(map_token)
         section_items: List[Dict[str, object]] = list(map_items_by_token.get(map_token, []))
@@ -1496,7 +1549,7 @@ def build_model(section_filter: Optional[str]) -> Dict[str, object]:
                     combined_shops.extend(collect_section_shops(source))
                     combined_tutors.extend(collect_section_move_tutors(source))
                 section_items_by_name[name] = apply_hidden_items(
-                    aggregate_item_entries(combined_items),
+                    aggregate_merged_item_entries(combined_items),
                     hide_all_items,
                     hidden_item_indices,
                 )

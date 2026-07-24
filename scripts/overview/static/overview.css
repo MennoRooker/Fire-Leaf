@@ -1532,6 +1532,7 @@ h1 { margin: 0 0 8px 0; }
 }
 
 .section[data-theme='city-cinnabar'] {
+  --section-head-color: #edd9d2;
   --section-bg: #edd9d2;
   --section-head-bg: #c06049;
   --map-left-bg: #d8b4a7;

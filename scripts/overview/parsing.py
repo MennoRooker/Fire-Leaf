@@ -1396,6 +1396,10 @@ def parse_vs_seeker_rematch_stages() -> Dict[str, int]:
 
 
 def extract_top_level_brace_blocks(text: str) -> List[str]:
+    # Trainer party files often comment out individual mon entries in-place.
+    # Strip line comments before scanning braces so those placeholder blocks
+    # are not treated as real party members.
+    text = "\n".join(line.split("//", 1)[0] for line in text.splitlines())
     blocks: List[str] = []
     depth = 0
     start = -1

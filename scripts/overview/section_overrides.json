@@ -155,16 +155,16 @@
       "mapScaleMax": 0.6
     },
     "Rocket Hideout B1F": {
-      "mapScaleMax": 0.8
+      "mapScaleMax": 0.65
     },
     "Rocket Hideout B2F": {
       "mapScaleMax": 0.8
     },
     "Rocket Hideout B3F": {
-      "mapScaleMax": 0.8
+      "mapScaleMax": 0.6
     },
     "Rocket Hideout B4F": {
-      "mapScaleMax": 0.8
+      "mapScaleMax": 0.7
     },
     "Celadon City Gym": {
       "mapScaleMax": 0.4
@@ -360,7 +360,8 @@
     "Route 15": {
       "sources": ["Route 15 North", "Route 15 South"],
       "sourceLabels": ["North", "South"],
-      "mapToken": "ROUTE15"
+      "mapToken": "ROUTE15",
+      "hideItems": [0]
     }
   }
 }

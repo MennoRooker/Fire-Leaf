@@ -2974,6 +2974,136 @@ static const struct TrainerMonNoItemDefaultMoves sParty_PokemaniacHermanRematchA
 
 
 // ======================================================================================= //
+// =================================== Route 12 North ==================================== //
+// ======================================================================================= //
+static const struct TrainerMonNoItemDefaultMoves sParty_FishermanNed[] = {
+    {
+        .iv = 5,
+        .lvl = 27,
+        .species = SPECIES_GOLDEEN,
+    },
+    {
+        .iv = 5,
+        .lvl = 27,
+        .species = SPECIES_POLIWHIRL,
+    },
+    {
+        .iv = 5,
+        .lvl = 27,
+        .species = SPECIES_WAILMER,
+    },
+};
+
+static const struct TrainerMonItemDefaultMoves sParty_FishermanLuc[] = {
+    {
+        .iv = 5,
+        .lvl = 30,
+        .species = SPECIES_GYARADOS,
+        .heldItem = ITEM_NONE,
+    },
+    {
+        .iv = 5,
+        .lvl = 30,
+        .species = SPECIES_WHISCASH,
+        .heldItem = ITEM_CHESTO_BERRY,
+    },
+};
+
+static const struct TrainerMonNoItemDefaultMoves sParty_FishermanLucRematch[] = {
+    {
+        .iv = 15,
+        .lvl = 38,
+        .species = SPECIES_GYARADOS,
+    },
+    {
+        .iv = 15,
+        .lvl = 38,
+        .species = SPECIES_WHISCASH,
+    },
+};
+
+static const struct TrainerMonNoItemDefaultMoves sParty_FishermanHank[] = {
+    {
+        .iv = 5,
+        .lvl = 33,
+        .species = SPECIES_SEAKING,
+    },
+};
+
+static const struct TrainerMonNoItemDefaultMoves sParty_FishermanElliot[] = {
+    {
+        .iv = 5,
+        .lvl = 26,
+        .species = SPECIES_TENTACOOL,
+    },
+    {
+        .iv = 5,
+        .lvl = 26,
+        .species = SPECIES_SHELLDER,
+    },
+    {
+        .iv = 5,
+        .lvl = 26,
+        .species = SPECIES_SPHEAL,
+    },
+    {
+        .iv = 5,
+        .lvl = 26,
+        .species = SPECIES_MARSHTOMP,
+    },
+};
+
+static const struct TrainerMonNoItemDefaultMoves sParty_FishermanElliotRematchAfterFuchsia[] = {
+    {
+        .iv = 16,
+        .lvl = 36,
+        .species = SPECIES_TENTACRUEL,
+    },
+    {
+        .iv = 16,
+        .lvl = 36,
+        .species = SPECIES_CLOYSTER,
+    },
+    {
+        .iv = 16,
+        .lvl = 36,
+        .species = SPECIES_SEALEO,
+    },
+    {
+        .iv = 16,
+        .lvl = 36,
+        .species = SPECIES_SWAMPERT,
+    },
+};
+
+static const struct TrainerMonNoItemDefaultMoves sParty_YoungCoupleGiaJes[] = {
+    {
+        .iv = 5,
+        .lvl = 30,
+        .species = SPECIES_NIDORINO,
+    },
+    {
+        .iv = 5,
+        .lvl = 30,
+        .species = SPECIES_NIDORINA,
+    },
+};
+
+static const struct TrainerMonNoItemDefaultMoves sParty_YoungCoupleGiaJesRematchAfterFuchsia[] = {
+    {
+        .iv = 6,
+        .lvl = 38,
+        .species = SPECIES_NIDOQUEEN,
+    },
+    {
+        .iv = 6,
+        .lvl = 38,
+        .species = SPECIES_NIDOKING,
+    },
+};
+
+
+// ======================================================================================= //
 // ======================================= Route 8 ======================================= //
 // ======================================================================================= //
 static const struct TrainerMonNoItemDefaultMoves sParty_LassJulia[] = {
@@ -3342,136 +3472,6 @@ static const struct TrainerMonItemCustomMoves sParty_SuperNerdAidan[] = {
         .species = SPECIES_METANG,
         .heldItem = ITEM_ORAN_BERRY,
         .moves = {MOVE_CONFUSION, MOVE_METAL_CLAW, MOVE_TAKE_DOWN, MOVE_ROCK_SMASH},
-    },
-};
-
-
-// ======================================================================================= //
-// =================================== Route 12 North ==================================== //
-// ======================================================================================= //
-static const struct TrainerMonNoItemDefaultMoves sParty_FishermanNed[] = {
-    {
-        .iv = 5,
-        .lvl = 27,
-        .species = SPECIES_GOLDEEN,
-    },
-    {
-        .iv = 5,
-        .lvl = 27,
-        .species = SPECIES_POLIWHIRL,
-    },
-    {
-        .iv = 5,
-        .lvl = 27,
-        .species = SPECIES_WAILMER,
-    },
-};
-
-static const struct TrainerMonItemDefaultMoves sParty_FishermanLuc[] = {
-    {
-        .iv = 5,
-        .lvl = 30,
-        .species = SPECIES_GYARADOS,
-        .heldItem = ITEM_NONE,
-    },
-    {
-        .iv = 5,
-        .lvl = 30,
-        .species = SPECIES_WHISCASH,
-        .heldItem = ITEM_CHESTO_BERRY,
-    },
-};
-
-static const struct TrainerMonNoItemDefaultMoves sParty_FishermanLucRematch[] = {
-    {
-        .iv = 15,
-        .lvl = 38,
-        .species = SPECIES_GYARADOS,
-    },
-    {
-        .iv = 15,
-        .lvl = 38,
-        .species = SPECIES_WHISCASH,
-    },
-};
-
-static const struct TrainerMonNoItemDefaultMoves sParty_FishermanHank[] = {
-    {
-        .iv = 5,
-        .lvl = 33,
-        .species = SPECIES_SEAKING,
-    },
-};
-
-static const struct TrainerMonNoItemDefaultMoves sParty_FishermanElliot[] = {
-    {
-        .iv = 5,
-        .lvl = 26,
-        .species = SPECIES_TENTACOOL,
-    },
-    {
-        .iv = 5,
-        .lvl = 26,
-        .species = SPECIES_SHELLDER,
-    },
-    {
-        .iv = 5,
-        .lvl = 26,
-        .species = SPECIES_SPHEAL,
-    },
-    {
-        .iv = 5,
-        .lvl = 26,
-        .species = SPECIES_MARSHTOMP,
-    },
-};
-
-static const struct TrainerMonNoItemDefaultMoves sParty_FishermanElliotRematchAfterFuchsia[] = {
-    {
-        .iv = 16,
-        .lvl = 36,
-        .species = SPECIES_TENTACRUEL,
-    },
-    {
-        .iv = 16,
-        .lvl = 36,
-        .species = SPECIES_CLOYSTER,
-    },
-    {
-        .iv = 16,
-        .lvl = 36,
-        .species = SPECIES_SEALEO,
-    },
-    {
-        .iv = 16,
-        .lvl = 36,
-        .species = SPECIES_SWAMPERT,
-    },
-};
-
-static const struct TrainerMonNoItemDefaultMoves sParty_YoungCoupleGiaJes[] = {
-    {
-        .iv = 5,
-        .lvl = 30,
-        .species = SPECIES_NIDORINO,
-    },
-    {
-        .iv = 5,
-        .lvl = 30,
-        .species = SPECIES_NIDORINA,
-    },
-};
-
-static const struct TrainerMonNoItemDefaultMoves sParty_YoungCoupleGiaJesRematchAfterFuchsia[] = {
-    {
-        .iv = 6,
-        .lvl = 38,
-        .species = SPECIES_NIDOQUEEN,
-    },
-    {
-        .iv = 6,
-        .lvl = 38,
-        .species = SPECIES_NIDOKING,
     },
 };
 
