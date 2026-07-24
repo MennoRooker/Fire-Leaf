@@ -22,7 +22,9 @@ from .parsing import (
     parse_layouts_by_id,
     parse_map_layout_records,
     parse_map_items_by_map,
+    parse_move_tutors_by_section_map_token,
     parse_mon_symbol_to_png_path,
+    parse_npc_gift_items_by_section_map_token,
     parse_move_names,
     parse_move_types,
     parse_nature_constants,
@@ -36,6 +38,7 @@ from .parsing import (
     parse_trainer_symbol_to_png_path,
     parse_trainers,
     parse_vs_seeker_rematch_stages,
+    parse_shops_by_section_map_token,
     parse_tileset_metatile_paths,
     resolve_tileset_tiles_png_path,
     parse_type_icon_specs,
@@ -572,6 +575,9 @@ def build_model(section_filter: Optional[str]) -> Dict[str, object]:
     item_icon_table = parse_item_icon_table()
     item_icon_paths = parse_item_icon_symbol_to_paths()
     map_items_by_token = parse_map_items_by_map()
+    npc_gift_items_by_section_token = parse_npc_gift_items_by_section_map_token()
+    shops_by_section_token = parse_shops_by_section_map_token()
+    tutors_by_section_token = parse_move_tutors_by_section_map_token()
     trainer_pic_ids = parse_define_ints("include/constants/trainers.h", "TRAINER_PIC_")
     species_ids = parse_define_ints("include/constants/species.h", "SPECIES_")
     trainer_front_syms = parse_ordered_trainer_front_symbols()
@@ -1218,19 +1224,41 @@ def build_model(section_filter: Optional[str]) -> Dict[str, object]:
 
     def aggregate_item_entries(raw_items: List[Dict[str, object]]) -> List[Dict[str, object]]:
         grouped: Dict[tuple[str, bool], Dict[str, object]] = {}
+        manual_index = 0
         for raw_item in raw_items:
             item_token = str(raw_item.get("itemToken", "")).strip()
-            if not item_token:
+            explicit_name = str(raw_item.get("itemName", "")).strip()
+            explicit_icon_path = str(raw_item.get("iconPath", "")).strip()
+            explicit_palette_path = str(raw_item.get("palettePath", "")).strip()
+
+            if not item_token and not explicit_name:
                 continue
             is_hidden = bool(raw_item.get("isHidden"))
-            key = (item_token, is_hidden)
+
+            # Manual entries without an item token get a synthetic key and remain
+            # independent rows in the rendered list.
+            if item_token:
+                key = (item_token, is_hidden)
+            else:
+                manual_index += 1
+                key = (f"__MANUAL_{manual_index}__", is_hidden)
+
             entry = grouped.get(key)
             if not entry:
+                resolved_name = explicit_name
+                resolved_icon = explicit_icon_path
+                resolved_palette = explicit_palette_path
+
+                if item_token:
+                    resolved_name = resolved_name or get_item_name(item_token)
+                    resolved_icon = resolved_icon or get_item_icon_path(item_token)
+                    resolved_palette = resolved_palette or get_item_palette_path(item_token)
+
                 entry = {
                     "itemToken": item_token,
-                    "itemName": get_item_name(item_token),
-                    "iconPath": get_item_icon_path(item_token),
-                    "palettePath": get_item_palette_path(item_token),
+                    "itemName": resolved_name or "-",
+                    "iconPath": resolved_icon or ("graphics/items/icons/poke_ball.png" if item_token else ""),
+                    "palettePath": resolved_palette,
                     "count": 0,
                     "isHidden": is_hidden,
                 }
@@ -1244,16 +1272,143 @@ def build_model(section_filter: Optional[str]) -> Dict[str, object]:
         items.sort(key=lambda item: (bool(item.get("isHidden")), str(item.get("itemName", "")).lower(), str(item.get("itemToken", ""))))
         return items
 
+    def collect_items_for_map_token(map_token: str) -> List[Dict[str, object]]:
+        normalized_map_token = normalize_map_token(map_token)
+        section_items: List[Dict[str, object]] = list(map_items_by_token.get(map_token, []))
+        section_items.extend(npc_gift_items_by_section_token.get(normalized_map_token, []))
+        return section_items
+
     def collect_section_items(section_name: str) -> List[Dict[str, object]]:
         map_record = resolve_section_map_record(section_name)
-        if not map_record:
-            return []
+        section_items: List[Dict[str, object]] = []
 
-        map_token = str(map_record.get("mapToken", ""))
-        if not map_token:
-            return []
+        if map_record:
+            map_token = str(map_record.get("mapToken", ""))
+            if map_token:
+                section_items.extend(collect_items_for_map_token(map_token))
 
-        return aggregate_item_entries(map_items_by_token.get(map_token, []))
+        sect_cfg = section_overrides.get(section_name, {})
+        if isinstance(sect_cfg, dict):
+            extra_map_tokens = sect_cfg.get("itemMapTokens")
+            if isinstance(extra_map_tokens, (list, tuple)):
+                for extra_token in extra_map_tokens:
+                    token = str(extra_token).strip()
+                    if not token:
+                        continue
+                    section_items.extend(collect_items_for_map_token(token))
+
+            manual_items = sect_cfg.get("manualItems")
+            if isinstance(manual_items, (list, tuple)):
+                for manual_item in manual_items:
+                    if not isinstance(manual_item, dict):
+                        continue
+                    token = str(manual_item.get("itemToken", "")).strip()
+                    name = str(manual_item.get("itemName", "")).strip()
+                    icon_path = str(manual_item.get("iconPath", "")).strip()
+                    palette_path = str(manual_item.get("palettePath", "")).strip()
+                    quantity = manual_item.get("quantity", 1)
+                    is_hidden = bool(manual_item.get("isHidden", False))
+                    try:
+                        quantity_int = int(quantity)
+                    except (TypeError, ValueError):
+                        quantity_int = 1
+                    if quantity_int <= 0:
+                        quantity_int = 1
+
+                    if not token and not name:
+                        continue
+
+                    section_items.append(
+                        {
+                            "itemToken": token,
+                            "itemName": name,
+                            "iconPath": icon_path,
+                            "palettePath": palette_path,
+                            "quantity": quantity_int,
+                            "isHidden": is_hidden,
+                        }
+                    )
+
+        return aggregate_item_entries(section_items)
+
+    def section_map_token(section_name: str) -> str:
+        record = resolve_section_map_record(section_name)
+        if not record:
+            return ""
+        token = str(record.get("mapToken", ""))
+        return normalize_map_token(token) if token else ""
+
+    def collect_section_shops(section_name: str) -> List[Dict[str, object]]:
+        token = section_map_token(section_name)
+        if not token:
+            return []
+        rows = list(shops_by_section_token.get(token, []))
+        rows.sort(
+            key=lambda entry: (
+                str(entry.get("locationLabel", "")).lower(),
+                str(entry.get("shopLabel", "")).lower(),
+                str(entry.get("variantLabel", "")).lower(),
+            )
+        )
+        return rows
+
+    def collect_section_move_tutors(section_name: str) -> List[Dict[str, object]]:
+        token = section_map_token(section_name)
+        if not token:
+            return []
+        rows = list(tutors_by_section_token.get(token, []))
+
+        prefix = f"{token}_"
+        for source_token, source_rows in tutors_by_section_token.items():
+            if not source_token.startswith(prefix):
+                continue
+            rows.extend(source_rows)
+
+        normalized_rows: List[Dict[str, object]] = []
+        seen: set[tuple[str, str, str, int]] = set()
+        for row in rows:
+            payment_token = str(row.get("paymentItemToken", "")).strip()
+            payment_count = int(row.get("paymentCount", 1) or 1)
+            dedupe = (
+                str(row.get("locationLabel", "")).strip().lower(),
+                str(row.get("moveName", "")).strip().lower(),
+                payment_token,
+                payment_count,
+            )
+            if dedupe in seen:
+                continue
+            seen.add(dedupe)
+
+            normalized = dict(row)
+            if payment_token and payment_token != "ITEM_NONE":
+                normalized["paymentIconPath"] = get_item_icon_path(payment_token)
+                normalized["paymentPalettePath"] = get_item_palette_path(payment_token)
+
+            payment_options = normalized.get("paymentOptions")
+            if isinstance(payment_options, list):
+                normalized_options: List[Dict[str, object]] = []
+                for option in payment_options:
+                    if not isinstance(option, dict):
+                        continue
+                    option_token = str(option.get("itemToken", "")).strip()
+                    if not option_token:
+                        continue
+                    normalized_option = dict(option)
+                    normalized_option["iconPath"] = get_item_icon_path(option_token)
+                    normalized_option["palettePath"] = get_item_palette_path(option_token)
+                    normalized_options.append(normalized_option)
+                normalized["paymentOptions"] = normalized_options
+
+            normalized_rows.append(normalized)
+
+        rows = normalized_rows
+        rows.sort(
+            key=lambda entry: (
+                str(entry.get("locationLabel", "")).lower(),
+                str(entry.get("moveName", "")).lower(),
+            )
+        )
+        return rows
 
     def section_hidden_encounter_kinds(section_name: str) -> set:
         sect_cfg = section_overrides.get(section_name, {})
@@ -1296,25 +1451,35 @@ def build_model(section_filter: Optional[str]) -> Dict[str, object]:
         return [item for idx, item in enumerate(items) if idx not in hidden_indices]
 
     section_items_by_name: Dict[str, List[Dict[str, object]]] = {}
+    section_shops_by_name: Dict[str, List[Dict[str, object]]] = {}
+    section_tutors_by_name: Dict[str, List[Dict[str, object]]] = {}
     for name in ordered_section_names:
         hide_all_items, hidden_item_indices = section_hidden_items(name)
         if name in merge_overrides:
             merge_cfg = merge_overrides.get(name, {})
             if isinstance(merge_cfg, dict):
                 combined_items: List[Dict[str, object]] = []
+                combined_shops: List[Dict[str, object]] = []
+                combined_tutors: List[Dict[str, object]] = []
                 for source in [str(s) for s in merge_cfg.get("sources", [])]:
                     combined_items.extend(collect_section_items(source))
+                    combined_shops.extend(collect_section_shops(source))
+                    combined_tutors.extend(collect_section_move_tutors(source))
                 section_items_by_name[name] = apply_hidden_items(
                     aggregate_item_entries(combined_items),
                     hide_all_items,
                     hidden_item_indices,
                 )
+                section_shops_by_name[name] = combined_shops
+                section_tutors_by_name[name] = combined_tutors
                 continue
         section_items_by_name[name] = apply_hidden_items(
             collect_section_items(name),
             hide_all_items,
             hidden_item_indices,
         )
+        section_shops_by_name[name] = collect_section_shops(name)
+        section_tutors_by_name[name] = collect_section_move_tutors(name)
 
     def section_map_scale_max(section_name: str) -> Optional[float]:
         sect_cfg = section_overrides.get(section_name, {})
@@ -1367,6 +1532,8 @@ def build_model(section_filter: Optional[str]) -> Dict[str, object]:
                 "stretchedHeight": section_stretched_height(name),
                 "encounters": get_section_encounters(name, section_hidden_encounter_kinds(name)),
                 "items": section_items_by_name.get(name, []),
+                "shops": section_shops_by_name.get(name, []),
+                "moveTutors": section_tutors_by_name.get(name, []),
                 "trainers": sections[name],
                 "trainerGroups": trainer_groups.get(name, []),
             }

@@ -268,6 +268,529 @@ def parse_item_names() -> Dict[str, str]:
     return out
 
 
+def parse_item_prices() -> Dict[str, int]:
+    data = json.loads(read_text("src/data/items.json"))
+    out: Dict[str, int] = {}
+    for item in data.get("items", []):
+        item_id = str(item.get("itemId", "")).strip()
+        if not item_id:
+            continue
+        try:
+            out[item_id] = int(item.get("price", 0) or 0)
+        except (TypeError, ValueError):
+            out[item_id] = 0
+    return out
+
+
+def _normalize_map_token(map_token: str) -> str:
+    parts: List[str] = []
+    for raw in map_token.split("_"):
+        token = raw.strip()
+        if not token:
+            continue
+        expanded = re.sub(r"([A-Za-z])(\d)", r"\1_\2", token)
+        expanded = re.sub(r"(\d)([A-Za-z])", r"\1_\2", expanded)
+        parts.extend(part for part in expanded.split("_") if part)
+    return "_".join(parts)
+
+
+def _map_token_to_display_name(map_token: str) -> str:
+    token = _normalize_map_token(map_token)
+    parts: List[str] = []
+    floor_parts: List[str] = []
+    for raw in token.split("_"):
+        value = raw.strip()
+        if not value:
+            continue
+        upper = value.upper()
+        if len(upper) == 1 and upper in ("B", "F"):
+            floor_parts.append(upper)
+            continue
+        if upper.isdigit():
+            floor_parts.append(upper)
+            continue
+        if floor_parts:
+            parts.append("".join(floor_parts))
+            floor_parts = []
+        if re.fullmatch(r"B\d+F|\d+F", upper):
+            parts.append(upper)
+        elif len(upper) <= 2 and upper.isalpha():
+            parts.append(upper)
+        else:
+            parts.append(upper[:1] + upper[1:].lower())
+
+    if floor_parts:
+        parts.append("".join(floor_parts))
+
+    return " ".join(parts) or pretty_token(token, "")
+
+
+def _section_map_token_for_internal_map(map_token: str) -> str:
+    token = _normalize_map_token(map_token)
+    if token.endswith("_MART"):
+        return token[: -len("_MART")]
+    if "_DEPARTMENT_STORE_" in token:
+        return token.split("_DEPARTMENT_STORE_", 1)[0]
+    if "_GAME_CORNER_" in token:
+        return token.split("_GAME_CORNER_", 1)[0]
+    if token.startswith("INDIGO_PLATEAU_"):
+        return "INDIGO_PLATEAU"
+    return token
+
+
+def _label_blocks(script_text: str) -> Dict[str, str]:
+    out: Dict[str, str] = {}
+    labels = list(re.finditer(r"(?m)^([A-Za-z0-9_]+)::\s*$", script_text))
+    for idx, match in enumerate(labels):
+        label = match.group(1)
+        start = match.end()
+        end = labels[idx + 1].start() if idx + 1 < len(labels) else len(script_text)
+        out[label] = script_text[start:end]
+    return out
+
+
+def _item_table_tokens(label_block: str) -> List[str]:
+    tokens: List[str] = []
+    for line in label_block.splitlines():
+        item_match = re.search(r"\.2byte\s+([A-Z0-9_]+)", line)
+        if not item_match:
+            continue
+        token = item_match.group(1)
+        if token == "ITEM_NONE":
+            break
+        if token.startswith("ITEM_"):
+            tokens.append(token)
+    return tokens
+
+
+def _iter_map_scripts() -> List[Dict[str, str]]:
+    out: List[Dict[str, str]] = []
+    for map_json in sorted((ROOT / "data" / "maps").glob("*/map.json")):
+        scripts_inc = map_json.parent / "scripts.inc"
+        if not scripts_inc.is_file():
+            continue
+        map_data = json.loads(map_json.read_text(encoding="utf-8"))
+        map_id = str(map_data.get("id", "")).strip()
+        if not map_id.startswith("MAP_"):
+            continue
+        map_token = map_id[4:]
+        out.append(
+            {
+                "mapToken": map_token,
+                "scriptsPath": scripts_inc.relative_to(ROOT).as_posix(),
+                "scriptsText": scripts_inc.read_text(encoding="utf-8"),
+            }
+        )
+    return out
+
+
+def _shop_label_from_script_name(script_label: str, table_label: str) -> str:
+    lowered = script_label.lower()
+    table_lowered = table_label.lower()
+    if "clerktms" in lowered:
+        return "TM Counter"
+    if "clerkberries" in lowered:
+        return "Berry Counter"
+    if "clerksupplements" in lowered:
+        return "Supplement Counter"
+    if "clerkitems" in lowered:
+        return "Main Counter"
+    if "prizeroom" in table_lowered:
+        return "Prize Counter"
+    return "Shop"
+
+
+def _shop_variant_label(table_label: str) -> str:
+    token = table_label.lower()
+    if "shopinitial" in token:
+        return "Initial"
+    if "shopexpanded1" in token:
+        return "Expanded 1"
+    if "shopexpanded2" in token:
+        return "Expanded 2"
+    if "shopexpanded3" in token:
+        return "Expanded 3"
+    return ""
+
+
+def _shop_location_label(map_token: str) -> str:
+    token = _normalize_map_token(map_token)
+    if "_DEPARTMENT_STORE_" in token:
+        floor = token.split("_DEPARTMENT_STORE_", 1)[1].replace("_", "")
+        return f"Department Store {floor}"
+    if token.endswith("_MART"):
+        return "Mart"
+    if "_GAME_CORNER_PRIZE_ROOM" in token:
+        return "Game Corner Prize Room"
+    return _map_token_to_display_name(token)
+
+
+@lru_cache(maxsize=1)
+def parse_shops_by_section_map_token() -> Dict[str, List[Dict[str, object]]]:
+    item_names = parse_item_names()
+    item_prices = parse_item_prices()
+    species_names = parse_species_names()
+    out: Dict[str, List[Dict[str, object]]] = {}
+    seen_shop_keys: set[tuple[str, str, str, str]] = set()
+
+    for map_script in _iter_map_scripts():
+        map_token = str(map_script["mapToken"])
+        scripts_text = str(map_script["scriptsText"])
+        section_token = _section_map_token_for_internal_map(map_token)
+        blocks = _label_blocks(scripts_text)
+        table_items: Dict[str, List[str]] = {}
+        for label, block in blocks.items():
+            tokens = _item_table_tokens(block)
+            if tokens:
+                table_items[label] = tokens
+
+        for script_label, block in blocks.items():
+            for table_label in re.findall(r"\bpokemart\s+([A-Za-z0-9_]+)", block):
+                items = table_items.get(table_label, [])
+                if not items:
+                    continue
+                location_label = _shop_location_label(map_token)
+                shop_label = _shop_label_from_script_name(script_label, table_label)
+                variant_label = _shop_variant_label(table_label)
+                dedupe_key = (section_token, location_label, shop_label, variant_label)
+                if dedupe_key in seen_shop_keys:
+                    continue
+                seen_shop_keys.add(dedupe_key)
+
+                offers: List[Dict[str, object]] = []
+                for item_token in items:
+                    offers.append(
+                        {
+                            "offerType": "item",
+                            "token": item_token,
+                            "name": item_names.get(item_token, pretty_token(item_token, "ITEM_")),
+                            "cost": int(item_prices.get(item_token, 0)),
+                            "currency": "money",
+                        }
+                    )
+
+                out.setdefault(section_token, []).append(
+                    {
+                        "locationLabel": location_label,
+                        "shopLabel": shop_label,
+                        "variantLabel": variant_label,
+                        "currency": "money",
+                        "offers": offers,
+                    }
+                )
+
+        if _normalize_map_token(map_token) != "CELADON_CITY_GAME_CORNER_PRIZE_ROOM":
+            continue
+
+        tm_offers: Dict[str, int] = {}
+        mon_offers: Dict[str, int] = {}
+        for token, cost_s in re.findall(
+            r"setvar\s+VAR_TEMP_1,\s*(ITEM_TM\d+)\s*\n\s*setvar\s+VAR_TEMP_2,\s*(\d+)",
+            scripts_text,
+        ):
+            tm_offers[token] = int(cost_s)
+        for token, cost_s in re.findall(
+            r"setvar\s+VAR_TEMP_1,\s*(SPECIES_[A-Z0-9_]+)\s*\n\s*setvar\s+VAR_TEMP_2,\s*(\d+)",
+            scripts_text,
+        ):
+            mon_offers[token] = int(cost_s)
+
+        if tm_offers:
+            out.setdefault(section_token, []).append(
+                {
+                    "locationLabel": "Game Corner Prize Room",
+                    "shopLabel": "TM Prizes",
+                    "variantLabel": "",
+                    "currency": "coins",
+                    "offers": [
+                        {
+                            "offerType": "item",
+                            "token": token,
+                            "name": item_names.get(token, pretty_token(token, "ITEM_")),
+                            "cost": int(cost),
+                            "currency": "coins",
+                        }
+                        for token, cost in sorted(tm_offers.items(), key=lambda kv: kv[1])
+                    ],
+                }
+            )
+
+        if mon_offers:
+            out.setdefault(section_token, []).append(
+                {
+                    "locationLabel": "Game Corner Prize Room",
+                    "shopLabel": "Pokemon Prizes",
+                    "variantLabel": "",
+                    "currency": "coins",
+                    "offers": [
+                        {
+                            "offerType": "pokemon",
+                            "token": token,
+                            "name": species_names.get(token, pretty_token(token, "SPECIES_")),
+                            "cost": int(cost),
+                            "currency": "coins",
+                        }
+                        for token, cost in sorted(mon_offers.items(), key=lambda kv: kv[1])
+                    ],
+                }
+            )
+
+    for entries in out.values():
+        entries.sort(key=lambda e: (str(e.get("locationLabel", "")).lower(), str(e.get("shopLabel", "")).lower(), str(e.get("variantLabel", "")).lower()))
+
+    return out
+
+
+MOVETUTOR_MOVE_TOKEN: Dict[str, str] = {
+    "MOVETUTOR_MEGA_PUNCH": "MOVE_MEGA_PUNCH",
+    "MOVETUTOR_SWORDS_DANCE": "MOVE_SWORDS_DANCE",
+    "MOVETUTOR_MEGA_KICK": "MOVE_MEGA_KICK",
+    "MOVETUTOR_BODY_SLAM": "MOVE_BODY_SLAM",
+    "MOVETUTOR_DOUBLE_EDGE": "MOVE_DOUBLE_EDGE",
+    "MOVETUTOR_COUNTER": "MOVE_COUNTER",
+    "MOVETUTOR_SEISMIC_TOSS": "MOVE_SEISMIC_TOSS",
+    "MOVETUTOR_MIMIC": "MOVE_MIMIC",
+    "MOVETUTOR_METRONOME": "MOVE_METRONOME",
+    "MOVETUTOR_SOFT_BOILED": "MOVE_SOFT_BOILED",
+    "MOVETUTOR_DREAM_EATER": "MOVE_DREAM_EATER",
+    "MOVETUTOR_THUNDER_WAVE": "MOVE_THUNDER_WAVE",
+    "MOVETUTOR_EXPLOSION": "MOVE_EXPLOSION",
+    "MOVETUTOR_ROCK_SLIDE": "MOVE_ROCK_SLIDE",
+    "MOVETUTOR_SUBSTITUTE": "MOVE_SUBSTITUTE",
+    "MOVETUTOR_FRENZY_PLANT": "MOVE_FRENZY_PLANT",
+    "MOVETUTOR_BLAST_BURN": "MOVE_BLAST_BURN",
+    "MOVETUTOR_HYDRO_CANNON": "MOVE_HYDRO_CANNON",
+}
+
+MOVETUTOR_PAYMENT_ITEM: Dict[str, str] = {
+    "MOVETUTOR_DOUBLE_EDGE": "ITEM_RED_SHARD",
+    "MOVETUTOR_ROCK_SLIDE": "ITEM_RED_SHARD",
+    "MOVETUTOR_EXPLOSION": "ITEM_RED_SHARD",
+    "MOVETUTOR_MEGA_PUNCH": "ITEM_RED_SHARD",
+    "MOVETUTOR_MEGA_KICK": "ITEM_RED_SHARD",
+    "MOVETUTOR_BODY_SLAM": "ITEM_RED_SHARD",
+    "MOVETUTOR_BLAST_BURN": "ITEM_RED_SHARD",
+    "MOVETUTOR_DREAM_EATER": "ITEM_BLUE_SHARD",
+    "MOVETUTOR_HYDRO_CANNON": "ITEM_BLUE_SHARD",
+    "MOVETUTOR_THUNDER_WAVE": "ITEM_YELLOW_SHARD",
+    "MOVETUTOR_SEISMIC_TOSS": "ITEM_YELLOW_SHARD",
+    "MOVETUTOR_COUNTER": "ITEM_YELLOW_SHARD",
+    "MOVETUTOR_METRONOME": "ITEM_YELLOW_SHARD",
+    "MOVETUTOR_SOFT_BOILED": "ITEM_GREEN_SHARD",
+    "MOVETUTOR_SUBSTITUTE": "ITEM_GREEN_SHARD",
+    "MOVETUTOR_SWORDS_DANCE": "ITEM_GREEN_SHARD",
+    "MOVETUTOR_FRENZY_PLANT": "ITEM_GREEN_SHARD",
+}
+
+
+def _map_token_from_script_label_prefix(label_prefix: str) -> str:
+    expanded = re.sub(r"([a-z0-9])([A-Z])", r"\1_\2", label_prefix)
+    return _normalize_map_token(expanded.upper())
+
+
+@lru_cache(maxsize=1)
+def parse_move_tutors_by_section_map_token() -> Dict[str, List[Dict[str, object]]]:
+    move_names = parse_move_names()
+    item_names = parse_item_names()
+    out: Dict[str, List[Dict[str, object]]] = {}
+    seen: set[tuple[str, str, str, str]] = set()
+
+    tutor_script_text = read_text("data/scripts/move_tutors.inc")
+    tutor_blocks = _label_blocks(tutor_script_text)
+
+    tutor_by_target_label: Dict[str, Dict[str, object]] = {}
+    for label, body in tutor_blocks.items():
+        tutor_match = re.search(r"setvar\s+VAR_0x8005,\s*(MOVETUTOR_[A-Z_]+)", body)
+        if tutor_match:
+            tutor_token = tutor_match.group(1)
+            move_token = MOVETUTOR_MOVE_TOKEN.get(tutor_token, "")
+            payment_item = MOVETUTOR_PAYMENT_ITEM.get(tutor_token, "ITEM_NONE")
+            tutor_by_target_label[label] = {
+                "moveToken": move_token,
+                "moveName": move_names.get(move_token, pretty_token(move_token, "MOVE_")) if move_token else "Move Tutor",
+                "paymentItemToken": payment_item,
+                "paymentItemName": item_names.get(payment_item, pretty_token(payment_item, "ITEM_")) if payment_item != "ITEM_NONE" else "",
+                "paymentCount": 1,
+                "notes": "",
+            }
+
+    tutor_by_target_label["EventScript_MimicTutor"] = {
+        "moveToken": "MOVE_MIMIC",
+        "moveName": move_names.get("MOVE_MIMIC", "Mimic"),
+        "paymentItemToken": "ITEM_POKE_DOLL",
+        "paymentItemName": item_names.get("ITEM_POKE_DOLL", "Poke Doll"),
+        "paymentCount": 1,
+        "notes": "",
+    }
+
+    for label, meta in tutor_by_target_label.items():
+        if "_EventScript_" not in label or label.startswith("EventScript_"):
+            continue
+        map_prefix = label.split("_EventScript_", 1)[0]
+        map_token = _map_token_from_script_label_prefix(map_prefix)
+        section_token = _section_map_token_for_internal_map(map_token)
+        key = (section_token, map_token, str(meta.get("moveToken", "")), str(meta.get("paymentItemToken", "")))
+        if key in seen:
+            continue
+        seen.add(key)
+        out.setdefault(section_token, []).append(
+            {
+                "locationLabel": _map_token_to_display_name(map_token),
+                **meta,
+            }
+        )
+
+    for map_script in _iter_map_scripts():
+        map_token = str(map_script["mapToken"])
+        scripts_text = str(map_script["scriptsText"])
+        section_token = _section_map_token_for_internal_map(map_token)
+
+        for target in re.findall(r"\bgoto\s+([A-Za-z0-9_]*Tutor)\b", scripts_text):
+            meta = tutor_by_target_label.get(target)
+            if not meta:
+                continue
+            key = (section_token, map_token, str(meta.get("moveToken", "")), str(meta.get("paymentItemToken", "")))
+            if key in seen:
+                continue
+            seen.add(key)
+            out.setdefault(section_token, []).append(
+                {
+                    "locationLabel": _map_token_to_display_name(map_token),
+                    **meta,
+                }
+            )
+
+        if re.search(r"EventScript_EggMoveTutor", scripts_text) and re.search(r"checkitem\s+ITEM_HEART_SCALE", scripts_text):
+            egg_key = (section_token, map_token, "MOVE_EGG_MOVE", "ITEM_HEART_SCALE")
+            if egg_key not in seen:
+                seen.add(egg_key)
+                out.setdefault(section_token, []).append(
+                    {
+                        "locationLabel": _map_token_to_display_name(map_token),
+                        "moveToken": "MOVE_EGG_MOVE",
+                        "moveName": "Egg Move",
+                        "paymentItemToken": "ITEM_HEART_SCALE",
+                        "paymentItemName": item_names.get("ITEM_HEART_SCALE", "Heart Scale"),
+                        "paymentCount": 1,
+                        "notes": "Teaches egg moves",
+                    }
+                )
+
+        if re.search(r"_EventScript_MoveManiac::", scripts_text) and re.search(r"\bChooseMonForMoveRelearner\b", scripts_text):
+            relearn_key = (section_token, map_token, "MOVE_RELEARNER", "MUSHROOM_OPTIONS")
+            if relearn_key not in seen:
+                seen.add(relearn_key)
+                out.setdefault(section_token, []).append(
+                    {
+                        "locationLabel": _map_token_to_display_name(map_token),
+                        "moveToken": "MOVE_RELEARNER",
+                        "moveName": "Move Relearner",
+                        "paymentItemToken": "ITEM_BIG_MUSHROOM",
+                        "paymentItemName": item_names.get("ITEM_BIG_MUSHROOM", "Big Mushroom"),
+                        "paymentCount": 1,
+                        "paymentOptions": [
+                            {
+                                "itemToken": "ITEM_BIG_MUSHROOM",
+                                "itemName": item_names.get("ITEM_BIG_MUSHROOM", "Big Mushroom"),
+                                "count": 1,
+                            },
+                            {
+                                "itemToken": "ITEM_TINY_MUSHROOM",
+                                "itemName": item_names.get("ITEM_TINY_MUSHROOM", "Tiny Mushroom"),
+                                "count": 2,
+                            },
+                        ],
+                        "notes": "",
+                    }
+                )
+
+    cape_brink_section = _section_map_token_for_internal_map("TWO_ISLAND_CAPE_BRINK_HOUSE")
+    cape_brink_location = _map_token_to_display_name("TWO_ISLAND_CAPE_BRINK_HOUSE")
+    starter_rows = [
+        ("MOVE_FRENZY_PLANT", "ITEM_GREEN_SHARD", "Lead Venusaur with max friendship"),
+        ("MOVE_BLAST_BURN", "ITEM_RED_SHARD", "Lead Charizard with max friendship"),
+        ("MOVE_HYDRO_CANNON", "ITEM_BLUE_SHARD", "Lead Blastoise with max friendship"),
+    ]
+    for move_token, payment_item, notes in starter_rows:
+        key = (cape_brink_section, "TWO_ISLAND_CAPE_BRINK_HOUSE", move_token, payment_item)
+        if key in seen:
+            continue
+        seen.add(key)
+        out.setdefault(cape_brink_section, []).append(
+            {
+                "locationLabel": cape_brink_location,
+                "moveToken": move_token,
+                "moveName": move_names.get(move_token, pretty_token(move_token, "MOVE_")),
+                "paymentItemToken": payment_item,
+                "paymentItemName": item_names.get(payment_item, pretty_token(payment_item, "ITEM_")),
+                "paymentCount": 1,
+                "notes": notes,
+            }
+        )
+
+    for entries in out.values():
+        entries.sort(
+            key=lambda e: (
+                str(e.get("locationLabel", "")).lower(),
+                str(e.get("moveName", "")).lower(),
+                str(e.get("paymentItemName", "")).lower(),
+            )
+        )
+
+    return out
+
+
+@lru_cache(maxsize=1)
+def parse_npc_gift_items_by_section_map_token() -> Dict[str, List[Dict[str, object]]]:
+    item_names = parse_item_names()
+    out: Dict[str, List[Dict[str, object]]] = {}
+
+    direct_giveitem_re = re.compile(r"\bgiveitem\s+(ITEM_[A-Z0-9_]+)(?:\s*,\s*(\d+))?")
+    giveitem_msg_re = re.compile(r"\bgiveitem_msg\s+[^\n]*?,\s*(ITEM_[A-Z0-9_]+)(?:\s*,\s*(\d+))?")
+
+    for map_script in _iter_map_scripts():
+        map_token = str(map_script["mapToken"])
+        scripts_text = str(map_script["scriptsText"])
+        section_token = _section_map_token_for_internal_map(map_token)
+        seen_tokens: set[tuple[str, int]] = set()
+
+        for token, qty_s in direct_giveitem_re.findall(scripts_text):
+            if token not in item_names:
+                continue
+            qty = int(qty_s) if qty_s else 1
+            key = (token, qty)
+            if key in seen_tokens:
+                continue
+            seen_tokens.add(key)
+            out.setdefault(section_token, []).append(
+                {
+                    "itemToken": token,
+                    "quantity": qty,
+                    "isHidden": False,
+                    "source": "npc_gift",
+                }
+            )
+
+        for token, qty_s in giveitem_msg_re.findall(scripts_text):
+            if token not in item_names:
+                continue
+            qty = int(qty_s) if qty_s else 1
+            key = (token, qty)
+            if key in seen_tokens:
+                continue
+            seen_tokens.add(key)
+            out.setdefault(section_token, []).append(
+                {
+                    "itemToken": token,
+                    "quantity": qty,
+                    "isHidden": False,
+                    "source": "npc_gift",
+                }
+            )
+
+    return out
+
+
 def parse_item_icon_table() -> Dict[str, Dict[str, str]]:
     text = read_text("src/data/item_icon_table.h")
     out: Dict[str, Dict[str, str]] = {}

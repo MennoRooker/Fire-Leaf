@@ -474,13 +474,19 @@ def render_items_panel(items: List[Dict[str, object]], has_trainers: bool, asset
         entry_class = "item-entry--hidden" if item.get("isHidden") else ""
         icon_path = str(item.get("iconPath", ""))
         palette_path = str(item.get("palettePath", ""))
+        icon_src = render_item_icon(icon_path, palette_path, asset_url)
+        item_name = str(item.get("itemName", "-"))
+        if icon_src:
+            icon_html = f"<img class='item-entry-icon' src='{html.escape(icon_src)}' alt='{html.escape(item_name)}'>"
+        else:
+            icon_html = "<span class='item-entry-icon' aria-hidden='true'></span>"
         rows.append(
             render_template(
                 item_row_template,
                 {
                     "__ITEM_ENTRY_CLASS__": entry_class,
-                    "__ITEM_ICON__": html.escape(render_item_icon(icon_path, palette_path, asset_url)),
-                    "__ITEM_NAME__": html.escape(str(item.get("itemName", "-"))),
+                    "__ITEM_ICON_HTML__": icon_html,
+                    "__ITEM_NAME__": html.escape(item_name),
                     "__ITEM_COUNT__": count_html,
                     "__ITEM_HIDDEN__": hidden_html,
                 },
@@ -497,9 +503,141 @@ def render_items_panel(items: List[Dict[str, object]], has_trainers: bool, asset
     )
 
 
+def _format_shop_cost(cost: int, currency: str) -> str:
+    if currency == "coins":
+        return f"{cost} coins"
+    return f"${cost}"
+
+
+def render_shops_panel(shops: List[Dict[str, object]], has_trainers: bool) -> str:
+    if not shops:
+        return ""
+
+    cards: List[str] = []
+    for shop in shops:
+        location = html.escape(str(shop.get("locationLabel", "Shop")))
+        location_raw = str(shop.get("locationLabel", "Shop"))
+        shop_label = html.escape(str(shop.get("shopLabel", "")))
+        variant_label = str(shop.get("variantLabel", "")).strip()
+        head_parts = [location]
+        if shop_label and shop_label != "Shop":
+            head_parts.append(shop_label)
+        if variant_label:
+            head_parts.append(html.escape(variant_label))
+        head = " - ".join(head_parts)
+
+        card_class = "shop-card"
+        location_lower = location_raw.lower()
+        if location_lower == "mart":
+            card_class = "shop-card shop-card--mart"
+        elif "department store" in location_lower:
+            card_class = "shop-card shop-card--department-store"
+        elif "prize room" in location_lower:
+            card_class = "shop-card shop-card--prize-room"
+
+        rows: List[str] = []
+        for offer in shop.get("offers", []):
+            name = html.escape(str(offer.get("name", "-")))
+            cost = int(offer.get("cost", 0) or 0)
+            currency = str(offer.get("currency", shop.get("currency", "money")))
+            cost_text = html.escape(_format_shop_cost(cost, currency))
+            rows.append(
+                "<div class='shop-offer-row'>"
+                f"<span class='shop-offer-name'>{name}</span>"
+                f"<span class='shop-offer-cost'>{cost_text}</span>"
+                "</div>"
+            )
+
+        cards.append(
+            f"<article class='{card_class}'>"
+            f"<div class='shop-card-head'>{head}</div>"
+            f"<div class='shop-offer-list'>{''.join(rows)}</div>"
+            "</article>"
+        )
+
+    panel_class = "section-data-panel--with-trainers" if has_trainers else "section-data-panel--terminal"
+    return (
+        f"<section class='section-data-panel shops-panel {panel_class}'>"
+        "<div class='section-data-panel-head'>Shops</div>"
+        f"<div class='shop-card-grid'>{''.join(cards)}</div>"
+        "</section>"
+    )
+
+
+def render_move_tutors_panel(move_tutors: List[Dict[str, object]], has_trainers: bool, asset_url) -> str:
+    if not move_tutors:
+        return ""
+
+    rows: List[str] = []
+    for tutor in move_tutors:
+        location = html.escape(str(tutor.get("locationLabel", "")))
+        move_name = html.escape(str(tutor.get("moveName", "Move Tutor")))
+        payment_options = tutor.get("paymentOptions")
+        payment_parts: List[str] = []
+
+        if isinstance(payment_options, list) and payment_options:
+            for option in payment_options:
+                if not isinstance(option, dict):
+                    continue
+                option_name = str(option.get("itemName", "")).strip()
+                option_count = int(option.get("count", 1) or 1)
+                option_icon_path = str(option.get("iconPath", "")).strip()
+                option_palette_path = str(option.get("palettePath", "")).strip()
+                option_icon_html = ""
+                if option_icon_path:
+                    option_icon_html = (
+                        f"<img class='tutor-payment-icon' src='{html.escape(render_item_icon(option_icon_path, option_palette_path, asset_url))}' "
+                        f"alt='{html.escape(option_name)}' title='{html.escape(option_name)}'>"
+                    )
+                payment_parts.append(
+                    "<span class='tutor-payment-option'>"
+                    f"{option_icon_html}<span>{html.escape(f'{option_count}x {option_name}')}</span>"
+                    "</span>"
+                )
+            payment_text_html = "<span class='tutor-payment-options-sep'>or</span>".join(payment_parts) if payment_parts else "No payment"
+        else:
+            payment_name = str(tutor.get("paymentItemName", "")).strip()
+            payment_count = int(tutor.get("paymentCount", 1) or 1)
+            payment_icon_path = str(tutor.get("paymentIconPath", "")).strip()
+            payment_palette_path = str(tutor.get("paymentPalettePath", "")).strip()
+            payment_icon_html = ""
+            if payment_icon_path:
+                payment_icon_html = (
+                    f"<img class='tutor-payment-icon' src='{html.escape(render_item_icon(payment_icon_path, payment_palette_path, asset_url))}' "
+                    f"alt='{html.escape(payment_name)}' title='{html.escape(payment_name)}'>"
+                )
+            if payment_name:
+                payment_text_html = (
+                    "<span class='tutor-payment-option'>"
+                    f"{payment_icon_html}<span>{html.escape(f'{payment_count}x {payment_name}')}</span>"
+                    "</span>"
+                )
+            else:
+                payment_text_html = "No payment"
+
+        notes = str(tutor.get("notes", "")).strip()
+        notes_html = f"<span class='tutor-notes'>{html.escape(notes)}</span>" if notes else ""
+        rows.append(
+            "<div class='tutor-row'>"
+            f"<div class='tutor-main'><span class='tutor-move'>{move_name}</span><span class='tutor-location'>{location}</span></div>"
+            f"<div class='tutor-meta'><span class='tutor-payment'>{payment_text_html}</span>{notes_html}</div>"
+            "</div>"
+        )
+
+    panel_class = "section-data-panel--with-trainers" if has_trainers else "section-data-panel--terminal"
+    return (
+        f"<section class='section-data-panel tutors-panel {panel_class}'>"
+        "<div class='section-data-panel-head'>Move Tutors</div>"
+        f"<div class='tutor-row-list'>{''.join(rows)}</div>"
+        "</section>"
+    )
+
+
 def render_section(section: Dict[str, object], type_icons: Dict[str, Dict[str, int]], asset_url, templates: Dict[str, str]) -> str:
     encounters = section.get("encounters")
     items = section.get("items")
+    shops = section.get("shops")
+    move_tutors = section.get("moveTutors")
     trainer_cards_html = render_trainer_cards(section, type_icons, asset_url, templates)
     trainer_section_html = ""
     section_class = "section"
@@ -511,6 +649,14 @@ def render_section(section: Dict[str, object], type_icons: Dict[str, Dict[str, i
     items_html = ""
     if items:
         items_html = render_items_panel(items, bool(trainer_cards_html.strip()), asset_url, templates)
+
+    shops_html = ""
+    if shops:
+        shops_html = render_shops_panel(shops, bool(trainer_cards_html.strip()))
+
+    move_tutors_html = ""
+    if move_tutors:
+        move_tutors_html = render_move_tutors_panel(move_tutors, bool(trainer_cards_html.strip()), asset_url)
 
     pane_mode = "map-only"
     if encounters and encounters.get("mode") == "dual":
@@ -549,7 +695,9 @@ def render_section(section: Dict[str, object], type_icons: Dict[str, Dict[str, i
             "__MAP_FULL_HEIGHT_ATTR__": full_height_attr,
             "__MAP_STRETCHED_HEIGHT_ATTR__": stretched_height_attr,
             "__ENCOUNTERS_HTML__": render_encounters(encounters, asset_url, templates) if encounters else "",
+            "__SHOPS_HTML__": shops_html,
             "__ITEMS_HTML__": items_html,
+            "__MOVE_TUTORS_HTML__": move_tutors_html,
             "__TRAINER_SECTION_HTML__": trainer_section_html,
         },
     )

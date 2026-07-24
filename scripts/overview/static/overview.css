@@ -565,7 +565,7 @@ h1 { margin: 0 0 8px 0; }
   padding: 6px 8px;
 }
 .item-entry--hidden {
-  background: linear-gradient(180deg, #fff7eb 0%, #f3e0c0 100%);
+  background: #faf6ed;
 }
 .item-entry-icon {
   width: 32px;
@@ -597,6 +597,170 @@ h1 { margin: 0 0 8px 0; }
 .items-hidden {
   font-style: italic;
   color: #7a5b3d;
+}
+
+.section-data-panel {
+  border-left: none;
+  border-right: none;
+  border-top: none;
+  background: #eee5d2;
+}
+
+.section-data-panel--with-trainers {
+  border-bottom: 3px solid var(--line);
+}
+
+.section-data-panel--terminal {
+  border-bottom: 3px solid var(--line);
+}
+
+.section-data-panel-head {
+  border-bottom: 2px solid var(--line);
+  padding: 8px 12px;
+  background: #d3be84;
+  color: var(--ink);
+  font-size: 16px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.shop-card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 8px;
+  padding: 10px;
+}
+
+.shop-card {
+  border: 2px solid var(--line);
+  background: #faf6ed;
+}
+
+.shop-card-head {
+  padding: 7px 9px;
+  border-bottom: 2px solid var(--line);
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+}
+
+.shop-card--mart .shop-card-head {
+  background: #9ec2f7;
+}
+
+.shop-card--department-store .shop-card-head {
+  background: #b8a7f1;
+}
+
+.shop-card--prize-room .shop-card-head {
+  background: #f2b56b;
+}
+
+.shop-offer-list {
+  padding: 4px 8px 8px;
+}
+
+.shop-offer-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+  padding: 4px 0;
+  border-bottom: 1px dotted color-mix(in srgb, var(--line) 35%, #ffffff 65%);
+}
+
+.shop-offer-row:last-child {
+  border-bottom: none;
+}
+
+.shop-offer-name {
+  font-size: 15px;
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+
+.shop-offer-cost {
+  font-size: 14px;
+  font-weight: 800;
+  color: #5b4a36;
+  white-space: nowrap;
+}
+
+.tutor-row-list {
+  display: grid;
+  gap: 6px;
+  padding: 10px;
+}
+
+.tutor-row {
+  border: 2px solid var(--line);
+  background: #fbf8ee;
+  padding: 7px 9px;
+  display: grid;
+  gap: 4px;
+}
+
+.tutor-main {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: baseline;
+}
+
+.tutor-move {
+  font-size: 16px;
+  font-weight: 800;
+  letter-spacing: 0.2px;
+}
+
+.tutor-location {
+  font-size: 13px;
+  color: #685b4d;
+  font-weight: 700;
+}
+
+.tutor-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: baseline;
+}
+
+.tutor-payment {
+  font-size: 14px;
+  font-weight: 700;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+}
+
+.tutor-payment-option {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.tutor-payment-icon {
+  width: 24px;
+  height: 24px;
+  image-rendering: pixelated;
+  flex: 0 0 auto;
+}
+
+.tutor-payment-options-sep {
+  font-size: 12px;
+  color: #6b5b43;
+  font-style: italic;
+  padding: 0 2px;
+}
+
+.tutor-notes {
+  font-size: 12px;
+  color: #6b5b43;
+  font-style: italic;
 }
 .trainer-card {
   border: 3px solid var(--line);
