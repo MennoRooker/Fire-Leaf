@@ -803,12 +803,16 @@ def render_html(model: Dict[str, object], out_path: Path, embed_assets: bool = T
     map_render_data = build_map_render_data(model["sections"], asset_url)
     map_render_data_json = json.dumps(map_render_data, separators=(",", ":")).replace("</", "<\\/")
     map_render_script = read_overview_source("static", "overview_map_renderer.js")
+    state_script = read_overview_source("static", "overview_state.js")
     page_html = templates["main_template"]
     page_html = page_html.replace("__STYLE_BLOCK__", f"<style>\n{css}\n</style>")
     page_html = page_html.replace("__CONTROLS_HTML__", render_overview_controls(asset_url, templates))
     page_html = page_html.replace("__SECTIONS_HTML__", render_sections_html(model["sections"], model["typeIcons"], asset_url, templates))
     page_html = page_html.replace("__MAP_RENDER_DATA_BLOCK__", f"<script id='overview-map-data' type='application/json'>{map_render_data_json}</script>")
-    page_html = page_html.replace("__SCRIPT_BLOCK__", f"<script>\n{map_render_script}\n</script>")
+    page_html = page_html.replace(
+        "__SCRIPT_BLOCK__",
+        f"<script>\n{map_render_script}\n</script>\n<script>\n{state_script}\n</script>",
+    )
 
     if embed_assets:
         external_refs = _find_external_asset_refs(page_html)
