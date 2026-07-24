@@ -279,6 +279,51 @@ def render_item_icon(icon_path: str, palette_path: str, asset_url) -> str:
     return asset_url(icon_path)
 
 
+@lru_cache(maxsize=512)
+def _npc_icon_data_url(gfx_token: str) -> str:
+    if not gfx_token:
+        return ""
+
+    gfx_to_info = parse_object_event_gfx_to_info_symbol()
+    info_tables = parse_object_event_graphics_info_tables()
+    pic_tables = parse_object_event_pic_tables()
+    pic_paths = parse_object_event_pic_symbol_to_png_path()
+
+    info_symbol = gfx_to_info.get(gfx_token)
+    if not info_symbol:
+        return ""
+    info = info_tables.get(info_symbol, {})
+    pic_table_symbol = str(info.get("picTable", ""))
+    frame_meta = pic_tables.get(pic_table_symbol, {})
+    pic_symbol = str(frame_meta.get("picSymbol", ""))
+    png_path = pic_paths.get(pic_symbol)
+    if not png_path:
+        return ""
+
+    frame_tiles_w = int(frame_meta.get("tilesW", 2))
+    frame_tiles_h = int(frame_meta.get("tilesH", 2))
+    frame_w = max(8, frame_tiles_w * 8)
+    frame_h = max(8, frame_tiles_h * 8)
+
+    source_frames = frame_meta.get("sourceFrames") or [int(frame_meta.get("frame", 0))]
+    source_frame = max(0, int(source_frames[0]))
+    frame_x = source_frame * frame_w
+
+    image_file = ROOT / png_path
+    if not image_file.is_file():
+        return ""
+
+    image = Image.open(image_file).convert("RGBA")
+    crop_box = (frame_x, 0, min(frame_x + frame_w, image.width), min(frame_h, image.height))
+    if crop_box[2] <= crop_box[0] or crop_box[3] <= crop_box[1]:
+        return ""
+    cropped = image.crop(crop_box)
+    buffer = BytesIO()
+    cropped.save(buffer, format="PNG")
+    payload = base64.b64encode(buffer.getvalue()).decode("ascii")
+    return f"data:image/png;base64,{payload}"
+
+
 def render_mon_card(mon: Dict[str, object], type_icons: Dict[str, Dict[str, int]], asset_url, templates: Dict[str, str]) -> str:
     nature_effect = str(mon.get("natureEffect", ""))
     item_name = str(mon.get("itemName", "-"))
@@ -570,8 +615,19 @@ def render_move_tutors_panel(move_tutors: List[Dict[str, object]], has_trainers:
 
     rows: List[str] = []
     for tutor in move_tutors:
-        location = html.escape(str(tutor.get("locationLabel", "")))
         move_name = html.escape(str(tutor.get("moveName", "Move Tutor")))
+        npc_gfx_token = str(tutor.get("npcGfxToken", "")).strip()
+        npc_icon_path = str(tutor.get("npcIconPath", "")).strip()
+        npc_icon_src = _npc_icon_data_url(npc_gfx_token)
+        if not npc_icon_src and npc_icon_path:
+            npc_icon_src = asset_url(npc_icon_path)
+        npc_label = npc_gfx_token or "Move tutor NPC"
+        npc_icon_html = "<span class='tutor-npc-icon tutor-npc-icon--empty' aria-hidden='true'></span>"
+        if npc_icon_src:
+            npc_icon_html = (
+                f"<img class='tutor-npc-icon' src='{html.escape(npc_icon_src)}' "
+                f"alt='{html.escape(npc_label)}' title='{html.escape(npc_label)}'>"
+            )
         payment_options = tutor.get("paymentOptions")
         payment_parts: List[str] = []
 
@@ -619,8 +675,11 @@ def render_move_tutors_panel(move_tutors: List[Dict[str, object]], has_trainers:
         notes_html = f"<span class='tutor-notes'>{html.escape(notes)}</span>" if notes else ""
         rows.append(
             "<div class='tutor-row'>"
-            f"<div class='tutor-main'><span class='tutor-move'>{move_name}</span><span class='tutor-location'>{location}</span></div>"
+            f"{npc_icon_html}"
+            "<div class='tutor-content'>"
+            f"<div class='tutor-main'><span class='tutor-move'>{move_name}</span></div>"
             f"<div class='tutor-meta'><span class='tutor-payment'>{payment_text_html}</span>{notes_html}</div>"
+            "</div>"
             "</div>"
         )
 

@@ -449,23 +449,6 @@
     }
   }
 
-  function markShortTrainerParties() {
-    const cards = document.querySelectorAll(".trainer-card");
-    for (const card of cards) {
-      const mons = card.querySelector(".mons");
-      if (!mons) {
-        continue;
-      }
-
-      const monCount = mons.querySelectorAll(":scope > .mon").length;
-      if (monCount > 0 && monCount < 6) {
-        card.classList.add("trainer-card--party-trim");
-      } else {
-        card.classList.remove("trainer-card--party-trim");
-      }
-    }
-  }
-
   function applyTrainerFilters() {
     const rematchToggle = document.getElementById("show-rematches-toggle");
     const showRematches = rematchToggle ? rematchToggle.checked : true;
@@ -659,7 +642,6 @@
   }
 
   async function init() {
-    markShortTrainerParties();
     setupOverviewControls();
 
     const dataEl = document.getElementById("overview-map-data");

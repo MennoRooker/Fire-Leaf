@@ -697,9 +697,34 @@ h1 { margin: 0 0 8px 0; }
 .tutor-row {
   border: 2px solid var(--line);
   background: #fbf8ee;
-  padding: 7px 9px;
+  padding: 2px 9px 4px;
   display: grid;
-  gap: 4px;
+  grid-template-columns: 84px minmax(0, 1fr);
+  column-gap: 10px;
+  align-items: start;
+  gap: 2px;
+}
+
+.tutor-content {
+  min-width: 0;
+  display: grid;
+  gap: 2px;
+  align-self: end;
+  padding-bottom: 4px;
+}
+
+.tutor-npc-icon {
+  width: 80px;
+  height: 80px;
+  image-rendering: pixelated;
+  object-fit: contain;
+  justify-self: center;
+  align-self: start;
+  margin-top: -10px;
+}
+
+.tutor-npc-icon--empty {
+  display: inline-block;
 }
 
 .tutor-main {
@@ -713,12 +738,6 @@ h1 { margin: 0 0 8px 0; }
   font-size: 16px;
   font-weight: 800;
   letter-spacing: 0.2px;
-}
-
-.tutor-location {
-  font-size: 13px;
-  color: #685b4d;
-  font-weight: 700;
 }
 
 .tutor-meta {
@@ -740,14 +759,17 @@ h1 { margin: 0 0 8px 0; }
 .tutor-payment-option {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
 }
 
 .tutor-payment-icon {
-  width: 24px;
-  height: 24px;
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
   image-rendering: pixelated;
   flex: 0 0 auto;
+  padding: 1px;
+  box-sizing: border-box;
 }
 
 .tutor-payment-options-sep {
@@ -938,17 +960,6 @@ h1 { margin: 0 0 8px 0; }
 }
 
 /* For short parties, keep card widths unchanged and hide only empty-slot borders. */
-.trainer-card--party-trim.trainer-card--major .mons,
-.trainer-card--party-trim.trainer-card--compact .mons {
-  border-top: none;
-  border-right: none;
-  border-bottom: none;
-}
-
-.trainer-card--party-trim .mon {
-  border-top: 3px solid var(--line);
-  border-bottom: 3px solid var(--line);
-}
 .mon-head {
   border-bottom: 3px solid var(--line);
   background: linear-gradient(

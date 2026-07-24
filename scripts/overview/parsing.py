@@ -598,6 +598,67 @@ def parse_move_tutors_by_section_map_token() -> Dict[str, List[Dict[str, object]
     tutor_script_text = read_text("data/scripts/move_tutors.inc")
     tutor_blocks = _label_blocks(tutor_script_text)
 
+    object_gfx_to_info = parse_object_event_gfx_to_info_symbol()
+    graphics_info_tables = parse_object_event_graphics_info_tables()
+    pic_tables = parse_object_event_pic_tables()
+    pic_symbol_to_png = parse_object_event_pic_symbol_to_png_path()
+
+    def _npc_gfx_png_path(gfx_token: str) -> str:
+        info_symbol = object_gfx_to_info.get(gfx_token, "")
+        if not info_symbol:
+            return ""
+        info = graphics_info_tables.get(info_symbol)
+        if not info:
+            return ""
+        pic_table_symbol = str(info.get("picTable", ""))
+        if not pic_table_symbol:
+            return ""
+        pic_table = pic_tables.get(pic_table_symbol)
+        if not pic_table:
+            return ""
+        pic_symbol = str(pic_table.get("picSymbol", ""))
+        if not pic_symbol:
+            return ""
+        return str(pic_symbol_to_png.get(pic_symbol, ""))
+
+    map_scripts = _iter_map_scripts()
+    map_script_blocks: Dict[str, Dict[str, str]] = {}
+    map_npc_gfx_by_script: Dict[str, Dict[str, str]] = {}
+    for map_script in map_scripts:
+        map_token = str(map_script["mapToken"])
+        normalized_map_token = _normalize_map_token(map_token)
+        scripts_text = str(map_script["scriptsText"])
+        script_blocks = _label_blocks(scripts_text)
+        map_script_blocks[map_token] = script_blocks
+        map_script_blocks.setdefault(normalized_map_token, script_blocks)
+
+        scripts_path = str(map_script.get("scriptsPath", ""))
+        map_json_path = ROOT / scripts_path.replace("scripts.inc", "map.json")
+        script_to_gfx: Dict[str, str] = {}
+        if map_json_path.is_file():
+            try:
+                map_data = json.loads(map_json_path.read_text(encoding="utf-8"))
+            except Exception:
+                map_data = {}
+            for event in map_data.get("object_events", []):
+                if not isinstance(event, dict):
+                    continue
+                if str(event.get("type", "")) != "object":
+                    continue
+                script_label = str(event.get("script", "")).strip()
+                gfx_token = str(event.get("graphics_id", "")).strip()
+                if not script_label or not gfx_token:
+                    continue
+                script_to_gfx.setdefault(script_label, gfx_token)
+            map_npc_gfx_by_script[map_token] = script_to_gfx
+            map_npc_gfx_by_script.setdefault(normalized_map_token, script_to_gfx)
+
+    def _resolve_npc_for_script(map_token: str, script_label: str) -> tuple[str, str]:
+        gfx_token = str(map_npc_gfx_by_script.get(map_token, {}).get(script_label, ""))
+        if not gfx_token:
+            return "", ""
+        return gfx_token, _npc_gfx_png_path(gfx_token)
+
     tutor_by_target_label: Dict[str, Dict[str, object]] = {}
     for label, body in tutor_blocks.items():
         tutor_match = re.search(r"setvar\s+VAR_0x8005,\s*(MOVETUTOR_[A-Z_]+)", body)
@@ -629,6 +690,9 @@ def parse_move_tutors_by_section_map_token() -> Dict[str, List[Dict[str, object]
         map_prefix = label.split("_EventScript_", 1)[0]
         map_token = _map_token_from_script_label_prefix(map_prefix)
         section_token = _section_map_token_for_internal_map(map_token)
+        npc_gfx_token, npc_icon_path = _resolve_npc_for_script(map_token, label)
+        if not npc_gfx_token:
+            continue
         key = (section_token, map_token, str(meta.get("moveToken", "")), str(meta.get("paymentItemToken", "")))
         if key in seen:
             continue
@@ -636,19 +700,35 @@ def parse_move_tutors_by_section_map_token() -> Dict[str, List[Dict[str, object]
         out.setdefault(section_token, []).append(
             {
                 "locationLabel": _map_token_to_display_name(map_token),
+                "npcGfxToken": npc_gfx_token,
+                "npcIconPath": npc_icon_path,
                 **meta,
             }
         )
 
-    for map_script in _iter_map_scripts():
+    for map_script in map_scripts:
         map_token = str(map_script["mapToken"])
         scripts_text = str(map_script["scriptsText"])
         section_token = _section_map_token_for_internal_map(map_token)
+        label_blocks = map_script_blocks.get(map_token, {})
+
+        def find_source_tutor_script(target_label: str) -> str:
+            source_labels = [
+                label_name
+                for label_name, body in label_blocks.items()
+                if re.search(rf"\bgoto\s+{re.escape(target_label)}\b", body)
+            ]
+            for source_label in source_labels:
+                if source_label in map_npc_gfx_by_script.get(map_token, {}):
+                    return source_label
+            return source_labels[0] if source_labels else ""
 
         for target in re.findall(r"\bgoto\s+([A-Za-z0-9_]*Tutor)\b", scripts_text):
             meta = tutor_by_target_label.get(target)
             if not meta:
                 continue
+            source_script = find_source_tutor_script(target)
+            npc_gfx_token, npc_icon_path = _resolve_npc_for_script(map_token, source_script)
             key = (section_token, map_token, str(meta.get("moveToken", "")), str(meta.get("paymentItemToken", "")))
             if key in seen:
                 continue
@@ -656,17 +736,27 @@ def parse_move_tutors_by_section_map_token() -> Dict[str, List[Dict[str, object]
             out.setdefault(section_token, []).append(
                 {
                     "locationLabel": _map_token_to_display_name(map_token),
+                    "npcGfxToken": npc_gfx_token,
+                    "npcIconPath": npc_icon_path,
                     **meta,
                 }
             )
 
         if re.search(r"EventScript_EggMoveTutor", scripts_text) and re.search(r"checkitem\s+ITEM_HEART_SCALE", scripts_text):
+            egg_script_label = ""
+            for script_label in map_npc_gfx_by_script.get(map_token, {}):
+                if script_label.endswith("_EventScript_EggMoveTutor"):
+                    egg_script_label = script_label
+                    break
+            egg_gfx_token, egg_icon_path = _resolve_npc_for_script(map_token, egg_script_label)
             egg_key = (section_token, map_token, "MOVE_EGG_MOVE", "ITEM_HEART_SCALE")
             if egg_key not in seen:
                 seen.add(egg_key)
                 out.setdefault(section_token, []).append(
                     {
                         "locationLabel": _map_token_to_display_name(map_token),
+                        "npcGfxToken": egg_gfx_token,
+                        "npcIconPath": egg_icon_path,
                         "moveToken": "MOVE_EGG_MOVE",
                         "moveName": "Egg Move",
                         "paymentItemToken": "ITEM_HEART_SCALE",
@@ -677,12 +767,20 @@ def parse_move_tutors_by_section_map_token() -> Dict[str, List[Dict[str, object]
                 )
 
         if re.search(r"_EventScript_MoveManiac::", scripts_text) and re.search(r"\bChooseMonForMoveRelearner\b", scripts_text):
+            relearn_script_label = ""
+            for script_label in map_npc_gfx_by_script.get(map_token, {}):
+                if script_label.endswith("_EventScript_MoveManiac"):
+                    relearn_script_label = script_label
+                    break
+            relearn_gfx_token, relearn_icon_path = _resolve_npc_for_script(map_token, relearn_script_label)
             relearn_key = (section_token, map_token, "MOVE_RELEARNER", "MUSHROOM_OPTIONS")
             if relearn_key not in seen:
                 seen.add(relearn_key)
                 out.setdefault(section_token, []).append(
                     {
                         "locationLabel": _map_token_to_display_name(map_token),
+                        "npcGfxToken": relearn_gfx_token,
+                        "npcIconPath": relearn_icon_path,
                         "moveToken": "MOVE_RELEARNER",
                         "moveName": "Move Relearner",
                         "paymentItemToken": "ITEM_BIG_MUSHROOM",
@@ -706,6 +804,16 @@ def parse_move_tutors_by_section_map_token() -> Dict[str, List[Dict[str, object]
 
     cape_brink_section = _section_map_token_for_internal_map("TWO_ISLAND_CAPE_BRINK_HOUSE")
     cape_brink_location = _map_token_to_display_name("TWO_ISLAND_CAPE_BRINK_HOUSE")
+    cape_brink_script_map = map_npc_gfx_by_script.get("TWO_ISLAND_CAPE_BRINK_HOUSE", {})
+    cape_brink_script_label = ""
+    for script_label in cape_brink_script_map:
+        if script_label.endswith("_EventScript_StarterTutor"):
+            cape_brink_script_label = script_label
+            break
+    if not cape_brink_script_label and cape_brink_script_map:
+        cape_brink_script_label = next(iter(cape_brink_script_map.keys()))
+    cape_brink_gfx_token, cape_brink_icon_path = _resolve_npc_for_script("TWO_ISLAND_CAPE_BRINK_HOUSE", cape_brink_script_label)
+
     starter_rows = [
         ("MOVE_FRENZY_PLANT", "ITEM_GREEN_SHARD", "Lead Venusaur with max friendship"),
         ("MOVE_BLAST_BURN", "ITEM_RED_SHARD", "Lead Charizard with max friendship"),
@@ -719,6 +827,8 @@ def parse_move_tutors_by_section_map_token() -> Dict[str, List[Dict[str, object]
         out.setdefault(cape_brink_section, []).append(
             {
                 "locationLabel": cape_brink_location,
+                "npcGfxToken": cape_brink_gfx_token,
+                "npcIconPath": cape_brink_icon_path,
                 "moveToken": move_token,
                 "moveName": move_names.get(move_token, pretty_token(move_token, "MOVE_")),
                 "paymentItemToken": payment_item,

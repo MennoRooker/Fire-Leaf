@@ -1374,6 +1374,7 @@ def build_model(section_filter: Optional[str]) -> Dict[str, object]:
                 str(row.get("moveName", "")).strip().lower(),
                 payment_token,
                 payment_count,
+                str(row.get("npcGfxToken", "")).strip(),
             )
             if dedupe in seen:
                 continue
@@ -1443,6 +1444,27 @@ def build_model(section_filter: Optional[str]) -> Dict[str, object]:
             return False, indices
         return False, set()
 
+    def section_hidden_move_tutors(section_name: str) -> tuple[bool, set[int]]:
+        sect_cfg = section_overrides.get(section_name, {})
+        if not isinstance(sect_cfg, dict):
+            return False, set()
+        raw = sect_cfg.get("hideMoveTutors")
+        if raw is True:
+            return True, set()
+        if isinstance(raw, (list, tuple)):
+            indices: set[int] = set()
+            for item in raw:
+                if isinstance(item, bool):
+                    continue
+                try:
+                    index = int(item)
+                except (TypeError, ValueError):
+                    continue
+                if index >= 0:
+                    indices.add(index)
+            return False, indices
+        return False, set()
+
     def apply_hidden_items(items: List[Dict[str, object]], hide_all: bool, hidden_indices: set[int]) -> List[Dict[str, object]]:
         if hide_all:
             return []
@@ -1450,11 +1472,19 @@ def build_model(section_filter: Optional[str]) -> Dict[str, object]:
             return items
         return [item for idx, item in enumerate(items) if idx not in hidden_indices]
 
+    def apply_hidden_move_tutors(move_tutors: List[Dict[str, object]], hide_all: bool, hidden_indices: set[int]) -> List[Dict[str, object]]:
+        if hide_all:
+            return []
+        if not move_tutors or not hidden_indices:
+            return move_tutors
+        return [tutor for idx, tutor in enumerate(move_tutors) if idx not in hidden_indices]
+
     section_items_by_name: Dict[str, List[Dict[str, object]]] = {}
     section_shops_by_name: Dict[str, List[Dict[str, object]]] = {}
     section_tutors_by_name: Dict[str, List[Dict[str, object]]] = {}
     for name in ordered_section_names:
         hide_all_items, hidden_item_indices = section_hidden_items(name)
+        hide_all_tutors, hidden_tutor_indices = section_hidden_move_tutors(name)
         if name in merge_overrides:
             merge_cfg = merge_overrides.get(name, {})
             if isinstance(merge_cfg, dict):
@@ -1471,7 +1501,11 @@ def build_model(section_filter: Optional[str]) -> Dict[str, object]:
                     hidden_item_indices,
                 )
                 section_shops_by_name[name] = combined_shops
-                section_tutors_by_name[name] = combined_tutors
+                section_tutors_by_name[name] = apply_hidden_move_tutors(
+                    combined_tutors,
+                    hide_all_tutors,
+                    hidden_tutor_indices,
+                )
                 continue
         section_items_by_name[name] = apply_hidden_items(
             collect_section_items(name),
@@ -1479,7 +1513,11 @@ def build_model(section_filter: Optional[str]) -> Dict[str, object]:
             hidden_item_indices,
         )
         section_shops_by_name[name] = collect_section_shops(name)
-        section_tutors_by_name[name] = collect_section_move_tutors(name)
+        section_tutors_by_name[name] = apply_hidden_move_tutors(
+            collect_section_move_tutors(name),
+            hide_all_tutors,
+            hidden_tutor_indices,
+        )
 
     def section_map_scale_max(section_name: str) -> Optional[float]:
         sect_cfg = section_overrides.get(section_name, {})
