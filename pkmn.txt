@@ -148,6 +148,12 @@ WATER -> WATER/DRAGON
 - STARYU
 WATER -> WATER/PSYCHIC
 
+- OMASTAR
+atk:	60 -> 80
+
+- KABUTOPS
+spd:	80 -> 100
+
 - ARTICUNO
 spd:	85 -> 105
 Pressure -> Pressure/Snow Warning
@@ -394,9 +400,11 @@ spdef:	60 -> 80
 atk:	78 -> 88
 
 - CRADILY
-spatk:	81 -> 91
+def:	97 -> 102
+spatk:	81 -> 96
 
 - ARMALDO
+hp:	75 -> 85
 spd:	45 -> 55
 
 - CASTFORM
