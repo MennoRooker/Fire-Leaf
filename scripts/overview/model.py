@@ -1393,9 +1393,62 @@ def build_model(section_filter: Optional[str]) -> Dict[str, object]:
 
     def collect_section_shops(section_name: str) -> List[Dict[str, object]]:
         token = section_map_token(section_name)
-        if not token:
-            return []
-        rows = list(shops_by_section_token.get(token, []))
+        rows: List[Dict[str, object]] = []
+        if token:
+            rows.extend(shops_by_section_token.get(token, []))
+
+        sect_cfg = section_overrides.get(section_name, {})
+        if isinstance(sect_cfg, dict):
+            manual_shops = sect_cfg.get("manualShops")
+            if isinstance(manual_shops, (list, tuple)):
+                for manual_shop in manual_shops:
+                    if not isinstance(manual_shop, dict):
+                        continue
+
+                    location_label = str(manual_shop.get("locationLabel", "")).strip() or section_name
+                    shop_label = str(manual_shop.get("shopLabel", "Shop")).strip() or "Shop"
+                    variant_label = str(manual_shop.get("variantLabel", "")).strip()
+                    currency = str(manual_shop.get("currency", "money")).strip() or "money"
+                    theme = str(manual_shop.get("theme", "")).strip()
+
+                    offers: List[Dict[str, object]] = []
+                    raw_offers = manual_shop.get("offers")
+                    if isinstance(raw_offers, (list, tuple)):
+                        for offer in raw_offers:
+                            if not isinstance(offer, dict):
+                                continue
+                            name = str(offer.get("name", "")).strip()
+                            if not name:
+                                continue
+                            try:
+                                cost = int(offer.get("cost", 0) or 0)
+                            except (TypeError, ValueError):
+                                cost = 0
+                            offers.append(
+                                {
+                                    "offerType": str(offer.get("offerType", "service")).strip() or "service",
+                                    "token": str(offer.get("token", "")).strip(),
+                                    "name": name,
+                                    "cost": max(0, cost),
+                                    "currency": str(offer.get("currency", currency)).strip() or currency,
+                                    "costLabel": str(offer.get("costLabel", "")).strip(),
+                                }
+                            )
+
+                    if not offers:
+                        continue
+
+                    rows.append(
+                        {
+                            "locationLabel": location_label,
+                            "shopLabel": shop_label,
+                            "variantLabel": variant_label,
+                            "currency": currency,
+                            "theme": theme,
+                            "offers": offers,
+                        }
+                    )
+
         rows.sort(
             key=lambda entry: (
                 str(entry.get("locationLabel", "")).lower(),

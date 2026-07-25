@@ -550,8 +550,8 @@ def render_items_panel(items: List[Dict[str, object]], has_trainers: bool, asset
 
 def _format_shop_cost(cost: int, currency: str) -> str:
     if currency == "coins":
-        return f"{cost} coins"
-    return f"${cost}"
+        return f"{cost:,} coins"
+    return f"${cost:,}"
 
 
 def render_shops_panel(shops: List[Dict[str, object]], has_trainers: bool) -> str:
@@ -573,7 +573,10 @@ def render_shops_panel(shops: List[Dict[str, object]], has_trainers: bool) -> st
 
         card_class = "shop-card"
         location_lower = location_raw.lower()
-        if location_lower == "mart":
+        theme = str(shop.get("theme", "")).strip().lower()
+        if theme:
+            card_class = f"shop-card shop-card--{theme}"
+        elif location_lower == "mart":
             card_class = "shop-card shop-card--mart"
         elif "department store" in location_lower:
             card_class = "shop-card shop-card--department-store"
@@ -585,7 +588,11 @@ def render_shops_panel(shops: List[Dict[str, object]], has_trainers: bool) -> st
             name = html.escape(str(offer.get("name", "-")))
             cost = int(offer.get("cost", 0) or 0)
             currency = str(offer.get("currency", shop.get("currency", "money")))
-            cost_text = html.escape(_format_shop_cost(cost, currency))
+            custom_cost_label = str(offer.get("costLabel", "")).strip()
+            if custom_cost_label:
+                cost_text = html.escape(custom_cost_label)
+            else:
+                cost_text = html.escape(_format_shop_cost(cost, currency))
             rows.append(
                 "<div class='shop-offer-row'>"
                 f"<span class='shop-offer-name'>{name}</span>"

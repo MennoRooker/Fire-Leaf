@@ -658,6 +658,16 @@ h1 { margin: 0 0 8px 0; }
   background: #f2b56b;
 }
 
+.shop-card--daycare .shop-card-head {
+  background: linear-gradient(180deg, #e8be57 0%, #d79b2f 100%);
+  color: #ffeec5;
+}
+
+.shop-card--bike-shop .shop-card-head {
+  background: linear-gradient(180deg, #6ea9e8 0%, #3e77b7 100%);
+  color: #f5fbff;
+}
+
 .shop-offer-list {
   padding: 4px 8px 8px;
 }

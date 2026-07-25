@@ -1,5 +1,5 @@
 {
-  "_readme": "Manual overrides for overview sections. Keys in 'sections' must match trainer_parties.h comment titles exactly (e.g. 'Silph Co. 2F' from parent+floor headers). mapToken is the MAP_* suffix from data/maps/*/map.json id field (e.g. MAP_SILPH_CO_2F -> SILPH_CO_2F). Tile images fall back to graphics/map_preview/<tileset>/tiles.png when missing from data/tilesets/. crop uses 0.0-1.0 fractions of layout width/height. mapScaleMax is optional 0.0-1.0 multiplier on the fitted map size (1.0 = fill available space; 0.75 = 75% of that). fullHeight scales the map up to the --map-full-height (900px) when width allows. stretchedHeight is an optional multiplier of --map-full-height (e.g. 2.0 = 1800px, 1.5 = 1350px) for extremely long maps. hideEncounters (default false) hides wild encounters: set true to drop all encounters, or an array of group keys to hide specific ones (accepted: 'land_mons', 'rock_smash_mons', 'water_mons', 'fishing_mons'). hideItems (default false) hides item pickups: set true to drop all items, or an array of item indices to hide specific rendered entries (e.g. [0] hides the first item that would render). hideMoveTutors (default false) hides move tutor rows: set true to drop all tutors, or an array of tutor indices to hide specific rendered entries (e.g. [0] hides the first tutor row that would render). itemMapTokens (optional array) adds item/gift aggregation from extra map tokens into this section. manualItems (optional array) adds explicit entries for flag-based or special acquisitions (supports itemToken, itemName, iconPath, palettePath, quantity, isHidden). merges combines multiple comment-sections into one overview section.",
+  "_readme": "Manual overrides for overview sections. Keys in 'sections' must match trainer_parties.h comment titles exactly (e.g. 'Silph Co. 2F' from parent+floor headers). mapToken is the MAP_* suffix from data/maps/*/map.json id field (e.g. MAP_SILPH_CO_2F -> SILPH_CO_2F). Tile images fall back to graphics/map_preview/<tileset>/tiles.png when missing from data/tilesets/. crop uses 0.0-1.0 fractions of layout width/height. mapScaleMax is optional 0.0-1.0 multiplier on the fitted map size (1.0 = fill available space; 0.75 = 75% of that). fullHeight scales the map up to the --map-full-height (900px) when width allows. stretchedHeight is an optional multiplier of --map-full-height (e.g. 2.0 = 1800px, 1.5 = 1350px) for extremely long maps. hideEncounters (default false) hides wild encounters: set true to drop all encounters, or an array of group keys to hide specific ones (accepted: 'land_mons', 'rock_smash_mons', 'water_mons', 'fishing_mons'). hideItems (default false) hides item pickups: set true to drop all items, or an array of item indices to hide specific rendered entries (e.g. [0] hides the first item that would render). hideMoveTutors (default false) hides move tutor rows: set true to drop all tutors, or an array of tutor indices to hide specific rendered entries (e.g. [0] hides the first tutor row that would render). itemMapTokens (optional array) adds item/gift aggregation from extra map tokens into this section. manualItems (optional array) adds explicit entries for flag-based or special acquisitions (supports itemToken, itemName, iconPath, palettePath, quantity, isHidden). manualShops (optional array) adds explicit shop cards (supports locationLabel, shopLabel, variantLabel, currency, theme, offers[] with name/cost/currency). merges combines multiple comment-sections into one overview section.",
   "sections": {
     "Oak's Lab": {
       "mapScaleMax": 0.4,
@@ -17,7 +17,8 @@
     "Route 2 South": {
       "mapToken": "ROUTE2",
       "crop": { "y0": 0.54, "y1": 1.0 },
-      "fullHeight": true
+      "fullHeight": true,
+      "hideItems": [2]
     },
     "Viridian City": {
       "manualItems": [
@@ -39,7 +40,15 @@
       "mapToken": "ROUTE2",
       "crop": { "y0": 0, "y1": 0.54 },
       "fullHeight": true,
-      "hideItems": true
+      "hideItems": [0, 1]
+    },
+    "Pewter City": {
+      "manualItems": [
+        {
+          "itemToken": "ITEM_OLD_AMBER",
+          "quantity": 1
+        }
+      ]
     },
     "Pewter City Gym": {
       "mapScaleMax": 0.4
@@ -64,13 +73,56 @@
       "hideItems": [3]
     },
     "Route 25": {
-      "crop": { "x0": 0.0, "x1": 0.88, "y0": 0.0, "y1": 0.8 }
+      "crop": { "x0": 0.0, "x1": 0.88, "y0": 0.0, "y1": 0.8 },
+      "manualItems": [
+        {
+          "itemToken": "ITEM_SS_TICKET",
+          "quantity": 1
+        }
+      ]
+    },
+    "Cerulean City": {
+      "manualShops": [
+        {
+          "locationLabel": "Bike Shop",
+          "shopLabel": "Bicycle Counter",
+          "theme": "bike-shop",
+          "offers": [
+            {
+              "name": "Bicycle (Cash Purchase)",
+              "cost": 1000000,
+              "currency": "money"
+            },
+            {
+              "name": "Bicycle (Exchange)",
+              "cost": 0,
+              "currency": "money",
+              "costLabel": "Bike Voucher"
+            }
+          ]
+        }
+      ]
     },
     "Cerulean City Gym": {
       "mapScaleMax": 0.4
     },
     "Route 5": {
-      "fullHeight": true
+      "fullHeight": true,
+      "manualShops": [
+        {
+          "locationLabel": "Pokemon Day Care",
+          "shopLabel": "Daycare Services",
+          "currency": "money",
+          "theme": "daycare",
+          "offers": [
+            {
+              "name": "Neutralize Nature",
+              "cost": 2000,
+              "currency": "money"
+            }
+          ]
+        }
+      ]
     },
     "Diglett Cave": {
       "mapToken": "DIGLETTS_CAVE_B1F",
@@ -117,6 +169,12 @@
     },
     "Vermilion City Gym": {
       "mapScaleMax": 0.4
+    },
+    "Vermilion City": {
+      "itemMapTokens": [
+        "VERMILION_CITY_HOUSE1",
+        "VERMILION_CITY_POKEMON_FAN_CLUB"
+      ]
     },
     "Route 10 North": {
       "mapToken": "ROUTE10",
