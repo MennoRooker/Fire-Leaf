@@ -26,6 +26,7 @@ from .parsing import (
     parse_mon_symbol_to_png_path,
     parse_npc_gift_items_by_section_map_token,
     parse_move_names,
+    parse_tmhm_move_tokens_by_item_token,
     parse_move_types,
     parse_nature_constants,
     parse_nature_stat_modifiers,
@@ -571,6 +572,7 @@ def build_model(section_filter: Optional[str]) -> Dict[str, object]:
     charmap_single_byte = parse_charmap_single_byte_table()
     species_info = parse_species_info_types_and_abilities()
     item_names = parse_item_names()
+    tmhm_move_tokens_by_item_token = parse_tmhm_move_tokens_by_item_token()
     rematch_stage_by_trainer = parse_vs_seeker_rematch_stages()
     item_icon_table = parse_item_icon_table()
     item_icon_paths = parse_item_icon_symbol_to_paths()
@@ -591,6 +593,12 @@ def build_model(section_filter: Optional[str]) -> Dict[str, object]:
     map_records = list(map_layout_data["records"])
     map_by_token = dict(map_layout_data["byToken"])
     metatile_paths_by_symbol = parse_tileset_metatile_paths()
+
+    tmhm_move_name_by_item_token: Dict[str, str] = {}
+    for item_token, move_token in tmhm_move_tokens_by_item_token.items():
+        if not item_token or not move_token:
+            continue
+        tmhm_move_name_by_item_token[item_token] = move_names.get(move_token, pretty_token(move_token, "MOVE_"))
     encounter_map_tokens = list(wild_encounters["byMap"].keys())
     section_name_registry = build_section_name_registry(party_section_order)
     encounter_map_by_section: Dict[str, str] = {}
@@ -1208,7 +1216,12 @@ def build_model(section_filter: Optional[str]) -> Dict[str, object]:
 
     def get_item_name(item_token: str) -> str:
         item_name = item_names.get(item_token, pretty_token(item_token, "ITEM_"))
-        return "-" if item_name and set(item_name) == {"?"} else item_name
+        if item_name and set(item_name) == {"?"}:
+            return "-"
+        taught_move_name = tmhm_move_name_by_item_token.get(item_token)
+        if taught_move_name:
+            return f"{item_name} ({taught_move_name})"
+        return item_name
 
     def get_item_icon_path(item_token: str) -> str:
         icon_entry = item_icon_table.get(item_token, {})
@@ -1601,6 +1614,11 @@ def build_model(section_filter: Optional[str]) -> Dict[str, object]:
                     combined_items.extend(collect_section_items(source))
                     combined_shops.extend(collect_section_shops(source))
                     combined_tutors.extend(collect_section_move_tutors(source))
+                manual_items = merge_cfg.get("manualItems")
+                if isinstance(manual_items, (list, tuple)):
+                    for manual_item in manual_items:
+                        if isinstance(manual_item, dict):
+                            combined_items.append(dict(manual_item))
                 section_items_by_name[name] = apply_hidden_items(
                     aggregate_merged_item_entries(combined_items),
                     hide_all_items,

@@ -4272,13 +4272,15 @@ static const struct TrainerMonNoItemDefaultMoves sParty_BeautyTamia[] = {
     },
 };
 
-static const struct TrainerMonItemCustomMoves sParty_LeaderErika[] = {
+static const struct TrainerMonItemCustomMovesNatureAbility sParty_LeaderErika[] = {
     {
         .iv = 12,
         .lvl = 35,
         .species = SPECIES_VICTREEBEL,
         .moves = {MOVE_STUN_SPORE, MOVE_POISON_FANG, MOVE_GROWTH, MOVE_GIGA_DRAIN},
         .heldItem = ITEM_LEFTOVERS,
+        .nature = NATURE_NAIVE,
+        .abilitySlot = 0,
     },
     {
         .iv = 12,
@@ -4286,6 +4288,8 @@ static const struct TrainerMonItemCustomMoves sParty_LeaderErika[] = {
         .species = SPECIES_BRELOOM,
         .moves = {MOVE_SPORE, MOVE_SKY_UPPERCUT, MOVE_BULLET_SEED, MOVE_MACH_PUNCH},
         .heldItem = ITEM_FOCUS_SASH,
+        .nature = NATURE_IMPISH,
+        .abilitySlot = 0,
     },
     {
         .iv = 12,
@@ -4293,6 +4297,8 @@ static const struct TrainerMonItemCustomMoves sParty_LeaderErika[] = {
         .species = SPECIES_SUDOWOODO,
         .moves = {MOVE_ROCK_SLIDE, MOVE_LOW_KICK, MOVE_BODY_SLAM, MOVE_EARTHQUAKE},
         .heldItem = ITEM_KINGS_ROCK,
+        .nature = NATURE_JOLLY,
+        .abilitySlot = 0,
     },
     {
         .iv = 12,
@@ -4300,6 +4306,8 @@ static const struct TrainerMonItemCustomMoves sParty_LeaderErika[] = {
         .species = SPECIES_LUDICOLO,
         .moves = {MOVE_WATER_PULSE, MOVE_GIGA_DRAIN, MOVE_RAIN_DANCE, MOVE_ICE_BEAM},
         .heldItem = ITEM_MYSTIC_WATER,
+        .nature = NATURE_BOLD,
+        .abilitySlot = 0,
     },
     {
         .iv = 12,
@@ -4307,6 +4315,8 @@ static const struct TrainerMonItemCustomMoves sParty_LeaderErika[] = {
         .species = SPECIES_VILEPLUME,
         .moves = {MOVE_SLEEP_POWDER, MOVE_SLUDGE_BOMB, MOVE_STUN_SPORE, MOVE_GIGA_DRAIN},
         .heldItem = ITEM_MIRACLE_SEED,
+        .nature = NATURE_MODEST,
+        .abilitySlot = 0,
     },
 };
 

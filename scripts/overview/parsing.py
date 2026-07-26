@@ -160,6 +160,41 @@ def parse_move_names() -> Dict[str, str]:
 
 
 @lru_cache(maxsize=1)
+def parse_tmhm_move_tokens_by_item_token() -> Dict[str, str]:
+    """Map ITEM_TMxx/ITEM_HMxx tokens to MOVE_* tokens from sTMHMMoves."""
+    text = read_text("src/data/party_menu.h")
+    table_match = re.search(r"static const u16\s+sTMHMMoves\[\]\s*=\s*\{(.*?)\n\};", text, re.S)
+    if not table_match:
+        return {}
+
+    move_tokens = re.findall(r"\b(MOVE_[A-Z0-9_]+)\b", table_match.group(1))
+    if not move_tokens:
+        return {}
+
+    item_ids = parse_define_ints("include/constants/items.h", "ITEM_")
+    tm_start = item_ids.get("ITEM_TM01")
+    if tm_start is None:
+        tm_start = item_ids.get("ITEM_TM01_FOCUS_PUNCH")
+    if tm_start is None:
+        return {}
+
+    # ITEM_TMxx/ITEM_HMxx defines are numeric and canonical in this project.
+    item_token_by_id = {
+        item_id: token
+        for token, item_id in item_ids.items()
+        if re.fullmatch(r"ITEM_(?:TM|HM)\d{2}", token)
+    }
+
+    out: Dict[str, str] = {}
+    for offset, move_token in enumerate(move_tokens):
+        item_token = item_token_by_id.get(tm_start + offset)
+        if item_token:
+            out[item_token] = move_token
+
+    return out
+
+
+@lru_cache(maxsize=1)
 def parse_level_up_learnsets_by_species() -> Dict[str, List[Dict[str, object]]]:
     learnsets_text = read_text("src/data/pokemon/level_up_learnsets.h")
     pointers_text = read_text("src/data/pokemon/level_up_learnset_pointers.h")
@@ -388,11 +423,11 @@ def _shop_label_from_script_name(script_label: str, table_label: str) -> str:
     lowered = script_label.lower()
     table_lowered = table_label.lower()
     if "clerktms" in lowered:
-        return "TM Counter"
+        return "TMs"
     if "clerkberries" in lowered:
-        return "Berry Counter"
+        return "Berries"
     if "clerksupplements" in lowered:
-        return "Supplement Counter"
+        return "Supplements"
     if "clerkitems" in lowered:
         return "Main Counter"
     if "prizeroom" in table_lowered:
@@ -499,7 +534,7 @@ def parse_shops_by_section_map_token() -> Dict[str, List[Dict[str, object]]]:
             out.setdefault(section_token, []).append(
                 {
                     "locationLabel": "Game Corner Prize Room",
-                    "shopLabel": "TM Prizes",
+                    "shopLabel": "TMs",
                     "variantLabel": "",
                     "currency": "coins",
                     "offers": [
@@ -519,7 +554,7 @@ def parse_shops_by_section_map_token() -> Dict[str, List[Dict[str, object]]]:
             out.setdefault(section_token, []).append(
                 {
                     "locationLabel": "Game Corner Prize Room",
-                    "shopLabel": "Pokemon Prizes",
+                    "shopLabel": "Pokémon",
                     "variantLabel": "",
                     "currency": "coins",
                     "offers": [
@@ -762,7 +797,6 @@ def parse_move_tutors_by_section_map_token() -> Dict[str, List[Dict[str, object]
                         "paymentItemToken": "ITEM_HEART_SCALE",
                         "paymentItemName": item_names.get("ITEM_HEART_SCALE", "Heart Scale"),
                         "paymentCount": 1,
-                        "notes": "Teaches egg moves",
                     }
                 )
 

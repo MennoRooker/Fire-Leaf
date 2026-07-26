@@ -11,8 +11,22 @@
         }
       ]
     },
+    "Pallet Town": {
+      "manualItems": [
+        {
+          "itemToken": "ITEM_TOWN_MAP",
+          "quantity": 1
+        }
+      ]
+    },
     "Route 1": {
-      "fullHeight": true
+      "fullHeight": true,
+      "manualItems": [
+        {
+          "itemToken": "ITEM_POTION",
+          "quantity": 1
+        }
+      ]
     },
     "Route 2 South": {
       "mapToken": "ROUTE2",
@@ -40,7 +54,13 @@
       "mapToken": "ROUTE2",
       "crop": { "y0": 0, "y1": 0.54 },
       "fullHeight": true,
-      "hideItems": [0, 1]
+      "hideItems": [1],
+      "manualItems": [
+        {
+          "itemToken": "ITEM_HM05",
+          "quantity": 1
+        }
+      ]
     },
     "Pewter City": {
       "manualItems": [
@@ -171,6 +191,12 @@
       "mapScaleMax": 0.4
     },
     "Vermilion City": {
+      "manualItems": [
+        {
+          "itemToken": "ITEM_VS_SEEKER",
+          "quantity": 1
+        }
+      ],
       "itemMapTokens": [
         "VERMILION_CITY_HOUSE1",
         "VERMILION_CITY_POKEMON_FAN_CLUB"
@@ -179,7 +205,21 @@
     "Route 10 North": {
       "mapToken": "ROUTE10",
       "crop": { "y0": 0.0, "y1": 0.38 },
-      "hideItems": [2, 3]
+      "hideItems": [2, 3],
+      "manualItems": [
+        {
+          "itemToken": "ITEM_EVERSTONE",
+          "quantity": 1
+        }
+      ]
+    },
+    "Route 11": {
+      "manualItems": [
+        {
+          "itemToken": "ITEM_ITEMFINDER",
+          "quantity": 1
+        }
+      ]
     },
     "Rock Tunnel 1F": {
       "fullHeight": true
@@ -257,7 +297,29 @@
       "crop": { "x0": 0.0, "x1": 0.45 },
       "hideEncounters": true,
       "mapScaleMax": 0.6,
-      "hideItems": [1]
+      "hideItems": [1],
+      "manualItems": [
+        {
+          "itemToken": "ITEM_AMULET_COIN",
+          "quantity": 1
+        }
+      ]
+    },
+    "Fuchsia City": {
+      "manualItems": [
+        {
+          "itemToken": "ITEM_HM04",
+          "quantity": 1
+        }
+      ]
+    },
+    "Safari Zone West": {
+      "manualItems": [
+        {
+          "itemToken": "ITEM_HM03",
+          "quantity": 1
+        }
+      ]
     },
     "Route 17": {
       "stretchedHeight": 3.0
@@ -361,7 +423,13 @@
       "mapToken": "ONE_ISLAND_KINDLE_ROAD",
       "crop": { "y0": 0.0, "y1": 0.54 },
       "hideEncounters": ["land_mons", "rock_smash_mons"],
-      "stretchedHeight": 1.6
+      "stretchedHeight": 1.6,
+      "manualItems": [
+        {
+          "itemToken": "ITEM_HM07",
+          "quantity": 1
+        }
+      ]
     },
     "Mt. Ember": {
       "mapToken": "MT_EMBER_EXTERIOR"
@@ -419,7 +487,13 @@
       "sources": ["Route 15 North", "Route 15 South"],
       "sourceLabels": ["North", "South"],
       "mapToken": "ROUTE15",
-      "hideItems": [0]
+      "hideItems": [1],
+      "manualItems": [
+        {
+          "itemToken": "ITEM_SHELL_BELL",
+          "quantity": 1
+        }
+      ]
     }
   }
 }
