@@ -729,21 +729,47 @@ def render_trade_gifts_panel(trade_gifts: List[Dict[str, object]], has_trainers:
             )
 
         received_name = html.escape(str(trade_entry.get("receivedSpeciesName", "Pokemon")))
-        received_sprite_path = str(trade_entry.get("receivedSpritePath", "")).strip()
-        received_sprite_html = ""
-        if received_sprite_path:
-            received_sprite_html = (
-                f"<img class='trade-mon-icon' src='{html.escape(asset_url(received_sprite_path))}' "
-                f"alt='{received_name}' title='{received_name}'>"
+        received_options = trade_entry.get("receivedOptions")
+        received_block_html = ""
+        if isinstance(received_options, list) and received_options:
+            option_parts: List[str] = []
+            for idx, option in enumerate(received_options):
+                option_name_raw = str(option.get("speciesName", "Pokemon")).strip() or "Pokemon"
+                option_name = html.escape(option_name_raw)
+                option_sprite_path = str(option.get("spritePath", "")).strip()
+                option_sprite_html = ""
+                if option_sprite_path:
+                    option_sprite_html = (
+                        f"<img class='trade-mon-icon' src='{html.escape(asset_url(option_sprite_path))}' "
+                        f"alt='{option_name}' title='{option_name}'>"
+                    )
+                if idx > 0:
+                    option_parts.append("<span class='trade-option-sep'>or</span>")
+                option_parts.append(
+                    "<span class='trade-mon-side trade-mon-side--receive'>"
+                    f"{option_sprite_html}<span class='trade-mon-name'>{option_name}</span>"
+                    "</span>"
+                )
+            received_block_html = "".join(option_parts)
+        else:
+            received_sprite_path = str(trade_entry.get("receivedSpritePath", "")).strip()
+            received_sprite_html = ""
+            if received_sprite_path:
+                received_sprite_html = (
+                    f"<img class='trade-mon-icon' src='{html.escape(asset_url(received_sprite_path))}' "
+                    f"alt='{received_name}' title='{received_name}'>"
+                )
+            received_block_html = (
+                "<span class='trade-mon-side trade-mon-side--receive'>"
+                f"{received_sprite_html}<span class='trade-mon-name'>{received_name}</span>"
+                "</span>"
             )
 
         flow_parts: List[str] = [
             f"<span class='trade-method trade-method--{html.escape(method)}'>{html.escape(method_label)}</span>",
             npc_icon_html,
-            "<span class='trade-verb'>GIVES</span>",
-            "<span class='trade-mon-side trade-mon-side--receive'>"
-            f"{received_sprite_html}<span class='trade-mon-name'>{received_name}</span>"
-            "</span>",
+            f"<span class='trade-verb'>{html.escape(str(trade_entry.get('traderName', '')).strip() or 'NPC')} GIVES</span>",
+            received_block_html,
         ]
 
         requested_name = str(trade_entry.get("requestedSpeciesName", "")).strip()
@@ -771,7 +797,7 @@ def render_trade_gifts_panel(trade_gifts: List[Dict[str, object]], has_trainers:
             flow_parts.extend(
                 [
                     red_icon_html,
-                    "<span class='trade-or'>or</span>",
+                    "<span class='trade-or'>/</span>",
                     green_icon_html,
                     "<span class='trade-verb'>PLAYER GIVES</span>",
                     "<span class='trade-mon-side trade-mon-side--give'>"

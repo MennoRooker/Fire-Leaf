@@ -110,6 +110,9 @@
       ]
     },
     "Cerulean City": {
+      "tradeGiftMapTokens": [
+        "CERULEAN_CITY_HOUSE3"
+      ],
       "manualShops": [
         {
           "locationLabel": "Bike Shop",
@@ -136,6 +139,9 @@
     },
     "Route 5": {
       "fullHeight": true,
+      "tradeGiftMapTokens": [
+        "UNDERGROUND_PATH_NORTH_ENTRANCE"
+      ],
       "manualShops": [
         {
           "locationLabel": "Pokemon Day Care",
@@ -199,6 +205,9 @@
       "mapScaleMax": 0.4
     },
     "Vermilion City": {
+      "tradeGiftMapTokens": [
+        "VERMILION_CITY_HOUSE2"
+      ],
       "manualItems": [
         {
           "itemToken": "ITEM_VS_SEEKER",
@@ -222,6 +231,9 @@
       ]
     },
     "Route 11": {
+      "tradeGiftMapTokens": [
+        "ROUTE11_EAST_ENTRANCE_2F"
+      ],
       "manualItems": [
         {
           "itemToken": "ITEM_ITEMFINDER",
@@ -332,6 +344,11 @@
     "Route 17": {
       "stretchedHeight": 3.0
     },
+    "Route 18": {
+      "tradeGiftMapTokens": [
+        "ROUTE18_EAST_ENTRANCE_2F"
+      ]
+    },
     "Fuchsia City Gym": {
       "mapScaleMax": 0.4 
     },
@@ -418,6 +435,12 @@
     "Pokémon Mansion B1F": {
       "mapToken": "POKEMON_MANSION_B1F",
       "fullHeight": true
+    },
+    "Cinnabar Island": {
+      "tradeGiftMapTokens": [
+        "CINNABAR_ISLAND_POKEMON_LAB_LOUNGE",
+        "CINNABAR_ISLAND_POKEMON_LAB_EXPERIMENT_ROOM"
+      ]
     },
     "Cinnabar Island Gym": {
       "mapScaleMax": 0.4

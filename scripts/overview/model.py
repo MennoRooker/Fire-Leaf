@@ -1589,6 +1589,45 @@ def build_model(section_filter: Optional[str]) -> Dict[str, object]:
 
             normalized_rows.append(normalized)
 
+        starter_species_order = [
+            "SPECIES_BULBASAUR",
+            "SPECIES_CHARMANDER",
+            "SPECIES_SQUIRTLE",
+        ]
+        starter_species_set = set(starter_species_order)
+        starter_rows = [
+            row
+            for row in normalized_rows
+            if str(row.get("method", "")).strip().lower() == "gift"
+            and str(row.get("npcGfxToken", "")).strip() == "OBJ_EVENT_GFX_PROF_OAK"
+            and not str(row.get("requestedSpeciesToken", "")).strip()
+            and str(row.get("receivedSpeciesToken", "")).strip() in starter_species_set
+        ]
+        starter_token_set = {
+            str(row.get("receivedSpeciesToken", "")).strip() for row in starter_rows
+        }
+        if starter_token_set == starter_species_set:
+            starter_row_by_token = {
+                str(row.get("receivedSpeciesToken", "")).strip(): row for row in starter_rows
+            }
+            combined_starter_row = dict(starter_rows[0])
+            combined_starter_row["receivedOptions"] = [
+                {
+                    "speciesToken": token,
+                    "speciesName": str(starter_row_by_token[token].get("receivedSpeciesName", "")).strip(),
+                    "spritePath": str(starter_row_by_token[token].get("receivedSpritePath", "")).strip(),
+                }
+                for token in starter_species_order
+                if token in starter_row_by_token
+            ]
+            combined_starter_row["receivedSpeciesName"] = " or ".join(
+                option["speciesName"]
+                for option in combined_starter_row["receivedOptions"]
+                if str(option.get("speciesName", "")).strip()
+            )
+            normalized_rows = [row for row in normalized_rows if row not in starter_rows]
+            normalized_rows.append(combined_starter_row)
+
         method_order = {"gift": 0, "sale": 1, "trade": 2}
         normalized_rows.sort(
             key=lambda entry: (

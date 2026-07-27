@@ -897,13 +897,21 @@ def parse_trade_gift_pokemon_by_section_map_token() -> Dict[str, List[Dict[str, 
         re.S,
     )
     for trade_token, body in trade_block_re.findall(ingame_trade_text):
-        received_match = re.search(r"\.species\s*=\s*(SPECIES_[A-Z0-9_]+)", body)
-        requested_match = re.search(r"\.requestedSpecies\s*=\s*(SPECIES_[A-Z0-9_]+)", body)
+        firered_body = re.sub(
+            r"#if\s+defined\(FIRERED\)(.*?)#elif\s+defined\(LEAFGREEN\).*?#endif",
+            r"\1",
+            body,
+            flags=re.S,
+        )
+        received_match = re.search(r"\.species\s*=\s*(SPECIES_[A-Z0-9_]+)", firered_body)
+        requested_match = re.search(r"\.requestedSpecies\s*=\s*(SPECIES_[A-Z0-9_]+)", firered_body)
+        trader_name_match = re.search(r"\.otName\s*=\s*_\(\"([^\"]+)\"\)", firered_body)
         if not received_match:
             continue
         trade_defs[trade_token] = {
             "receivedSpeciesToken": received_match.group(1),
             "requestedSpeciesToken": requested_match.group(1) if requested_match else "",
+            "traderName": trader_name_match.group(1).strip() if trader_name_match else "",
         }
 
     object_gfx_to_info = parse_object_event_gfx_to_info_symbol()
@@ -983,6 +991,19 @@ def parse_trade_gift_pokemon_by_section_map_token() -> Dict[str, List[Dict[str, 
             return "", ""
         return gfx_token, _npc_gfx_png_path(gfx_token)
 
+    def _derive_trader_name_from_script_label(script_label: str) -> str:
+        label = script_label.strip()
+        if not label:
+            return ""
+        if "_EventScript_" in label:
+            label = label.split("_EventScript_", 1)[1]
+        elif label.startswith("EventScript_"):
+            label = label[len("EventScript_") :]
+        label = label.replace("_", " ")
+        label = re.sub(r"([a-z0-9])([A-Z])", r"\1 \2", label)
+        label = re.sub(r"\s+", " ", label).strip()
+        return label.upper()
+
     def _append_entry(
         section_token: str,
         map_token: str,
@@ -993,6 +1014,7 @@ def parse_trade_gift_pokemon_by_section_map_token() -> Dict[str, List[Dict[str, 
         currency: str,
         npc_gfx_token: str,
         npc_icon_path: str,
+        trader_name: str,
     ) -> None:
         key = (
             section_token,
@@ -1017,6 +1039,7 @@ def parse_trade_gift_pokemon_by_section_map_token() -> Dict[str, List[Dict[str, 
                 "currency": currency,
                 "npcGfxToken": npc_gfx_token,
                 "npcIconPath": npc_icon_path,
+                "traderName": trader_name.strip(),
             }
         )
 
@@ -1043,6 +1066,7 @@ def parse_trade_gift_pokemon_by_section_map_token() -> Dict[str, List[Dict[str, 
                     currency="",
                     npc_gfx_token=npc_gfx_token,
                     npc_icon_path=npc_icon_path,
+                    trader_name=str(trade_meta.get("traderName", "")).strip() or _derive_trader_name_from_script_label(script_label),
                 )
 
         # Scripted NPC gifts requested for the overview audit.
@@ -1061,6 +1085,7 @@ def parse_trade_gift_pokemon_by_section_map_token() -> Dict[str, List[Dict[str, 
                     currency="",
                     npc_gfx_token=npc_gfx_token,
                     npc_icon_path=npc_icon_path,
+                    trader_name=_derive_trader_name_from_script_label(script_label),
                 )
 
         # Route 4 Magikarp sale (single special paid gift event).
@@ -1091,6 +1116,7 @@ def parse_trade_gift_pokemon_by_section_map_token() -> Dict[str, List[Dict[str, 
                 currency="money",
                 npc_gfx_token=npc_gfx_token,
                 npc_icon_path=npc_icon_path,
+                trader_name=_derive_trader_name_from_script_label(owner_label),
             )
 
         # Oak's Lab starter gifts (player chooses one of three gifts).
@@ -1115,6 +1141,7 @@ def parse_trade_gift_pokemon_by_section_map_token() -> Dict[str, List[Dict[str, 
                     currency="",
                     npc_gfx_token=oak_gfx,
                     npc_icon_path=oak_icon,
+                    trader_name="OAK",
                 )
 
     for entries in out.values():

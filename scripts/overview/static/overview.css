@@ -248,7 +248,7 @@ h1 { margin: 0 0 8px 0; }
 }
 
 .items-legend-title {
-  margin: 0 0 0.42rem;
+  margin: 0 0 0.5rem;
   font-size: 0.95rem;
   text-transform: uppercase;
   letter-spacing: 0.08em;
@@ -818,7 +818,7 @@ h1 { margin: 0 0 8px 0; }
   min-width: 0;
   display: grid;
   gap: 6px;
-  padding-top: 4px;
+  padding-top: 13px;
 }
 
 .trade-npc-icon {
@@ -827,6 +827,8 @@ h1 { margin: 0 0 8px 0; }
   image-rendering: pixelated;
   object-fit: contain;
   flex: 0 0 auto;
+  position: relative;
+  top: -4px;
 }
 
 .trade-npc-icon--empty {
@@ -856,6 +858,8 @@ h1 { margin: 0 0 8px 0; }
   image-rendering: pixelated;
   object-fit: contain;
   flex: 0 0 auto;
+  position: relative;
+  top: -4px;
 }
 
 .trade-mon-side {
@@ -869,6 +873,8 @@ h1 { margin: 0 0 8px 0; }
   font-size: 16px;
   font-weight: 800;
   letter-spacing: 0.2px;
+  position: relative;
+  top: 5px;
 }
 
 .trade-verb {
@@ -877,12 +883,26 @@ h1 { margin: 0 0 8px 0; }
   text-transform: uppercase;
   letter-spacing: 0.06em;
   color: #7a2f23;
+  position: relative;
+  top: 5px;
 }
 
 .trade-or {
   font-size: 13px;
   font-style: italic;
   color: #8c4b33;
+  position: relative;
+  top: 5px;
+  margin-left: -4px;
+  margin-right: -4px;
+}
+
+.trade-option-sep {
+  font-size: 13px;
+  font-style: italic;
+  color: #8c4b33;
+  position: relative;
+  top: 5px;
 }
 
 .trade-method {
@@ -897,6 +917,8 @@ h1 { margin: 0 0 8px 0; }
   background: #ece1cb;
   color: #634729;
   padding: 2px 7px;
+  position: relative;
+  top: 5px;
 }
 
 .trade-method--gift {
