@@ -699,10 +699,120 @@ def render_move_tutors_panel(move_tutors: List[Dict[str, object]], has_trainers:
     )
 
 
+def render_trade_gifts_panel(trade_gifts: List[Dict[str, object]], has_trainers: bool, asset_url) -> str:
+    if not trade_gifts:
+        return ""
+
+    red_icon_src = _npc_icon_data_url("OBJ_EVENT_GFX_RED_NORMAL")
+    green_icon_src = _npc_icon_data_url("OBJ_EVENT_GFX_GREEN_NORMAL")
+
+    rows: List[str] = []
+    for trade_entry in trade_gifts:
+        method = str(trade_entry.get("method", "")).strip().lower()
+        method_label = {
+            "gift": "GIFT",
+            "sale": "SALE",
+            "trade": "TRADE",
+        }.get(method, "SPECIAL")
+
+        npc_gfx_token = str(trade_entry.get("npcGfxToken", "")).strip()
+        npc_icon_path = str(trade_entry.get("npcIconPath", "")).strip()
+        npc_icon_src = _npc_icon_data_url(npc_gfx_token)
+        if not npc_icon_src and npc_icon_path:
+            npc_icon_src = asset_url(npc_icon_path)
+        npc_label = npc_gfx_token or "Trade/gift NPC"
+        npc_icon_html = "<span class='trade-npc-icon trade-npc-icon--empty' aria-hidden='true'></span>"
+        if npc_icon_src:
+            npc_icon_html = (
+                f"<img class='trade-npc-icon' src='{html.escape(npc_icon_src)}' "
+                f"alt='{html.escape(npc_label)}' title='{html.escape(npc_label)}'>"
+            )
+
+        received_name = html.escape(str(trade_entry.get("receivedSpeciesName", "Pokemon")))
+        received_sprite_path = str(trade_entry.get("receivedSpritePath", "")).strip()
+        received_sprite_html = ""
+        if received_sprite_path:
+            received_sprite_html = (
+                f"<img class='trade-mon-icon' src='{html.escape(asset_url(received_sprite_path))}' "
+                f"alt='{received_name}' title='{received_name}'>"
+            )
+
+        flow_parts: List[str] = [
+            f"<span class='trade-method trade-method--{html.escape(method)}'>{html.escape(method_label)}</span>",
+            npc_icon_html,
+            "<span class='trade-verb'>GIVES</span>",
+            "<span class='trade-mon-side trade-mon-side--receive'>"
+            f"{received_sprite_html}<span class='trade-mon-name'>{received_name}</span>"
+            "</span>",
+        ]
+
+        requested_name = str(trade_entry.get("requestedSpeciesName", "")).strip()
+        requested_sprite_path = str(trade_entry.get("requestedSpritePath", "")).strip()
+        if method == "trade" and requested_name:
+            requested_name_escaped = html.escape(requested_name)
+            requested_sprite_html = ""
+            if requested_sprite_path:
+                requested_sprite_html = (
+                    f"<img class='trade-mon-icon' src='{html.escape(asset_url(requested_sprite_path))}' "
+                    f"alt='{requested_name_escaped}' title='{requested_name_escaped}'>"
+                )
+            red_icon_html = ""
+            if red_icon_src:
+                red_icon_html = (
+                    f"<img class='trade-player-icon' src='{html.escape(red_icon_src)}' "
+                    "alt='Red player sprite' title='Red (male)'>"
+                )
+            green_icon_html = ""
+            if green_icon_src:
+                green_icon_html = (
+                    f"<img class='trade-player-icon' src='{html.escape(green_icon_src)}' "
+                    "alt='Green player sprite' title='Green (female)'>"
+                )
+            flow_parts.extend(
+                [
+                    red_icon_html,
+                    "<span class='trade-or'>or</span>",
+                    green_icon_html,
+                    "<span class='trade-verb'>PLAYER GIVES</span>",
+                    "<span class='trade-mon-side trade-mon-side--give'>"
+                    f"{requested_sprite_html}<span class='trade-mon-name'>{requested_name_escaped}</span>"
+                    "</span>",
+                ]
+            )
+
+        details_parts: List[str] = []
+        if method == "sale":
+            cost = int(trade_entry.get("cost", 0) or 0)
+            if cost > 0:
+                details_parts.append(f"<span class='trade-detail trade-detail--cost'>${cost:,}</span>")
+
+        details_html = "".join(details_parts)
+
+        rows.append(
+            "<div class='trade-row'>"
+            "<div class='trade-content'>"
+            "<div class='trade-flow'>"
+            f"{''.join(flow_parts)}"
+            "</div>"
+            f"<div class='trade-meta'>{details_html}</div>"
+            "</div>"
+            "</div>"
+        )
+
+    panel_class = "section-data-panel--with-trainers" if has_trainers else "section-data-panel--terminal"
+    return (
+        f"<section class='section-data-panel trades-panel {panel_class}'>"
+        "<div class='section-data-panel-head'>Trades &amp; Gifts</div>"
+        f"<div class='trade-row-list'>{''.join(rows)}</div>"
+        "</section>"
+    )
+
+
 def render_section(section: Dict[str, object], type_icons: Dict[str, Dict[str, int]], asset_url, templates: Dict[str, str]) -> str:
     encounters = section.get("encounters")
     items = section.get("items")
     shops = section.get("shops")
+    trade_gifts = section.get("tradeGifts")
     move_tutors = section.get("moveTutors")
     trainer_cards_html = render_trainer_cards(section, type_icons, asset_url, templates)
     trainer_section_html = ""
@@ -719,6 +829,10 @@ def render_section(section: Dict[str, object], type_icons: Dict[str, Dict[str, i
     shops_html = ""
     if shops:
         shops_html = render_shops_panel(shops, bool(trainer_cards_html.strip()))
+
+    trade_gifts_html = ""
+    if trade_gifts:
+        trade_gifts_html = render_trade_gifts_panel(trade_gifts, bool(trainer_cards_html.strip()), asset_url)
 
     move_tutors_html = ""
     if move_tutors:
@@ -763,6 +877,7 @@ def render_section(section: Dict[str, object], type_icons: Dict[str, Dict[str, i
             "__ENCOUNTERS_HTML__": render_encounters(encounters, asset_url, templates) if encounters else "",
             "__SHOPS_HTML__": shops_html,
             "__ITEMS_HTML__": items_html,
+            "__TRADE_GIFTS_HTML__": trade_gifts_html,
             "__MOVE_TUTORS_HTML__": move_tutors_html,
             "__TRAINER_SECTION_HTML__": trainer_section_html,
         },

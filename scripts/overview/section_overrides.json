@@ -32,7 +32,8 @@
       "mapToken": "ROUTE2",
       "crop": { "y0": 0.54, "y1": 1.0 },
       "fullHeight": true,
-      "hideItems": [2]
+      "hideItems": [2],
+      "hideTradeGifts": true
     },
     "Viridian City": {
       "manualItems": [
@@ -55,6 +56,9 @@
       "crop": { "y0": 0, "y1": 0.54 },
       "fullHeight": true,
       "hideItems": [1],
+      "tradeGiftMapTokens": [
+        "ROUTE2_HOUSE"
+      ],
       "manualItems": [
         {
           "itemToken": "ITEM_HM05",
@@ -79,7 +83,10 @@
       "hideEncounters": true,
       "mapScaleMax": 0.6,
       "hideItems": [0, 1, 2],
-      "hideMoveTutors": [0, 1]
+      "hideMoveTutors": [0, 1],
+      "tradeGiftMapTokens": [
+        "ROUTE4_POKEMON_CENTER_1F"
+      ]
     },
     "Mt. Moon 1F": {
       "fullHeight": true
@@ -90,7 +97,8 @@
     "Route 4 East": {
       "mapToken": "ROUTE4",
       "crop": { "x0": 0.25, "x1": 1.0 },
-      "hideItems": [3]
+      "hideItems": [3],
+      "hideTradeGifts": true
     },
     "Route 25": {
       "crop": { "x0": 0.0, "x1": 0.88, "y0": 0.0, "y1": 0.8 },

@@ -155,6 +155,13 @@ h1 { margin: 0 0 8px 0; }
   gap: 0.5rem 0.95rem;
 }
 
+.starter-filter-or {
+  align-self: center;
+  color: #8f3f28;
+  font-style: italic;
+  font-weight: 700;
+}
+
 .overview-toggle-input {
   appearance: none;
   -webkit-appearance: none;
@@ -229,7 +236,7 @@ h1 { margin: 0 0 8px 0; }
   border-radius: 14px;
   padding: 0.78rem 0.9rem 0.85rem;
   display: grid;
-  gap: 0.58rem;
+  gap: 0.42rem;
   align-content: start;
 }
 
@@ -237,11 +244,11 @@ h1 { margin: 0 0 8px 0; }
   background: rgba(255, 251, 248, 0.56);
   border: 1px solid #ebaf97;
   border-radius: 10px;
-  padding: 0.52rem 0.62rem 0.58rem;
+  padding: 0.42rem 0.58rem 0.46rem;
 }
 
 .items-legend-title {
-  margin: 0 0 0.45rem;
+  margin: 0 0 0.42rem;
   font-size: 0.95rem;
   text-transform: uppercase;
   letter-spacing: 0.08em;
@@ -253,7 +260,7 @@ h1 { margin: 0 0 8px 0; }
   margin: 0;
   font-size: 0.86rem;
   color: #962e1f;
-  line-height: 1.42;
+  line-height: 1.34;
 }
 
 .vs-seeker-legend-title {
@@ -793,6 +800,155 @@ h1 { margin: 0 0 8px 0; }
   font-size: 12px;
   color: #6b5b43;
   font-style: italic;
+}
+
+.trade-row-list {
+  display: grid;
+  gap: 6px;
+  padding: 10px;
+}
+
+.trade-row {
+  border: 2px solid var(--line);
+  background: #fbf8ee;
+  padding: 8px 10px;
+}
+
+.trade-content {
+  min-width: 0;
+  display: grid;
+  gap: 6px;
+  padding-top: 4px;
+}
+
+.trade-npc-icon {
+  width: 64px;
+  height: 64px;
+  image-rendering: pixelated;
+  object-fit: contain;
+  flex: 0 0 auto;
+}
+
+.trade-npc-icon--empty {
+  width: 64px;
+  height: 64px;
+  display: inline-block;
+}
+
+.trade-flow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+  align-items: center;
+}
+
+.trade-mon-icon {
+  width: 64px;
+  height: 64px;
+  object-fit: contain;
+  image-rendering: pixelated;
+  flex: 0 0 auto;
+}
+
+.trade-player-icon {
+  width: 64px;
+  height: 64px;
+  image-rendering: pixelated;
+  object-fit: contain;
+  flex: 0 0 auto;
+}
+
+.trade-mon-side {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-width: 0;
+}
+
+.trade-mon-name {
+  font-size: 16px;
+  font-weight: 800;
+  letter-spacing: 0.2px;
+}
+
+.trade-verb {
+  font-size: 13px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #7a2f23;
+}
+
+.trade-or {
+  font-size: 13px;
+  font-style: italic;
+  color: #8c4b33;
+}
+
+.trade-method {
+  display: inline-flex;
+  align-items: center;
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  border-radius: 999px;
+  border: 1px solid #8f6e4a;
+  background: #ece1cb;
+  color: #634729;
+  padding: 2px 7px;
+}
+
+.trade-method--gift {
+  background: #f2e5ba;
+  border-color: #9b7e34;
+  color: #6e5517;
+}
+
+.trade-method--sale {
+  background: #d8e7ff;
+  border-color: #6f8cbe;
+  color: #2d4d7d;
+}
+
+.trade-method--trade {
+  background: #f1d7ce;
+  border-color: #ab6550;
+  color: #7a2f23;
+}
+
+.trade-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  font-size: 12px;
+  min-height: 14px;
+}
+
+.trade-detail {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-weight: 700;
+}
+
+.trade-detail--cost {
+  color: #2d4d7d;
+}
+
+@media (max-width: 900px) {
+  .trade-mon-name {
+    font-size: 14px;
+  }
+
+  .trade-mon-icon,
+  .trade-npc-icon,
+  .trade-npc-icon--empty,
+  .trade-player-icon {
+    width: 56px;
+    height: 56px;
+  }
 }
 .trainer-card {
   border: 3px solid var(--line);

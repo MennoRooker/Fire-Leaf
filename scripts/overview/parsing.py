@@ -885,6 +885,250 @@ def parse_move_tutors_by_section_map_token() -> Dict[str, List[Dict[str, object]
 
 
 @lru_cache(maxsize=1)
+def parse_trade_gift_pokemon_by_section_map_token() -> Dict[str, List[Dict[str, object]]]:
+    species_names = parse_species_names()
+    out: Dict[str, List[Dict[str, object]]] = {}
+    seen: set[tuple[str, str, str, str, int, str]] = set()
+
+    ingame_trade_text = read_text("src/data/ingame_trades.h")
+    trade_defs: Dict[str, Dict[str, str]] = {}
+    trade_block_re = re.compile(
+        r"\[(INGAME_TRADE_[A-Z0-9_]+)\]\s*=\s*\{(.*?)\n\s*\},",
+        re.S,
+    )
+    for trade_token, body in trade_block_re.findall(ingame_trade_text):
+        received_match = re.search(r"\.species\s*=\s*(SPECIES_[A-Z0-9_]+)", body)
+        requested_match = re.search(r"\.requestedSpecies\s*=\s*(SPECIES_[A-Z0-9_]+)", body)
+        if not received_match:
+            continue
+        trade_defs[trade_token] = {
+            "receivedSpeciesToken": received_match.group(1),
+            "requestedSpeciesToken": requested_match.group(1) if requested_match else "",
+        }
+
+    object_gfx_to_info = parse_object_event_gfx_to_info_symbol()
+    graphics_info_tables = parse_object_event_graphics_info_tables()
+    pic_tables = parse_object_event_pic_tables()
+    pic_symbol_to_png = parse_object_event_pic_symbol_to_png_path()
+
+    def _npc_gfx_png_path(gfx_token: str) -> str:
+        info_symbol = object_gfx_to_info.get(gfx_token, "")
+        if not info_symbol:
+            return ""
+        info = graphics_info_tables.get(info_symbol)
+        if not info:
+            return ""
+        pic_table_symbol = str(info.get("picTable", ""))
+        if not pic_table_symbol:
+            return ""
+        pic_table = pic_tables.get(pic_table_symbol)
+        if not pic_table:
+            return ""
+        pic_symbol = str(pic_table.get("picSymbol", ""))
+        if not pic_symbol:
+            return ""
+        return str(pic_symbol_to_png.get(pic_symbol, ""))
+
+    map_scripts = _iter_map_scripts()
+    map_script_blocks: Dict[str, Dict[str, str]] = {}
+    map_npc_gfx_by_script: Dict[str, Dict[str, str]] = {}
+    for map_script in map_scripts:
+        map_token = str(map_script["mapToken"])
+        normalized_map_token = _normalize_map_token(map_token)
+        scripts_text = str(map_script["scriptsText"])
+        script_blocks = _label_blocks(scripts_text)
+        map_script_blocks[map_token] = script_blocks
+        map_script_blocks.setdefault(normalized_map_token, script_blocks)
+
+        scripts_path = str(map_script.get("scriptsPath", ""))
+        map_json_path = ROOT / scripts_path.replace("scripts.inc", "map.json")
+        script_to_gfx: Dict[str, str] = {}
+        if map_json_path.is_file():
+            try:
+                map_data = json.loads(map_json_path.read_text(encoding="utf-8"))
+            except Exception:
+                map_data = {}
+            for event in map_data.get("object_events", []):
+                if not isinstance(event, dict):
+                    continue
+                if str(event.get("type", "")) != "object":
+                    continue
+                script_label = str(event.get("script", "")).strip()
+                gfx_token = str(event.get("graphics_id", "")).strip()
+                if not script_label or not gfx_token:
+                    continue
+                script_to_gfx.setdefault(script_label, gfx_token)
+            map_npc_gfx_by_script[map_token] = script_to_gfx
+            map_npc_gfx_by_script.setdefault(normalized_map_token, script_to_gfx)
+
+    def _script_owner_for_event(map_token: str, script_label: str, label_blocks: Dict[str, str]) -> str:
+        script_map = map_npc_gfx_by_script.get(map_token, {})
+        if script_label in script_map:
+            return script_label
+
+        source_labels = [
+            label_name
+            for label_name, body in label_blocks.items()
+            if re.search(rf"\b(?:goto|call)\s+{re.escape(script_label)}\b", body)
+        ]
+        for source_label in source_labels:
+            if source_label in script_map:
+                return source_label
+        return source_labels[0] if source_labels else script_label
+
+    def _resolve_npc_for_script(map_token: str, script_label: str, label_blocks: Dict[str, str]) -> tuple[str, str]:
+        owner_label = _script_owner_for_event(map_token, script_label, label_blocks)
+        gfx_token = str(map_npc_gfx_by_script.get(map_token, {}).get(owner_label, ""))
+        if not gfx_token:
+            return "", ""
+        return gfx_token, _npc_gfx_png_path(gfx_token)
+
+    def _append_entry(
+        section_token: str,
+        map_token: str,
+        method: str,
+        received_species_token: str,
+        requested_species_token: str,
+        cost: int,
+        currency: str,
+        npc_gfx_token: str,
+        npc_icon_path: str,
+    ) -> None:
+        key = (
+            section_token,
+            map_token,
+            method,
+            received_species_token,
+            requested_species_token,
+            cost,
+            npc_gfx_token,
+        )
+        if key in seen:
+            return
+        seen.add(key)
+        out.setdefault(section_token, []).append(
+            {
+                "method": method,
+                "receivedSpeciesToken": received_species_token,
+                "requestedSpeciesToken": requested_species_token,
+                "receivedSpeciesName": species_names.get(received_species_token, pretty_token(received_species_token, "SPECIES_")),
+                "requestedSpeciesName": species_names.get(requested_species_token, pretty_token(requested_species_token, "SPECIES_")) if requested_species_token else "",
+                "cost": int(cost),
+                "currency": currency,
+                "npcGfxToken": npc_gfx_token,
+                "npcIconPath": npc_icon_path,
+            }
+        )
+
+    for map_script in map_scripts:
+        map_token = str(map_script["mapToken"])
+        section_token = _section_map_token_for_internal_map(map_token)
+        scripts_text = str(map_script["scriptsText"])
+        label_blocks = map_script_blocks.get(map_token, {})
+
+        # In-game NPC trades.
+        for script_label, body in label_blocks.items():
+            for trade_token in re.findall(r"setvar\s+VAR_0x8008,\s*(INGAME_TRADE_[A-Z0-9_]+)", body):
+                trade_meta = trade_defs.get(trade_token)
+                if not trade_meta:
+                    continue
+                npc_gfx_token, npc_icon_path = _resolve_npc_for_script(map_token, script_label, label_blocks)
+                _append_entry(
+                    section_token=section_token,
+                    map_token=map_token,
+                    method="trade",
+                    received_species_token=str(trade_meta.get("receivedSpeciesToken", "")),
+                    requested_species_token=str(trade_meta.get("requestedSpeciesToken", "")),
+                    cost=0,
+                    currency="",
+                    npc_gfx_token=npc_gfx_token,
+                    npc_icon_path=npc_icon_path,
+                )
+
+        # Scripted NPC gifts requested for the overview audit.
+        for script_label, body in label_blocks.items():
+            for species_token in ("SPECIES_EEVEE", "SPECIES_LAPRAS"):
+                if not re.search(rf"\bgivemon\s+{species_token}\s*,\s*\d+", body):
+                    continue
+                npc_gfx_token, npc_icon_path = _resolve_npc_for_script(map_token, script_label, label_blocks)
+                _append_entry(
+                    section_token=section_token,
+                    map_token=map_token,
+                    method="gift",
+                    received_species_token=species_token,
+                    requested_species_token="",
+                    cost=0,
+                    currency="",
+                    npc_gfx_token=npc_gfx_token,
+                    npc_icon_path=npc_icon_path,
+                )
+
+        # Route 4 Magikarp sale (single special paid gift event).
+        if re.search(r"\bgivemon\s+SPECIES_MAGIKARP\s*,\s*\d+", scripts_text) and re.search(
+            r"\b(?:checkmoney|removemoney)\s+MAGIKARP_PRICE\b",
+            scripts_text,
+        ):
+            cost_match = re.search(r"\.equ\s+MAGIKARP_PRICE,\s*(\d+)", scripts_text)
+            magikarp_cost = int(cost_match.group(1)) if cost_match else 500
+            owner_label = ""
+            for label_name in label_blocks:
+                if re.search(r"MagikarpSalesman", label_name):
+                    owner_label = label_name
+                    break
+            if not owner_label:
+                for label_name, body in label_blocks.items():
+                    if re.search(r"\bgivemon\s+SPECIES_MAGIKARP\s*,\s*\d+", body):
+                        owner_label = label_name
+                        break
+            npc_gfx_token, npc_icon_path = _resolve_npc_for_script(map_token, owner_label, label_blocks)
+            _append_entry(
+                section_token=section_token,
+                map_token=map_token,
+                method="sale",
+                received_species_token="SPECIES_MAGIKARP",
+                requested_species_token="",
+                cost=magikarp_cost,
+                currency="money",
+                npc_gfx_token=npc_gfx_token,
+                npc_icon_path=npc_icon_path,
+            )
+
+        # Oak's Lab starter gifts (player chooses one of three gifts).
+        if map_token == "PALLET_TOWN_PROFESSOR_OAKS_LAB" and re.search(
+            r"\bgivemon\s+PLAYER_STARTER_SPECIES\s*,\s*\d+",
+            scripts_text,
+        ):
+            oak_gfx = "OBJ_EVENT_GFX_PROF_OAK"
+            oak_icon = _npc_gfx_png_path(oak_gfx)
+            for starter_species in (
+                "SPECIES_BULBASAUR",
+                "SPECIES_CHARMANDER",
+                "SPECIES_SQUIRTLE",
+            ):
+                _append_entry(
+                    section_token=section_token,
+                    map_token=map_token,
+                    method="gift",
+                    received_species_token=starter_species,
+                    requested_species_token="",
+                    cost=0,
+                    currency="",
+                    npc_gfx_token=oak_gfx,
+                    npc_icon_path=oak_icon,
+                )
+
+    for entries in out.values():
+        entries.sort(
+            key=lambda e: (
+                str(e.get("method", "")).lower(),
+                str(e.get("receivedSpeciesName", "")).lower(),
+            )
+        )
+
+    return out
+
+
+@lru_cache(maxsize=1)
 def parse_npc_gift_items_by_section_map_token() -> Dict[str, List[Dict[str, object]]]:
     item_names = parse_item_names()
     out: Dict[str, List[Dict[str, object]]] = {}

@@ -25,6 +25,7 @@ from .parsing import (
     parse_move_tutors_by_section_map_token,
     parse_mon_symbol_to_png_path,
     parse_npc_gift_items_by_section_map_token,
+    parse_trade_gift_pokemon_by_section_map_token,
     parse_move_names,
     parse_tmhm_move_tokens_by_item_token,
     parse_move_types,
@@ -578,6 +579,7 @@ def build_model(section_filter: Optional[str]) -> Dict[str, object]:
     item_icon_paths = parse_item_icon_symbol_to_paths()
     map_items_by_token = parse_map_items_by_map()
     npc_gift_items_by_section_token = parse_npc_gift_items_by_section_map_token()
+    trade_gifts_by_section_token = parse_trade_gift_pokemon_by_section_map_token()
     shops_by_section_token = parse_shops_by_section_map_token()
     tutors_by_section_token = parse_move_tutors_by_section_map_token()
     trainer_pic_ids = parse_define_ints("include/constants/trainers.h", "TRAINER_PIC_")
@@ -1530,6 +1532,93 @@ def build_model(section_filter: Optional[str]) -> Dict[str, object]:
         )
         return rows
 
+    def collect_section_trade_gifts(section_name: str) -> List[Dict[str, object]]:
+        token = section_map_token(section_name)
+        if not token:
+            return []
+
+        rows = list(trade_gifts_by_section_token.get(token, []))
+
+        sect_cfg = section_overrides.get(section_name, {})
+        if isinstance(sect_cfg, dict):
+            extra_map_tokens = sect_cfg.get("tradeGiftMapTokens")
+            if isinstance(extra_map_tokens, (list, tuple)):
+                for extra_token in extra_map_tokens:
+                    normalized_extra = normalize_map_token(str(extra_token).strip())
+                    if normalized_extra:
+                        rows.extend(trade_gifts_by_section_token.get(normalized_extra, []))
+
+        normalized_rows: List[Dict[str, object]] = []
+        seen: set[tuple[str, str, str, int, str]] = set()
+        for row in rows:
+            received_species_token = str(row.get("receivedSpeciesToken", "")).strip()
+            requested_species_token = str(row.get("requestedSpeciesToken", "")).strip()
+            method = str(row.get("method", "")).strip().lower()
+            cost = int(row.get("cost", 0) or 0)
+
+            if not received_species_token:
+                continue
+
+            dedupe = (
+                method,
+                received_species_token,
+                requested_species_token,
+                cost,
+                str(row.get("npcGfxToken", "")).strip(),
+            )
+            if dedupe in seen:
+                continue
+            seen.add(dedupe)
+
+            normalized = dict(row)
+            normalized["receivedSpeciesName"] = species_names.get(
+                received_species_token,
+                pretty_token(received_species_token, "SPECIES_"),
+            )
+            normalized["receivedSpritePath"] = species_front_path(received_species_token)
+
+            if requested_species_token:
+                normalized["requestedSpeciesName"] = species_names.get(
+                    requested_species_token,
+                    pretty_token(requested_species_token, "SPECIES_"),
+                )
+                normalized["requestedSpritePath"] = species_front_path(requested_species_token)
+            else:
+                normalized["requestedSpeciesName"] = ""
+                normalized["requestedSpritePath"] = ""
+
+            normalized_rows.append(normalized)
+
+        method_order = {"gift": 0, "sale": 1, "trade": 2}
+        normalized_rows.sort(
+            key=lambda entry: (
+                method_order.get(str(entry.get("method", "")).lower(), 99),
+                str(entry.get("receivedSpeciesName", "")).lower(),
+            )
+        )
+        return normalized_rows
+
+    def section_hidden_trade_gifts(section_name: str) -> tuple[bool, set[int]]:
+        sect_cfg = section_overrides.get(section_name, {})
+        if not isinstance(sect_cfg, dict):
+            return False, set()
+        raw = sect_cfg.get("hideTradeGifts")
+        if raw is True:
+            return True, set()
+        if isinstance(raw, (list, tuple)):
+            indices: set[int] = set()
+            for item in raw:
+                if isinstance(item, bool):
+                    continue
+                try:
+                    index = int(item)
+                except (TypeError, ValueError):
+                    continue
+                if index >= 0:
+                    indices.add(index)
+            return False, indices
+        return False, set()
+
     def section_hidden_encounter_kinds(section_name: str) -> set:
         sect_cfg = section_overrides.get(section_name, {})
         if not isinstance(sect_cfg, dict):
@@ -1598,21 +1687,32 @@ def build_model(section_filter: Optional[str]) -> Dict[str, object]:
             return move_tutors
         return [tutor for idx, tutor in enumerate(move_tutors) if idx not in hidden_indices]
 
+    def apply_hidden_trade_gifts(trade_gifts: List[Dict[str, object]], hide_all: bool, hidden_indices: set[int]) -> List[Dict[str, object]]:
+        if hide_all:
+            return []
+        if not trade_gifts or not hidden_indices:
+            return trade_gifts
+        return [trade for idx, trade in enumerate(trade_gifts) if idx not in hidden_indices]
+
     section_items_by_name: Dict[str, List[Dict[str, object]]] = {}
     section_shops_by_name: Dict[str, List[Dict[str, object]]] = {}
+    section_trade_gifts_by_name: Dict[str, List[Dict[str, object]]] = {}
     section_tutors_by_name: Dict[str, List[Dict[str, object]]] = {}
     for name in ordered_section_names:
         hide_all_items, hidden_item_indices = section_hidden_items(name)
+        hide_all_trade_gifts, hidden_trade_gift_indices = section_hidden_trade_gifts(name)
         hide_all_tutors, hidden_tutor_indices = section_hidden_move_tutors(name)
         if name in merge_overrides:
             merge_cfg = merge_overrides.get(name, {})
             if isinstance(merge_cfg, dict):
                 combined_items: List[Dict[str, object]] = []
                 combined_shops: List[Dict[str, object]] = []
+                combined_trade_gifts: List[Dict[str, object]] = []
                 combined_tutors: List[Dict[str, object]] = []
                 for source in [str(s) for s in merge_cfg.get("sources", [])]:
                     combined_items.extend(collect_section_items(source))
                     combined_shops.extend(collect_section_shops(source))
+                    combined_trade_gifts.extend(collect_section_trade_gifts(source))
                     combined_tutors.extend(collect_section_move_tutors(source))
                 manual_items = merge_cfg.get("manualItems")
                 if isinstance(manual_items, (list, tuple)):
@@ -1625,6 +1725,11 @@ def build_model(section_filter: Optional[str]) -> Dict[str, object]:
                     hidden_item_indices,
                 )
                 section_shops_by_name[name] = combined_shops
+                section_trade_gifts_by_name[name] = apply_hidden_trade_gifts(
+                    combined_trade_gifts,
+                    hide_all_trade_gifts,
+                    hidden_trade_gift_indices,
+                )
                 section_tutors_by_name[name] = apply_hidden_move_tutors(
                     combined_tutors,
                     hide_all_tutors,
@@ -1637,6 +1742,11 @@ def build_model(section_filter: Optional[str]) -> Dict[str, object]:
             hidden_item_indices,
         )
         section_shops_by_name[name] = collect_section_shops(name)
+        section_trade_gifts_by_name[name] = apply_hidden_trade_gifts(
+            collect_section_trade_gifts(name),
+            hide_all_trade_gifts,
+            hidden_trade_gift_indices,
+        )
         section_tutors_by_name[name] = apply_hidden_move_tutors(
             collect_section_move_tutors(name),
             hide_all_tutors,
@@ -1695,6 +1805,7 @@ def build_model(section_filter: Optional[str]) -> Dict[str, object]:
                 "encounters": get_section_encounters(name, section_hidden_encounter_kinds(name)),
                 "items": section_items_by_name.get(name, []),
                 "shops": section_shops_by_name.get(name, []),
+                "tradeGifts": section_trade_gifts_by_name.get(name, []),
                 "moveTutors": section_tutors_by_name.get(name, []),
                 "trainers": sections[name],
                 "trainerGroups": trainer_groups.get(name, []),
