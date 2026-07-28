@@ -1348,10 +1348,14 @@ x Trainer Parties
         - Different colors
 	- Under trainer image
 x Show events
-- Route 14 Gen 4 mons
-- Local storage
+x Route 14 Gen 4 mons
+x Local storage
 - Hidden Power
-- Back to full party cards
+- Coin Case + Eevee
+- Elyssa/Saige sprites
+- Closer player sprites
+- Double battles
+
 
 
 
@@ -1398,6 +1402,8 @@ x No badge boosts
 / Documentation
 ---------------------------------------
 - Clean up
+- Fewer TMs in Dept store
+- Fewer trainer battles
 - Add Fairy type
 - Agatha's Flutter Mane
 - Max rematch

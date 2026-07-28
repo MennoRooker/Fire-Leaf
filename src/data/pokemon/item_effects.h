@@ -51,7 +51,7 @@ static const u8 sItemEffect_FullHeal[6] = {
 
 static const u8 sItemEffect_Revive[7] = {
     [4] = ITEM4_REVIVE | ITEM4_HEAL_HP,
-    [6] = ITEM6_HEAL_HP_HALF,
+    [6] = ITEM6_HEAL_HP_QUARTER,
 };
 
 static const u8 sItemEffect_MaxRevive[7] = {

@@ -3860,26 +3860,34 @@ static const struct TrainerMonNoItemDefaultMoves sParty_TeamRocketGrunt21[] = {
 // ======================================================================================= //
 // ==================================== Route 16 East ==================================== //
 // ======================================================================================= //
-static const struct TrainerMonNoItemDefaultMoves sParty_YoungCoupleLeaJed[] = {
+static const struct TrainerMonNoItemDefaultMovesNatureAbility sParty_YoungCoupleLeaJed[] = {
     {
         .iv = 15,
         .lvl = 37,
         .species = SPECIES_RAPIDASH,
+        .nature = NATURE_MILD,
+        .abilitySlot = 0,
     },
     {
         .iv = 15,
         .lvl = 37,
         .species = SPECIES_NINETALES,
+        .nature = NATURE_TIMID,
+        .abilitySlot = 1,
     },
     {
         .iv = 15,
         .lvl = 37,
         .species = SPECIES_EXEGGUTOR,
+        .nature = NATURE_QUIET,
+        .abilitySlot = 0,
     },
     {
         .iv = 15,
         .lvl = 37,
         .species = SPECIES_HYPNO,
+        .nature = NATURE_QUIRKY,
+        .abilitySlot = 0,
     },
 };
 

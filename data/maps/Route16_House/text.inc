@@ -9,7 +9,7 @@ Route16_House_Text_ReceivedHM02FromGirl::
     .string "from the girl.$"
 
 Route16_House_Text_HowToUseFly::
-    .string "Press L to open the FLY map.\p"
+    .string "Press L to open the FLY map.\n"
     .string "(Requires RAINBOWBADGE)$"
 
 Route16_House_Text_ExplainHM02::
