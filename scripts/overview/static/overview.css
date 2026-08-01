@@ -675,6 +675,11 @@ h1 { margin: 0 0 8px 0; }
   color: #f5fbff;
 }
 
+.shop-card--pokemon-center .shop-card-head {
+  background: linear-gradient(180deg, #ef6b64 0%, #c93d3d 100%);
+  color: #fff5f5;
+}
+
 .shop-offer-list {
   padding: 4px 8px 8px;
 }
@@ -811,14 +816,14 @@ h1 { margin: 0 0 8px 0; }
 .trade-row {
   border: 2px solid var(--line);
   background: #fbf8ee;
-  padding: 8px 10px;
+  padding: 6px 10px;
 }
 
 .trade-content {
   min-width: 0;
   display: grid;
   gap: 6px;
-  padding-top: 13px;
+  padding-top: 0;
 }
 
 .trade-npc-icon {
@@ -828,7 +833,13 @@ h1 { margin: 0 0 8px 0; }
   object-fit: contain;
   flex: 0 0 auto;
   position: relative;
-  top: -4px;
+  top: -8px;
+}
+
+.trade-npc-icon--small {
+  width: 38px;
+  height: 38px;
+  top: 3px;
 }
 
 .trade-npc-icon--empty {
@@ -842,6 +853,7 @@ h1 { margin: 0 0 8px 0; }
   flex-wrap: wrap;
   gap: 9px;
   align-items: center;
+  margin-top: 0;
 }
 
 .trade-mon-icon {
@@ -852,6 +864,16 @@ h1 { margin: 0 0 8px 0; }
   flex: 0 0 auto;
 }
 
+.trade-mon-icon--bulbasaur-lower {
+  position: relative;
+  top: 3px;
+}
+
+.trade-mon-icon--charmander-lower {
+  position: relative;
+  top: 1px;
+}
+
 .trade-player-icon {
   width: 64px;
   height: 64px;
@@ -859,7 +881,13 @@ h1 { margin: 0 0 8px 0; }
   object-fit: contain;
   flex: 0 0 auto;
   position: relative;
-  top: -4px;
+  top: -8px;
+}
+
+.trade-player-choice {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
 }
 
 .trade-mon-side {
@@ -893,8 +921,18 @@ h1 { margin: 0 0 8px 0; }
   color: #8c4b33;
   position: relative;
   top: 5px;
-  margin-left: -4px;
-  margin-right: -4px;
+  margin-left: -1px;
+  margin-right: -1px;
+}
+
+.trade-sale-for {
+  font-size: 13px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #2d4d7d;
+  position: relative;
+  top: 5px;
 }
 
 .trade-option-sep {
@@ -918,7 +956,7 @@ h1 { margin: 0 0 8px 0; }
   color: #634729;
   padding: 2px 7px;
   position: relative;
-  top: 5px;
+  top: 0;
 }
 
 .trade-method--gift {

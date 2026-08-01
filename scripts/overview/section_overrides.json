@@ -272,6 +272,17 @@
       "mapToken": "CELADON_CITY_GAME_CORNER",
       "mapScaleMax": 0.6
     },
+    "Celadon City": {
+      "tradeGiftMapTokens": [
+        "CELADON_CITY_CONDOMINIUMS_ROOF_ROOM"
+      ],
+      "manualItems": [
+        {
+          "itemToken": "ITEM_COIN_CASE",
+          "quantity": 1
+        }
+      ]
+    },
     "Rocket Hideout B1F": {
       "mapScaleMax": 0.65
     },
@@ -467,6 +478,9 @@
     },
     "Mt. Ember Path": {
       "mapToken": "MT_EMBER_SUMMIT_PATH_2F"
+    },
+    "Two Island": {
+      "hideMoveTutors": [0, 1, 2]
     },
     "Cape Brink": {
       "mapToken": "TWO_ISLAND_CAPE_BRINK",

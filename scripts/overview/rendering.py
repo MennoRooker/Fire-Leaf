@@ -707,6 +707,15 @@ def render_trade_gifts_panel(trade_gifts: List[Dict[str, object]], has_trainers:
     green_icon_src = _npc_icon_data_url("OBJ_EVENT_GFX_GREEN_NORMAL")
 
     rows: List[str] = []
+
+    def _trade_mon_icon_class(species_token: str) -> str:
+        token = species_token.strip().upper()
+        if token == "SPECIES_BULBASAUR":
+            return "trade-mon-icon trade-mon-icon--bulbasaur-lower"
+        if token == "SPECIES_CHARMANDER":
+            return "trade-mon-icon trade-mon-icon--charmander-lower"
+        return "trade-mon-icon"
+
     for trade_entry in trade_gifts:
         method = str(trade_entry.get("method", "")).strip().lower()
         method_label = {
@@ -720,11 +729,17 @@ def render_trade_gifts_panel(trade_gifts: List[Dict[str, object]], has_trainers:
         npc_icon_src = _npc_icon_data_url(npc_gfx_token)
         if not npc_icon_src and npc_icon_path:
             npc_icon_src = asset_url(npc_icon_path)
+        trader_name_raw = str(trade_entry.get("traderName", "")).strip() or "NPC"
+        trader_slug = re.sub(r"[^a-z0-9]+", "-", trader_name_raw.lower()).strip("-")
+
         npc_label = npc_gfx_token or "Trade/gift NPC"
+        npc_icon_class = "trade-npc-icon"
+        if trader_slug in {"saige", "elyssa"}:
+            npc_icon_class += " trade-npc-icon--small"
         npc_icon_html = "<span class='trade-npc-icon trade-npc-icon--empty' aria-hidden='true'></span>"
         if npc_icon_src:
             npc_icon_html = (
-                f"<img class='trade-npc-icon' src='{html.escape(npc_icon_src)}' "
+                f"<img class='{npc_icon_class}' src='{html.escape(npc_icon_src)}' "
                 f"alt='{html.escape(npc_label)}' title='{html.escape(npc_label)}'>"
             )
 
@@ -736,11 +751,12 @@ def render_trade_gifts_panel(trade_gifts: List[Dict[str, object]], has_trainers:
             for idx, option in enumerate(received_options):
                 option_name_raw = str(option.get("speciesName", "Pokemon")).strip() or "Pokemon"
                 option_name = html.escape(option_name_raw)
+                option_species_token = str(option.get("speciesToken", "")).strip()
                 option_sprite_path = str(option.get("spritePath", "")).strip()
                 option_sprite_html = ""
                 if option_sprite_path:
                     option_sprite_html = (
-                        f"<img class='trade-mon-icon' src='{html.escape(asset_url(option_sprite_path))}' "
+                        f"<img class='{_trade_mon_icon_class(option_species_token)}' src='{html.escape(asset_url(option_sprite_path))}' "
                         f"alt='{option_name}' title='{option_name}'>"
                     )
                 if idx > 0:
@@ -753,10 +769,11 @@ def render_trade_gifts_panel(trade_gifts: List[Dict[str, object]], has_trainers:
             received_block_html = "".join(option_parts)
         else:
             received_sprite_path = str(trade_entry.get("receivedSpritePath", "")).strip()
+            received_species_token = str(trade_entry.get("receivedSpeciesToken", "")).strip()
             received_sprite_html = ""
             if received_sprite_path:
                 received_sprite_html = (
-                    f"<img class='trade-mon-icon' src='{html.escape(asset_url(received_sprite_path))}' "
+                    f"<img class='{_trade_mon_icon_class(received_species_token)}' src='{html.escape(asset_url(received_sprite_path))}' "
                     f"alt='{received_name}' title='{received_name}'>"
                 )
             received_block_html = (
@@ -768,9 +785,14 @@ def render_trade_gifts_panel(trade_gifts: List[Dict[str, object]], has_trainers:
         flow_parts: List[str] = [
             f"<span class='trade-method trade-method--{html.escape(method)}'>{html.escape(method_label)}</span>",
             npc_icon_html,
-            f"<span class='trade-verb'>{html.escape(str(trade_entry.get('traderName', '')).strip() or 'NPC')} GIVES</span>",
+            f"<span class='trade-verb'>{html.escape(trader_name_raw)} GIVES</span>",
             received_block_html,
         ]
+
+        if method == "sale":
+            cost = int(trade_entry.get("cost", 0) or 0)
+            if cost > 0:
+                flow_parts.append(f"<span class='trade-sale-for'>FOR ${cost:,}</span>")
 
         requested_name = str(trade_entry.get("requestedSpeciesName", "")).strip()
         requested_sprite_path = str(trade_entry.get("requestedSpritePath", "")).strip()
@@ -779,7 +801,7 @@ def render_trade_gifts_panel(trade_gifts: List[Dict[str, object]], has_trainers:
             requested_sprite_html = ""
             if requested_sprite_path:
                 requested_sprite_html = (
-                    f"<img class='trade-mon-icon' src='{html.escape(asset_url(requested_sprite_path))}' "
+                    f"<img class='{_trade_mon_icon_class(str(trade_entry.get('requestedSpeciesToken', '')).strip())}' src='{html.escape(asset_url(requested_sprite_path))}' "
                     f"alt='{requested_name_escaped}' title='{requested_name_escaped}'>"
                 )
             red_icon_html = ""
@@ -796,9 +818,9 @@ def render_trade_gifts_panel(trade_gifts: List[Dict[str, object]], has_trainers:
                 )
             flow_parts.extend(
                 [
-                    red_icon_html,
-                    "<span class='trade-or'>/</span>",
-                    green_icon_html,
+                    "<span class='trade-player-choice'>"
+                    f"{red_icon_html}<span class='trade-or'>/</span>{green_icon_html}"
+                    "</span>",
                     "<span class='trade-verb'>PLAYER GIVES</span>",
                     "<span class='trade-mon-side trade-mon-side--give'>"
                     f"{requested_sprite_html}<span class='trade-mon-name'>{requested_name_escaped}</span>"
@@ -806,13 +828,8 @@ def render_trade_gifts_panel(trade_gifts: List[Dict[str, object]], has_trainers:
                 ]
             )
 
-        details_parts: List[str] = []
-        if method == "sale":
-            cost = int(trade_entry.get("cost", 0) or 0)
-            if cost > 0:
-                details_parts.append(f"<span class='trade-detail trade-detail--cost'>${cost:,}</span>")
-
-        details_html = "".join(details_parts)
+        details_html = ""
+        trade_meta_html = f"<div class='trade-meta'>{details_html}</div>" if details_html else ""
 
         rows.append(
             "<div class='trade-row'>"
@@ -820,7 +837,7 @@ def render_trade_gifts_panel(trade_gifts: List[Dict[str, object]], has_trainers:
             "<div class='trade-flow'>"
             f"{''.join(flow_parts)}"
             "</div>"
-            f"<div class='trade-meta'>{details_html}</div>"
+            f"{trade_meta_html}"
             "</div>"
             "</div>"
         )

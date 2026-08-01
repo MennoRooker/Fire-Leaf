@@ -584,6 +584,13 @@ def build_model(section_filter: Optional[str]) -> Dict[str, object]:
     tutors_by_section_token = parse_move_tutors_by_section_map_token()
     trainer_pic_ids = parse_define_ints("include/constants/trainers.h", "TRAINER_PIC_")
     species_ids = parse_define_ints("include/constants/species.h", "SPECIES_")
+    pokemon_define_ints = parse_define_ints("include/constants/pokemon.h", "")
+    type_ids = parse_define_ints("include/constants/pokemon.h", "TYPE_")
+    type_token_by_id = {value: token for token, value in type_ids.items()}
+    max_per_stat_ivs = int(pokemon_define_ints.get("MAX_PER_STAT_IVS", 31))
+    use_random_ivs = int(pokemon_define_ints.get("USE_RANDOM_IVS", max_per_stat_ivs + 1))
+    number_of_mon_types = int(pokemon_define_ints.get("NUMBER_OF_MON_TYPES", 18))
+    type_mystery_id = int(type_ids.get("TYPE_MYSTERY", 9))
     trainer_front_syms = parse_ordered_trainer_front_symbols()
     mon_front_syms = parse_ordered_species_front_symbols()
     trainer_sym_to_png = parse_trainer_symbol_to_png_path()
@@ -790,6 +797,44 @@ def build_model(section_filter: Optional[str]) -> Dict[str, object]:
         for ch in text:
             total = (total + charmap_single_byte.get(ch, ord(ch) & 0xFF)) & 0xFFFFFFFF
         return total
+
+    def resolve_int_token(value: object) -> Optional[int]:
+        token = str(value).strip()
+        if not token:
+            return None
+        if re.fullmatch(r"-?\d+", token):
+            return int(token, 10)
+        if re.fullmatch(r"0x[0-9a-fA-F]+", token):
+            return int(token, 16)
+        mapped = pokemon_define_ints.get(token)
+        if mapped is not None:
+            return int(mapped)
+        return None
+
+    def hidden_power_type_from_trainer_iv(iv_value: Optional[int]) -> str:
+        # Matches CalcHiddenPowerTypeFromIVs in src/pokemon.c.
+        if iv_value is None or iv_value >= use_random_ivs:
+            return "TYPE_MYSTERY"
+
+        hp_iv = iv_value
+        attack_iv = iv_value
+        defense_iv = iv_value
+        speed_iv = iv_value
+        sp_attack_iv = iv_value
+        sp_defense_iv = iv_value
+
+        type_bits = (hp_iv & 1)
+        type_bits += (attack_iv & 1) * 2
+        type_bits += (defense_iv & 1) * 4
+        type_bits += (speed_iv & 1) * 8
+        type_bits += (sp_attack_iv & 1) * 16
+        type_bits += (sp_defense_iv & 1) * 32
+
+        hidden_power_type_id = ((number_of_mon_types - 3) * type_bits) // 63 + 1
+        if hidden_power_type_id >= type_mystery_id:
+            hidden_power_type_id += 1
+
+        return type_token_by_id.get(hidden_power_type_id, "TYPE_MYSTERY")
 
     def level_up_default_moves(species_token: str, level: int) -> List[str]:
         entries = level_up_learnsets.get(species_token, [])
@@ -1165,10 +1210,15 @@ def build_model(section_filter: Optional[str]) -> Dict[str, object]:
                     mon_obj["itemPalettePath"] = str(item_icon_paths.get("palettes", {}).get(palette_symbol, ""))
 
             for move_token in move_tokens:
+                move_type = move_types.get(move_token, "")
+                if move_token == "MOVE_HIDDEN_POWER":
+                    hidden_power_type = hidden_power_type_from_trainer_iv(resolve_int_token(mon.get("iv", "")))
+                    if hidden_power_type:
+                        move_type = hidden_power_type
                 mon_obj["moves"].append({
                     "token": move_token,
                     "name": move_names.get(move_token, pretty_token(move_token, "MOVE_")),
-                    "type": move_types.get(move_token, ""),
+                    "type": move_type,
                 })
 
             trainer_obj["mons"].append(mon_obj)
@@ -1406,11 +1456,33 @@ def build_model(section_filter: Optional[str]) -> Dict[str, object]:
         token = str(record.get("mapToken", ""))
         return normalize_map_token(token) if token else ""
 
+    def shop_section_token_for_map_token(map_token: str) -> str:
+        token = normalize_map_token(map_token)
+        if token.endswith("_MART"):
+            return token[: -len("_MART")]
+        if "_DEPARTMENT_STORE_" in token:
+            return token.split("_DEPARTMENT_STORE_", 1)[0]
+        if "_GAME_CORNER_" in token:
+            return token.split("_GAME_CORNER_", 1)[0]
+        if token.startswith("INDIGO_PLATEAU_"):
+            return "INDIGO_PLATEAU"
+        return token
     def collect_section_shops(section_name: str) -> List[Dict[str, object]]:
+        def _shop_variant_sort_key(variant_label: str) -> tuple[int, str]:
+            token = variant_label.strip().lower()
+            if not token:
+                return (0, "")
+            if token == "initial":
+                return (1, token)
+            expanded_match = re.fullmatch(r"expanded\s+(\d+)", token)
+            if expanded_match:
+                return (2 + int(expanded_match.group(1)), token)
+            return (100, token)
+
         token = section_map_token(section_name)
         rows: List[Dict[str, object]] = []
         if token:
-            rows.extend(shops_by_section_token.get(token, []))
+            rows.extend(shops_by_section_token.get(shop_section_token_for_map_token(token), []))
 
         sect_cfg = section_overrides.get(section_name, {})
         if isinstance(sect_cfg, dict):
@@ -1468,7 +1540,7 @@ def build_model(section_filter: Optional[str]) -> Dict[str, object]:
             key=lambda entry: (
                 str(entry.get("locationLabel", "")).lower(),
                 str(entry.get("shopLabel", "")).lower(),
-                str(entry.get("variantLabel", "")).lower(),
+                _shop_variant_sort_key(str(entry.get("variantLabel", ""))),
             )
         )
         return rows

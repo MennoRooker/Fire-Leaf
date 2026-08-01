@@ -450,6 +450,9 @@ def _shop_variant_label(table_label: str) -> str:
 
 def _shop_location_label(map_token: str) -> str:
     token = _normalize_map_token(map_token)
+    compact_token = token.replace("_", "")
+    if compact_token == "INDIGOPLATEAUPOKEMONCENTER1F":
+        return "Indigo Plateau Pokemon Center"
     if "_DEPARTMENT_STORE_" in token:
         floor = token.split("_DEPARTMENT_STORE_", 1)[1].replace("_", "")
         return f"Department Store {floor}"
@@ -487,6 +490,9 @@ def parse_shops_by_section_map_token() -> Dict[str, List[Dict[str, object]]]:
                 location_label = _shop_location_label(map_token)
                 shop_label = _shop_label_from_script_name(script_label, table_label)
                 variant_label = _shop_variant_label(table_label)
+                normalized_map_token = _normalize_map_token(map_token)
+                compact_map_token = normalized_map_token.replace("_", "")
+                theme = "pokemon-center" if compact_map_token == "INDIGOPLATEAUPOKEMONCENTER1F" else ""
                 dedupe_key = (section_token, location_label, shop_label, variant_label)
                 if dedupe_key in seen_shop_keys:
                     continue
@@ -509,6 +515,7 @@ def parse_shops_by_section_map_token() -> Dict[str, List[Dict[str, object]]]:
                         "locationLabel": location_label,
                         "shopLabel": shop_label,
                         "variantLabel": variant_label,
+                        "theme": theme,
                         "currency": "money",
                         "offers": offers,
                     }

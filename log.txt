@@ -1353,9 +1353,7 @@ x Local storage
 - Hidden Power
 - Coin Case + Eevee
 - Elyssa/Saige sprites
-- Closer player sprites
 - Double battles
-
 
 
 
