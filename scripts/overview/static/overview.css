@@ -486,6 +486,10 @@ h1 { margin: 0 0 8px 0; }
 .enc-panel--rock-smash .enc-kind-head { background: #c8b7a1; }
 .enc-panel--surf .enc-kind-head { background: #bcdfff; }
 .enc-panel--fishing .enc-kind-head { background: #7fb0e3; }
+.enc-panel--static-mons .enc-kind-head {
+  background: var(--section-head-bg);
+  color: var(--section-head-color, var(--ink));
+}
 .enc-grid { width: 100%; border-collapse: collapse; font-size: 14px; }
 .enc-grid th, .enc-grid td { border-bottom: 1px solid var(--enc-grid-line); padding: 4px 6px; }
 .enc-grid tbody tr { height: 40px; }
@@ -519,6 +523,40 @@ h1 { margin: 0 0 8px 0; }
     image-rendering: pixelated;
     vertical-align: middle;
     margin-right: 5px;
+}
+.static-mon-grid {
+  padding: 14px 12px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px;
+}
+.static-mon-card {
+  border: 2px solid var(--enc-line);
+  background: #ffffff;
+  min-height: 260px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 14px 10px;
+}
+.static-mon-sprite {
+  width: 128px;
+  height: 128px;
+  image-rendering: pixelated;
+  margin-bottom: 8px;
+}
+.static-mon-species {
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+}
+.static-mon-meta {
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.2;
 }
 .enc-placeholder {
     padding: 14px 10px;
@@ -963,6 +1001,12 @@ h1 { margin: 0 0 8px 0; }
   background: #f2e5ba;
   border-color: #9b7e34;
   color: #6e5517;
+}
+
+.trade-method--reward {
+  background: #e1f0cf;
+  border-color: #6f8c42;
+  color: #405f1f;
 }
 
 .trade-method--sale {

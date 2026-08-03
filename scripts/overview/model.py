@@ -869,6 +869,107 @@ def build_model(section_filter: Optional[str]) -> Dict[str, object]:
                 return by_map[candidate]
         return None
 
+    def collect_manual_encounter_panels(section_name: str) -> Dict[str, List[Dict[str, object]]]:
+        sect_cfg = section_overrides.get(section_name, {})
+        if not isinstance(sect_cfg, dict):
+            return {"left": [], "right": []}
+
+        raw_panels = sect_cfg.get("manualEncounters")
+        if not isinstance(raw_panels, (list, tuple)):
+            return {"left": [], "right": []}
+
+        left_panels: List[Dict[str, object]] = []
+        right_panels: List[Dict[str, object]] = []
+
+        for raw_panel in raw_panels:
+            if not isinstance(raw_panel, dict):
+                continue
+
+            title = str(raw_panel.get("title", "STATIC")).strip() or "STATIC"
+            kind = str(raw_panel.get("kind", "land_mons")).strip() or "land_mons"
+            placement = str(raw_panel.get("placement", "left")).strip().lower()
+
+            try:
+                encounter_rate = int(raw_panel.get("encounterRate", 0) or 0)
+            except (TypeError, ValueError):
+                encounter_rate = 0
+
+            slots: List[Dict[str, object]] = []
+            raw_slots = raw_panel.get("slots")
+            if isinstance(raw_slots, (list, tuple)):
+                for raw_slot in raw_slots:
+                    if not isinstance(raw_slot, dict):
+                        continue
+
+                    species_token = str(raw_slot.get("speciesToken", "")).strip()
+                    species_name = str(raw_slot.get("speciesName", "")).strip()
+                    sprite_path = str(raw_slot.get("spritePath", "")).strip()
+                    if species_token:
+                        species_name = species_names.get(species_token, pretty_token(species_token, "SPECIES_"))
+                        sprite_path = species_front_path(species_token)
+
+                    if not species_name:
+                        continue
+
+                    level_label = str(raw_slot.get("level", "")).strip()
+                    if not level_label:
+                        try:
+                            min_level = int(raw_slot.get("minLevel", 0) or 0)
+                            max_level = int(raw_slot.get("maxLevel", min_level) or min_level)
+                        except (TypeError, ValueError):
+                            min_level = 0
+                            max_level = 0
+
+                        if min_level > 0 and max_level > 0:
+                            level_label = f"{min_level}-{max_level}" if min_level != max_level else str(min_level)
+                        elif min_level > 0:
+                            level_label = str(min_level)
+                        else:
+                            level_label = "-"
+
+                    try:
+                        rarity = int(raw_slot.get("rarity", 0) or 0)
+                    except (TypeError, ValueError):
+                        rarity = 0
+
+                    rate_label = str(raw_slot.get("rateLabel", "")).strip()
+                    held_item_token = str(raw_slot.get("heldItemToken", "")).strip()
+                    held_item_name = str(raw_slot.get("heldItemName", "")).strip()
+                    if held_item_token:
+                        held_item_name = item_names.get(held_item_token, pretty_token(held_item_token, "ITEM_"))
+
+                    slot_obj: Dict[str, object] = {
+                        "rarity": rarity,
+                        "speciesName": species_name,
+                        "sprite": sprite_path or "graphics/pokemon/question_mark/circled/front.png",
+                        "level": level_label,
+                    }
+                    if rate_label:
+                        slot_obj["rateLabel"] = rate_label
+                    if held_item_name:
+                        slot_obj["heldItemName"] = held_item_name
+                    slots.append(slot_obj)
+
+            if not slots:
+                continue
+
+            panel = {
+                "kind": kind,
+                "title": title,
+                "encounterRate": encounter_rate,
+                "slots": slots,                
+                "isStaticPanel": kind == "static_mons" or title.upper().startswith("STATIC"),
+            }
+            if placement == "right":
+                right_panels.append(panel)
+            else:
+                left_panels.append(panel)
+
+        return {
+            "left": left_panels,
+            "right": right_panels,
+        }
+
     def get_section_encounters(section_name: str, hidden_kinds: Optional[set] = None) -> Optional[Dict[str, object]]:
         hidden_kinds = hidden_kinds or set()
         if hidden_kinds.issuperset(ENCOUNTER_KIND_ORDER):
@@ -882,6 +983,7 @@ def build_model(section_filter: Optional[str]) -> Dict[str, object]:
         if resolve_section_theme(section_name).startswith("gym") or re.search(r"\bgym\b", section_name.lower()):
             return None
 
+        manual_panels = collect_manual_encounter_panels(section_name)
         preferred_map_token = override_encounters_map_token(section_name)
         chosen = resolve_wild_encounter(preferred_map_token)
 
@@ -904,69 +1006,73 @@ def build_model(section_filter: Optional[str]) -> Dict[str, object]:
                 if score >= 0:
                     candidates.append((score, map_token))
 
-            if not candidates:
-                return None
+            if candidates:
+                candidates.sort(key=lambda x: (x[0], len(x[1])), reverse=True)
+                chosen = resolve_wild_encounter(candidates[0][1])
 
-            candidates.sort(key=lambda x: (x[0], len(x[1])), reverse=True)
-            chosen = resolve_wild_encounter(candidates[0][1])
-
-        if chosen is None:
+        if chosen is None and not (manual_panels["left"] or manual_panels["right"]):
             return None
 
         left_panels: List[Dict[str, object]] = []
         right_panels: List[Dict[str, object]] = []
 
-        for encounter_kind in ENCOUNTER_KIND_ORDER:
-            if encounter_kind in hidden_kinds:
-                continue
-            kind_data = chosen.get("types", {}).get(encounter_kind)
-            if not kind_data:
-                continue
-            slots: List[Dict[str, object]] = []
-            rates = wild_encounters["ratesByType"].get(encounter_kind, [])
-            for idx, mon in enumerate(kind_data.get("mons", [])):
-                species_token = str(mon.get("species", "SPECIES_NONE"))
-                min_level = int(mon.get("min_level", 0))
-                max_level = int(mon.get("max_level", 0))
-                slots.append(
-                    {
-                        "rarity": rates[idx] if idx < len(rates) else 0,
-                        "speciesName": species_names.get(species_token, pretty_token(species_token, "SPECIES_")),
-                        "sprite": species_front_path(species_token),
-                        "level": f"{min_level}-{max_level}" if min_level != max_level else str(min_level),
-                    }
-                )
-            if not slots:
-                continue
+        if chosen is not None:
+            for encounter_kind in ENCOUNTER_KIND_ORDER:
+                if encounter_kind in hidden_kinds:
+                    continue
+                kind_data = chosen.get("types", {}).get(encounter_kind)
+                if not kind_data:
+                    continue
+                slots: List[Dict[str, object]] = []
+                rates = wild_encounters["ratesByType"].get(encounter_kind, [])
+                for idx, mon in enumerate(kind_data.get("mons", [])):
+                    species_token = str(mon.get("species", "SPECIES_NONE"))
+                    min_level = int(mon.get("min_level", 0))
+                    max_level = int(mon.get("max_level", 0))
+                    slots.append(
+                        {
+                            "rarity": rates[idx] if idx < len(rates) else 0,
+                            "speciesName": species_names.get(species_token, pretty_token(species_token, "SPECIES_")),
+                            "sprite": species_front_path(species_token),
+                            "level": f"{min_level}-{max_level}" if min_level != max_level else str(min_level),
+                        }
+                    )
+                if not slots:
+                    continue
 
-            panel = {
-                "kind": encounter_kind,
-                "title": ENCOUNTER_KIND_TITLES.get(encounter_kind, encounter_kind),
-                "encounterRate": kind_data.get("encounterRate", 0),
-                "slots": slots,
-            }
-            if encounter_kind == "fishing_mons":
-                rod_groups: List[Dict[str, object]] = []
-                if slots[:2]:
-                    rod_groups.append({"label": "Old Rod", "icon": "graphics/items/icons/old_rod.png", "slots": slots[:2]})
-                if slots[2:5]:
-                    rod_groups.append({"label": "Good Rod", "icon": "graphics/items/icons/good_rod.png", "slots": slots[2:5]})
-                if slots[5:]:
-                    rod_groups.append({"label": "Super Rod", "icon": "graphics/items/icons/super_rod.png", "slots": slots[5:]})
-                if rod_groups:
-                    panel["rodGroups"] = rod_groups
+                panel = {
+                    "kind": encounter_kind,
+                    "title": ENCOUNTER_KIND_TITLES.get(encounter_kind, encounter_kind),
+                    "encounterRate": kind_data.get("encounterRate", 0),
+                    "slots": slots,
+                }
+                if encounter_kind == "fishing_mons":
+                    rod_groups: List[Dict[str, object]] = []
+                    if slots[:2]:
+                        rod_groups.append({"label": "Old Rod", "icon": "graphics/items/icons/old_rod.png", "slots": slots[:2]})
+                    if slots[2:5]:
+                        rod_groups.append({"label": "Good Rod", "icon": "graphics/items/icons/good_rod.png", "slots": slots[2:5]})
+                    if slots[5:]:
+                        rod_groups.append({"label": "Super Rod", "icon": "graphics/items/icons/super_rod.png", "slots": slots[5:]})
+                    if rod_groups:
+                        panel["rodGroups"] = rod_groups
 
-            if encounter_kind in ("land_mons", "rock_smash_mons"):
-                left_panels.append(panel)
-            else:
-                right_panels.append(panel)
+                if encounter_kind in ("land_mons", "rock_smash_mons"):
+                    left_panels.append(panel)
+                else:
+                    right_panels.append(panel)
+
+        if manual_panels["left"]:
+            left_panels = manual_panels["left"] + left_panels
+        if manual_panels["right"]:
+            right_panels = manual_panels["right"] + right_panels
 
         has_land_family = bool(left_panels)
         has_aquatic_family = bool(right_panels)
         if not (has_land_family or has_aquatic_family):
             return None
         return {
-            "map": chosen.get("map", ""),
+            "map": chosen.get("map", "") if chosen else "",
             "mode": "dual" if has_land_family and has_aquatic_family else "single",
             "hasLandFamily": has_land_family,
             "hasAquaticFamily": has_aquatic_family,
@@ -1620,6 +1726,37 @@ def build_model(section_filter: Optional[str]) -> Dict[str, object]:
                     if normalized_extra:
                         rows.extend(trade_gifts_by_section_token.get(normalized_extra, []))
 
+            manual_trade_gifts = sect_cfg.get("manualTradeGifts")
+            if isinstance(manual_trade_gifts, (list, tuple)):
+                for manual_row in manual_trade_gifts:
+                    if not isinstance(manual_row, dict):
+                        continue
+                    received_species_token = str(manual_row.get("receivedSpeciesToken", "")).strip()
+                    if not received_species_token:
+                        continue
+
+                    method = str(manual_row.get("method", "gift")).strip().lower() or "gift"
+                    requested_species_token = str(manual_row.get("requestedSpeciesToken", "")).strip()
+                    try:
+                        cost = int(manual_row.get("cost", 0) or 0)
+                    except (TypeError, ValueError):
+                        cost = 0
+
+                    rows.append(
+                        {
+                            "method": method,
+                            "receivedSpeciesToken": received_species_token,
+                            "requestedSpeciesToken": requested_species_token,
+                            "cost": max(0, cost),
+                            "currency": str(manual_row.get("currency", "")).strip(),
+                            "npcGfxToken": str(manual_row.get("npcGfxToken", "")).strip(),
+                            "npcIconPath": str(manual_row.get("npcIconPath", "")).strip(),
+                            "traderName": str(manual_row.get("traderName", "")).strip(),
+                            "verbText": str(manual_row.get("verbText", "")).strip(),
+                            "suffixText": str(manual_row.get("suffixText", "")).strip(),
+                        }
+                    )
+
         normalized_rows: List[Dict[str, object]] = []
         seen: set[tuple[str, str, str, int, str]] = set()
         for row in rows:
@@ -1658,6 +1795,14 @@ def build_model(section_filter: Optional[str]) -> Dict[str, object]:
             else:
                 normalized["requestedSpeciesName"] = ""
                 normalized["requestedSpritePath"] = ""
+
+            verb_text = str(row.get("verbText", "")).strip()
+            if verb_text:
+                normalized["verbText"] = verb_text
+
+            suffix_text = str(row.get("suffixText", "")).strip()
+            if suffix_text:
+                normalized["suffixText"] = suffix_text
 
             normalized_rows.append(normalized)
 
@@ -1700,7 +1845,7 @@ def build_model(section_filter: Optional[str]) -> Dict[str, object]:
             normalized_rows = [row for row in normalized_rows if row not in starter_rows]
             normalized_rows.append(combined_starter_row)
 
-        method_order = {"gift": 0, "sale": 1, "trade": 2}
+        method_order = {"gift": 0, "reward": 1, "sale": 2, "trade": 3}
         normalized_rows.sort(
             key=lambda entry: (
                 method_order.get(str(entry.get("method", "")).lower(), 99),

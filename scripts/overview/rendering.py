@@ -404,13 +404,43 @@ def render_trainer_card(trainer: Dict[str, object], type_icons: Dict[str, Dict[s
 
 def render_encounter_panel(panel: Dict[str, object], asset_url, templates: Dict[str, str]) -> str:
     kind = str(panel.get("kind", ""))
+    if kind == "static_mons":
+        card_chunks: List[str] = []
+        for slot in panel.get("slots", []):
+            species_name = html.escape(str(slot.get("speciesName", "")))
+            sprite_url = html.escape(asset_url(str(slot.get("sprite", ""))))
+            level = html.escape(str(slot.get("level", "-")))
+            held_item_name = str(slot.get("heldItemName", "")).strip()
+            item_row_html = ""
+            if held_item_name:
+                item_row_html = f"<div class='static-mon-meta'>ITEM: {html.escape(held_item_name)}</div>"
+            card_chunks.append(
+                "<article class='static-mon-card'>"
+                f"<img class='static-mon-sprite' src='{sprite_url}' alt='{species_name}'>"
+                f"<div class='static-mon-species'>{species_name}</div>"
+                f"<div class='static-mon-meta'>Lv. {level}</div>"
+                f"{item_row_html}"
+                "</article>"
+            )
+
+        return (
+            "<section class='enc-panel enc-panel--static-mons'>"
+            f"<div class='enc-kind-head'>{html.escape(str(panel.get('title', 'STATIC')))}</div>"
+            "<div class='static-mon-grid'>"
+            + "".join(card_chunks)
+            + "</div></section>"
+        )
+
     is_non_land = kind != "land_mons"
     panel_class = {
         "land_mons": "enc-panel--land",
         "rock_smash_mons": "enc-panel--rock-smash",
         "water_mons": "enc-panel--surf",
         "fishing_mons": "enc-panel--fishing",
+        "static_mons": "enc-panel--static-mons",
     }.get(kind, "enc-panel--default")
+    if panel.get("isStaticPanel"):
+        panel_class = f"{panel_class} enc-panel--static"
 
     def get_rarity_class(rarity: int) -> str:
         if is_non_land:
@@ -428,13 +458,14 @@ def render_encounter_panel(panel: Dict[str, object], asset_url, templates: Dict[
 
     def render_slot_row(slot: Dict[str, object], slot_row_index: int) -> str:
         rarity = int(slot.get("rarity", 0))
+        rarity_label = str(slot.get("rateLabel", "")).strip() or f"{rarity}%"
         row_stripe_class = "enc-slot-even" if (slot_row_index + 1) % 2 == 0 else "enc-slot-odd"
         return render_template(
             templates["encounter_slot_row"],
             {
                 "__ROW_STRIPE_CLASS__": row_stripe_class,
                 "__RARITY_CLASS__": get_rarity_class(rarity),
-                "__RARITY__": html.escape(f"{rarity}%"),
+                "__RARITY__": html.escape(rarity_label),
                 "__SPRITE_URL__": html.escape(asset_url(str(slot["sprite"]))),
                 "__SPECIES_NAME__": html.escape(str(slot["speciesName"])),
                 "__LEVEL__": html.escape(str(slot["level"])),
@@ -720,6 +751,7 @@ def render_trade_gifts_panel(trade_gifts: List[Dict[str, object]], has_trainers:
         method = str(trade_entry.get("method", "")).strip().lower()
         method_label = {
             "gift": "GIFT",
+            "reward": "REWARD",
             "sale": "SALE",
             "trade": "TRADE",
         }.get(method, "SPECIAL")
@@ -782,12 +814,23 @@ def render_trade_gifts_panel(trade_gifts: List[Dict[str, object]], has_trainers:
                 "</span>"
             )
 
+        verb_text = str(trade_entry.get("verbText", "")).strip()
+        if not verb_text:
+            if method == "reward":
+                verb_text = f"{trader_name_raw} GIVES AFTER DEFEAT"
+            else:
+                verb_text = f"{trader_name_raw} GIVES"
+
         flow_parts: List[str] = [
             f"<span class='trade-method trade-method--{html.escape(method)}'>{html.escape(method_label)}</span>",
             npc_icon_html,
-            f"<span class='trade-verb'>{html.escape(trader_name_raw)} GIVES</span>",
+            f"<span class='trade-verb'>{html.escape(verb_text)}</span>",
             received_block_html,
         ]
+
+        suffix_text = str(trade_entry.get("suffixText", "")).strip()
+        if suffix_text:
+            flow_parts.append(f"<span class='trade-verb'>{html.escape(suffix_text)}</span>")
 
         if method == "sale":
             cost = int(trade_entry.get("cost", 0) or 0)

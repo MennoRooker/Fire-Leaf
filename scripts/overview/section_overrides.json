@@ -256,7 +256,7 @@
     },
     "Route 12 North": {
       "mapToken": "ROUTE12",
-      "crop": { "y0": 0.0, "y1": 0.60 },
+      "crop": { "y0": 0.0, "y1": 0.58 },
       "hideEncounters": ["land_mons"]
     },
     "Pokémon Tower 2F": {
@@ -265,8 +265,22 @@
     },
     "Route 16 East": {
       "mapToken": "ROUTE16",
-      "crop": { "x0": 0.45, "x1": 1.0 },
-      "hideItems": [0]
+      "crop": { "x0": 0.5, "x1": 1.0 },
+      "hideItems": [0],
+      "manualEncounters": [
+        {
+          "kind": "static_mons",
+          "title": "STATIC",
+          "placement": "left",
+          "slots": [
+            {
+              "speciesToken": "SPECIES_SNORLAX",
+              "level": "30",
+              "heldItemToken": "ITEM_CHESTO_BERRY"
+            }
+          ]
+        }
+      ]
     },
     "Game Corner": {
       "mapToken": "CELADON_CITY_GAME_CORNER",
@@ -308,24 +322,69 @@
       "mapToken": "POKEMON_TOWER_5F"
     },
     "Pokémon Tower 6F": {
-      "mapToken": "POKEMON_TOWER_6F"
+      "mapToken": "POKEMON_TOWER_6F",
+      "manualEncounters": [
+        {
+          "kind": "static_mons",
+          "title": "STATIC",
+          "placement": "left",
+          "slots": [
+            {
+              "speciesToken": "SPECIES_MAROWAK",
+              "level": "30"
+            }
+          ]
+        }
+      ]
     },
     "Pokémon Tower 7F": {
       "mapToken": "POKEMON_TOWER_7F"
     },
     "Saffron City Dojo": {
-      "mapScaleMax": 0.4
+      "mapScaleMax": 0.4,
+      "manualTradeGifts": [
+        {
+          "method": "reward",
+          "receivedSpeciesToken": "SPECIES_HITMONLEE",
+          "npcGfxToken": "OBJ_EVENT_GFX_BLACK_BELT",
+          "traderName": "KOICHI",
+          "verbText": "Koichie gives",
+          "suffixText": "after defeating him"
+        },
+        {
+          "method": "reward",
+          "receivedSpeciesToken": "SPECIES_HITMONCHAN",
+          "npcGfxToken": "OBJ_EVENT_GFX_BLACK_BELT",
+          "traderName": "KOICHI",
+          "verbText": "Koichie gives",
+          "suffixText": "after defeating him"
+        }
+      ]
     },
     "Route 12 South": {
       "mapToken": "ROUTE12",
-      "crop": { "y0": 0.60, "y1": 1.0 }
+      "crop": { "y0": 0.58, "y1": 1.0 },
+      "manualEncounters": [
+        {
+          "kind": "static_mons",
+          "title": "STATIC",
+          "placement": "left",
+          "slots": [
+            {
+              "speciesToken": "SPECIES_SNORLAX",
+              "level": "30",
+              "heldItemToken": "ITEM_CHESTO_BERRY"
+            }
+          ]
+        }
+      ]
     },
     "Route 14": {
       "fullHeight": true
     },
     "Route 16 West": {
       "mapToken": "ROUTE16",
-      "crop": { "x0": 0.0, "x1": 0.45 },
+      "crop": { "x0": 0.0, "x1": 0.5 },
       "hideEncounters": true,
       "mapScaleMax": 0.6,
       "hideItems": [1],
@@ -409,10 +468,52 @@
     "Route 10 Surf": {
       "mapToken": "ROUTE10",
       "crop": { "y0": 0.4, "y1": 0.63 },
-      "hideItems": [0, 1, 3, 4]
+      "hideItems": [0],
+      "manualEncounters": [
+        {
+          "kind": "static_mons",
+          "title": "STATIC",
+          "placement": "left",
+          "slots": [
+            {
+              "speciesToken": "SPECIES_SNORLAX",
+              "level": "30",
+              "heldItemToken": "ITEM_CHESTO_BERRY"
+            }
+          ]
+        }
+      ]
     },
     "Power Plant": {
-      "fullHeight": true
+      "fullHeight": true,
+      "manualEncounters": [
+        {
+          "kind": "static_mons",
+          "title": "STATIC",
+          "placement": "left",
+          "slots": [
+            {
+              "speciesToken": "SPECIES_ZAPDOS",
+              "level": "50"
+            }
+          ]
+        }
+      ]
+    },
+    "Seafoam Islands B4F": {
+      "manualEncounters": [
+        {
+          "kind": "static_mons",
+          "title": "STATIC",
+          "placement": "left",
+          "slots": [
+            {
+              "speciesToken": "SPECIES_ARTICUNO",
+              "level": "50"
+            }
+          ]
+        }
+      ]
     },
     "Route 19": {
       "stretchedHeight": 1.5
@@ -479,11 +580,26 @@
     "Mt. Ember Path": {
       "mapToken": "MT_EMBER_SUMMIT_PATH_2F"
     },
+    "Mt. Ember Summit": {
+      "manualEncounters": [
+        {
+          "kind": "static_mons",
+          "title": "STATIC",
+          "placement": "left",
+          "slots": [
+            {
+              "speciesToken": "SPECIES_MOLTRES",
+              "level": "50"
+            }
+          ]
+        }
+      ]
+    },
     "Two Island": {
       "hideMoveTutors": [0, 1, 2]
     },
     "Cape Brink": {
-      "mapToken": "TWO_ISLAND_CAPE_BRINK",
+          "title": "STATIC",
       "crop": { "y0": 0.3, "y1": 1.0 }
     },
     "Three Island Port": {

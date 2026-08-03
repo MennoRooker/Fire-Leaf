@@ -3937,7 +3937,6 @@ static const struct TrainerMonNoItemDefaultMoves sParty_TeamRocketGrunt9[] = {
     },
 };
 
-// ========================================= B2F ========================================= //
 static const struct TrainerMonNoItemCustomMoves sParty_TeamRocketGrunt10[] = {
     {
         .iv = 5,
@@ -4001,34 +4000,35 @@ static const struct TrainerMonNoItemCustomMoves sParty_TeamRocketGrunt12[] = {
     },
 };
 
+// ========================================= B2F ========================================= //
 static const struct TrainerMonNoItemCustomMoves sParty_TeamRocketGrunt13[] = {
     {
         .iv = 5,
-        .lvl = 29,
+        .lvl = 30,
         .species = SPECIES_GOLBAT,
         .moves = {MOVE_BITE, MOVE_ASTONISH, MOVE_SUPERSONIC, MOVE_LEECH_LIFE},
     },
     {
         .iv = 5,
-        .lvl = 29,
+        .lvl = 30,
         .species = SPECIES_CROCONAW,
         .moves = {MOVE_BITE, MOVE_WATER_PULSE, MOVE_DRAGON_CLAW, MOVE_COUNTER},
     },
     {
         .iv = 5,
-        .lvl = 29,
+        .lvl = 30,
         .species = SPECIES_KADABRA,
         .moves = {MOVE_PSYBEAM, MOVE_CALM_MIND, MOVE_HIDDEN_POWER, MOVE_SHOCK_WAVE},
     },
     {
         .iv = 5,
-        .lvl = 29,
+        .lvl = 30,
         .species = SPECIES_ELECTABUZZ,
         .moves = {MOVE_THUNDER_PUNCH, MOVE_FIRE_PUNCH, MOVE_ICE_PUNCH, MOVE_BRICK_BREAK},
     },
     {
         .iv = 5,
-        .lvl = 29,
+        .lvl = 30,
         .species = SPECIES_MAGMAR,
         .moves = {MOVE_FLAMETHROWER, MOVE_SMOKESCREEN, MOVE_SMOG, MOVE_PSYCHIC},
     },
@@ -4069,6 +4069,7 @@ static const struct TrainerMonNoItemDefaultMoves sParty_TeamRocketGrunt15[] = {
     },
 };
 
+// ========================================= B4F ========================================= //
 static const struct TrainerMonNoItemDefaultMoves sParty_TeamRocketGrunt16[] = {
     {
         .iv = 5,
@@ -4118,7 +4119,6 @@ static const struct TrainerMonNoItemDefaultMoves sParty_TeamRocketGrunt18[] = {
     },
 };
 
-// ========================================= B4F ========================================= //
 static const struct TrainerMonItemCustomMoves sParty_BossGiovanniRocketHideout[] = {
     {
         .iv = 8,
