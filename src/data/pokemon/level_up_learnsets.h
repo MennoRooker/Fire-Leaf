@@ -646,8 +646,7 @@ static const u16 sParasLevelUpLearnset[] = {
 
 static const u16 sParasectLevelUpLearnset[] = {
     LEVEL_UP_MOVE(1, MOVE_SCRATCH),
-    LEVEL_UP_MOVE(1, MOVE_STUN_SPORE),
-    LEVEL_UP_MOVE(1, MOVE_POISON_POWDER),
+    LEVEL_UP_MOVE(1, MOVE_SPORE),
     LEVEL_UP_MOVE(7, MOVE_STUN_SPORE),
     LEVEL_UP_MOVE(13, MOVE_POISON_POWDER),
     LEVEL_UP_MOVE(19, MOVE_LEECH_LIFE),

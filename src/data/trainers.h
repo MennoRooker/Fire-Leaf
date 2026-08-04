@@ -1120,7 +1120,7 @@ const struct Trainer gTrainers[] = {
         .items = {},
         .doubleBattle = FALSE,
         .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE,
-        .party = NO_ITEM_DEFAULT_MOVES(sParty_BugCatcherElijah),
+        .party = NO_ITEM_CUSTOM_MOVES(sParty_BugCatcherElijah),
     },
     [TRAINER_BUG_CATCHER_2] = {
         .trainerClass = TRAINER_CLASS_BUG_CATCHER,

@@ -212,6 +212,10 @@
         {
           "itemToken": "ITEM_VS_SEEKER",
           "quantity": 1
+        },
+        {
+          "itemToken": "ITEM_GOOD_ROD",
+          "quantity": 1
         }
       ],
       "itemMapTokens": [
@@ -310,7 +314,14 @@
       "mapScaleMax": 0.7
     },
     "Celadon City Gym": {
-      "mapScaleMax": 0.4
+      "mapScaleMax": 0.4,
+      "manualItems": [
+        {
+          "itemName": "TEA LEAVES",
+          "iconPath": "graphics/items/icons/tea_leaves.png",
+          "quantity": 1
+        }
+      ]
     },
     "Pokémon Tower 3F": {
       "mapToken": "POKEMON_TOWER_3F"
