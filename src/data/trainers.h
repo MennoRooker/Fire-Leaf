@@ -1540,7 +1540,7 @@ const struct Trainer gTrainers[] = {
         .items = {},
         .doubleBattle = FALSE,
         .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE,
-        .party = NO_ITEM_DEFAULT_MOVES(sParty_PicnickerAlicia),
+        .party = NO_ITEM_CUSTOM_MOVES(sParty_PicnickerAlicia),
     },
     [TRAINER_PICNICKER_CAITLIN] = {
         .trainerClass = TRAINER_CLASS_PICNICKER,
@@ -1550,7 +1550,7 @@ const struct Trainer gTrainers[] = {
         .items = {},
         .doubleBattle = FALSE,
         .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE,
-        .party = NO_ITEM_DEFAULT_MOVES(sParty_PicnickerCaitlin),
+        .party = NO_ITEM_DEFAULT_MOVES_NATURE_ABILITY(sParty_PicnickerCaitlin),
     },
     [TRAINER_PICNICKER_HEIDI] = {
         .trainerClass = TRAINER_CLASS_PICNICKER,
@@ -1860,7 +1860,7 @@ const struct Trainer gTrainers[] = {
         .items = {},
         .doubleBattle = FALSE,
         .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE,
-        .party = NO_ITEM_DEFAULT_MOVES(sParty_HikerBrice),
+        .party = NO_ITEM_CUSTOM_MOVES_NATURE_ABILITY(sParty_HikerBrice),
     },
     [TRAINER_HIKER_CLARK] = {
         .trainerClass = TRAINER_CLASS_HIKER,

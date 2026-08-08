@@ -2397,35 +2397,34 @@ static const struct TrainerMonItemCustomMovesNatureAbility sParty_LeaderLtSurge[
 // ======================================================================================= //
 // ======================================= Route 9 ======================================= //
 // ======================================================================================= //
-static const struct TrainerMonNoItemDefaultMoves sParty_PicnickerAlicia[] = {
+static const struct TrainerMonNoItemCustomMoves sParty_PicnickerAlicia[] = {
     {
         .iv = 3,
-        .lvl = 21,
-        .species = SPECIES_MEOWTH,
-    },
-    {
-        .iv = 3,
-        .lvl = 21,
+        .lvl = 23,
         .species = SPECIES_BELLSPROUT,
+        .moves = {MOVE_VINE_WHIP, MOVE_ACID, MOVE_GROWTH, MOVE_STUN_SPORE}
     },
     {
         .iv = 3,
-        .lvl = 21,
-        .species = SPECIES_ODDISH,
-    },
-    {
-        .iv = 3,
-        .lvl = 21,
+        .lvl = 22,
         .species = SPECIES_NUMEL,
+        .moves = {MOVE_MAGNITUDE, MOVE_EMBER, MOVE_REST, MOVE_GROWL}
+    },
+    {
+        .iv = 3,
+        .lvl = 22,
+        .species = SPECIES_MEOWTH,
+        .moves = {MOVE_BITE, MOVE_SCRATCH, MOVE_PAY_DAY, MOVE_GROWL},
+    },
+    {
+        .iv = 3,
+        .lvl = 23,
+        .species = SPECIES_ODDISH,
+        .moves = {MOVE_SLEEP_POWDER, MOVE_ABSORB, MOVE_ACID, MOVE_PROTECT}
     },
 };
 
 static const struct TrainerMonNoItemDefaultMoves sParty_PicnickerAliciaRematchAfterCeladon[] = {
-    {
-        .iv = 4,
-        .lvl = 30,
-        .species = SPECIES_MEOWTH,
-    },
     {
         .iv = 4,
         .lvl = 30,
@@ -2434,12 +2433,17 @@ static const struct TrainerMonNoItemDefaultMoves sParty_PicnickerAliciaRematchAf
     {
         .iv = 4,
         .lvl = 30,
-        .species = SPECIES_GLOOM,
+        .species = SPECIES_CAMERUPT,
     },
     {
         .iv = 4,
         .lvl = 30,
-        .species = SPECIES_CAMERUPT,
+        .species = SPECIES_MEOWTH,
+    },
+    {
+        .iv = 4,
+        .lvl = 30,
+        .species = SPECIES_GLOOM,
     },
 };
 
@@ -2447,22 +2451,22 @@ static const struct TrainerMonNoItemDefaultMoves sParty_PicnickerAliciaRematchAf
     {
         .iv = 6,
         .lvl = 36,
-        .species = SPECIES_PERSIAN,
-    },
-    {
-        .iv = 6,
-        .lvl = 36,
         .species = SPECIES_VICTREEBEL,
     },
     {
         .iv = 6,
         .lvl = 36,
-        .species = SPECIES_VILEPLUME,
+        .species = SPECIES_CAMERUPT,
     },
     {
         .iv = 6,
         .lvl = 36,
-        .species = SPECIES_CAMERUPT,
+        .species = SPECIES_PERSIAN,
+    },
+    {
+        .iv = 6,
+        .lvl = 36,
+        .species = SPECIES_VILEPLUME,
     },
 };
 
@@ -2470,22 +2474,22 @@ static const struct TrainerMonNoItemDefaultMoves sParty_PicnickerAliciaRematchAf
     {
         .iv = 12,
         .lvl = 61,
-        .species = SPECIES_PERSIAN,
-    },
-    {
-        .iv = 12,
-        .lvl = 61,
         .species = SPECIES_VICTREEBEL,
     },
     {
         .iv = 12,
         .lvl = 61,
-        .species = SPECIES_VILEPLUME,
+        .species = SPECIES_CAMERUPT,
     },
     {
         .iv = 12,
         .lvl = 61,
-        .species = SPECIES_CAMERUPT,
+        .species = SPECIES_PERSIAN,
+    },
+    {
+        .iv = 12,
+        .lvl = 61,
+        .species = SPECIES_VILEPLUME,
     },
 };
 
@@ -2631,29 +2635,40 @@ static const struct TrainerMonNoItemDefaultMoves sParty_CamperDrew[] = {
     },
 };
 
-static const struct TrainerMonNoItemDefaultMoves sParty_HikerBrice[] = {
+static const struct TrainerMonNoItemCustomMovesNatureAbility sParty_HikerBrice[] = {
     {
         .iv = 3,
         .lvl = 22,
         .species = SPECIES_RHYHORN,
+        .moves = {MOVE_ROCK_TOMB, MOVE_SANDSTORM, MOVE_TAKE_DOWN, MOVE_HORN_ATTACK},
+        .nature = NATURE_JOLLY,
+        .abilitySlot = 1,
     },
     {
         .iv = 3,
         .lvl = 22,
         .species = SPECIES_GLIGAR,
+        .moves = {MOVE_DIG, MOVE_SAND_ATTACK, MOVE_POISON_STING, MOVE_QUICK_ATTACK},
+        .nature = NATURE_CAREFUL,
+        .abilitySlot = 1,
     },
     {
         .iv = 3,
         .lvl = 22,
-        .species = SPECIES_NOCTOWL
+        .species = SPECIES_NOCTOWL,
+        .moves = {MOVE_CONFUSION, MOVE_PECK, MOVE_HYPNOSIS, MOVE_REFLECT},
+        .nature = NATURE_QUIET,
+        .abilitySlot = 0,
     },
 };
 
-static const struct TrainerMonNoItemDefaultMoves sParty_PicnickerCaitlin[] = {
+static const struct TrainerMonNoItemDefaultMovesNatureAbility sParty_PicnickerCaitlin[] = {
     {
         .iv = 3,
         .lvl = 28,
         .species = SPECIES_ZANGOOSE,
+        .nature = NATURE_ADAMANT,
+        .abilitySlot = 0,
     },
 };
 
@@ -2680,8 +2695,13 @@ static const struct TrainerMonNoItemDefaultMoves sParty_PicnickerHeidi[] = {
 static const struct TrainerMonNoItemDefaultMoves sParty_PokemaniacAbe[] = {
     {
         .iv = 3,
-        .lvl = 30,
+        .lvl = 27,
         .species = SPECIES_DONPHAN,
+    },
+    {
+        .iv = 3,
+        .lvl = 27,
+        .species = SPECIES_ARBOK,
     },
 };
 

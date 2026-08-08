@@ -260,7 +260,7 @@
     },
     "Route 12 North": {
       "mapToken": "ROUTE12",
-      "crop": { "y0": 0.0, "y1": 0.58 },
+      "crop": { "y0": 0.0, "y1": 0.57 },
       "hideEncounters": ["land_mons"]
     },
     "Pokémon Tower 2F": {
@@ -480,20 +480,7 @@
       "mapToken": "ROUTE10",
       "crop": { "y0": 0.4, "y1": 0.63 },
       "hideItems": [0],
-      "manualEncounters": [
-        {
-          "kind": "static_mons",
-          "title": "STATIC",
-          "placement": "left",
-          "slots": [
-            {
-              "speciesToken": "SPECIES_SNORLAX",
-              "level": "30",
-              "heldItemToken": "ITEM_CHESTO_BERRY"
-            }
-          ]
-        }
-      ]
+      "hideEncounters": ["land_mons"]
     },
     "Power Plant": {
       "fullHeight": true,
