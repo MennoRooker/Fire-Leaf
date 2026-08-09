@@ -1560,7 +1560,7 @@ const struct Trainer gTrainers[] = {
         .items = {},
         .doubleBattle = FALSE,
         .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE,
-        .party = NO_ITEM_DEFAULT_MOVES(sParty_PicnickerHeidi),
+        .party = NO_ITEM_CUSTOM_MOVES_NATURE_ABILITY(sParty_PicnickerHeidi),
     },
     [TRAINER_PICNICKER_CAROL] = {
         .trainerClass = TRAINER_CLASS_PICNICKER,
@@ -1590,7 +1590,7 @@ const struct Trainer gTrainers[] = {
         .items = {},
         .doubleBattle = FALSE,
         .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE,
-        .party = NO_ITEM_DEFAULT_MOVES(sParty_PicnickerMartha),
+        .party = NO_ITEM_CUSTOM_MOVES(sParty_PicnickerMartha),
     },
     [TRAINER_PICNICKER_TINA] = {
         .trainerClass = TRAINER_CLASS_PICNICKER,
@@ -1680,7 +1680,7 @@ const struct Trainer gTrainers[] = {
         .items = {},
         .doubleBattle = FALSE,
         .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE,
-        .party = NO_ITEM_DEFAULT_MOVES(sParty_PokemaniacAbe),
+        .party = NO_ITEM_CUSTOM_MOVES(sParty_PokemaniacAbe),
     },
     [TRAINER_SUPER_NERD_ARON] = {
         .trainerClass = TRAINER_CLASS_SUPER_NERD,
@@ -1870,7 +1870,7 @@ const struct Trainer gTrainers[] = {
         .items = {},
         .doubleBattle = FALSE,
         .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE,
-        .party = NO_ITEM_CUSTOM_MOVES(sParty_HikerClark),
+        .party = NO_ITEM_DEFAULT_MOVES(sParty_HikerClark),
     },
     [TRAINER_HIKER_TRENT] = {
         .trainerClass = TRAINER_CLASS_HIKER,
@@ -6521,6 +6521,16 @@ const struct Trainer gTrainers[] = {
         .doubleBattle = FALSE,
         .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE,
         .party = NO_ITEM_DEFAULT_MOVES(sParty_BikerJarenRematchAfterFuchsia),
+    },
+    [TRAINER_FISHERMAN_LUC_REMATCH_AFTER_FUCHSIA] = {
+        .trainerClass = TRAINER_CLASS_FISHERMAN,
+        .encounterMusic_gender = TRAINER_ENCOUNTER_MUSIC_HIKER,
+        .trainerPic = TRAINER_PIC_FISHERMAN,
+        .trainerName = _("LUC"),
+        .items = {},
+        .doubleBattle = FALSE,
+        .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE,
+        .party = ITEM_DEFAULT_MOVES(sParty_FishermanLucRematchAfterFuchsia),
     },
     [TRAINER_FISHERMAN_ELLIOT_REMATCH_AFTER_FUCHSIA] = {
         .trainerClass = TRAINER_CLASS_FISHERMAN,
