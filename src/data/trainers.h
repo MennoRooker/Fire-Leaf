@@ -3480,7 +3480,7 @@ const struct Trainer gTrainers[] = {
         .items = {},
         .doubleBattle = FALSE,
         .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE,
-        .party = ITEM_CUSTOM_MOVES(sParty_BossGiovanniRocketHideout),
+        .party = ITEM_CUSTOM_MOVES_NATURE_ABILITY(sParty_BossGiovanniRocketHideout),
     },
     [TRAINER_BOSS_GIOVANNI_SILPH_CO] = {
         .trainerClass = TRAINER_CLASS_BOSS,
@@ -3580,7 +3580,7 @@ const struct Trainer gTrainers[] = {
         .items = {},
         .doubleBattle = FALSE,
         .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE,
-        .party = NO_ITEM_DEFAULT_MOVES(sParty_TeamRocketGrunt8),
+        .party = NO_ITEM_CUSTOM_MOVES(sParty_TeamRocketGrunt8),
     },
     [TRAINER_TEAM_ROCKET_GRUNT_9] = {
         .trainerClass = TRAINER_CLASS_TEAM_ROCKET,
@@ -3600,7 +3600,7 @@ const struct Trainer gTrainers[] = {
         .items = {},
         .doubleBattle = FALSE,
         .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE,
-        .party = NO_ITEM_CUSTOM_MOVES(sParty_TeamRocketGrunt10),
+        .party = NO_ITEM_DEFAULT_MOVES(sParty_TeamRocketGrunt10),
     },
     [TRAINER_TEAM_ROCKET_GRUNT_11] = {
         .trainerClass = TRAINER_CLASS_TEAM_ROCKET,
@@ -5350,7 +5350,7 @@ const struct Trainer gTrainers[] = {
         .items = {},
         .doubleBattle = FALSE,
         .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE,
-        .party = NO_ITEM_CUSTOM_MOVES(sParty_BikerRicardo),
+        .party = NO_ITEM_DEFAULT_MOVES(sParty_BikerRicardo),
     },
     [TRAINER_BIKER_JAREN] = {
         .trainerClass = TRAINER_CLASS_BIKER,
@@ -5360,7 +5360,7 @@ const struct Trainer gTrainers[] = {
         .items = {},
         .doubleBattle = FALSE,
         .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE,
-        .party = NO_ITEM_DEFAULT_MOVES(sParty_BikerJaren),
+        .party = NO_ITEM_CUSTOM_MOVES(sParty_BikerJaren),
     },
     [TRAINER_TEAM_ROCKET_GRUNT_43] = {
         .trainerClass = TRAINER_CLASS_TEAM_ROCKET,
@@ -6520,7 +6520,7 @@ const struct Trainer gTrainers[] = {
         .items = {},
         .doubleBattle = FALSE,
         .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE,
-        .party = NO_ITEM_DEFAULT_MOVES(sParty_BikerJarenRematchAfterFuchsia),
+        .party = NO_ITEM_CUSTOM_MOVES(sParty_BikerJarenRematchAfterFuchsia),
     },
     [TRAINER_FISHERMAN_LUC_REMATCH_AFTER_FUCHSIA] = {
         .trainerClass = TRAINER_CLASS_FISHERMAN,
