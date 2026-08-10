@@ -3587,6 +3587,8 @@ BattleScript_AllStatsUpRet::
 
 BattleScript_RapidSpinAway::
 	rapidspinfree
+	setmoveeffect MOVE_EFFECT_SPD_PLUS_1 | MOVE_EFFECT_AFFECTS_USER
+	seteffectprimary
 	return
 
 BattleScript_WrapFree::
