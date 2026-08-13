@@ -1190,11 +1190,25 @@ def build_model(section_filter: Optional[str]) -> Dict[str, object]:
             trainer_name = "Rival"
 
         trainer_class_token = str(trainer["trainerClass"])
+        trainer_class_display = trainer_class_names.get(
+            trainer_class_token,
+            pretty_token(trainer_class_token, "TRAINER_CLASS_"),
+        )
+        if trainer_class_token == "TRAINER_CLASS_TEAM_ROCKET_GRUNT":
+            trainer_class_display = "Team Rocket Grunt"
+        elif trainer_class_token == "TRAINER_CLASS_TEAM_ROCKET_ADMIN":
+            trainer_class_display = "Team Rocket Admin"
+        if trainer_id in {
+            "TRAINER_BOSS_GIOVANNI_ROCKET_HIDEOUT",
+            "TRAINER_BOSS_GIOVANNI_SILPH_CO",
+            "TRAINER_LEADER_GIOVANNI",
+        }:
+            trainer_class_display = "Team Rocket Boss"
 
         trainer_obj: Dict[str, object] = {
             "id": trainer_id,
             "name": trainer_name,
-            "class": trainer_class_names.get(trainer_class_token, pretty_token(trainer_class_token, "TRAINER_CLASS_")),
+            "class": trainer_class_display,
             "theme": resolve_trainer_theme(trainer_class_token, trainer_id),
             "isMajor": is_major_trainer(trainer_id, trainer_class_token),
             "sprite": trainer_pic_path(trainer["trainerPic"]),

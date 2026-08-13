@@ -468,6 +468,8 @@ const struct TrainerMoney gTrainerMoneyTable[] =
     {TRAINER_CLASS_SUPER_NERD, 6},
     {TRAINER_CLASS_FISHERMAN, 9},
     {TRAINER_CLASS_TEAM_ROCKET, 8},
+    {TRAINER_CLASS_TEAM_ROCKET_GRUNT, 8},
+    {TRAINER_CLASS_TEAM_ROCKET_ADMIN, 10},
     {TRAINER_CLASS_LASS, 4},
     {TRAINER_CLASS_BEAUTY, 18},
     {TRAINER_CLASS_BLACK_BELT, 6},
@@ -3923,6 +3925,8 @@ static void HandleEndTurn_BattleWon(void)
             break;
         case TRAINER_CLASS_BOSS:
         case TRAINER_CLASS_TEAM_ROCKET:
+        case TRAINER_CLASS_TEAM_ROCKET_GRUNT:
+        case TRAINER_CLASS_TEAM_ROCKET_ADMIN:
         case TRAINER_CLASS_COOLTRAINER:
         case TRAINER_CLASS_ELITE_FOUR:
         case TRAINER_CLASS_GENTLEMAN:
