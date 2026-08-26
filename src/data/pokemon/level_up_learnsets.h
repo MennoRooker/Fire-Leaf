@@ -5511,6 +5511,7 @@ static const u16 sIllumiseLevelUpLearnset[] = {
 
 static const u16 sLileepLevelUpLearnset[] = {
     LEVEL_UP_MOVE(1, MOVE_ASTONISH),
+    LEVEL_UP_MOVE(5, MOVE_MEGA_DRAIN),
     LEVEL_UP_MOVE(8, MOVE_CONSTRICT),
     LEVEL_UP_MOVE(12, MOVE_GROWTH),
     LEVEL_UP_MOVE(15, MOVE_ACID),

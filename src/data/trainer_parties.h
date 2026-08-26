@@ -558,11 +558,11 @@ static const struct TrainerMonItemCustomMovesNatureAbility sParty_LeaderBrock[] 
     {
         .iv = 3,
         .lvl = 12,
-        .species = SPECIES_NOSEPASS,
-        .moves = {MOVE_ROCK_TOMB, MOVE_TACKLE, MOVE_HARDEN, MOVE_BLOCK},
+        .species = SPECIES_LILEEP,
+        .moves = {MOVE_ASTONISH, MOVE_MEGA_DRAIN, MOVE_CONSTRICT, MOVE_GROWTH},
         .heldItem = ITEM_NONE,
         .nature = NATURE_MILD,
-        .abilitySlot = 1,
+        .abilitySlot = 0,
     },
     {
         .iv = 3,
@@ -4660,6 +4660,11 @@ static const struct TrainerMonNoItemDefaultMoves sParty_PicnickerValerie[] = {
         .lvl = 34,
         .species = SPECIES_CASTFORM,
     },
+    {
+        .iv = 10,
+        .lvl = 33,
+        .species = SPECIES_DELCATTY,
+    },
 };
 
 static const struct TrainerMonNoItemDefaultMoves sParty_PicnickerGwen[] = {
@@ -4671,17 +4676,12 @@ static const struct TrainerMonNoItemDefaultMoves sParty_PicnickerGwen[] = {
     {
         .iv = 10,
         .lvl = 33,
-        .species = SPECIES_MR_MIME,
-    },
-    {
-        .iv = 10,
-        .lvl = 33,
         .species = SPECIES_MIGHTYENA,
     },
     {
         .iv = 10,
         .lvl = 33,
-        .species = SPECIES_DELCATTY,
+        .species = SPECIES_MR_MIME,
     },
 };
 
