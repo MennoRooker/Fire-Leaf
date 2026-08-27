@@ -123,11 +123,11 @@ SilphCo_11F_EventScript_FloorSign::
 	end
 
 SilphCo_11F_EventScript_Grunt1::
-	trainerbattle_single TRAINER_TEAM_ROCKET_GRUNT_KAEL, SilphCo_11F_Text_Grunt1Intro, SilphCo_11F_Text_Grunt1Defeat
+	trainerbattle_single TRAINER_TEAM_ROCKET_GRUNT_MARCEL, SilphCo_11F_Text_Grunt1Intro, SilphCo_11F_Text_Grunt1Defeat
 	msgbox SilphCo_11F_Text_Grunt1PostBattle, MSGBOX_AUTOCLOSE
 	end
 
 SilphCo_11F_EventScript_Grunt2::
-	trainerbattle_single TRAINER_TEAM_ROCKET_GRUNT_KEIR, SilphCo_11F_Text_Grunt2Intro, SilphCo_11F_Text_Grunt2Defeat
+	trainerbattle_single TRAINER_TEAM_ROCKET_GRUNT_CALDER, SilphCo_11F_Text_Grunt2Intro, SilphCo_11F_Text_Grunt2Defeat
 	msgbox SilphCo_11F_Text_Grunt2PostBattle, MSGBOX_AUTOCLOSE
 	end

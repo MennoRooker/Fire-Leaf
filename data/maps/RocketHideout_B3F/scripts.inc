@@ -7,6 +7,6 @@ RocketHideout_B3F_EventScript_Grunt1::
 	end
 
 RocketHideout_B3F_EventScript_Grunt2::
-	trainerbattle_single TRAINER_TEAM_ROCKET_GRUNT_CALDER, RocketHideout_B3F_Text_Grunt2Intro, RocketHideout_B3F_Text_Grunt2Defeat
+	trainerbattle_single TRAINER_TEAM_ROCKET_GRUNT_MALCOLM, RocketHideout_B3F_Text_Grunt2Intro, RocketHideout_B3F_Text_Grunt2Defeat
 	msgbox RocketHideout_B3F_Text_Grunt2PostBattle, MSGBOX_AUTOCLOSE
 	end

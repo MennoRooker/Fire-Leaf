@@ -121,16 +121,16 @@ MtMoon_B2F_EventScript_Grunt1::
 	end
 
 MtMoon_B2F_EventScript_Grunt2::
-	trainerbattle_single TRAINER_TEAM_ROCKET_GRUNT_ALTON, MtMoon_B2F_Text_Grunt2Intro, MtMoon_B2F_Text_Grunt2Defeat
+	trainerbattle_single TRAINER_TEAM_ROCKET_GRUNT_LARS, MtMoon_B2F_Text_Grunt2Intro, MtMoon_B2F_Text_Grunt2Defeat
 	msgbox MtMoon_B2F_Text_Grunt2PostBattle, MSGBOX_AUTOCLOSE
 	end
 
 MtMoon_B2F_EventScript_Grunt3::
-	trainerbattle_single TRAINER_TEAM_ROCKET_GRUNT_ANSELM, MtMoon_B2F_Text_Grunt3Intro, MtMoon_B2F_Text_Grunt3Defeat
+	trainerbattle_single TRAINER_TEAM_ROCKET_GRUNT_BASCOM, MtMoon_B2F_Text_Grunt3Intro, MtMoon_B2F_Text_Grunt3Defeat
 	msgbox MtMoon_B2F_Text_Grunt3PostBattle, MSGBOX_AUTOCLOSE
 	end
 
 MtMoon_B2F_EventScript_Grunt4::
-	trainerbattle_single TRAINER_TEAM_ROCKET_GRUNT_ARVID, MtMoon_B2F_Text_Grunt4Intro, MtMoon_B2F_Text_Grunt4Defeat
+	trainerbattle_single TRAINER_TEAM_ROCKET_GRUNT_CYRUS, MtMoon_B2F_Text_Grunt4Intro, MtMoon_B2F_Text_Grunt4Defeat
 	msgbox MtMoon_B2F_Text_Grunt4PostBattle, MSGBOX_AUTOCLOSE
 	end

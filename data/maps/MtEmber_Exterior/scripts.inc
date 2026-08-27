@@ -23,7 +23,7 @@ MtEmber_Exterior_EventScript_OpenCave::
 
 MtEmber_Exterior_EventScript_Grunt1::
 	lock
-	goto_if_defeated TRAINER_TEAM_ROCKET_GRUNT_KENDRICK, MtEmber_Exterior_EventScript_Grunt1Defeated
+	goto_if_defeated TRAINER_TEAM_ROCKET_GRUNT_SELENE, MtEmber_Exterior_EventScript_Grunt1Defeated
 	goto_if_eq VAR_MAP_SCENE_ONE_ISLAND_POKEMON_CENTER_1F, 4, MtEmber_Exterior_EventScript_BattleGrunt1
 	msgbox MtEmber_Exterior_Text_WellTryDiggingHere
 	release
@@ -39,9 +39,9 @@ MtEmber_Exterior_EventScript_BattleGrunt1::
 	waitmovement 0
 	playbgm MUS_ENCOUNTER_ROCKET, 0
 	msgbox MtEmber_Exterior_Text_Grunt1Intro
-	trainerbattle_no_intro TRAINER_TEAM_ROCKET_GRUNT_KENDRICK, MtEmber_Exterior_Text_Grunt1Defeat
+	trainerbattle_no_intro TRAINER_TEAM_ROCKET_GRUNT_SELENE, MtEmber_Exterior_Text_Grunt1Defeat
 	msgbox MtEmber_Exterior_Text_Grunt1PostBattle
-	goto_if_defeated TRAINER_TEAM_ROCKET_GRUNT_LARS, MtEmber_Exterior_EventScript_DefeatedBothGrunts
+	goto_if_defeated TRAINER_TEAM_ROCKET_GRUNT_GRADY, MtEmber_Exterior_EventScript_DefeatedBothGrunts
 	release
 	end
 
@@ -58,7 +58,7 @@ MtEmber_Exterior_EventScript_DefeatedBothGrunts::
 MtEmber_Exterior_EventScript_Grunt2::
 	lock
 	faceplayer
-	goto_if_defeated TRAINER_TEAM_ROCKET_GRUNT_LARS, MtEmber_Exterior_EventScript_DefeatedGrunt2
+	goto_if_defeated TRAINER_TEAM_ROCKET_GRUNT_GRADY, MtEmber_Exterior_EventScript_DefeatedGrunt2
 	goto_if_eq VAR_MAP_SCENE_ONE_ISLAND_POKEMON_CENTER_1F, 4, MtEmber_Exterior_EventScript_BattleGrunt2
 	msgbox MtEmber_Exterior_Text_YoureInTheWayGetLost
 	closemessage
@@ -75,9 +75,9 @@ MtEmber_Exterior_EventScript_DefeatedGrunt2::
 MtEmber_Exterior_EventScript_BattleGrunt2::
 	playbgm MUS_ENCOUNTER_ROCKET, 0
 	msgbox MtEmber_Exterior_Text_Grunt2Intro
-	trainerbattle_no_intro TRAINER_TEAM_ROCKET_GRUNT_LARS, MtEmber_Exterior_Text_Grunt2Defeat
+	trainerbattle_no_intro TRAINER_TEAM_ROCKET_GRUNT_GRADY, MtEmber_Exterior_Text_Grunt2Defeat
 	msgbox MtEmber_Exterior_Text_Grunt2PostBattle
-	goto_if_defeated TRAINER_TEAM_ROCKET_GRUNT_KENDRICK, MtEmber_Exterior_EventScript_DefeatedBothGrunts
+	goto_if_defeated TRAINER_TEAM_ROCKET_GRUNT_SELENE, MtEmber_Exterior_EventScript_DefeatedBothGrunts
 	release
 	end
 

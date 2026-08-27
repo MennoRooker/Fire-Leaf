@@ -3580,7 +3580,7 @@ const struct Trainer gTrainers[] = {
         .items = {},
         .doubleBattle = FALSE,
         .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE,
-        .party = NO_ITEM_CUSTOM_MOVES(sParty_TeamRocketGruntBaxter),
+        .party = NO_ITEM_DEFAULT_MOVES(sParty_TeamRocketGruntBaxter),
     },
     [TRAINER_TEAM_ROCKET_GRUNT_BENNETT] = {
         .trainerClass = TRAINER_CLASS_TEAM_ROCKET_GRUNT,
@@ -3610,7 +3610,7 @@ const struct Trainer gTrainers[] = {
         .items = {},
         .doubleBattle = TRUE,
         .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE,
-        .party = NO_ITEM_CUSTOM_MOVES(sParty_TeamRocketGruntBlaise),
+        .party = NO_ITEM_DEFAULT_MOVES(sParty_TeamRocketGruntBlaise),
     },
     [TRAINER_TEAM_ROCKET_GRUNT_BRAM] = {
         .trainerClass = TRAINER_CLASS_TEAM_ROCKET_GRUNT,
@@ -3620,7 +3620,7 @@ const struct Trainer gTrainers[] = {
         .items = {},
         .doubleBattle = FALSE,
         .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE,
-        .party = NO_ITEM_CUSTOM_MOVES(sParty_TeamRocketGruntBram),
+        .party = NO_ITEM_DEFAULT_MOVES(sParty_TeamRocketGruntBram),
     },
     [TRAINER_TEAM_ROCKET_GRUNT_BRIGGS] = {
         .trainerClass = TRAINER_CLASS_TEAM_ROCKET_GRUNT,
@@ -3630,7 +3630,7 @@ const struct Trainer gTrainers[] = {
         .items = {},
         .doubleBattle = FALSE,
         .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE,
-        .party = NO_ITEM_CUSTOM_MOVES(sParty_TeamRocketGruntBriggs),
+        .party = NO_ITEM_DEFAULT_MOVES(sParty_TeamRocketGruntBriggs),
     },
     [TRAINER_TEAM_ROCKET_GRUNT_CAIRD] = {
         .trainerClass = TRAINER_CLASS_TEAM_ROCKET_GRUNT,
@@ -3680,7 +3680,7 @@ const struct Trainer gTrainers[] = {
         .items = {},
         .doubleBattle = FALSE,
         .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE,
-        .party = NO_ITEM_DEFAULT_MOVES(sParty_TeamRocketGruntClive),
+        .party = NO_ITEM_CUSTOM_MOVES(sParty_TeamRocketGruntClive),
     },
     [TRAINER_TEAM_ROCKET_GRUNT_CORBIN] = {
         .trainerClass = TRAINER_CLASS_TEAM_ROCKET_GRUNT,
@@ -3710,7 +3710,7 @@ const struct Trainer gTrainers[] = {
         .items = {},
         .doubleBattle = FALSE,
         .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE,
-        .party = NO_ITEM_DEFAULT_MOVES(sParty_TeamRocketGruntDarius),
+        .party = NO_ITEM_CUSTOM_MOVES(sParty_TeamRocketGruntDarius),
     },
     [TRAINER_TEAM_ROCKET_GRUNT_TARIQ] = {
         .trainerClass = TRAINER_CLASS_TEAM_ROCKET_GRUNT,
@@ -3830,7 +3830,7 @@ const struct Trainer gTrainers[] = {
         .items = {},
         .doubleBattle = FALSE,
         .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE,
-        .party = NO_ITEM_DEFAULT_MOVES(sParty_TeamRocketGruntGavin),
+        .party = NO_ITEM_CUSTOM_MOVES(sParty_TeamRocketGruntGavin),
     },
     [TRAINER_TEAM_ROCKET_GRUNT_GRADY] = {
         .trainerClass = TRAINER_CLASS_TEAM_ROCKET_GRUNT,
@@ -5390,7 +5390,7 @@ const struct Trainer gTrainers[] = {
         .items = {},
         .doubleBattle = FALSE,
         .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE,
-        .party = NO_ITEM_DEFAULT_MOVES(sParty_TeamRocketGruntLeander),
+        .party = NO_ITEM_CUSTOM_MOVES(sParty_TeamRocketGruntLeander),
     },
     [TRAINER_TEAM_ROCKET_GRUNT_LUCIAN] = {
         .trainerClass = TRAINER_CLASS_TEAM_ROCKET_GRUNT,
@@ -5400,7 +5400,7 @@ const struct Trainer gTrainers[] = {
         .items = {},
         .doubleBattle = FALSE,
         .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE,
-        .party = NO_ITEM_DEFAULT_MOVES(sParty_TeamRocketGruntLucian),
+        .party = NO_ITEM_CUSTOM_MOVES(sParty_TeamRocketGruntLucian),
     },
     [TRAINER_TEAM_ROCKET_GRUNT_MALCOLM] = {
         .trainerClass = TRAINER_CLASS_TEAM_ROCKET_GRUNT,
@@ -5675,18 +5675,18 @@ const struct Trainer gTrainers[] = {
     [TRAINER_TEAM_ROCKET_GRUNT_ROSALIND] = {
         .trainerClass = TRAINER_CLASS_TEAM_ROCKET_GRUNT,
         .encounterMusic_gender = TRAINER_ENCOUNTER_MUSIC_AQUA,
-        .trainerPic = TRAINER_PIC_ROCKET_GRUNT_M,
-        .trainerName = _("ORSON"),
+        .trainerPic = TRAINER_PIC_ROCKET_GRUNT_F,
+        .trainerName = _("ROSALIND"),
         .items = {},
         .doubleBattle = FALSE,
         .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE,
-        .party = NO_ITEM_CUSTOM_MOVES(sParty_TeamRocketGruntRosalind),
+        .party = NO_ITEM_DEFAULT_MOVES(sParty_TeamRocketGruntRosalind),
     },
     [TRAINER_TEAM_ROCKET_GRUNT_ORSON] = {
         .trainerClass = TRAINER_CLASS_TEAM_ROCKET_GRUNT,
         .encounterMusic_gender = TRAINER_ENCOUNTER_MUSIC_AQUA,
-        .trainerPic = TRAINER_PIC_ROCKET_GRUNT_F,
-        .trainerName = _("ROSALIND"),
+        .trainerPic = TRAINER_PIC_ROCKET_GRUNT_M,
+        .trainerName = _("ORSON"),
         .items = {},
         .doubleBattle = FALSE,
         .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE,

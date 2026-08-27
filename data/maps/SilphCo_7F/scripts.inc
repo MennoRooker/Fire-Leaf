@@ -218,12 +218,12 @@ SilphCo_7F_EventScript_Joshua::
 	end
 
 SilphCo_7F_EventScript_Grunt1::
-	trainerbattle_single TRAINER_TEAM_ROCKET_GRUNT_GAVIN, SilphCo_7F_Text_Grunt1Intro, SilphCo_7F_Text_Grunt1Defeat
+	trainerbattle_single TRAINER_TEAM_ROCKET_GRUNT_CORBIN, SilphCo_7F_Text_Grunt1Intro, SilphCo_7F_Text_Grunt1Defeat
 	msgbox SilphCo_7F_Text_Grunt1PostBattle, MSGBOX_AUTOCLOSE
 	end
 
 SilphCo_7F_EventScript_Grunt2::
-	trainerbattle_single TRAINER_TEAM_ROCKET_GRUNT_GRADY, SilphCo_7F_Text_Grunt2Intro, SilphCo_7F_Text_Grunt2Defeat
+	trainerbattle_single TRAINER_TEAM_ROCKET_GRUNT_DEXTER, SilphCo_7F_Text_Grunt2Intro, SilphCo_7F_Text_Grunt2Defeat
 	msgbox SilphCo_7F_Text_Grunt2PostBattle, MSGBOX_AUTOCLOSE
 	end
 
