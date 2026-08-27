@@ -116,7 +116,7 @@ MtMoon_B2F_Movement_MiguelToDomeFossil::
 	step_end
 
 MtMoon_B2F_EventScript_Grunt1::
-	trainerbattle_single TRAINER_TEAM_ROCKET_GRUNT_ALDRIC, MtMoon_B2F_Text_Grunt1Intro, MtMoon_B2F_Text_Grunt1Defeat
+	trainerbattle_single TRAINER_TEAM_ROCKET_GRUNT_KEIRAN, MtMoon_B2F_Text_Grunt1Intro, MtMoon_B2F_Text_Grunt1Defeat
 	msgbox MtMoon_B2F_Text_Grunt1PostBattle, MSGBOX_AUTOCLOSE
 	end
 
@@ -126,11 +126,11 @@ MtMoon_B2F_EventScript_Grunt2::
 	end
 
 MtMoon_B2F_EventScript_Grunt3::
-	trainerbattle_single TRAINER_TEAM_ROCKET_GRUNT_BASCOM, MtMoon_B2F_Text_Grunt3Intro, MtMoon_B2F_Text_Grunt3Defeat
+	trainerbattle_single TRAINER_TEAM_ROCKET_GRUNT_CALEB, MtMoon_B2F_Text_Grunt3Intro, MtMoon_B2F_Text_Grunt3Defeat
 	msgbox MtMoon_B2F_Text_Grunt3PostBattle, MSGBOX_AUTOCLOSE
 	end
 
 MtMoon_B2F_EventScript_Grunt4::
-	trainerbattle_single TRAINER_TEAM_ROCKET_GRUNT_CYRUS, MtMoon_B2F_Text_Grunt4Intro, MtMoon_B2F_Text_Grunt4Defeat
+	trainerbattle_single TRAINER_TEAM_ROCKET_GRUNT_KELLAN, MtMoon_B2F_Text_Grunt4Intro, MtMoon_B2F_Text_Grunt4Defeat
 	msgbox MtMoon_B2F_Text_Grunt4PostBattle, MSGBOX_AUTOCLOSE
 	end

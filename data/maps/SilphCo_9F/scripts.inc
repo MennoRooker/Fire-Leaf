@@ -40,6 +40,6 @@ SilphCo_9F_EventScript_Grunt1::
 	end
 
 SilphCo_9F_EventScript_Grunt2::
-	trainerbattle_single TRAINER_TEAM_ROCKET_GRUNT_MERRICK, SilphCo_9F_Text_Grunt2Intro, SilphCo_9F_Text_Grunt2Defeat
+	trainerbattle_single TRAINER_TEAM_ROCKET_GRUNT_BLAKE, SilphCo_9F_Text_Grunt2Intro, SilphCo_9F_Text_Grunt2Defeat
 	msgbox SilphCo_9F_Text_Grunt2PostBattle, MSGBOX_AUTOCLOSE
 	end

@@ -86,6 +86,6 @@ SilphCo_6F_EventScript_Grunt1::
 	end
 
 SilphCo_6F_EventScript_Grunt2::
-	trainerbattle_single TRAINER_TEAM_ROCKET_GRUNT_BAXTER, SilphCo_6F_Text_Grunt2Intro, SilphCo_6F_Text_Grunt2Defeat
+	trainerbattle_single TRAINER_TEAM_ROCKET_GRUNT_LEVI, SilphCo_6F_Text_Grunt2Intro, SilphCo_6F_Text_Grunt2Defeat
 	msgbox SilphCo_6F_Text_Grunt2PostBattle, MSGBOX_AUTOCLOSE
 	end

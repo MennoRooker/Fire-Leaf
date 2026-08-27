@@ -36,7 +36,7 @@ FiveIsland_Meadow_EventScript_SetWarehouseDoorUnlocked::
 	return
 
 FiveIsland_Meadow_EventScript_Rocket1::
-	trainerbattle_single TRAINER_TEAM_ROCKET_GRUNT_BRAM, FiveIsland_Meadow_Text_Rocket1Intro, FiveIsland_Meadow_Text_Rocket1Defeat
+	trainerbattle_single TRAINER_TEAM_ROCKET_GRUNT_DONOVAN, FiveIsland_Meadow_Text_Rocket1Intro, FiveIsland_Meadow_Text_Rocket1Defeat
 	msgbox FiveIsland_Meadow_Text_Rocket1PostBattle, MSGBOX_AUTOCLOSE
 	end
 

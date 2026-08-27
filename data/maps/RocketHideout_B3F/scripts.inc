@@ -2,7 +2,7 @@ RocketHideout_B3F_MapScripts::
 	.byte 0
 
 RocketHideout_B3F_EventScript_Grunt1::
-	trainerbattle_single TRAINER_TEAM_ROCKET_GRUNT_CAIRD, RocketHideout_B3F_Text_Grunt1Intro, RocketHideout_B3F_Text_Grunt1Defeat
+	trainerbattle_single TRAINER_TEAM_ROCKET_GRUNT_BECK, RocketHideout_B3F_Text_Grunt1Intro, RocketHideout_B3F_Text_Grunt1Defeat
 	msgbox RocketHideout_B3F_Text_Grunt1PostBattle, MSGBOX_AUTOCLOSE
 	end
 
