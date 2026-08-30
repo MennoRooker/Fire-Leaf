@@ -209,7 +209,7 @@ NORMAL -> ELECTRIC
 60 -> 80
 
 - Poison Fang
-50 -> 65
+50 -> 75
 
 - Blast Burn
 No global recharge
@@ -264,6 +264,21 @@ No global recharge
 
 - Water Pulse
 60 -> 80
+
+- Fire Fang
+65 -> 75
+95% -> 100%
+10% Flinch + 10% Burn -> 10% Burn
+
+- Thunder Fang
+65 -> 75
+95% -> 100%
+10% Flinch + 10% Para -> 10% Para
+
+- Ice Fang
+65 -> 75
+95% -> 100%
+10% Flinch + 10% Freeze -> 10% Freeze
 
 **NEW**
 

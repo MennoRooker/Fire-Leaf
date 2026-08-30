@@ -4326,84 +4326,117 @@ static const struct TrainerMonItemCustomMovesNatureAbility sParty_LeaderErika[] 
 // ============================================================================================= //
 // ===================================== Saffron City Dojo ===================================== //
 // ============================================================================================= //
-static const struct TrainerMonItemDefaultMoves sParty_BlackBeltYouri[] = {
+static const struct TrainerMonItemCustomMovesNatureAbility sParty_BlackBeltYouri[] = {
     {
         .iv = 10,
         .lvl = 37,
         .species = SPECIES_MACHOKE,
         .heldItem = ITEM_BLACK_BELT,
+        .moves = {MOVE_FORESIGHT, MOVE_REVENGE, MOVE_MEGA_KICK, MOVE_ROCK_SLIDE},
+        .nature = NATURE_HARDY,
+        .abilitySlot = 1,
     },
     {
         .iv = 10,
         .lvl = 37,
         .species = SPECIES_HARIYAMA,
         .heldItem = ITEM_BLACK_BELT,
+        .moves = {MOVE_FAKE_OUT, MOVE_WHIRLWIND, MOVE_KNOCK_OFF, MOVE_SMELLING_SALT},
+        .nature = NATURE_BRAVE,
+        .abilitySlot = 0,
     },
 };
 
-static const struct TrainerMonItemDefaultMoves sParty_BlackBeltHitoshi[] = {
+static const struct TrainerMonItemCustomMovesNatureAbility sParty_BlackBeltHitoshi[] = {
     {
         .iv = 10,
         .lvl = 36,
         .species = SPECIES_HERACROSS,
         .heldItem = ITEM_BLACK_BELT,
+        .moves = {MOVE_ENDURE, MOVE_BRICK_BREAK, MOVE_PIN_MISSILE, MOVE_SWORDS_DANCE},
+        .nature = NATURE_LONELY,
+        .abilitySlot = 0,
     },
     {
         .iv = 10,
         .lvl = 36,
         .species = SPECIES_BLAZIKEN,
         .heldItem = ITEM_BLACK_BELT,
+        .moves = {MOVE_BULK_UP, MOVE_BLAZE_KICK, MOVE_QUICK_ATTACK, MOVE_BRICK_BREAK},
+        .nature = NATURE_NAUGHTY,
+        .abilitySlot = 1,
     },
     {
         .iv = 10,
         .lvl = 36,
         .species = SPECIES_PRIMEAPE,
         .heldItem = ITEM_BLACK_BELT,
+        .moves = {MOVE_CROSS_CHOP, MOVE_RAGE, MOVE_FOCUS_ENERGY, MOVE_FAINT_ATTACK},
+        .nature = NATURE_DOCILE,
+        .abilitySlot = 0,
     },
 };
 
-static const struct TrainerMonItemDefaultMoves sParty_BlackBeltMike[] = {
+static const struct TrainerMonItemCustomMovesNatureAbility sParty_BlackBeltMike[] = {
     {
         .iv = 10,
         .lvl = 37,
         .species = SPECIES_MEDICHAM,
         .heldItem = ITEM_BLACK_BELT,
+        .moves = {MOVE_HI_JUMP_KICK, MOVE_STRENGTH, MOVE_MIND_READER, MOVE_THUNDER_PUNCH},
+        .nature = NATURE_ADAMANT,
+        .abilitySlot = 0,
     },
     {
         .iv = 10,
         .lvl = 37,
         .species = SPECIES_POLIWRATH,
         .heldItem = ITEM_BLACK_BELT,
+        .moves = {MOVE_WATERFALL, MOVE_HYPNOSIS, MOVE_SUBMISSION, MOVE_BLIZZARD},
+        .nature = NATURE_CALM,
+        .abilitySlot = 0,
     },
 };
 
-static const struct TrainerMonItemDefaultMoves sParty_BlackBeltAaron[] = {
+static const struct TrainerMonItemCustomMovesNatureAbility sParty_BlackBeltAaron[] = {
     {
         .iv = 10,
         .lvl = 39,
         .species = SPECIES_MACHAMP,
         .heldItem = ITEM_BLACK_BELT,
+        .moves = {MOVE_CROSS_CHOP, MOVE_ROCK_SLIDE, MOVE_BULK_UP, MOVE_EARTHQUAKE},
+        .nature = NATURE_IMPISH,
+        .abilitySlot = 1,
     },
 };
 
-static const struct TrainerMonItemDefaultMoves sParty_BlackBeltKoichi[] = {
+static const struct TrainerMonItemCustomMovesNatureAbility sParty_BlackBeltKoichi[] = {
     {
         .iv = 10,
         .lvl = 40,
         .species = SPECIES_HITMONLEE,
         .heldItem = ITEM_BLACK_BELT,
+        .moves = {MOVE_FOCUS_ENERGY, MOVE_HI_JUMP_KICK, MOVE_MIND_READER, MOVE_STRENGTH},
+        .nature = NATURE_SERIOUS,
+        .abilitySlot = 0,
     },
     {
         .iv = 10,
         .lvl = 40,
         .species = SPECIES_HITMONCHAN,
         .heldItem = ITEM_BLACK_BELT,
+        .moves = {MOVE_ICE_PUNCH, MOVE_FIRE_PUNCH, MOVE_SKY_UPPERCUT, MOVE_MEGA_PUNCH},
+        .nature = NATURE_NAIVE,
+        .abilitySlot = 0,
     },
     {
         .iv = 10,
         .lvl = 40,
         .species = SPECIES_HITMONTOP,
         .heldItem = ITEM_BLACK_BELT,
+        .moves = {MOVE_TRIPLE_KICK, MOVE_RAPID_SPIN, MOVE_COUNTER, MOVE_AGILITY},
+        .nature = NATURE_ADAMANT,
+        .abilitySlot = 0,
     },
 };
 

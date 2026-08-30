@@ -2184,10 +2184,21 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
                         effect = 1;
                     }
                     break;
+                case ABILITY_SAP_SIPPER:
+                    if (moveType == TYPE_GRASS)
+                    {
+                        if (gProtectStructs[gBattlerAttacker].notFirstStrike)
+                            gBattlescriptCurrInstr = BattleScript_WindRiderActivates;
+                        else
+                            gBattlescriptCurrInstr = BattleScript_WindRiderActivates_PPLoss;
+
+                        effect = 1;
+                    }
+                    break;
                 }
                 if (effect == 1)
                 {
-                    if (gLastUsedAbility == ABILITY_WIND_RIDER)
+                    if (gLastUsedAbility == ABILITY_WIND_RIDER || gLastUsedAbility == ABILITY_SAP_SIPPER)
                     {
                         // Wind Rider's script handles both the stat boost and the immunity message.
                     }

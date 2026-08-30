@@ -61,6 +61,7 @@ Keen Eye -> Keen Eye/Own Tempo
 - SPEAROW
 def:	30 -> 40
 spdef:	31 -> 41
+!Evolves into FEAROW at lvl 25
 
 - FEAROW
 hp:	65 -> 75
@@ -210,12 +211,20 @@ spatk:	76 -> 86
 
 - AZURILL
 NORMAL -> WATER/NORMAL
+Thick Fat/Huge Power -> Sap Sipper/Huge Power
+spatk:	20 -> 25
 
 - MARILL
 WATER -> WATER/NORMAL
+Thick Fat/Huge Power -> Sap Sipper/Huge Power
+atk:	20 -> 25
+spatk:	20 -> 45
+!Evolves into AZUMARILL at lvl 26
 
 - AZUMARILL
 WATER -> WATER/NORMAL
+Thick Fat/Huge Power -> Sap Sipper/Huge Power
+spatk:	60 -> 75
 
 - POLITOED
 Water Absorb/Damp -> Drizzle
@@ -434,6 +443,9 @@ spatk:	40 -> 90
 
 - SHELGON
 spdef:	50 -> 70
+
+- BELDUM
+!Evolves into METANG at lvl 28
 
 - REGIROCK
 atk:	100-> 120

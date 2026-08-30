@@ -3968,7 +3968,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
     [MOVE_POISON_FANG] =
     {
         .effect = EFFECT_POISON_FANG,
-        .power = 65,
+        .power = 75,
         .type = TYPE_POISON,
         .accuracy = 100,
         .pp = 15,
@@ -4657,7 +4657,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
     [MOVE_FIRE_FANG] =
     {
         .effect = EFFECT_BURN_HIT,
-        .power = 65,
+        .power = 75,
         .type = TYPE_FIRE,
         .accuracy = 100,
         .pp = 20,
@@ -4670,7 +4670,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
     [MOVE_THUNDER_FANG] =
     {
         .effect = EFFECT_PARALYZE_HIT,
-        .power = 65,
+        .power = 75,
         .type = TYPE_ELECTRIC,
         .accuracy = 100,
         .pp = 20,
@@ -4683,7 +4683,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
     [MOVE_ICE_FANG] =
     {
         .effect = EFFECT_FREEZE_HIT,
-        .power = 65,
+        .power = 75,
         .type = TYPE_ICE,
         .accuracy = 100,
         .pp = 20,

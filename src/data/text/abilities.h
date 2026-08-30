@@ -87,6 +87,7 @@ static const u8 sSuperLuckDescription[] = _("Critical-hit ratio is doubled.");
 static const u8 sWindRiderDescription[] = _("Wind moves raise ATK and don't hurt.");
 static const u8 sSolidRockDescription[] = _("Super-effective moves are weakened.");
 static const u8 sNoGuardDescription[] = _("Attacks by and to the user always land.");
+static const u8 sSapSipperDescription[] = _("GRASS moves raise ATK and don't hurt.");
 
 const u8 *const gAbilityDescriptionPointers[ABILITIES_COUNT] =
 {
@@ -178,7 +179,8 @@ const u8 *const gAbilityDescriptionPointers[ABILITIES_COUNT] =
     [ABILITY_SUPER_LUCK] = sSuperLuckDescription,
     [ABILITY_WIND_RIDER] = sWindRiderDescription,
     [ABILITY_SOLID_ROCK] = sSolidRockDescription,
-    [ABILITY_NO_GUARD] = sNoGuardDescription
+    [ABILITY_NO_GUARD] = sNoGuardDescription,
+    [ABILITY_SAP_SIPPER] = sSapSipperDescription
 };
 
 const u8 gAbilityNames[ABILITIES_COUNT][ABILITY_NAME_LENGTH + 1] =
@@ -271,5 +273,6 @@ const u8 gAbilityNames[ABILITIES_COUNT][ABILITY_NAME_LENGTH + 1] =
     [ABILITY_SUPER_LUCK] = _("SUPER LUCK"),
     [ABILITY_WIND_RIDER] = _("WIND RIDER"),
     [ABILITY_SOLID_ROCK] = _("SOLID ROCK"),
-    [ABILITY_NO_GUARD] = _("NO GUARD")
+    [ABILITY_NO_GUARD] = _("NO GUARD"),
+    [ABILITY_SAP_SIPPER] = _("SAP SIPPER")
 };
