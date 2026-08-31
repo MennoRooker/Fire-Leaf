@@ -292,6 +292,37 @@ def parse_species_info_types_and_abilities() -> Dict[str, Dict[str, object]]:
     return out
 
 
+@lru_cache(maxsize=1)
+def parse_tmhm_item_display_names() -> Dict[str, str]:
+    """
+    Map canonical TM/HM item tokens to readable labels.
+
+    Example:
+        ITEM_TM01 -> TM01 - Focus Punch
+        ITEM_HM03 -> HM03 - Surf
+
+    Source:
+        #define ITEM_TM01_FOCUS_PUNCH ITEM_TM01
+    """
+    text = read_text("include/constants/items.h")
+    out: Dict[str, str] = {}
+
+    alias_re = re.compile(
+        r"^\s*#define\s+"
+        r"ITEM_((?:TM|HM)(\d{2}))_([A-Z0-9_]+)"
+        r"\s+"
+        r"(ITEM_(?:TM|HM)\d{2})"
+        r"\s*$",
+        re.M,
+    )
+
+    for tmhm_code, _number, move_token, base_item_token in alias_re.findall(text):
+        move_name = pretty_token(move_token, "")
+        out[base_item_token] = f"{tmhm_code} - {move_name}"
+
+    return out
+
+
 def parse_item_names() -> Dict[str, str]:
     data = json.loads(read_text("src/data/items.json"))
     out: Dict[str, str] = {}
@@ -300,7 +331,12 @@ def parse_item_names() -> Dict[str, str]:
         english = item.get("english")
         if item_id and english:
             out[item_id] = english
+
+    out.update(parse_tmhm_item_display_names())
+
     return out
+
+
 
 
 def parse_item_prices() -> Dict[str, int]:
@@ -381,6 +417,49 @@ def _label_blocks(script_text: str) -> Dict[str, str]:
         start = match.end()
         end = labels[idx + 1].start() if idx + 1 < len(labels) else len(script_text)
         out[label] = script_text[start:end]
+    return out
+
+
+def _case_target_labels_in_order(label_block: str) -> List[str]:
+    cases: List[tuple[int, str]] = []
+
+    for case_s, target_label in re.findall(
+        r"^\s*case\s+(\d+),\s*([A-Za-z0-9_]+)",
+        label_block,
+        flags=re.M,
+    ):
+        case_index = int(case_s)
+
+        # Ignore cancel/fallback cases.
+        if case_index == 127:
+            continue
+        if target_label.endswith("_EventScript_EndPrizeExchange"):
+            continue
+
+        cases.append((case_index, target_label))
+
+    return [label for _case_index, label in sorted(cases, key=lambda x: x[0])]
+
+
+def _game_corner_tm_prizes_in_script_order(blocks: Dict[str, str]) -> List[tuple[str, int]]:
+    choice_block = blocks.get("CeladonCity_GameCorner_PrizeRoom_EventScript_ChoosePrizeTM", "")
+    out: List[tuple[str, int]] = []
+
+    for target_label in _case_target_labels_in_order(choice_block):
+        prize_block = blocks.get(target_label, "")
+
+        match = re.search(
+            r"setvar\s+VAR_TEMP_1,\s*(ITEM_TM\d+)\s*\n"
+            r"\s*setvar\s+VAR_TEMP_2,\s*(\d+)",
+            prize_block,
+        )
+
+        if not match:
+            continue
+
+        item_token, cost_s = match.groups()
+        out.append((item_token, int(cost_s)))
+
     return out
 
 
@@ -524,13 +603,8 @@ def parse_shops_by_section_map_token() -> Dict[str, List[Dict[str, object]]]:
         if _normalize_map_token(map_token) != "CELADON_CITY_GAME_CORNER_PRIZE_ROOM":
             continue
 
-        tm_offers: Dict[str, int] = {}
-        mon_offers: Dict[str, int] = {}
-        for token, cost_s in re.findall(
-            r"setvar\s+VAR_TEMP_1,\s*(ITEM_TM\d+)\s*\n\s*setvar\s+VAR_TEMP_2,\s*(\d+)",
-            scripts_text,
-        ):
-            tm_offers[token] = int(cost_s)
+        tm_offers = _game_corner_tm_prizes_in_script_order(blocks)
+        mon_offers: Dict[str, str] = {}        
         for token, cost_s in re.findall(
             r"setvar\s+VAR_TEMP_1,\s*(SPECIES_[A-Z0-9_]+)\s*\n\s*setvar\s+VAR_TEMP_2,\s*(\d+)",
             scripts_text,
@@ -552,7 +626,7 @@ def parse_shops_by_section_map_token() -> Dict[str, List[Dict[str, object]]]:
                             "cost": int(cost),
                             "currency": "coins",
                         }
-                        for token, cost in sorted(tm_offers.items(), key=lambda kv: kv[1])
+                        for token, cost in tm_offers
                     ],
                 }
             )

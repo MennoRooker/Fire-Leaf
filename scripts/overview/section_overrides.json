@@ -323,6 +323,10 @@
         }
       ]
     },
+    "Saffron City": {
+      "crop": { "x0": 0.16, "x1": 0.87, "y0": 0.12, "y1": 0.85 },
+      "mapScaleMax": 0.8
+    },
     "Pokémon Tower 3F": {
       "mapToken": "POKEMON_TOWER_3F"
     },
@@ -334,6 +338,7 @@
     },
     "Pokémon Tower 6F": {
       "mapToken": "POKEMON_TOWER_6F",
+      "stretchedHeight": 0.67,
       "manualEncounters": [
         {
           "kind": "static_mons",

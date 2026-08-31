@@ -31,6 +31,11 @@ SaffronCity_Mart_Items::
 	.2byte ITEM_FULL_HEAL
 	.2byte ITEM_ESCAPE_ROPE
 	.2byte ITEM_ELIXIR
+	.2byte ITEM_TM01
+	.2byte ITEM_TM04
+	.2byte ITEM_TM12
+	.2byte ITEM_TM36
+	.2byte ITEM_TM49
 	.2byte ITEM_NONE
 	release
 	end

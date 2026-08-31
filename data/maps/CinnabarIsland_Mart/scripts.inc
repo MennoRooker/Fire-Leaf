@@ -33,6 +33,11 @@ CinnabarIsland_Mart_Items::
 	.2byte ITEM_FULL_HEAL
 	.2byte ITEM_ESCAPE_ROPE
 	.2byte ITEM_MAX_ELIXIR
+	.2byte ITEM_TM07
+	.2byte ITEM_TM08
+	.2byte ITEM_TM29
+	.2byte ITEM_TM47
+	.2byte ITEM_TM48
 	.2byte ITEM_NONE
 	release
 	end

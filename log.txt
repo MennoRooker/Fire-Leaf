@@ -1336,27 +1336,75 @@ entire game. I have a structure in place with the
 following:
 ---------------
 x Maps
-/ Colors
+x Colors
 x Wild Encounters
 x Trainer Parties
-/ Items
-- Shops
-- Move tutors
-/ Rematches
+x Items
+x Shops
+x Move tutors
+x Rematches
    x Trainer data
-   - VS seeker icon
-        - Different colors
-	- Under trainer image
+   x VS seeker icon
+        x Different colors
+	x Under trainer image
 x Show events
 x Route 14 Gen 4 mons
 x Local storage
-- Hidden Power
-- Coin Case + Eevee
-- Elyssa/Saige sprites
+x Hidden Power
+x Coin Case + Eevee
+x Elyssa/Saige sprites
 - Double battles
+- TM names
 
+I want to redistribute TMs throughout marts so
+that the Celadon department store is not satu-
+rated with them. I want each TM to be available
+to the player, but not all at the same exact 
+point in the game.
 
+Removed from dept store:
+xS    .2byte ITEM_TM01 - Focus Punch
+xL    .2byte ITEM_TM02 - Dragon Claw
+xL    .2byte ITEM_TM03 - Water Pulse
+xS    .2byte ITEM_TM04 - Calm Mind
+xL    .2byte ITEM_TM06 - Toxic
+xC    .2byte ITEM_TM07 - Hail
+xC    .2byte ITEM_TM08 - Bulk Up
+x3    .2byte ITEM_TM09 - Bullet Seed
+xS    .2byte ITEM_TM12 - Taunt
+x3    .2byte ITEM_TM14 - Blizzard
+xL    .2byte ITEM_TM19 - Giga Drain
+xV    .2byte ITEM_TM20 - Safeguard
+x3    .2byte ITEM_TM21 - Frustration
+xF    .2byte ITEM_TM22 - Solar Beam
+x3    .2byte ITEM_TM25 - Thunder
+xF    .2byte ITEM_TM27 - Return
+xC    .2byte ITEM_TM29 - Psychic
+xL    .2byte ITEM_TM34 - Shock Wave
+xS    .2byte ITEM_TM36 - Sludge Bomb
+x3    .2byte ITEM_TM37 - Sandstorm
+xL    .2byte ITEM_TM38 - Fire Blast
+xL    .2byte ITEM_TM39 - Rock Tomb
+xV    .2byte ITEM_TM41 - Torment
+xF    .2byte ITEM_TM44 - Rest
+xC    .2byte ITEM_TM47 - Steel Wing
+xC    .2byte ITEM_TM48 - Skill Swap
+xS    .2byte ITEM_TM49 - Snatch
+xL    .2byte ITEM_TM50 - Overheat
 
+I want to make new TMs of existing moves so
+that I can teach them to more mons without 
+having to go only for the existing TMs.
+Sludge for example.
+
+I just added Saffron City to the overview, 
+but Mr. Psychic is missing.
+
+The TMs from the gyms now show the move 
+twice due to the parsing edit I made to
+TMs for the shops.
+
+Saffron needs its own overview theme still.
 
 TO DO:
 x Force SET mode
@@ -1489,7 +1537,8 @@ x Super Luck
 x Wind Rider 
 x Technician 
 x Solid Rock
-/ No guard
+x No guard
+x Sap Sipper
 - Regenerator
 - Sheer force (Nidoking, ...)
 - Magic Bounce (Espeon)

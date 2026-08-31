@@ -25,6 +25,11 @@ ThreeIsland_Mart_Items::
 	.2byte ITEM_FULL_HEAL
 	.2byte ITEM_ESCAPE_ROPE
 	.2byte ITEM_MAX_ELIXIR
+	.2byte ITEM_TM09
+	.2byte ITEM_TM14
+	.2byte ITEM_TM21
+	.2byte ITEM_TM25
+	.2byte ITEM_TM37
 	.2byte ITEM_NONE
 	release
 	end

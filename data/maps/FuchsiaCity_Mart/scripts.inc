@@ -37,7 +37,10 @@ FuchsiaCity_Mart_Items::
 	.2byte ITEM_PETAYA_BERRY
 	.2byte ITEM_APICOT_BERRY
 	.2byte ITEM_LANSAT_BERRY
-	.2byte ITEM_STARF_BERRY 	
+	.2byte ITEM_STARF_BERRY
+	.2byte ITEM_TM22
+	.2byte ITEM_TM27
+	.2byte ITEM_TM44
 	.2byte ITEM_NONE
 	release
 	end

@@ -30,6 +30,8 @@ VermilionCity_Mart_Items::
 	.2byte ITEM_AWAKENING
 	.2byte ITEM_ICE_HEAL
 	.2byte ITEM_ELIXIR
+	.2byte ITEM_TM20
+	.2byte ITEM_TM41
 	.2byte ITEM_NONE
 	release
 	end

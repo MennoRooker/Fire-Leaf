@@ -4865,7 +4865,7 @@
     {
       "english": "TM15",
       "itemId": "ITEM_TM15",
-      "price": 7500,
+      "price": 12500,
       "holdEffect": "HOLD_EFFECT_NONE",
       "holdEffectParam": 0,
       "description_english": "A harsh attack that inflicts severe\\ndamage on the foe. However, the\\nuser must rest the next turn.",

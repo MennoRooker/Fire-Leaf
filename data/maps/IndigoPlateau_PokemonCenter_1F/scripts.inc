@@ -57,6 +57,14 @@ IndigoPlateau_PokemonCenter_1F_Items::
 	.2byte ITEM_ESCAPE_ROPE
 	.2byte ITEM_MAX_ELIXIR
 	.2byte ITEM_ELIXIR
+	.2byte ITEM_TM02
+	.2byte ITEM_TM03
+	.2byte ITEM_TM06
+	.2byte ITEM_TM19
+	.2byte ITEM_TM34
+	.2byte ITEM_TM38
+	.2byte ITEM_TM39
+	.2byte ITEM_TM50
 	.2byte ITEM_NONE
 	release
 	end
