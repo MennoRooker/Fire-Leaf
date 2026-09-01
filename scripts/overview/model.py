@@ -1390,9 +1390,6 @@ def build_model(section_filter: Optional[str]) -> Dict[str, object]:
         item_name = item_names.get(item_token, pretty_token(item_token, "ITEM_"))
         if item_name and set(item_name) == {"?"}:
             return "-"
-        taught_move_name = tmhm_move_name_by_item_token.get(item_token)
-        if taught_move_name:
-            return f"{item_name} ({taught_move_name})"
         return item_name
 
     def get_item_icon_path(item_token: str) -> str:

@@ -325,7 +325,10 @@
     },
     "Saffron City": {
       "crop": { "x0": 0.16, "x1": 0.87, "y0": 0.12, "y1": 0.85 },
-      "mapScaleMax": 0.8
+      "mapScaleMax": 0.8,
+      "itemMapTokens": [
+        "SAFFRON_CITY_MR_PSYCHICS_HOUSE"
+      ]
     },
     "Pokémon Tower 3F": {
       "mapToken": "POKEMON_TOWER_3F"
