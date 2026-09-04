@@ -1950,7 +1950,7 @@ const struct Trainer gTrainers[] = {
         .items = {},
         .doubleBattle = FALSE,
         .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE,
-        .party = NO_ITEM_CUSTOM_MOVES(sParty_BikerJared),
+        .party = ITEM_CUSTOM_MOVES(sParty_BikerJared),
     },
     [TRAINER_BIKER_MALIK] = {
         .trainerClass = TRAINER_CLASS_BIKER,
@@ -1990,7 +1990,7 @@ const struct Trainer gTrainers[] = {
         .items = {},
         .doubleBattle = FALSE,
         .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE,
-        .party = NO_ITEM_CUSTOM_MOVES(sParty_BikerLao),
+        .party = NO_ITEM_DEFAULT_MOVES(sParty_BikerLao),
     },
     [TRAINER_BIKER_1] = {
         .trainerClass = TRAINER_CLASS_BIKER,
@@ -2878,9 +2878,9 @@ const struct Trainer gTrainers[] = {
         .trainerPic = TRAINER_PIC_JUGGLER,
         .trainerName = _("KIRK"),
         .items = {},
-        .doubleBattle = FALSE,
+        .doubleBattle = TRUE,
         .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE,
-        .party = NO_ITEM_DEFAULT_MOVES(sParty_JugglerKirk),
+        .party = ITEM_CUSTOM_MOVES_NATURE_ABILITY(sParty_JugglerKirk),
     },
     [TRAINER_JUGGLER_SHAWN] = {
         .trainerClass = TRAINER_CLASS_JUGGLER,
@@ -2930,7 +2930,7 @@ const struct Trainer gTrainers[] = {
         .items = {},
         .doubleBattle = FALSE,
         .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE,
-        .party = NO_ITEM_DEFAULT_MOVES(sParty_JugglerNate),
+        .party = ITEM_CUSTOM_MOVES_NATURE_ABILITY(sParty_JugglerNate),
     },
     [TRAINER_TAMER_PHIL] = {
         .trainerClass = TRAINER_CLASS_TAMER,
@@ -2940,7 +2940,7 @@ const struct Trainer gTrainers[] = {
         .items = {},
         .doubleBattle = FALSE,
         .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE,
-        .party = NO_ITEM_DEFAULT_MOVES(sParty_TamerPhil),
+        .party = ITEM_CUSTOM_MOVES_NATURE_ABILITY(sParty_TamerPhil),
     },
     [TRAINER_TAMER_EDGAR] = {
         .trainerClass = TRAINER_CLASS_TAMER,
@@ -2950,7 +2950,7 @@ const struct Trainer gTrainers[] = {
         .items = {},
         .doubleBattle = FALSE,
         .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE,
-        .party = NO_ITEM_DEFAULT_MOVES(sParty_TamerEdgar),
+        .party = ITEM_CUSTOM_MOVES_NATURE_ABILITY(sParty_TamerEdgar),
     },
     [TRAINER_TAMER_JASON] = {
         .trainerClass = TRAINER_CLASS_TAMER,
@@ -3160,7 +3160,7 @@ const struct Trainer gTrainers[] = {
         .items = {},
         .doubleBattle = FALSE,
         .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE,
-        .party = NO_ITEM_DEFAULT_MOVES(sParty_BirdKeeperMarlon),
+        .party = NO_ITEM_CUSTOM_MOVES(sParty_BirdKeeperMarlon),
     },
     [TRAINER_BLACK_BELT_KOICHI] = {
         .trainerClass = TRAINER_CLASS_BLACK_BELT,
@@ -4700,7 +4700,7 @@ const struct Trainer gTrainers[] = {
         .items = {},
         .doubleBattle = FALSE,
         .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE,
-        .party = NO_ITEM_CUSTOM_MOVES(sParty_BikerVirgil),
+        .party = NO_ITEM_DEFAULT_MOVES(sParty_BikerVirgil),
     },
     [TRAINER_CAMPER_FLINT] = {
         .trainerClass = TRAINER_CLASS_CAMPER,
@@ -6550,7 +6550,7 @@ const struct Trainer gTrainers[] = {
         .items = {},
         .doubleBattle = FALSE,
         .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE,
-        .party = NO_ITEM_DEFAULT_MOVES(sParty_RockerLucaRematchAfterFuchsia),
+        .party = NO_ITEM_CUSTOM_MOVES(sParty_RockerLucaRematchAfterFuchsia),
     },
     [TRAINER_BEAUTY_SHEILA_REMATCH_AFTER_LEAGUE] = {
         .trainerClass = TRAINER_CLASS_BEAUTY,
@@ -6650,7 +6650,7 @@ const struct Trainer gTrainers[] = {
         .items = {},
         .doubleBattle = FALSE,
         .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE,
-        .party = NO_ITEM_DEFAULT_MOVES(sParty_BirdKeeperMarlonRematchAfterFuchsia),
+        .party = NO_ITEM_CUSTOM_MOVES(sParty_BirdKeeperMarlonRematchAfterFuchsia),
     },
     [TRAINER_BIRD_KEEPER_MARLON_REMATCH_AFTER_LEAGUE] = {
         .trainerClass = TRAINER_CLASS_BIRD_KEEPER,
@@ -6660,7 +6660,7 @@ const struct Trainer gTrainers[] = {
         .items = {},
         .doubleBattle = FALSE,
         .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE,
-        .party = NO_ITEM_DEFAULT_MOVES(sParty_BirdKeeperMarlonRematchAfterLeague),
+        .party = ITEM_CUSTOM_MOVES(sParty_BirdKeeperMarlonRematchAfterLeague),
     },
     [TRAINER_BEAUTY_GRACE_REMATCH_AFTER_LEAGUE] = {
         .trainerClass = TRAINER_CLASS_BEAUTY,

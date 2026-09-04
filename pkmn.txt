@@ -124,6 +124,9 @@ WATER -> WATER/ICE
 - DEWGONG
 Thick Fat -> Snow Warning
 
+- CLOYSTER
+spdef:	45 -> 55
+
 - GENGAR
 Levitate -> Shadow Tag
 

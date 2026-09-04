@@ -1406,6 +1406,11 @@ TMs for the shops.
 
 Saffron needs its own overview theme still.
 
+When I add Fairy type into the game I need
+to add the Fairy type icon to the file
+graphics/interface/menu_info.png somehow.
+Probably at the top right.
+
 TO DO:
 x Force SET mode
 x EV berries
