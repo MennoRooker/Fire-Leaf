@@ -30,6 +30,8 @@
 #include "constants/game_stat.h"
 #include "constants/field_weather.h"
 
+extern const u8 *const gMoveDescriptionPointers[];
+
 #define tItemCount data[1]
 #define tItemId data[5]
 #define tListTaskId data[7]
@@ -566,6 +568,7 @@ static void PokeMartWriteNameAndIdAt(struct ListMenuItem *list, u16 index, u8 *d
 static void BuyMenuPrintItemDescriptionAndShowItemIcon(s32 item, bool8 onInit, struct ListMenu *list)
 {
     const u8 *description;
+    u16 moveId;
 
     if (onInit != TRUE)
         PlaySE(SE_SELECT);
@@ -574,6 +577,13 @@ static void BuyMenuPrintItemDescriptionAndShowItemIcon(s32 item, bool8 onInit, s
         description = ItemId_GetDescription(item);
     else
         description = gText_QuitShopping;
+
+    if (sShopData.martType == MART_TYPE_TMHM && IsTmHmItem(item))
+    {
+        moveId = ItemIdToBattleMoveId(item);
+        if (moveId != 0)
+            description = gMoveDescriptionPointers[moveId - 1];
+    }
 
     FillWindowPixelBuffer(5, PIXEL_FILL(0));
     if (sShopData.martType != MART_TYPE_TMHM || !IsTmHmItem(item))

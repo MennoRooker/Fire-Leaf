@@ -25,6 +25,8 @@
 #include "constants/songs.h"
 #include "constants/quest_log.h"
 
+extern const u8 *const gMoveDescriptionPointers[];
+
 // Any item in the TM Case with nonzero importance is considered an HM
 #define IS_HM(itemId) (ItemId_GetImportance(itemId) != 0)
 
@@ -734,11 +736,22 @@ static void List_ItemPrintFunc(u8 windowId, u32 itemIndex, u8 y)
 
 static void PrintDescription(s32 itemIndex)
 {
+    u16 moveId;
+    u16 itemId;
     const u8 * str;
+
     if (itemIndex != LIST_CANCEL)
-        str = ItemId_GetDescription(BagGetItemIdByPocketPosition(POCKET_TM_CASE, itemIndex));
+    {
+        itemId = BagGetItemIdByPocketPosition(POCKET_TM_CASE, itemIndex);
+        moveId = ItemIdToBattleMoveId(itemId);
+        if (moveId != 0)
+            str = gMoveDescriptionPointers[moveId - 1];
+        else
+            str = ItemId_GetDescription(itemId);
+    }
     else
         str = gText_TMCaseWillBePutAway;
+
     FillWindowPixelBuffer(WIN_DESCRIPTION, 0);
     TMCase_Print(WIN_DESCRIPTION, FONT_NORMAL, str, 2, 3, 1, 0, 0, COLOR_LIGHT);
 }
