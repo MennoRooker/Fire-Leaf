@@ -224,7 +224,8 @@ No global recharge
 30 -> 45
 
 - Rock Tomb
-80% -> 90%
+50 -> 55
+80% -> 95%
 
 - Sky Uppercut
 85 -> 90

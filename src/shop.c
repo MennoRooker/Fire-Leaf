@@ -82,7 +82,7 @@ EWRAM_DATA struct QuestLogEvent_Shop sHistory[2] = {0};
 
 //Function Declarations
 static u8 CreateShopMenu(u8 martType);
-static u8 GetMartTypeFromItemList(u32 a0);
+static u8 GetMartTypeFromItemList(bool32 isTmHmShop);
 static void SetShopItemsForSale(const u16 *items);
 static void SetShopMenuCallback(MainCallback callback);
 static void Task_ShopMenu(u8 taskId);
@@ -108,6 +108,7 @@ static void PokeMartWriteNameAndIdAt(struct ListMenuItem *list, u16 index, u8 *d
 static void BuyMenuPrintItemDescriptionAndShowItemIcon(s32 item, bool8 onInit, struct ListMenu *list);
 static void BuyMenuPrintPriceInList(u8 windowId, u32 itemId, u8 y);
 static void LoadTmHmNameInMart(s32 item);
+static bool8 IsTmHmItem(u16 item);
 static void BuyMenuPrintCursor(u8 listTaskId, u8 a1);
 static void BuyMenuPrintCursorAtYPosition(u8 y, u8 a1);
 static void BuyMenuFreeMemory(void);
@@ -128,6 +129,11 @@ static void Task_BuyHowManyDialogueInit(u8 taskId);
 static void Task_BuyHowManyDialogueHandleInput(u8 taskId);
 static void CreateBuyMenuConfirmPurchaseWindow(u8 taskId);
 static void BuyMenuTryMakePurchase(u8 taskId);
+
+static bool8 IsTmHmItem(u16 item)
+{
+    return ItemId_GetPocket(item) == POCKET_TM_CASE;
+}
 static void BuyMenuSubtractMoney(u8 taskId);
 static void Task_ReturnToItemListAfterItemPurchase(u8 taskId);
 static void BuyMenuReturnToItemList(u8 taskId);
@@ -220,18 +226,11 @@ static u8 CreateShopMenu(u8 martType)
     return CreateTask(Task_ShopMenu, 8);
 }
 
-static u8 GetMartTypeFromItemList(u32 martType)
+static u8 GetMartTypeFromItemList(bool32 isTmHmShop)
 {
-    u16 i;
+    if (isTmHmShop == TRUE)
+        return MART_TYPE_TMHM;
 
-    if (martType != MART_TYPE_REGULAR)
-        return martType;
-
-    for (i = 0; i < sShopData.itemCount && sShopData.itemList[i] != 0; i++)
-    {
-        if (ItemId_GetPocket(sShopData.itemList[i]) == POCKET_TM_CASE)
-            return MART_TYPE_TMHM;
-    }
     return MART_TYPE_REGULAR;
 }
 
@@ -577,8 +576,11 @@ static void BuyMenuPrintItemDescriptionAndShowItemIcon(s32 item, bool8 onInit, s
         description = gText_QuitShopping;
 
     FillWindowPixelBuffer(5, PIXEL_FILL(0));
-    if (sShopData.martType != MART_TYPE_TMHM)
+    if (sShopData.martType != MART_TYPE_TMHM || !IsTmHmItem(item))
     {
+        if (sShopData.martType == MART_TYPE_TMHM)
+            FillWindowPixelBuffer(6, PIXEL_FILL(0));
+
         DestroyItemMenuIcon(sShopData.itemSlot ^ 1);
         if (item != INDEX_CANCEL)
             CreateItemMenuIcon(item, sShopData.itemSlot);
@@ -1118,10 +1120,10 @@ static void RecordTransactionForQuestLog(void)
         SetQuestLogEvent(eventId + QL_EVENT_USED_POKEMART, (const u16 *)&sHistory[1]);
 }
 
-void CreatePokemartMenu(const u16 *itemsForSale)
+void CreatePokemartMenu(const u16 *itemsForSale, bool32 isTmHmShop)
 {
     SetShopItemsForSale(itemsForSale);
-    CreateShopMenu(MART_TYPE_REGULAR);
+    CreateShopMenu(GetMartTypeFromItemList(isTmHmShop));
     SetShopMenuCallback(ScriptContext_Enable);
     DebugFunc_PrintShopMenuHistoryBeforeClearMaybe();
     memset(&sHistory, 0, sizeof(sHistory));

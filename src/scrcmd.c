@@ -39,6 +39,8 @@
 #include "constants/sound.h"
 #include "sloopsvc.h"
 
+extern const u16 CeladonCity_DepartmentStore_2F_TMs[];
+
 extern u16 (*const gSpecials[])(void);
 extern u16 (*const gSpecialsEnd[])(void);
 extern const u8 *const gStdScripts[];
@@ -1952,8 +1954,9 @@ bool8 ScrCmd_dowildbattle(struct ScriptContext * ctx)
 bool8 ScrCmd_pokemart(struct ScriptContext * ctx)
 {
     const void *ptr = (void *)ScriptReadWord(ctx);
+    bool32 isTmHmShop = (ptr == CeladonCity_DepartmentStore_2F_TMs);
 
-    CreatePokemartMenu(ptr);
+    CreatePokemartMenu(ptr, isTmHmShop);
     ScriptContext_Stop();
     return TRUE;
 }
