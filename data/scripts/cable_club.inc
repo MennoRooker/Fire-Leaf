@@ -740,6 +740,9 @@ CableClub_EventScript_UnionRoomAttendant::
 	special QuestLog_CutRecording
 	lock
 	faceplayer
+	message CableClub_Text_Hello
+	waitmessage
+	special InitUnionRoom
 	goto_if_unset FLAG_SYS_POKEDEX_GET, CableClub_EventScript_WirelessClubAdjustements
 	specialvar VAR_RESULT, IsBadEggInParty
 	goto_if_eq VAR_RESULT, TRUE, CableClub_EventScript_AbortLinkPlayerHasBadEgg
@@ -843,6 +846,9 @@ CableClub_EventScript_DirectCornerAttendant::
 	special QuestLog_CutRecording
 	lock
 	faceplayer
+	message CableClub_Text_Hello
+	waitmessage
+	special InitUnionRoom
 	goto_if_unset FLAG_SYS_POKEDEX_GET, CableClub_EventScript_WirelessClubAdjustements
 	specialvar VAR_RESULT, IsBadEggInParty
 	goto_if_eq VAR_RESULT, TRUE, CableClub_EventScript_AbortLinkPlayerHasBadEgg
@@ -1449,9 +1455,8 @@ CableClub_Text_ParticipantsStepUpToCounter::
 	.string "Participants are asked to step up\n"
 	.string "to the reception counter.$"
 
-@ Unused, translated in Emerald
 CableClub_Text_Hello::
-	.string "こんにちは！$"
+	.string "Hello！$"
 
 @ Unused, translated in Emerald
 CableClub_Text_PleaseWait::
