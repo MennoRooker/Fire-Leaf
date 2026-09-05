@@ -2745,7 +2745,6 @@ static void SaveTradeGiftRibbons(void)
 static u32 CanTradeSelectedMon(struct Pokemon * playerParty, int partyCount, int monIdx)
 {
     int i, numMonsLeft;
-    struct LinkPlayer * partner;
     int species[PARTY_SIZE];
     int species2[PARTY_SIZE];
 
@@ -2753,21 +2752,6 @@ static u32 CanTradeSelectedMon(struct Pokemon * playerParty, int partyCount, int
     {
         species2[i] = GetMonData(&playerParty[i], MON_DATA_SPECIES_OR_EGG);
         species[i] = GetMonData(&playerParty[i], MON_DATA_SPECIES);
-    }
-
-    partner = &gLinkPlayers[GetMultiplayerId() ^ 1];
-    if ((partner->version & 0xFF) != VERSION_RUBY &&
-        (partner->version & 0xFF) != VERSION_SAPPHIRE)
-    {
-        // Does partner not have National Dex
-        if (!(partner->progressFlagsCopy & 0xF))
-        {
-            if (species2[monIdx] == SPECIES_EGG)
-                return CANT_TRADE_PARTNER_EGG_YET;
-
-            if (species2[monIdx] > NATIONAL_DEX_COUNT)
-                return CANT_TRADE_INVALID_MON;
-        }
     }
 
     if (species[monIdx] == SPECIES_DEOXYS || species[monIdx] == SPECIES_MEW)
@@ -2849,9 +2833,7 @@ static bool32 IsDeoxysOrMewUntradable(u16 species, bool8 isModernFatefulEncounte
 
 int GetUnionRoomTradeMessageId(struct RfuGameCompatibilityData player, struct RfuGameCompatibilityData partner, u16 playerSpecies2, u16 partnerSpecies, u8 requestedType, u16 playerSpecies, bool8 isModernFatefulEncounter)
 {
-    bool8 playerHasNationalDex = player.hasNationalDex;
     bool8 playerCanLinkNationally = player.canLinkNationally;
-    bool8 partnerHasNationalDex = partner.hasNationalDex;
     bool8 partnerCanLinkNationally = partner.canLinkNationally;
     u8 partnerVersion = partner.version;
     bool8 isNotFRLG;
@@ -2900,19 +2882,7 @@ int GetUnionRoomTradeMessageId(struct RfuGameCompatibilityData player, struct Rf
 
 int CanRegisterMonForTradingBoard(struct RfuGameCompatibilityData player, u16 species2, u16 species, bool8 isModernFatefulEncounter)
 {
-    bool8 hasNationalDex = TRUE;
-
     if (IsDeoxysOrMewUntradable(species, isModernFatefulEncounter))
-        return CANT_REGISTER_MON;
-
-    if (hasNationalDex)
-        return CAN_REGISTER_MON;
-
-    // Eggs can only be traded if the player has the National Dex
-    if (species2 == SPECIES_EGG)
-        return CANT_REGISTER_EGG;
-
-    if (species2 > NATIONAL_DEX_COUNT && species2 != SPECIES_EGG)
         return CANT_REGISTER_MON;
 
     return CAN_REGISTER_MON;
