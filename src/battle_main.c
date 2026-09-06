@@ -2878,11 +2878,11 @@ static void BattleIntroHandleEarlyWildRunPrompt(void)
 
 static bool8 IsEarlyWildRunPromptBattleType(void)
 {
+    // Safari encounters intentionally support early B-run during intro.
     if (gBattleTypeFlags & (BATTLE_TYPE_DOUBLE
                           | BATTLE_TYPE_LINK
                           | BATTLE_TYPE_TRAINER
                           | BATTLE_TYPE_FIRST_BATTLE
-                          | BATTLE_TYPE_SAFARI
                           | BATTLE_TYPE_OLD_MAN_TUTORIAL
                           | BATTLE_TYPE_ROAMER
                           | BATTLE_TYPE_EREADER_TRAINER

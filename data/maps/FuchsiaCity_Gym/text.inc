@@ -26,8 +26,8 @@ FuchsiaCity_Gym_Text_KogaPostBattle::
 
 FuchsiaCity_Gym_Text_KogaExplainSoulBadge::
     .string "Now that you have the SOULBADGE,\n"
-    .string "the DEFENSE of your POKéMON rises.\p"
-    .string "It also lets you SURF outside of\n"
+    .string "a new world opens up to you.\p"
+    .string "It lets you SURF outside of\n"
     .string "battle.\p"
     .string "Ah!\n"
     .string "Take this, too!$"
