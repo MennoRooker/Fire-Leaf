@@ -3027,9 +3027,9 @@
                 "species": "SPECIES_PARASECT"
               },
               {
-                "min_level": 22,
-                "max_level": 22,
-                "species": "SPECIES_EEVEE"
+                "min_level": 26,
+                "max_level": 26,
+                "species": "SPECIES_PINSIR"
               },
               {
                 "min_level": 25,
@@ -3181,9 +3181,9 @@
                 "species": "SPECIES_PARASECT"
               },
               {
-                "min_level": 22,
-                "max_level": 22,
-                "species": "SPECIES_EEVEE"
+                "min_level": 26,
+                "max_level": 26,
+                "species": "SPECIES_PINSIR"
               },
               {
                 "min_level": 25,

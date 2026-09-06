@@ -5419,7 +5419,7 @@ static const struct TrainerMonNoItemDefaultMoves sParty_BikerHideo[] = {
 static const struct TrainerMonNoItemCustomMoves sParty_BikerRuben[] = {
     {
         .iv = 10,
-        .lvl = 35,
+        .lvl = 34,
         .species = SPECIES_KOFFING,
         .moves = {MOVE_SMOKESCREEN, MOVE_SLUDGE, MOVE_SMOG, MOVE_TACKLE},
     },

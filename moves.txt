@@ -233,7 +233,7 @@ No global recharge
 
 - Sand Tomb
 15 -> 70
-70% -> 80%
+70% -> 85%
 15PP -> 10PP
 
 - Bullet Seed

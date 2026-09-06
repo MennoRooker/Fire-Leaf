@@ -1450,15 +1450,15 @@ x Victory Road FLY checkpoint
 x Balancing
 x Title screen
 x No badge boosts
+- Cue Ball sprites
+/ Fewer trainer battles
 / Documentation
 ---------------------------------------
 - Clean up
-- Fewer TMs in Dept store
-- Fewer trainer battles
 - Add Fairy type
 - Agatha's Flutter Mane
 - Max rematch
-- International Dex (Gens IV & V)
+- National Dex (Gens IV & V)
 - Paul Champion
 - Physical/special split
 - Pokedex:
